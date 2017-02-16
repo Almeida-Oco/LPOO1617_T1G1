@@ -31,7 +31,7 @@ public class Game{
 	private int[][] guard  		= {{1,7},{2,7},{3,7},{4,7},{5,7},{5,6},{5,5},{5,4},{5,3},{5,2},{5,1},{6,1},
 								   {6,2},{6,3},{6,4},{6,5},{6,6},{6,7},{6,8},{5,8},{4,8},{3,8},{2,8},{1,8}};
 	private int[]   hero        =  {1,1};
-	private int[] 	ogre		=  {1,6};
+	private int[] 	ogre		=  {1,5};
 	private int[]   lever       =  {8,7};
 	private int[][] doors       = {{4,1} , {4,3} , {2,3} , {2,8} , {4,8}};
 	private int[][] final_doors = {{5,0} , {6,0}};
@@ -209,12 +209,40 @@ public class Game{
 		}
 		else{
 			Random direction=new Random();
-			direction.nextInt(4);
 			int dir;
-			dir=direction;
-			switch(direction){
-			
+			boolean valid=false;
+			this.map2[this.ogre[0]][this.ogre[1]]=' ';
+
+			while(!valid){
+			dir=direction.nextInt(4);
+			switch(dir){
+			case 0: if(this.map[this.ogre[0]-1][this.ogre[1]] != 'X' && this.map[this.ogre[0]-1][this.ogre[1]] != 'S' && this.map[this.ogre[0]-1][this.ogre[1]] != 'I'){
+				this.ogre[0]-=1;
 			}
+			break;
+			case 1:
+				if(this.map[this.ogre[0]][this.ogre[1]-1] != 'X' && this.map[this.ogre[0]][this.ogre[1]-1] != 'S' && this.map[this.ogre[0]][this.ogre[1]-1] != 'I'){
+					this.ogre[1]-=1;
+					valid=true;
+				}
+				break;
+			case 2: if(this.map[this.ogre[0]+1][this.ogre[1]] != 'X'&&this.map[this.ogre[0]+1][this.ogre[1]] != 'S' && this.map[this.ogre[0]+1][this.ogre[1]] != 'I'){
+				this.ogre[1]+=1;
+				valid=true;
+			}
+			break;
+			case 3: if(this.map[this.ogre[0]][this.ogre[1]+1] != 'X' && this.map[this.ogre[0]][this.ogre[1]+1] != 'S' && this.map[this.ogre[0]][this.ogre[1]+1] != 'I'){
+				this.ogre[0]+=1;
+				valid=true;
+			}
+			break;
+			}	
+			}
+			this.map2[this.ogre[0]][this.ogre[1]]='O';
+			if(this.map[this.ogre[0]][this.ogre[1]] == 'K')
+				this.map2[this.ogre[0]][this.ogre[1]]='$';
+				
+			
 		}
 		
 

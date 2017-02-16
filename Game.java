@@ -30,6 +30,7 @@ public class Game{
 	private int[][] guard  		= {{1,7},{2,7},{3,7},{4,7},{5,7},{5,6},{5,5},{5,4},{5,3},{5,2},{5,1},{6,1},
 								   {6,2},{6,3},{6,4},{6,5},{6,6},{6,7},{6,8},{5,8},{4,8},{3,8},{2,8},{1,8}};
 	private int[]   hero        =  {1,1};
+	private int[] 	club		=  {0,0};
 	private int[] 	key 		=  {1,8};
 	private int[] 	ogre		=  {1,5};
 	private int[]   lever       =  {8,7};
@@ -64,12 +65,12 @@ public class Game{
 		this.printGame();
 		int guard_pos = 23;
 		//IN-GAME
-		while( (!checkGameOver(guard[guard_pos]) && level1) || (!checkGameOver(ogre) && !level1) ){
+		while( (!checkGameOver(guard[guard_pos]) && level1) || (!checkGameOver(ogre) && !checkGameOver(club) && !level1) ){
 			System.out.print("Insert movement :  ");			
 			//move hero based on input
 			this.movePlayer(readChar());
 			//checks if its game over
-			if( (checkGameOver(guard[guard_pos]) && level1) || (checkGameOver(ogre) && !level1))
+			if( (checkGameOver(guard[guard_pos]) && level1) || (checkGameOver(ogre) && !checkGameOver(club) && !level1))
 				break;
 			guard_pos=moveNPC(guard_pos,level1);
 			//PLAYER GOES UP THE STAIRS

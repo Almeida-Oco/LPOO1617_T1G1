@@ -35,6 +35,7 @@ public class Game{
 	private int[][] final_doors = {{5,0} , {6,0}};
 	private int[] last_door		=  {1,0};
 
+
 	public static void main(String[] args) {
 		Game temp = new Game ();
 		temp.cpu();

@@ -29,6 +29,7 @@ public class Game{
 	private int[][] guard  		= {{1,7},{2,7},{3,7},{4,7},{5,7},{5,6},{5,5},{5,4},{5,3},{5,2},{5,1},{6,1},
 								   {6,2},{6,3},{6,4},{6,5},{6,6},{6,7},{6,8},{5,8},{4,8},{3,8},{2,8},{1,8}};
 	private int[]   hero        =  {1,1};
+	private int[] 	key 		=  {1,8};
 	private int[] 	ogre		=  {1,5};
 	private int[]   lever       =  {8,7};
 	private int[][] doors       = {{4,1} , {4,3} , {2,3} , {2,8} , {4,8}};
@@ -86,7 +87,7 @@ public class Game{
 		}
 		
 		//GAME OVER
-		guard_pos=moveNPC(guard_pos-1,this.level1);
+		guard_pos=moveNPC(guard_pos-1,!this.level1);
 		this.printGame();
 		System.out.println("\n GAME OVER!");	
 	}
@@ -210,8 +211,11 @@ public class Game{
 			Random direction=new Random();
 			int dir;
 			boolean valid=false;
-			this.map2[this.ogre[0]][this.ogre[1]]=' ';
-
+			if(this.ogre[0] == this.key[0] && this.ogre[1] == this.key[1])
+				this.map2[this.ogre[0]][this.ogre[1]] = 'K';
+			else
+				this.map2[this.ogre[0]][this.ogre[1]]=' ';
+			
 			while(true){
 				dir=direction.nextInt(4);
 				System.out.println("="+dir);
@@ -248,11 +252,12 @@ public class Game{
 					
 			}
 			
-			if(this.map[this.ogre[0]][this.ogre[1]] == 'K')
+			if(this.ogre[0] == this.key[0] && this.ogre[1] == this.key[1])
 				this.map2[this.ogre[0]][this.ogre[1]]='$';
 			else
 				this.map2[this.ogre[0]][this.ogre[1]] = 'O';	
 			
+
 		}
 		
 

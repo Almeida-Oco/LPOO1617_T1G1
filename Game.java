@@ -1,5 +1,3 @@
-package LPOO1617_T1G1;
-
 import java.util.Scanner;
 import java.util.Random;
 
@@ -214,35 +212,46 @@ public class Game{
 			boolean valid=false;
 			this.map2[this.ogre[0]][this.ogre[1]]=' ';
 
-			while(!valid){
-			dir=direction.nextInt(4);
-			switch(dir){
-			case 0: if(this.map[this.ogre[0]-1][this.ogre[1]] != 'X' && this.map[this.ogre[0]-1][this.ogre[1]] != 'S' && this.map[this.ogre[0]-1][this.ogre[1]] != 'I'){
-				this.ogre[0]-=1;
-			}
-			break;
-			case 1:
-				if(this.map[this.ogre[0]][this.ogre[1]-1] != 'X' && this.map[this.ogre[0]][this.ogre[1]-1] != 'S' && this.map[this.ogre[0]][this.ogre[1]-1] != 'I'){
-					this.ogre[1]-=1;
-					valid=true;
+			while(true){
+				dir=direction.nextInt(4);
+				System.out.println("="+dir);
+			 	if(dir == 0 && this.map2[this.ogre[0]-1][this.ogre[1]] != 'X' && 
+						   	   this.map2[this.ogre[0]-1][this.ogre[1]] != 'S' && 
+						       this.map2[this.ogre[0]-1][this.ogre[1]] != 'I')
+			 	{
+					this.ogre[0]-=1;
+					break;
 				}
-				break;
-			case 2: if(this.map[this.ogre[0]+1][this.ogre[1]] != 'X'&&this.map[this.ogre[0]+1][this.ogre[1]] != 'S' && this.map[this.ogre[0]+1][this.ogre[1]] != 'I'){
+			
+				if(dir == 1 && this.map2[this.ogre[0]][this.ogre[1]-1] != 'X' && 
+				        	   this.map2[this.ogre[0]][this.ogre[1]-1] != 'S' && 
+				        	   this.map2[this.ogre[0]][this.ogre[1]-1] != 'I')
+				{
+					this.ogre[1]-=1;
+					break;
+				}
+
+			 	if(dir == 2 && this.map2[this.ogre[0]+1][this.ogre[1]] != 'X'&&
+			 	   			   this.map2[this.ogre[0]+1][this.ogre[1]] != 'S' && 
+			 	   			   this.map2[this.ogre[0]+1][this.ogre[1]] != 'I')
+			 	{
+					this.ogre[0]+=1;
+					break;
+				}
+			 	if(dir == 3 && this.map2[this.ogre[0]][this.ogre[1]+1] != 'X' && 
+			 	   			   this.map2[this.ogre[0]][this.ogre[1]+1] != 'S' && 
+			 	   			   this.map2[this.ogre[0]][this.ogre[1]+1] != 'I')
+			 	{
 				this.ogre[1]+=1;
-				valid=true;
+					break;
+				}
+					
 			}
-			break;
-			case 3: if(this.map[this.ogre[0]][this.ogre[1]+1] != 'X' && this.map[this.ogre[0]][this.ogre[1]+1] != 'S' && this.map[this.ogre[0]][this.ogre[1]+1] != 'I'){
-				this.ogre[0]+=1;
-				valid=true;
-			}
-			break;
-			}	
-			}
-			this.map2[this.ogre[0]][this.ogre[1]]='O';
+			
 			if(this.map[this.ogre[0]][this.ogre[1]] == 'K')
 				this.map2[this.ogre[0]][this.ogre[1]]='$';
-				
+			else
+				this.map2[this.ogre[0]][this.ogre[1]] = 'O';	
 			
 		}
 		

@@ -1,4 +1,4 @@
-//package LPOO1617_T1G1;
+package LPOO1617_T1G1;
 import java.util.Scanner;
 import java.util.Random;
 
@@ -215,8 +215,10 @@ public class Game{
 			boolean valid=false;
 			if(this.ogre[0] == this.key[0] && this.ogre[1] == this.key[1])
 				this.map2[this.ogre[0]][this.ogre[1]] = 'K';
-			else
+			else{
 				this.map2[this.ogre[0]][this.ogre[1]]=' ';
+				this.map2[this.club[0]][this.club[1]]=' ';
+			}
 			
 			while(true){
 				dir=direction.nextInt(4);
@@ -253,13 +255,36 @@ public class Game{
 				}
 					
 			}
+			this.club[0]=this.ogre[0];
+			this.club[1]=this.ogre[1];
+			while(true){
+				dir=direction.nextInt(4);
+				if(dir==0)
+					this.club[0]=this.ogre[0]+1;
+				if(dir==1)
+					this.club[0]=this.ogre[0]-1;
+				if(dir==2)
+					this.club[1]=this.ogre[1]+1;
+				if(dir==3)
+					this.club[1]=this.ogre[1]-1;
+				
+				if(this.map2[this.club[0]][this.club[1]] != 'X' && 
+						this.map2[this.club[0]][this.club[1]] != 'S' && 
+								this.map2[this.club[0]][this.club[1]] != 'I' &&
+								this.map2[this.club[0]][this.club[1]] != 'O'
+								)
+					break;
+				
+				}
+				
+			
 			
 			if(this.ogre[0] == this.key[0] && this.ogre[1] == this.key[1])
 				this.map2[this.ogre[0]][this.ogre[1]]='$';
 			else
 				this.map2[this.ogre[0]][this.ogre[1]] = 'O';	
 			
-
+		 this.map2[this.club[0]][this.club[1]]='*';
 		}
 		
 

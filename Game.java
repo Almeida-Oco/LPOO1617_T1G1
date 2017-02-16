@@ -1,4 +1,4 @@
-package LPOO1617_T1G1;
+//package LPOO1617_T1G1;
 import java.util.Scanner;
 import java.util.Random;
 

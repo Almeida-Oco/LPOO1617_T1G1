@@ -1,3 +1,5 @@
+package LPOO1617_T1G1;
+
 import java.util.Scanner;
 import java.util.Random;
 
@@ -205,6 +207,16 @@ public class Game{
 			this.map[this.guard[guard_pos][0]][guard[guard_pos][1]] = 'G';
 			return guard_pos;
 		}
+		else{
+			Random direction=new Random();
+			direction.nextInt(4);
+			int dir;
+			dir=direction;
+			switch(direction){
+			
+			}
+		}
+		
 
 		return 0;
 	}

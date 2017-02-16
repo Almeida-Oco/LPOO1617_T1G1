@@ -1,4 +1,5 @@
 import java.util.Scanner;
+import java.util.Random;
 
 public class Game{
 	private boolean has_key = false;
@@ -32,7 +33,7 @@ public class Game{
 	private int[]   lever       =  {8,7};
 	private int[][] doors       = {{4,1} , {4,3} , {2,3} , {2,8} , {4,8}};
 	private int[][] final_doors = {{5,0} , {6,0}};
-	private int[] last_door		=  {2,0};
+	private int[] last_door		=  {1,0};
 
 	public static void main(String[] args) {
 		Game temp = new Game ();
@@ -62,12 +63,13 @@ public class Game{
 		//IN-GAME
 		while( (!checkGameOver(guard[guard_pos]) && level1) || (!checkGameOver(ogre) && !level1) ){
 			System.out.print("Insert movement :  ");			
-
+			//move hero based on input
 			this.movePlayer(readChar());
+			//checks if its game over
 			if( (checkGameOver(guard[guard_pos]) && level1) || (checkGameOver(ogre) && !level1))
 				break;
 			guard_pos=moveNPC(guard_pos,level1);
-
+			//PLAYER GOES UP THE STAIRS
 			if( (this.hero[0] == this.final_doors[0][0] && this.hero[1] == this.final_doors[0][1]) ||
 				(this.hero[0] == this.final_doors[1][0] && this.hero[1] == this.final_doors[1][1]) ){
 				this.level1 = false;
@@ -76,6 +78,10 @@ public class Game{
 				this.hero[0] = 8; this.hero[1] = 1;
 			}
 			this.printGame();
+			if(!level1 && this.hero[0] == this.last_door[0] && this.hero[1] == this.last_door[1] ){
+				System.out.println("   YOU WIN ");
+				return;
+			}
 		}
 		
 		//GAME OVER
@@ -111,9 +117,13 @@ public class Game{
 			   			   this.map[this.hero[0]][this.hero[1]-1] != 'I')  ||
 			   	(!level1&&this.map2[this.hero[0]][this.hero[1]-1] != 'X'   &&
 			   			  this.map2[this.hero[0]][this.hero[1]-1] != 'G'   &&
-			   			  this.map2[this.hero[0]][this.hero[1]-1] != 'O'   && 
-			   			  this.map2[this.hero[0]][this.hero[1]-1] != 'I')))
+			   			  this.map2[this.hero[0]][this.hero[1]-1] != 'O'   )))
 		{	
+			if( !level1 && this.map2[this.hero[0]][this.hero[1]-1] == 'I'){
+				this.map2[this.hero[0]][this.hero[1]-1] = 'S';
+				this.hero[1] += 1;
+			}
+
 			if (level1)
 				this.map[this.hero[0]][this.hero[1]] = this.object_on_top_of;
 			else
@@ -198,6 +208,7 @@ public class Game{
 
 		return 0;
 	}
+
 	private boolean checkGameOver( int[] NPC){
 		//System.out.println("Guard = ["+this.guard[0]+","+this.guard[1]+"] , Hero = ["+this.hero[0]+","+this.hero[1]+"]\n");
 		if( ( (NPC[0]-1) == this.hero[0] && NPC[1] == this.hero[1] ) ||

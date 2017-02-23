@@ -4,8 +4,8 @@ public class UserInput{
 	private void printGame(char[][] map){
 		System.out.print("\033[H\033[2J"); //clears screen
 
-		for ( int i = 0 ; i < temp.length ; i++ ) {
-			for ( int j = 0 ; j < temp[i].length ; j++ ) {
+		for ( int i = 0 ; i < map.length ; i++ ) {
+			for ( int j = 0 ; j < map[i].length ; j++ ) {
 					System.out.print(temp[i][j] + " ");
 			}
 			System.out.print("\n");
@@ -26,15 +26,6 @@ public class UserInput{
 		return key;
 	}
 
-	private boolean checkGameOver( int[] NPC ){
-		if( ( (NPC[0]-1) == this.hero[0] && NPC[1] == this.hero[1] ) ||
-			( (NPC[0]+1) == this.hero[0] && NPC[1] == this.hero[1] ) ||
-			(  NPC[0] == this.hero[0] && (NPC[1]-1) == this.hero[1]) ||
-			(  NPC[0] == this.hero[0] && (NPC[1]+1) == this.hero[1]) )
-			return true;
-		else
-			return false;
-	}
 
 	private void cpu(){
 		this.printGame();

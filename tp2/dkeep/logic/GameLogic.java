@@ -28,7 +28,12 @@ public class GameLogic{
 	}
 	
 
-	
+	public Map getGameMap(){
+		return map;
+		}
 	
 	
 }
+
+
+	

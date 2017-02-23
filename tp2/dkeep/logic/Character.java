@@ -1,28 +1,18 @@
-class Character {
-	private int[] position = {-1,-1};
+public abstract class Character {
+	private int[] position;
+	private char representation;
 
-	public String toString()
+	public String toString(){
+		return this.representation;
+	}
+	public abstract boolean moveCharacter(int x , int y);
 
-	public static void main(String[] args) {
-		
+	public int getX(){
+		return this.representation[1];
+	}
+	public int getY(){
+		return this.representation[0];
 	}
 
-	public Character(int x , int y){
-		if( x >= 0 && x <= this.map_size && y >= 0 && y <= this.map_size){
-			position[0] = x;
-			position[1] = y;
-		}
-	}
-
-
-	private boolean moveCharacter(int x , int y){
-		if( x >= 0 && x <= this.map_size && y >= 0 && y <= this.map_size){
-			position[0] = x;
-			position[1] = y;
-			return true;
-		}
-		else 
-			return false;
-
-	}
+	public abstract boolean checkGameOver(int x , int y);
 }

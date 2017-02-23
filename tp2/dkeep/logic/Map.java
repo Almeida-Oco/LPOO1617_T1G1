@@ -37,4 +37,8 @@ public class Map {
 				System.arraycopy(temp[i],0,this.map[i],0,9);
 		}
 	}
+
+	public char[][] getMap(){
+		return this.map;
+	}
 }

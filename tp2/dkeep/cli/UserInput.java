@@ -1,13 +1,12 @@
 package dkeep.cli;
 
 public class UserInput{
-	
 	private void printGame(char[][] map){
 		System.out.print("\033[H\033[2J"); //clears screen
 
 		for ( int i = 0 ; i < temp.length ; i++ ) {
 			for ( int j = 0 ; j < temp[i].length ; j++ ) {
-				System.out.print(temp[i][j] + " ");
+					System.out.print(temp[i][j] + " ");
 			}
 			System.out.print("\n");
 		}

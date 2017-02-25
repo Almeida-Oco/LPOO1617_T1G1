@@ -1,6 +1,11 @@
 package dkeep.cli;
 
 public class UserInput{
+
+	public static void main(String[] args) {
+		
+	}
+	/*
 	private void printGame(char[][] map){
 		System.out.print("\033[H\033[2J"); //clears screen
 
@@ -59,4 +64,6 @@ public class UserInput{
 		this.printGame();
 		System.out.println("\n GAME OVER!");	
 	}
+
+	*/
 }

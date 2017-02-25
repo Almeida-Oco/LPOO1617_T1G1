@@ -1,68 +1,71 @@
-import java.util.Random
+package dkeep.logic;
+import java.util.Random;
 
 public class Ogre extends Character {
 	private int[] club;
-
-	public static void main(String[] args) {
+	
+	public Ogre(int x , int y, int MAP_SIZE){
+		this.representation = "O";
+		if (x >= 0 && x <= MAP_SIZE && y >= 0 && y <= MAP_SIZE){
+			this.club[1] = x;
+			this.club[0] = y;
+			return;
+		}
+		moveClub(MAP_SIZE);
 	}
 
-	public Ogre(int x , int y){
-		this.representation = 'O';
-		this.position[1] = x;
-		this.position[0] = y;
-		moveClub();
-	}
-
-	public void moveCharacter(){
+	public int[] moveCharacter(int MAP_SIZE){
 		Random rand = new Random();
-		while(true){
+		int[] temp = {-1,-1};
+		while(temp[0] == -1){
 			int dir = rand.nextInt(4);
 			if(dir == 0 && (this.position[0]-1) >= 0){ // move left
-				this.position[1]-=1;
-				break;
+				temp[0] = this.position[0]-1;  temp[1] = this.position[1];
 			}
-			else if (dir == 1 && (this.position[0]+1) <= 8){ //move right
-				this.position[1]+=1;
-				break;
+			else if (dir == 1 && (this.position[0]+1) <= MAP_SIZE){ //move right
+				temp[0] = this.position[0]+1;  temp[1] = this.position[1];
 			}
 			else if (dir == 2 && (this.position[1]-1) >= 0){ //move up
-				this.position[0]-=1;
-				break;
+				temp[0] = this.position[0];  temp[1] = this.position[1]-1;
 			}
-			else if (dir == 3 && (this.position[1]+1) <= 8){ //move down
-				this.position[0]+=1;
-				break;
+			else if (dir == 3 && (this.position[1]+1) <= MAP_SIZE){ //move down
+				temp[0] = this.position[0];  temp[1] = this.position[1]+1;
 			}
 		}
-
-		moveClub();
+		return temp;
 	}
 
-	private moveClub(){
+	public int[] moveClub(int MAP_SIZE){
 		Random rand = new Random();
-		while(true){
+		int[] temp = {-1,-1};
+		while(temp[0] == -1){
 			int dir = rand.nextInt(4);
 			if(dir == 0 && (this.position[0]-1) >= 0){ // move left
-				this.club[1] = this.position[0]-1;
-				break;
+				temp[0] = this.position[0]-1;    temp[1] = this.position[1];
 			}
-			else if (dir == 1 && (this.position[0]+1) <= 8){ //move right
-				this.club[1] = this.position[0]+1;
-				break;
+
+			else if (dir == 1 && (this.position[0]+1) <= MAP_SIZE){ //move right
+				temp[0] = this.position[0]+1;    temp[1] = this.position[1];
 			}
+
 			else if (dir == 2 && (this.position[1]-1) >= 0){ //move up
-				this.club[0] = this.position[1]-1;
-				break;
+				temp[0] = this.position[0];    temp[1] = this.position[1]-1;
 			}
-			else if (dir == 3 && (this.position[1]+1) <= 8){ //move down
-				this.club[0] = this.position[1]+1;
-				break;
+
+			else if (dir == 3 && (this.position[1]+1) <= MAP_SIZE){ //move down
+				temp[0] = this.position[0];    temp[1] = this.position[1]+1;
 			}
 		}
+		return temp;
 	}
 
-	public String toString(){
-		return "O";
+	public boolean setClub(int x , int y, int MAP_SIZE){
+		if (x >= 0 && x <= MAP_SIZE && y >= 0 && y <= MAP_SIZE){
+			this.club[1] = x;
+			this.club[0] = y;
+			return true;
+		}
+		return false;
 	}
 
 	public int getClubX(){

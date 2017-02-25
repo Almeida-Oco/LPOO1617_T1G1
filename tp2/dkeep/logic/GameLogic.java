@@ -52,6 +52,7 @@ public class GameLogic{
 		return false;
 	}
 	
+	
 	public void moveAllCharacters(int level){
 		int []pos;
 		if ( 0 == level ){ //move only guards
@@ -68,8 +69,11 @@ public class GameLogic{
 				
 				do{
 					pos_club = o.moveClub(this.map.getMapSize());
-				}while( !this.map.isFree(pos[0],pos[1]));
+				}while( !this.map.isFree(pos_club[0],pos_club[1]));
 			}
 		}
 	}
+
+	
+	
 }

@@ -1,4 +1,5 @@
 package dkeep.logic;
+import java.util.ArrayList;
 import java.util.Random;
 
 public class DrunkenGuard extends Guard{
@@ -35,4 +36,12 @@ public class DrunkenGuard extends Guard{
 	public boolean isAsleep(){
 		return this.asleep;
 	}
+
+	public ArrayList<int[]> getGameOverPos(int level){
+		ArrayList<int[]> temp = new ArrayList<int[]>(1);
+		if(!asleep && level == 0)
+			temp.add((int[])this.position.clone());
+		return temp;
+	}
+	
 }

@@ -61,4 +61,10 @@ public class Hero extends Character {
 		
 		return temp;
 	}
+
+	public ArrayList<int[]> getGameOverPos(int level){
+		ArrayList<int[]> temp = new ArrayList<int[]>(0);
+		return temp;
+	}
+
 }

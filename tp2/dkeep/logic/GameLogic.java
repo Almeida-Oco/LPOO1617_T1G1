@@ -38,7 +38,7 @@ public class GameLogic{
 		}
 	}
 	
-	private boolean inAdjSquares(int x , int y){
+	private boolean inAdjSquares(int x , int y){ //check if hero is in adjacent square
 		if ( x != -1 && y != -1)
 			if( (this.hero.getX() == x-1 && this.hero.getY() == y) || (this.hero.getX() == x+1 && this.hero.getY() == y) || 
 				(this.hero.getX() == x && this.hero.getY() == y-1) || (this.hero.getX() == x && this.hero.getY() == y+1) )
@@ -47,20 +47,16 @@ public class GameLogic{
 		return false;
 	}
 	
-	public boolean isGameOver(){
-		if(0 == this.level && inAdjSquares(this.guard.getX() , this.guard.getY())) // check Guard
-			return true;
-		else if (1 == this.level){
-			for( Ogre o : this.ogres ){ // check Ogres
-				if (inAdjSquares( o.getX(),o.getY()) || inAdjSquares(o.getClubX(),o.getClubY()))
+	public boolean isGameOver(){ //Gets all characters game over positions and checks
+		for(Character ch : getAllCharacters() )
+			for (int[] pos : ch.getGameOverPos(this.level) )
+				if ( inAdjSquares(pos[0],pos[1]) )
 					return true;
-			}
-		}
 		
 		return false;
 	}
 	
-	public void moveAllVillains(){
+	public void moveAllVillains(){ //move all villains based on current level
 		int []pos;
 		if ( 0 == this.level ){ //move only guards
 			do{
@@ -81,7 +77,7 @@ public class GameLogic{
 		}
 	}
 
-	public GameLogic moveHero(char direction){ //true if hero moved
+	public GameLogic moveHero(char direction){ //moves hero, returns an object of GameLogic, either next level or same level
 		int[] temp = {-1,-1};
 		
 		if	   ('w' == direction)
@@ -104,7 +100,7 @@ public class GameLogic{
 		return this;
 	}
 
-	public ArrayList<Character> getAllCharacters(){
+	public ArrayList<Character> getAllCharacters(){ //gathers all characters (hero,guard,ogre) in an ArrayList
 		ArrayList<Character> temp = new ArrayList<Character>();
 		temp.add(this.hero);
 		if(0 == this.level)
@@ -117,7 +113,7 @@ public class GameLogic{
 		return temp;
 	}
 	
-	private boolean checkTriggers(int[] pos){
+	private boolean checkTriggers(int[] pos){ //checks if hero is in a key/lever or entered a door/stairs
 		if(level == 0 && pos[0] == this.key[0] && pos[1] == this.key[1] )
 			this.map.openDoors();
 		else if (level == 1 && this.map.getMap()[pos[0]][pos[1]] == 'I' && this.hero.hasKey())
@@ -132,7 +128,7 @@ public class GameLogic{
 		return false;
 	}
 	
-	public boolean wonGame(){
+	public boolean wonGame(){ //checks if hero got to the final stairs
 		return (level == 1 && this.map.getMap()[this.hero.getX()][this.hero.getY()] == 'S');
 	}
 	

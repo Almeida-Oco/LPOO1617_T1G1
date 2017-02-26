@@ -30,6 +30,14 @@ public class Guard extends Character{
 			this.index+=this.step;
 	}
 
+	public ArrayList<int[]> getGameOverPos(int level){
+		ArrayList<int[]> temp = new ArrayList<int[]>(1);
+		if (level == 0){
+			temp.add((int[])this.position.clone());
+		}
+		return temp;
+	}
+	
 	public ArrayList< Pair<int[],String> > getPrintable(){
 		ArrayList< Pair<int[],String> > temp = new ArrayList< Pair<int[],String> >(1);
 		

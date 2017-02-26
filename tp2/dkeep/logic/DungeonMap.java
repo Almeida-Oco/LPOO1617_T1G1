@@ -3,7 +3,7 @@ package dkeep.logic;
 
 public class DungeonMap extends Map{
 	public DungeonMap(){
-		this.MAP_SIZE = 8;
+		this.MAP_SIZE = 10;
 		char[][]temp={{'X','X','X','X','X','X','X','X','X','X'} ,
 					  {'X',' ',' ',' ','I',' ','X',' ',' ','X'} ,
 					  {'X','X','X',' ','X','X','X',' ',' ','X'} ,
@@ -14,10 +14,19 @@ public class DungeonMap extends Map{
 					  {'X','X','X',' ','X','X','X','X',' ','X'} ,
 					  {'X',' ','I',' ','I',' ','X','K',' ','X'} ,
 					  {'X','X','X','X','X','X','X','X','X','X'} };
-		System.arraycopy(temp, 0, this.map, 0, temp.length);
+		int i = 0;
+		for( char[] c : temp){
+			this.map[i] = (char[])c.clone();
+			i++;
+		}
 		
 	}
-
+	
+	public void openDoors(){
+		this.map[5][0] = 'S';
+		this.map[6][0] = 'S';
+	}
+	
 	public Map nextMap(){
 		return new ArenaMap();
 	}

@@ -19,10 +19,14 @@ public class DrunkenGuard extends Guard{
 		else if (1 == result){ //Fall asleep | Wake up
 			if (this.asleep){
 				this.asleep = false;
-				this.step-= rand.nextInt(2)*2;
+				this.representation = "G";
+				this.step*= (rand.nextInt(2) == 0) ? 1 : -1;
+				this.position = this.movement[this.index];
 			}
-			else
+			else{
 				this.asleep = true;
+				this.representation = "g";
+			}
 		}
 
 		return this.position;

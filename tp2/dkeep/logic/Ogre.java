@@ -7,8 +7,8 @@ public class Ogre extends Character {
 	public Ogre(int x , int y, int MAP_SIZE){
 		this.representation = "O";
 		if (x >= 0 && x <= MAP_SIZE && y >= 0 && y <= MAP_SIZE){
-			this.club[1] = x;
-			this.club[0] = y;
+			this.club[1] = y;
+			this.club[0] = x;
 			return;
 		}
 		moveClub(MAP_SIZE);
@@ -22,13 +22,13 @@ public class Ogre extends Character {
 			if(dir == 0 && (this.position[0]-1) >= 0){ // move left
 				temp[0] = this.position[0]-1;  temp[1] = this.position[1];
 			}
-			else if (dir == 1 && (this.position[0]+1) <= MAP_SIZE){ //move right
+			else if (dir == 1 && (this.position[0]+1) < MAP_SIZE){ //move right
 				temp[0] = this.position[0]+1;  temp[1] = this.position[1];
 			}
 			else if (dir == 2 && (this.position[1]-1) >= 0){ //move up
 				temp[0] = this.position[0];  temp[1] = this.position[1]-1;
 			}
-			else if (dir == 3 && (this.position[1]+1) <= MAP_SIZE){ //move down
+			else if (dir == 3 && (this.position[1]+1) < MAP_SIZE){ //move down
 				temp[0] = this.position[0];  temp[1] = this.position[1]+1;
 			}
 		}
@@ -61,8 +61,8 @@ public class Ogre extends Character {
 
 	public boolean setClub(int x , int y, int MAP_SIZE){
 		if (x >= 0 && x <= MAP_SIZE && y >= 0 && y <= MAP_SIZE){
-			this.club[1] = x;
-			this.club[0] = y;
+			this.club[1] = y;
+			this.club[0] = x;
 			return true;
 		}
 		return false;

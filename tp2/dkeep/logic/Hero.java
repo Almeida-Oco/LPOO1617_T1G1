@@ -21,25 +21,26 @@ public class Hero extends Character {
 		return temp;
 	}
 
-	public boolean moveHero(int MAP_SIZE,int dir){
-		if (dir == 1 && this.position[0]+1 <= MAP_SIZE) { //move right
-			this.position[0] = this.position[0]+1;
-			return true;
+	public int[] moveCharacter(int MAP_SIZE,int dir){
+		int[] temp = (int[])this.position.clone();
+		if (dir == 1 && temp[1]+1 < MAP_SIZE) { //move right
+			temp[1]++;
+			return temp;
 		}
-		else if (dir == 2 && this.position[0]-1 >= 0) { //move left
-			this.position[0] = this.position[0]-1;
-			return true;
+		else if (dir == 2 && temp[1]-1 >= 0) { //move left
+			temp[1]--;
+			return temp;
 		}
-		else if (dir == 3 && this.position[1]+1 <= MAP_SIZE) { //move down
-			this.position[1] = this.position[1]+1;
-			return true;
+		else if (dir == 3 && temp[0]+1 < MAP_SIZE) { //move down
+			temp[0]++;
+			return temp;
 		}
-		else if (dir == 4 && this.position[0]-1 >= 0) { //move up
-			this.position[0] = this.position[0]-1;
-			return true;
+		else if (dir == 4 && temp[0]-1 >= 0) { //move up
+			temp[0]--;
+			return temp;
 		}
 
-		return false;
+		return temp;
 	}	
 
 	public void setKey(boolean val){

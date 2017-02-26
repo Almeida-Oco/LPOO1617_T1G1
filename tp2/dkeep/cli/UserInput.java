@@ -54,7 +54,7 @@ public class UserInput{
 			printGame(this.game.getMap().getMap(),this.game.getLevel());
 			this.game = this.game.moveHero(readChar());
 			this.game.moveAllVillains();			
-		}while ( !this.game.isGameOver() && !this.game.wonGame());
+		}while (!this.game.wonGame() && !this.game.isGameOver());
 		printGame(this.game.getMap().getMap(),this.game.getLevel());
 		if (this.game.wonGame())
 			System.out.print("   YOU WIN!   \n");

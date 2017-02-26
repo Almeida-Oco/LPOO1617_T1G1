@@ -25,7 +25,8 @@ public class Pair<L,R> {
 		if ( !(o instanceof Pair))
 			return false;
 		else{
-			Pair<L,R> p = (Pair<L,R>)o;
+			Pair<L,R> o2 = (Pair<L,R>)o;
+			Pair<L,R> p = o2;
 			return (this.first.equals(p.getFirst()) && this.second.equals(p.getSecond()) );
 		}
 	}

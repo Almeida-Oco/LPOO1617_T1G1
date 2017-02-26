@@ -2,6 +2,7 @@ package dkeep.cli;
 import dkeep.logic.GameLogic;
 import dkeep.logic.Character;
 import java.util.Scanner;
+import pair.Pair;
 
 public class UserInput{
 	GameLogic game;
@@ -18,7 +19,8 @@ public class UserInput{
 	private void printGame(char[][] map,int level){
 		clearScreen();
 		for(Character ch : this.game.getAllCharacters())
-			map[ch.getX()][ch.getY()] = ch.toString().charAt(0);
+			for( Pair<int[],String> p : ch.getPrintable() )
+				map[p.getFirst()[0]][p.getFirst()[1]] = p.getSecond().charAt(0);
 
 		for ( int i = 0 ; i < map.length ; i++ ) {
 			for ( int j = 0 ; j < map[i].length ; j++ ) {
@@ -26,7 +28,7 @@ public class UserInput{
 			}
 			System.out.print("\n");
 		}
-		System.out.println("  W-A-S-D controls  ");
+		System.out.println("      W-A-S-D");
 	}
 
 	private void clearScreen(){
@@ -50,9 +52,8 @@ public class UserInput{
 	private void cpu(){
 		do{
 			printGame(this.game.getMap().getMap(),this.game.getLevel());
-			this.game.moveHero(readChar());
-			this.game.moveAllVillains();
-			
+			this.game = this.game.moveHero(readChar());
+			this.game.moveAllVillains();			
 		}while ( !this.game.isGameOver() && !this.game.wonGame());
 		printGame(this.game.getMap().getMap(),this.game.getLevel());
 		if (this.game.wonGame())

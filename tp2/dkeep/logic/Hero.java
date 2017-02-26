@@ -1,11 +1,13 @@
 package dkeep.logic;
+import pair.Pair;
+import java.util.ArrayList;
 
 public class Hero extends Character {
 	private boolean has_key = false;
 
-	public Hero(){
-		this.position[0] 	= 1;
-		this.position[1] 	= 1;
+	public Hero(int level){
+		this.position[0] 	= (level == 0) ? 1 : 8;
+		this.position[1] 	= (level == 0) ? 1 : 1;
 		this.representation = "H";
 	}
 
@@ -45,5 +47,18 @@ public class Hero extends Character {
 
 	public void setKey(boolean val){
 		this.has_key = val;
+	}
+
+	public boolean hasKey(){
+		return this.has_key;
+	}
+
+	public ArrayList< Pair<int[],String> > getPrintable(){
+		ArrayList< Pair<int[],String> > temp = new ArrayList< Pair<int[],String> >(1);
+		
+		int[] pos = {this.position[0],this.position[1]};
+		temp.add( new Pair<int[],String>(pos,this.representation));
+		
+		return temp;
 	}
 }

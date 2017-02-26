@@ -1,4 +1,6 @@
 package dkeep.logic;
+import java.util.ArrayList;
+import pair.Pair;
 
 public class Guard extends Character{
 	protected int[][] movement =  {{1,7},{2,7},{3,7},{4,7},{5,7},{5,6},{5,5},{5,4},{5,3},{5,2},{5,1},{6,1},
@@ -26,5 +28,14 @@ public class Guard extends Character{
 			this.index = (this.movement.length-1);
 		else
 			this.index+=this.step;
+	}
+
+	public ArrayList< Pair<int[],String> > getPrintable(){
+		ArrayList< Pair<int[],String> > temp = new ArrayList< Pair<int[],String> >(1);
+		
+		int[] pos = {this.position[0],this.position[1]};
+		temp.add( new Pair<int[],String>(pos,this.representation));
+		
+		return temp;
 	}
 }

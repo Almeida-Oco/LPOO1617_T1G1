@@ -30,4 +30,6 @@ public class DungeonMap extends Map{
 	public Map nextMap(){
 		return new ArenaMap();
 	}
+	
+	public void pickUpKey(){};
 }

@@ -5,7 +5,7 @@ import java.util.Random;
 public class GameLogic{
 	private Map map;
 	private Guard guard;
-	private ArrayList<Ogre> ogres;
+	private ArrayList<Ogre> ogres = new ArrayList<Ogre>();
 	private Hero hero;
 	private int[] key = new int[2];
 	private int level = 0;
@@ -16,7 +16,7 @@ public class GameLogic{
 		
 		if(0 == level){	
 			this.map 	= new DungeonMap();
-			this.hero 	= new Hero();
+			this.hero 	= new Hero(this.level);
 			this.key[0] = 8; 
 			this.key[1] = 7;
 			int res = rand.nextInt(3);
@@ -29,12 +29,12 @@ public class GameLogic{
 		}
 		else if (1 == level){
 			this.map = new ArenaMap();
-			this.hero = new Hero();
+			this.hero = new Hero(this.level);
 			this.key[0] = 1;
 			this.key[1] = 8;
 			int res = rand.nextInt(3)+1;
 			for (int i = 0 ; i < res ; i++)
-				this.ogres.add(new Ogre(rand.nextInt(9)+1,rand.nextInt(9)+1,map.getMapSize()));	
+				this.ogres.add(new Ogre(rand.nextInt(8)+1,rand.nextInt(8)+1,map.getMapSize()));	
 		}
 	}
 	
@@ -69,19 +69,19 @@ public class GameLogic{
 		}
 		else if (1 == this.level ){ //move only ogres
 			for (Ogre o : this.ogres ){
-				int[] pos_club;
 				do{
 					pos = o.moveCharacter(this.map.getMapSize());
-				}while(this.map.isFree(pos[0],pos[1]));
-				
+				}while(!this.map.isFree(pos[0],pos[1]));
+				o.setPos(pos[0], pos[1], this.map.getMapSize());
 				do{
-					pos_club = o.moveClub(this.map.getMapSize());
-				}while( !this.map.isFree(pos_club[0],pos_club[1]));
+					pos = o.moveClub(this.map.getMapSize());
+				}while( !this.map.isFree(pos[0],pos[1]));
+				o.setClub(pos[0], pos[1], this.map.getMapSize());
 			}
 		}
 	}
 
-	public boolean moveHero(char direction){ //true if hero moved
+	public GameLogic moveHero(char direction){ //true if hero moved
 		int[] temp = {-1,-1};
 		
 		if	   ('w' == direction)
@@ -93,15 +93,15 @@ public class GameLogic{
 		else if('d' == direction)
 			temp = this.hero.moveCharacter(this.map.getMapSize() , 1);
 		else
-			return false;
+			return this;
 		
-		checkTriggers(temp);
-		if( !this.map.isFree(temp[0],temp[1]))
-			return false;
-		else
+		if (checkTriggers(temp)) //check if level up
+			return new GameLogic(++this.level);
+		
+		if( this.map.isFree(temp[0],temp[1]))
 			this.hero.setPos(temp[0], temp[1], this.map.getMapSize());
 		
-		return true;
+		return this;
 	}
 
 	public ArrayList<Character> getAllCharacters(){
@@ -117,13 +117,19 @@ public class GameLogic{
 		return temp;
 	}
 	
-	private void checkTriggers(int[] pos){
-		if(level == 0 && this.map.getMap()[pos[0]][pos[1]] == 'K')
+	private boolean checkTriggers(int[] pos){
+		if(level == 0 && pos[0] == this.key[0] && pos[1] == this.key[1] )
 			this.map.openDoors();
-		else if (level == 1 && this.map.getMap()[pos[0]][pos[1]] == 'I')
+		else if (level == 1 && this.map.getMap()[pos[0]][pos[1]] == 'I' && this.hero.hasKey())
 			this.map.openDoors();
-		else if (this.map.getMap()[pos[0]][pos[1]] == 'S' && level == 0)
-			this.map = this.map.nextMap();
+		else if (level == 1 && pos[0] == this.key[0] && pos[1] == this.key[1] && !this.hero.hasKey()){
+			this.hero.setKey(true);
+			this.map.pickUpKey();
+		}
+		else if (this.map.getMap()[pos[0]][pos[1]] == 'S')
+			return true;
+		
+		return false;
 	}
 	
 	public boolean wonGame(){

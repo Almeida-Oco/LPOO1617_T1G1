@@ -1,5 +1,6 @@
 package dkeep.logic;
-
+import pair.Pair;
+import java.util.ArrayList;
 
 public abstract class Character {
 	protected int[] position = {-1,-1};
@@ -25,4 +26,6 @@ public abstract class Character {
 	public int getY(){
 		return this.position[1];
 	}
+	
+	public abstract ArrayList< Pair<int[],String> > getPrintable();
 }

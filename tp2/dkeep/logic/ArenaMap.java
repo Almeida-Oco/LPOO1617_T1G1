@@ -28,4 +28,8 @@ public class ArenaMap extends Map{
 	public Map nextMap(){
 		return new ArenaMap();
 	}
+
+	public void pickUpKey(){
+		this.map[1][8] = ' ';
+	}
 }

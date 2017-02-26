@@ -25,4 +25,6 @@ public abstract class Map {
 	public abstract void openDoors();
 	
 	public abstract Map nextMap();
+	
+	public abstract void pickUpKey();
 }

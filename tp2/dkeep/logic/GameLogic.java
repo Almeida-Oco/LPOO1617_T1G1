@@ -108,9 +108,22 @@ public class GameLogic{
 		
 		if( this.map.isFree(temp[0],temp[1]))
 			this.hero.setPos(temp[0], temp[1], this.map.getMapSize());
-		
 		if(temp[0]==key[0] && temp[1]==key[1]&& level==1){
-		hero.setRepresentation("K");
+			hero.setRepresentation("K");
+			}
+		
+		if(level ==1){
+		do{
+			temp = hero.moveClub(this.map.getMapSize());
+		}while( !this.map.isFree(temp[0],temp[1]));
+		if(temp[0]==key[0] && temp[1]==key[1]){
+			hero.setClubRepresentation("$");
+		}
+		else{
+			hero.setClubRepresentation("*");
+		}
+		hero.setClub(temp[0], temp[1], this.map.getMapSize());
+		
 		}
 		
 		

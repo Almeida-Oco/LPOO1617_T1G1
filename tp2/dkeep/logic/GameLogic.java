@@ -68,10 +68,22 @@ public class GameLogic{
 				do{
 					pos = o.moveCharacter(this.map.getMapSize());
 				}while(!this.map.isFree(pos[0],pos[1]));
+				if(pos[0]==key[0] && pos[1]==key[1]){
+					o.setRepresentation("$");
+				}
+				else{
+					o.setRepresentation("O");
+				}
 				o.setPos(pos[0], pos[1], this.map.getMapSize());
 				do{
 					pos = o.moveClub(this.map.getMapSize());
 				}while( !this.map.isFree(pos[0],pos[1]));
+				if(pos[0]==key[0] && pos[1]==key[1]){
+					o.setClubRepresentation("$");
+				}
+				else{
+					o.setClubRepresentation("*");
+				}
 				o.setClub(pos[0], pos[1], this.map.getMapSize());
 			}
 		}
@@ -96,6 +108,10 @@ public class GameLogic{
 		
 		if( this.map.isFree(temp[0],temp[1]))
 			this.hero.setPos(temp[0], temp[1], this.map.getMapSize());
+		
+		if(temp[0]==key[0] && temp[1]==key[1]&& level==1){
+		hero.setRepresentation("K");
+		}
 		
 		
 		

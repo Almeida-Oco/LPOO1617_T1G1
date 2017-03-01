@@ -75,6 +75,10 @@ public class GameLogic{
 					o.setRepresentation("O");
 				}
 				o.setPos(pos[0], pos[1], this.map.getMapSize());
+				if(checkStun(pos[0],pos[1]))
+					o.stunOgre();
+				else
+					o.roundPassed();
 				do{
 					pos = o.moveClub(this.map.getMapSize());
 				}while( !this.map.isFree(pos[0],pos[1]));
@@ -112,19 +116,19 @@ public class GameLogic{
 			hero.setRepresentation("K");
 			}
 		
-		if(level ==1){
-		do{
-			temp = hero.moveClub(this.map.getMapSize());
-		}while( !this.map.isFree(temp[0],temp[1]));
-		if(temp[0]==key[0] && temp[1]==key[1]){
-			hero.setClubRepresentation("$");
-		}
-		else{
-			hero.setClubRepresentation("*");
-		}
-		hero.setClub(temp[0], temp[1], this.map.getMapSize());
-		
-		}
+//		if(level ==1){
+//		do{
+//			temp = hero.moveClub(this.map.getMapSize());
+//		}while( !this.map.isFree(temp[0],temp[1]));
+//		if(temp[0]==key[0] && temp[1]==key[1]){
+//			hero.setClubRepresentation("$");
+//		}
+//		else{
+//			hero.setClubRepresentation("c");
+//		}
+//		hero.setClub(temp[0], temp[1], this.map.getMapSize());
+//		
+//		}
 		
 		
 		
@@ -174,5 +178,13 @@ public class GameLogic{
 
 	public int getLevel(){
 		return this.level;
+	}
+	
+	public boolean checkStun(int x, int y){
+			if( (this.hero.getX() == x-2 && this.hero.getY() == y) || (this.hero.getX() == x+2 && this.hero.getY() == y) || 
+				(this.hero.getX() == x && this.hero.getY() == y-2) || (this.hero.getX() == x && this.hero.getY() == y+2) )
+				return true;
+			
+			return false;
 	}
 }

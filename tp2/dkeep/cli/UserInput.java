@@ -13,7 +13,7 @@ public class UserInput{
 	}
 	
 	public UserInput(){
-		this.game = new GameLogic(0);
+		this.game = new GameLogic(1);
 	}
 	
 	private void printGame(char[][] map,int level){

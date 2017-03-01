@@ -7,6 +7,7 @@ import pair.Pair;
 public class Ogre extends Character {
 	private int[] club = new int[2];
 	private String club_representation = "*";
+	private int stun=0;
 	
 	public Ogre(int x , int y, int MAP_SIZE){
 		this.representation = "O";
@@ -18,10 +19,12 @@ public class Ogre extends Character {
 	}
 
 	public int[] moveCharacter(int MAP_SIZE){
+		if(stun==0){
 		Random rand = new Random();
 		int[] temp = {-1,-1};
 		while(temp[0] == -1){
 			int dir = rand.nextInt(4);
+
 			if(dir == 0 && (this.position[0]-1) >= 0){ // move left
 				temp[0] = this.position[0]-1;  temp[1] = this.position[1];
 			}
@@ -36,7 +39,12 @@ public class Ogre extends Character {
 			}
 		}
 		return temp;
+		}
+		
+		else
+		return position;
 	}
+	
 
 	public int[] moveClub(int MAP_SIZE){
 		Random rand = new Random();
@@ -102,5 +110,19 @@ public class Ogre extends Character {
 	public void setClubRepresentation(String s ){
 		this.club_representation=s;
 	}
+	
+	public void stunOgre(){
+		this.stun=2;
+		representation="8";
+	}
+	
+	public void roundPassed(){
+		if(stun >0){
+		this.stun --;
+		representation="8";
+		}
+	}
+	
+	
 
 }

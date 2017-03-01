@@ -98,5 +98,9 @@ public class Ogre extends Character {
 		}
 		return temp;
 	}
+	
+	public void setClubRepresentation(String s ){
+		this.club_representation=s;
+	}
 
 }

@@ -27,7 +27,13 @@ public abstract class Character {
 		return this.position[1];
 	}
 	
+	public void setRepresentation(String s ){
+		this.representation=s;
+	}
+	
+	
 	public abstract ArrayList<int[]> getGameOverPos(int level); 
 	
 	public abstract ArrayList< Pair<int[],String> > getPrintable();
+	
 }

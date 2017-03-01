@@ -1,6 +1,5 @@
 package dkeep.logic;
 
-
 public class DungeonMap extends Map{
 	public DungeonMap(){
 		this.MAP_SIZE = 10;

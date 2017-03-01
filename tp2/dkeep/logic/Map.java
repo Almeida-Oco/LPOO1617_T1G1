@@ -27,4 +27,5 @@ public abstract class Map {
 	public abstract Map nextMap();
 	
 	public abstract void pickUpKey();
+	
 }

@@ -117,7 +117,7 @@ public class GameLogic{
 		if (checkTriggers(temp)) //check if level up
 			return (this.level == 0) ? new GameLogic(++this.level) : this;
 		
-		if( this.map.isFree(temp[0],temp[1]))
+		if( this.map.isFree(temp[0],temp[1]) && this.map.getMap()[temp[0]][temp[1]]!='O');
 			this.hero.setPos(temp[0], temp[1], this.map.getMapSize());
 		if(temp[0]==key[0] && temp[1]==key[1]&& level==1){
 			hero.setRepresentation("K");
@@ -194,7 +194,7 @@ public class GameLogic{
 	public int getLevel(){
 		return this.level;
 	}
-	
+
 	public Hero getHero(){
 		return this.hero;
 	}

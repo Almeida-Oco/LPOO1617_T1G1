@@ -11,6 +11,7 @@ public class GameTests {
 					{'I',' ',' ',' ','X'},
 					{'I','k',' ',' ','X'},
 					{'X','X','X','X','X'}};
+	
 	@Test
 	public void testMoveHeroIntoFreeCell(){
 		int[] test1 = {1,1},test2 = {2,1};
@@ -24,4 +25,12 @@ public class GameTests {
 		assertEquals( test2[1] , game.getHero().getPos()[1]);
 	}
 
+//	public void testHeroIsCapturedByGuard(){
+//	GameMap gameMap =new GameMap(map);
+//	Game game=new Game(gameMap);
+//	assertFalse(game.isGameOver());
+//	game.moveHero('d');
+//	assertTrue(game.isGameOver());
+//	assertEquals(Game:DEFEAT,game.getEndStatus());
+//}
 }

@@ -25,6 +25,8 @@ public class GameLogic{
 			ogres.add(o);
 			this.map = game_map;
 			this.hero = new Hero(1,1);
+			this.key[0]=1;
+			this.key[1]=2;
 		}
 		
 		

@@ -25,7 +25,7 @@ public class GameLogic{
 		
 		if(0 == level){	
 			this.map 	= new DungeonMap();
-			this.hero 	= new Hero(this.level);
+			this.hero 	= new Hero(this.level,false);
 			this.key[0] = 8; 
 			this.key[1] = 7;
 			int res = rand.nextInt(3);
@@ -38,7 +38,7 @@ public class GameLogic{
 		}
 		else if (1 == level){
 			this.map = new ArenaMap();
-			this.hero = new Hero(this.level);
+			this.hero = new Hero(this.level, false);
 			this.key[0] = 1;
 			this.key[1] = 8;
 			int res = rand.nextInt(3)+1;
@@ -84,10 +84,12 @@ public class GameLogic{
 					o.setRepresentation("O");
 				}
 				o.setPos(pos[0], pos[1], this.map.getMapSize());
+				if(this.hero.checkArmed()){
 				if(checkStun(pos[0],pos[1]))
 					o.stunOgre();
 				else
 					o.roundPassed();
+				}
 				do{
 					pos = o.moveClub(this.map.getMapSize());
 				}while( !this.map.isFree(pos[0],pos[1]));

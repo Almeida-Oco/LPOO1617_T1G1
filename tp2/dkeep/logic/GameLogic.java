@@ -118,7 +118,7 @@ public class GameLogic{
 		
 		if (checkTriggers(temp)) //check if level up
 			return (this.level == 0) ? new GameLogic(++this.level) : this;
-<<<<<<< HEAD
+
 		boolean free=true;
 		if( this.map.isFree(temp[0],temp[1])){
 			ArrayList<Character> tempa =getAllCharacters();
@@ -130,13 +130,9 @@ public class GameLogic{
 			this.hero.setPos(temp[0], temp[1], this.map.getMapSize());
 		}
 		if(temp[0]==key[0] && temp[1]==key[1]&& level==1){
-=======
-		
-		if( this.map.isFree(temp[0],temp[1]) && this.map.getMap()[temp[0]][temp[1]] != 'O');
-			this.hero.setPos(temp[0], temp[1], this.map.getMapSize());
-		if(temp[0]==key[0] && temp[1]==key[1]&& level==1)
->>>>>>> origin/master
 			hero.setRepresentation("K");
+		}
+		
 		
 //		if(level ==1){
 //		do{
@@ -156,6 +152,7 @@ public class GameLogic{
 		
 		return this;
 	}
+	
 
 	public ArrayList<Character> getAllCharacters(){ //gathers all characters (hero,guard,ogre) in an ArrayList
 		ArrayList<Character> temp = new ArrayList<Character>();

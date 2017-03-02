@@ -10,6 +10,13 @@ public class GameLogic{
 	private int[] key = new int[2];
 	private int level = 0;
 
+	public GameLogic(Map game_map){
+		int[] temp = {3,1};
+		this.map = game_map;
+		this.hero = new Hero(1,1);
+		this.key = temp;
+	}
+	
 	public GameLogic(int level){
 		Random rand = new Random();
 		this.level = level;
@@ -172,6 +179,14 @@ public class GameLogic{
 		return (this.level == 1 && this.map.getMap()[this.hero.getX()][this.hero.getY()] == 'S');
 	}
 	
+	public boolean checkStun(int x, int y){
+			if( (this.hero.getX() == x-2 && this.hero.getY() == y) || (this.hero.getX() == x+2 && this.hero.getY() == y) || 
+				(this.hero.getX() == x && this.hero.getY() == y-2) || (this.hero.getX() == x && this.hero.getY() == y+2) )
+				return true;
+			
+			return false;
+	}
+
 	public Map getMap(){
 		return this.map;
 	}
@@ -180,11 +195,8 @@ public class GameLogic{
 		return this.level;
 	}
 	
-	public boolean checkStun(int x, int y){
-			if( (this.hero.getX() == x-2 && this.hero.getY() == y) || (this.hero.getX() == x+2 && this.hero.getY() == y) || 
-				(this.hero.getX() == x && this.hero.getY() == y-2) || (this.hero.getX() == x && this.hero.getY() == y+2) )
-				return true;
-			
-			return false;
+	public Hero getHero(){
+		return this.hero;
 	}
+	
 }

@@ -94,10 +94,12 @@ public class GameTests {
 		assertEquals( 'S' , game.getMap().getMap()[0][4]); //door 2
 	}
 	
-public void testMoveHeroNextOgre(){
+	@Test
+    public void testMoveHeroNextOgre(){
 	ArenaMap game_map = new ArenaMap();
 	GameLogic game = new GameLogic(game_map,1);
+	game.moveHero('d');
+	assertEquals( true,game.isGameOver());
 	
-		
 	}
 }

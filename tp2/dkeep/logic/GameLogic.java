@@ -18,6 +18,15 @@ public class GameLogic{
 			this.map = game_map;
 			this.hero = new Hero(1,1);
 			this.key = temp;
+			
+		if(level==1){
+			this.level=1;
+			Ogre o=new Ogre(2,2,10);
+			ogres.add(o);
+			this.map = game_map;
+			this.hero = new Hero(1,1);
+		}
+		
 		}
 		else if (level == 1){
 			

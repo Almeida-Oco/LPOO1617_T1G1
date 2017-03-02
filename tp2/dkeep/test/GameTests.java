@@ -17,11 +17,11 @@ public class GameTests {
 		fail("Not yet implemented");
 	}
 	
-	public void testMoveHeroIntoFreeCell(){
-		ArenaMap game_map = new ArenaMap(this.map);
-		GameLogic game = new GameLogic(game_map);
-		assertEquals()
-	}
+//	public void testMoveHeroIntoFreeCell(){
+//		ArenaMap game_map = new ArenaMap(this.map);
+//		GameLogic game = new GameLogic(game_map);
+//		assertEquals()
+//	}
 
 //	public void testHeroIsCapturedByGuard(){
 //	GameMap gameMap =new GameMap(map);

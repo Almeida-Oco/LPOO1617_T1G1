@@ -27,6 +27,10 @@ public abstract class Map {
 		return (this.map[x][y] == ' ' || this.map[x][y] == 'K' || this.map[x][y] == 'S');
 	}
 	
+	public char getPos(int x, int y){
+		return this.map[x][y];
+	}
+	
 	public abstract void openDoors();
 	
 	public abstract Map nextMap();

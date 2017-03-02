@@ -103,6 +103,7 @@ public class Ogre extends Character {
 		ArrayList<int[]> temp = new ArrayList<int[]>(2);
 		if(level == 1){
 			temp.add((int[])this.club.clone());
+			temp.add((int[])this.position.clone());
 		}
 		return temp;
 	}

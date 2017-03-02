@@ -17,14 +17,15 @@ public class GameLogic{
 			this.guard = new RookieGuard(1,3);
 			this.map = game_map;
 			this.hero = new Hero(1,1);
-			this.key = temp;
-		}	
+		}
 		else if(level==1){
 			this.level=1;
 			Ogre o=new Ogre(2,2,game_map.getMapSize());
 			ogres.add(o);
 			this.map = game_map;
 			this.hero = new Hero(1,1);
+			this.key[0]=1;
+			this.key[1]=2;
 		}
 	}
 	

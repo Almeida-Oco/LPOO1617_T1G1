@@ -8,6 +8,7 @@ public class Hero extends Character {
 	
 	public Hero(int x , int y){
 		super(x,y);
+		representation="H";
 	}
 	
 	public Hero(int level, boolean armed){

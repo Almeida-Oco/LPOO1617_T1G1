@@ -4,6 +4,8 @@ import static org.junit.Assert.*;
 import org.junit.Test;
 import dkeep.logic.ArenaMap;
 import dkeep.logic.GameLogic;
+import dkeep.logic.Hero;
+
 
 public class GameTests {
 	char[][] map = {{'X','X','X','X','X'},
@@ -127,9 +129,26 @@ public class GameTests {
 	}
 	
 	
-	
 	private boolean inAdjSquares(int x_previous , int y_previous , int x_current , int y_current){ //check if hero is in adjacent square
 		return ( (x_current == x_previous-1 && y_current == y_previous) || (x_current == x_previous+1 && y_current == y_previous) || 
 			   (x_current == x_previous && y_current == y_previous-1) || (x_current == x_previous && y_current == y_previous+1) );
+	}
+	@Test
+    public void testMoveHeroNextOgre(){
+	ArenaMap game_map = new ArenaMap();
+	GameLogic game = new GameLogic(game_map,1);
+	game.moveHero('d');
+	assertEquals( true,game.isGameOver());
+	
+	}
+	
+	@Test
+	public void testChangeRepresentation(){
+		ArenaMap game_map = new ArenaMap();
+		GameLogic game = new GameLogic(game_map,1);
+		Hero h=game.getHero();
+		assertEquals("H",h.getRepresentation());
+		game.moveHero('d');
+		assertEquals("K",h.getRepresentation());
 	}
 }

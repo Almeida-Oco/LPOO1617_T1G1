@@ -37,6 +37,9 @@ public abstract class Character {
 	public void setRepresentation(String s ){
 		this.representation=s;
 	}
+	public String getRepresentation(){
+		return representation;
+	}
 	
 	
 	public abstract ArrayList<int[]> getGameOverPos(int level); 

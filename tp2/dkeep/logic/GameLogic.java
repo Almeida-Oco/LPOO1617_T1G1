@@ -10,13 +10,18 @@ public class GameLogic{
 	private int[] key = new int[2];
 	private int level = 0;
 
-	public GameLogic(Map game_map,int level){
-		this.level = level;
-		int[] temp = {3,1};
-		this.guard = new RookieGuard(1,3);
-		this.map = game_map;
-		this.hero = new Hero(1,1);
-		this.key = temp;
+	public GameLogic(Map game_map,int level){ // WARNING!! ONLY FOR TESTING !!
+		if (level == 0){
+			this.level = level;
+			int[] temp = {3,1};
+			this.guard = new RookieGuard(1,3);
+			this.map = game_map;
+			this.hero = new Hero(1,1);
+			this.key = temp;
+		}
+		else if (level == 1){
+			
+		}
 	}
 	
 	public GameLogic(int level){

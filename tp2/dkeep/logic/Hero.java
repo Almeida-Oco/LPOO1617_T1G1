@@ -5,8 +5,6 @@ import java.util.ArrayList;
 public class Hero extends Character {
 	private boolean has_key = false;
 	private boolean is_armed=false;
-//	private int[] club = new int[2];
-//	private String club_representation = "c";
 	
 	public Hero(int x , int y){
 		super(x,y);

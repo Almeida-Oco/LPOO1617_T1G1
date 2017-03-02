@@ -98,12 +98,38 @@ public class GameTests {
 	public void testMoveOgre(){
 		ArenaMap map = new ArenaMap();
 		GameLogic game = new GameLogic(map,1);
-		
+		int[] test = { game.getOgres().get(0).getX() , game.getOgres().get(0).getY() };
+		int[] temp;
+		for(int i = 0 ; i < 10 ; i++){
+			do{
+				temp = game.getOgres().get(0).moveCharacter(map.getMapSize());
+			}while( !map.isFree( temp[0] , temp[1] ) );
+			game.getOgres().get(0).setPos(temp[0], temp[1], map.getMapSize());
+			
+			assertEquals( inAdjSquares(test[0],test[1],game.getOgres().get(0).getX(),game.getOgres().get(0).getY()) , true);
+			test[0] = game.getOgres().get(0).getX(); test[1] = game.getOgres().get(0).getY();
+		}
+	}
+	
+	public void testClubSwing(){
+		ArenaMap map = new ArenaMap();
+		GameLogic game = new GameLogic(map,1);
+		int[] test = { game.getOgres().get(0).getX() , game.getOgres().get(0).getY() }, temp;
+		for (int i = 0 ; i < 10 ; i++){
+			do{
+				temp = game.getOgres().get(0).moveClub(map.getMapSize());
+			}while( !map.isFree(temp[0], temp[1]) );
+			game.getOgres().get(0).setClub(temp[0], temp[1], map.getMapSize());
+			
+			assertEquals( inAdjSquares(test[0],test[1],game.getOgres().get(0).getClubX(),game.getOgres().get(0).getClubY() ) , true ) ;
+			
+		}
 	}
 	
 	
+	
 	private boolean inAdjSquares(int x_previous , int y_previous , int x_current , int y_current){ //check if hero is in adjacent square
-		return ( (x_previous == x_current-1 && y_previous == y_current) || (x_previous == x_current+1 && y_previous == y_current) || 
-			   (x_previous == x_current && y_previous == y_current-1) || (x_previous == x_current && y_previous == y_current+1) );
+		return ( (x_current == x_previous-1 && y_current == y_previous) || (x_current == x_previous+1 && y_current == y_previous) || 
+			   (x_current == x_previous && y_current == y_previous-1) || (x_current == x_previous && y_current == y_previous+1) );
 	}
 }

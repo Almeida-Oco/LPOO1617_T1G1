@@ -22,7 +22,7 @@ public class ArenaMap extends Map{
 					  {'X',' ',' ',' ',' ',' ',' ',' ',' ','X'} ,
 					  {'X','X','X','X','X','X','X','X','X','X'} };
 		this.map = new char[this.MAP_SIZE][];
-		this.doors_to_open = new int[1][];
+		this.doors_to_open = new int[1][2];
 		this.doors_to_open[0][0] = 1; this.doors_to_open[0][1] = 0;
 		int i = 0;
 		for( char[] c : temp){

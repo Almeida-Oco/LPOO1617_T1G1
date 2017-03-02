@@ -18,9 +18,13 @@ public class GameLogic{
 			this.map = game_map;
 			this.hero = new Hero(1,1);
 			this.key = temp;
-		}
-		else if (level == 1){
-			
+		}	
+		else if(level==1){
+			this.level=1;
+			Ogre o=new Ogre(2,2,game_map.getMapSize());
+			ogres.add(o);
+			this.map = game_map;
+			this.hero = new Hero(1,1);
 		}
 	}
 	
@@ -209,6 +213,10 @@ public class GameLogic{
 		return this.map;
 	}
 
+	public ArrayList<Ogre> getOgres(){
+		return (ArrayList<Ogre>)this.ogres.clone();
+	}
+	
 	public int getLevel(){
 		return this.level;
 	}

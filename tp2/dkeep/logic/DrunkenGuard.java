@@ -5,6 +5,10 @@ import java.util.Random;
 public class DrunkenGuard extends Guard{
 	private boolean asleep = false;
 
+	public DrunkenGuard(int x, int y){
+		super(x,y);
+	}
+	
 	public DrunkenGuard(){
 		super();
 	}

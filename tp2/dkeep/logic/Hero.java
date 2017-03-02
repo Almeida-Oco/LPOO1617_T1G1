@@ -8,15 +8,11 @@ public class Hero extends Character {
 //	private String club_representation = "c";
 	
 	public Hero(int x , int y){
-		if (x >= 0 && y >= 0){
-			this.position[0] = x;
-			this.position[1] = y;
-		}
+		super(x,y);
 	}
 	
 	public Hero(int level){
-		this.position[0] 	= (level == 0) ? 1 : 8;
-		this.position[1] 	= (level == 0) ? 1 : 1;
+		super((level == 0) ? 1 : 8 ,(level == 0) ? 1 : 1 );
 		this.representation = (level == 0) ? "H" : "A";
 	}
 

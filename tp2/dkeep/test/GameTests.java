@@ -93,4 +93,17 @@ public class GameTests {
 		assertEquals( 'S' , game.getMap().getMap()[0][3]); //door 1
 		assertEquals( 'S' , game.getMap().getMap()[0][4]); //door 2
 	}
+
+	@Test
+	public void testMoveOgre(){
+		ArenaMap map = new ArenaMap();
+		GameLogic game = new GameLogic(map,1);
+		
+	}
+	
+	
+	private boolean inAdjSquares(int x_previous , int y_previous , int x_current , int y_current){ //check if hero is in adjacent square
+		return ( (x_previous == x_current-1 && y_previous == y_current) || (x_previous == x_current+1 && y_previous == y_current) || 
+			   (x_previous == x_current && y_previous == y_current-1) || (x_previous == x_current && y_previous == y_current+1) );
+	}
 }

@@ -48,7 +48,7 @@ public class GameLogic{
 	private boolean inAdjSquares(int x , int y){ //check if hero is in adjacent square
 		if ( x != -1 && y != -1)
 			if( (this.hero.getX() == x-1 && this.hero.getY() == y) || (this.hero.getX() == x+1 && this.hero.getY() == y) || 
-				(this.hero.getX() == x && this.hero.getY() == y-1) || (this.hero.getX() == x && this.hero.getY() == y+1) )
+				(this.hero.getX() == x && this.hero.getY() == y-1) || (this.hero.getX() == x && this.hero.getY() == y+1) || (this.hero.getX() == x && this.hero.getY() == y))
 				return true;
 			
 		return false;
@@ -68,7 +68,7 @@ public class GameLogic{
 		if ( 0 == this.level ){ //move only guards
 			do{
 				pos = guard.moveCharacter(map.getMapSize());
-			}while(!this.map.isFree(pos[0],pos[1]) );
+			}while(!this.map.isFree(pos[0],pos[1]) && this.map.getMap()[pos[0]][pos[1]]!='H' && this.map.getMap()[pos[0]][pos[1]]!='A');
 		}
 		else if (1 == this.level ){ //move only ogres
 			for (Ogre o : this.ogres ){
@@ -116,9 +116,16 @@ public class GameLogic{
 		
 		if (checkTriggers(temp)) //check if level up
 			return (this.level == 0) ? new GameLogic(++this.level) : this;
-		
-		if( this.map.isFree(temp[0],temp[1]) && this.map.getMap()[temp[0]][temp[1]]!='O');
+		boolean free=true;
+		if( this.map.isFree(temp[0],temp[1])){
+			ArrayList<Character> tempa =getAllCharacters();
+			 for(int i=1; i< tempa.size(); i++){
+				 if(temp[0]== tempa.get(i).getX()&& temp[1]== tempa.get(i).getY())
+					 free=false;
+			 }
+				if(free) 
 			this.hero.setPos(temp[0], temp[1], this.map.getMapSize());
+		}
 		if(temp[0]==key[0] && temp[1]==key[1]&& level==1){
 			hero.setRepresentation("K");
 			}
@@ -180,8 +187,8 @@ public class GameLogic{
 	}
 	
 	public boolean checkStun(int x, int y){
-			if( (this.hero.getX() == x-2 && this.hero.getY() == y) || (this.hero.getX() == x+2 && this.hero.getY() == y) || 
-				(this.hero.getX() == x && this.hero.getY() == y-2) || (this.hero.getX() == x && this.hero.getY() == y+2) )
+			if( (this.hero.getX() == x-1 && this.hero.getY() == y) || (this.hero.getX() == x+1 && this.hero.getY() == y) || 
+				(this.hero.getX() == x && this.hero.getY() == y-1) || (this.hero.getX() == x && this.hero.getY() == y+1) )
 				return true;
 			
 			return false;

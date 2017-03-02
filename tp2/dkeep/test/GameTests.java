@@ -11,7 +11,7 @@ public class GameTests {
 					{'I',' ',' ',' ','X'},
 					{'I','k',' ',' ','X'},
 					{'X','X','X','X','X'}};
-	}
+	
 	@Test
 	public void test() {
 		fail("Not yet implemented");
@@ -23,4 +23,12 @@ public class GameTests {
 		assertEquals()
 	}
 
+//	public void testHeroIsCapturedByGuard(){
+//	GameMap gameMap =new GameMap(map);
+//	Game game=new Game(gameMap);
+//	assertFalse(game.isGameOver());
+//	game.moveHero('d');
+//	assertTrue(game.isGameOver());
+//	assertEquals(Game:DEFEAT,game.getEndStatus());
+//}
 }

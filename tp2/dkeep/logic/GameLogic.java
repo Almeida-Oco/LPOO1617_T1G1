@@ -181,8 +181,8 @@ public class GameLogic{
 	}
 	
 	public boolean checkStun(int x, int y){
-			if( (this.hero.getX() == x-2 && this.hero.getY() == y) || (this.hero.getX() == x+2 && this.hero.getY() == y) || 
-				(this.hero.getX() == x && this.hero.getY() == y-2) || (this.hero.getX() == x && this.hero.getY() == y+2) )
+			if( (this.hero.getX() == x-1 && this.hero.getY() == y) || (this.hero.getX() == x+1 && this.hero.getY() == y) || 
+				(this.hero.getX() == x && this.hero.getY() == y-1) || (this.hero.getX() == x && this.hero.getY() == y+1) )
 				return true;
 			
 			return false;

@@ -101,7 +101,6 @@ public class Ogre extends Character {
 	public ArrayList<int[]> getGameOverPos(int level){
 		ArrayList<int[]> temp = new ArrayList<int[]>(2);
 		if(level == 1){
-			temp.add((int[])this.position.clone());
 			temp.add((int[])this.club.clone());
 		}
 		return temp;

@@ -2,8 +2,13 @@ package dkeep.logic;
 
 public abstract class Map {
 	protected int MAP_SIZE;
-	protected char[][] map = new char[10][];
-
+	protected char[][] map;
+	public Map(){};
+	public Map(char[][] game_map){
+		this.map = game_map;
+		this.MAP_SIZE = game_map.length;
+	}
+	
 	public char[][] getMap(){
 		char[][] temp = new char[this.MAP_SIZE][];
 		int i = 0;

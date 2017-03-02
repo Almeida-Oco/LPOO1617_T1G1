@@ -2,6 +2,10 @@ package dkeep.logic;
 import java.util.Random;
 
 public class SuspiciousGuard extends Guard{
+	public SuspiciousGuard(int x , int y){
+		super(x,y);
+	}
+	
 	public SuspiciousGuard(){
 		super();
 	}

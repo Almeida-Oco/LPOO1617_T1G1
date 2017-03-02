@@ -1,11 +1,18 @@
 package dkeep.logic;
 import pair.Pair;
-import java.util.ArrayList;
+import java.util.ArrayList;	
 
 public abstract class Character {
 	protected int[] position = {-1,-1};
 	protected String representation;
 
+	public Character(int x , int y){
+		if(x >= 0 && y >= 0){
+			this.position[0] = x;
+			this.position[1] = y;
+		}	
+	}
+	
 	public String toString(){
 		return this.representation;
 	}

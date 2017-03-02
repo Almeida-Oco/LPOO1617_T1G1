@@ -10,6 +10,7 @@ public class Ogre extends Character {
 	private int stun=0;
 	
 	public Ogre(int x , int y, int MAP_SIZE){
+		super(x,y);
 		this.representation = "O";
 		if (x >= 0 && x <= MAP_SIZE && y >= 0 && y <= MAP_SIZE){
 			this.position[1] = y;

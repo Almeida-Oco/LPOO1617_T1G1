@@ -16,21 +16,20 @@ public class GameTests {
 	public void testMoveHeroIntoFreeCell(){
 		int[] test1 = {1,1},test2 = {2,1};
 		ArenaMap game_map = new ArenaMap(this.map);
-		GameLogic game = new GameLogic(game_map);
-		System.out.print("["+game.getHero().getPos()[0]+","+game.getHero().getPos()[1]+"]\n");
+		GameLogic game = new GameLogic(game_map,0);
 		assertEquals( test1[0] , game.getHero().getPos()[0]);
 		assertEquals( test1[1] , game.getHero().getPos()[1]);
 		game.moveHero('s');
 		assertEquals( test2[0] , game.getHero().getPos()[0]);
 		assertEquals( test2[1] , game.getHero().getPos()[1]);
 	}
-
-//	public void testHeroIsCapturedByGuard(){
-//	GameMap gameMap =new GameMap(map);
-//	Game game=new Game(gameMap);
-//	assertFalse(game.isGameOver());
-//	game.moveHero('d');
-//	assertTrue(game.isGameOver());
-//	assertEquals(Game:DEFEAT,game.getEndStatus());
-//}
+	@Test
+	public void testHeroIsCapturedByGuard(){
+		ArenaMap gameMap =new ArenaMap(map);
+		GameLogic game=new GameLogic(gameMap,0);
+		assertFalse(game.isGameOver());
+		game.moveHero('d');
+		assertTrue(game.isGameOver());
+		//assertEquals(Game:DEFEAT,game.getEndStatus());
+	}
 }

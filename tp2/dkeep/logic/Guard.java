@@ -8,9 +8,12 @@ public class Guard extends Character{
 	protected int index = 0;
 	protected int step = 1;
 
+	public Guard(int x , int y){
+		super(x,y);
+	}
+	
 	public Guard(){
-		this.position[0] = 1;
-		this.position[1] = 8;
+		super(1,8);
 		this.representation = "G";
 	}
 

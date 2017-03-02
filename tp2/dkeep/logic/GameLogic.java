@@ -152,7 +152,6 @@ public class GameLogic{
 		
 		return this;
 	}
-	
 
 	public ArrayList<Character> getAllCharacters(){ //gathers all characters (hero,guard,ogre) in an ArrayList
 		ArrayList<Character> temp = new ArrayList<Character>();

@@ -3,6 +3,8 @@ package dkeep.logic;
 public abstract class Map {
 	protected int MAP_SIZE;
 	protected char[][] map;
+	protected int[][] doors_to_open;
+	
 	public Map(){};
 	public Map(char[][] game_map){
 		this.map = game_map;
@@ -24,7 +26,7 @@ public abstract class Map {
 	}
 
 	public boolean isFree(int x , int y){
-		return (this.map[x][y] == ' ' || this.map[x][y] == 'K' || this.map[x][y] == 'S');
+		return (this.map[x][y] == ' ' || this.map[x][y] == 'K' || this.map[x][y] == 'S' || this.map[x][y] == 'k');
 	}
 	
 	public abstract void openDoors();

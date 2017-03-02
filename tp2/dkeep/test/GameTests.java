@@ -66,6 +66,31 @@ public class GameTests {
 
 	@Test
 	public void testOpenDoors(){
-		
+		int[] test1 = {3,1};
+		ArenaMap game_map = new ArenaMap(this.map);
+		GameLogic game = new GameLogic(game_map,0);
+		game.moveHero('s');
+		game.moveHero('s');
+		//System.out.print( "HERO["+game.getHero().getPos()[0]+","+game.getHero().getPos()[1]+"]\n");
+		assertEquals( test1[0] , game.getHero().getPos()[0]);
+		assertEquals( test1[1] , game.getHero().getPos()[1]);
+		game.getMap().openDoors();
+		assertEquals( 'S' , game.getMap().getMap()[0][3]); //door 1
+		assertEquals( 'S' , game.getMap().getMap()[0][4]); //door 2
+	}
+
+	@Test
+	public void testEnterDoors(){
+		int[] test1 = {3,1};
+		ArenaMap game_map = new ArenaMap(this.map);
+		GameLogic game = new GameLogic(game_map,0);
+		game.moveHero('s');
+		game.moveHero('s');
+		//System.out.print( "HERO["+game.getHero().getPos()[0]+","+game.getHero().getPos()[1]+"]\n");
+		assertEquals( test1[0] , game.getHero().getPos()[0]);
+		assertEquals( test1[1] , game.getHero().getPos()[1]);
+		game.getMap().openDoors();
+		assertEquals( 'S' , game.getMap().getMap()[0][3]); //door 1
+		assertEquals( 'S' , game.getMap().getMap()[0][4]); //door 2
 	}
 }

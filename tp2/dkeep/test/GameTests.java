@@ -23,6 +23,7 @@ public class GameTests {
 		assertEquals( test2[0] , game.getHero().getPos()[0]);
 		assertEquals( test2[1] , game.getHero().getPos()[1]);
 	}
+	
 	@Test
 	public void testHeroIsCapturedByGuard(){
 		ArenaMap gameMap =new ArenaMap(map);
@@ -31,5 +32,40 @@ public class GameTests {
 		game.moveHero('d');
 		assertTrue(game.isGameOver());
 		//assertEquals(Game:DEFEAT,game.getEndStatus());
+	}
+
+	@Test
+	public void testMoveHeroIntoOccupiedCell(){
+		int[] test1 = {1,1};
+		ArenaMap game_map = new ArenaMap(this.map);
+		GameLogic game = new GameLogic(game_map,0);
+		assertEquals( test1[0] , game.getHero().getPos()[0]);
+		assertEquals( test1[1] , game.getHero().getPos()[1]);
+		game.moveHero('a');
+		assertEquals( test1[0] , game.getHero().getPos()[0]);
+		assertEquals( test1[1] , game.getHero().getPos()[1]);
+		game.moveHero('w');
+		assertEquals( test1[0] , game.getHero().getPos()[0]);
+		assertEquals( test1[1] , game.getHero().getPos()[1]);
+	}
+
+	@Test
+	public void testMoveHeroIntoClosedDoor(){
+		int[] test1 = {1,1}, test2 = {2,1};
+		ArenaMap game_map = new ArenaMap(this.map);
+		GameLogic game = new GameLogic(game_map,0);
+		assertEquals( test1[0] , game.getHero().getPos()[0]);
+		assertEquals( test1[1] , game.getHero().getPos()[1]);
+		game.moveHero('s');
+		assertEquals( test2[0] , game.getHero().getPos()[0]);
+		assertEquals( test2[1] , game.getHero().getPos()[1]);
+		game.moveHero('a');
+		assertEquals( test2[0] , game.getHero().getPos()[0]);
+		assertEquals( test2[1] , game.getHero().getPos()[1]);
+}
+
+	@Test
+	public void testOpenDoors(){
+		
 	}
 }

@@ -138,7 +138,7 @@ public class GameTests {
 	ArenaMap game_map = new ArenaMap();
 	GameLogic game = new GameLogic(game_map,1);
 	game.moveHero('d');
-	assertEquals( true,game.isGameOver());
+	assertEquals(true,game.isGameOver());
 	
 	}
 	
@@ -150,5 +150,54 @@ public class GameTests {
 		assertEquals("H",h.getRepresentation());
 		game.moveHero('d');
 		assertEquals("K",h.getRepresentation());
+	}
+	
+	@Test
+	public void testFailOpenDoor(){
+		int[] door={1,0};
+		int[] heroi={1,1};
+		ArenaMap game_map = new ArenaMap();
+		GameLogic game = new GameLogic(game_map,2);
+		assertEquals('I',game_map.getMap()[door[0]][door[1]]);
+		game.moveHero('a');
+		assertEquals(heroi[0],game.getHero().getX());
+		assertEquals(heroi[1],game.getHero().getY());
+		assertEquals('I',game_map.getMap()[door[0]][door[1]]);
+		
+		
+	}
+	@Test
+	public void testSuccessOpenDoor(){
+		int[] door={1,0};
+		int[] heroi={1,1};
+		ArenaMap game_map = new ArenaMap();
+		GameLogic game = new GameLogic(game_map,2);
+		assertEquals('I',game_map.getMap()[door[0]][door[1]]);
+		Hero h=game.getHero();
+		assertEquals("H",h.getRepresentation());
+		game.moveHero('d');
+		assertEquals("K",h.getRepresentation());
+		game.moveHero('a');
+		game.moveHero('a');
+		assertEquals('S',game_map.getMap()[door[0]][door[1]]);
+		
+		
+	}
+	@Test
+	public void testVictory(){
+		int[] door={1,0};
+		int[] heroi={1,1};
+		ArenaMap game_map = new ArenaMap();
+		GameLogic game = new GameLogic(game_map,2);
+		assertEquals('I',game_map.getMap()[door[0]][door[1]]);
+		Hero h=game.getHero();
+		assertEquals("H",h.getRepresentation());
+		game.moveHero('d');
+		assertEquals("K",h.getRepresentation());
+		game.moveHero('a');
+		game.moveHero('a');
+		game.moveHero('a');
+		assertEquals(true,game. wonGame());
+			
 	}
 }

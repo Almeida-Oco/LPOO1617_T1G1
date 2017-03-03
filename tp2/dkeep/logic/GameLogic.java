@@ -19,12 +19,19 @@ public class GameLogic{
 		}
 		else if(level==1){
 			this.level=1;
-			Ogre o=new Ogre(2,2,game_map.getMapSize());
+			Ogre o=new Ogre(2,2,game_map.getMapSize(),true);
 			ogres.add(o);
 			this.map = game_map;
 			this.hero = new Hero(1,1);
 			this.key[0]=1;
 			this.key[1]=2;
+		}
+		else if(level==2){
+			this.map = game_map;
+			this.level=1;
+			this.hero = new Hero(1,1);
+			this.key[0] = 1; 
+			this.key[1] = 2;
 		}
 	}
 	
@@ -47,12 +54,12 @@ public class GameLogic{
 		}
 		else if (1 == level){
 			this.map = new ArenaMap();
-			this.hero = new Hero(this.level, false);
+			this.hero = new Hero(this.level, true);
 			this.key[0] = 1;
 			this.key[1] = 8;
 			int res = rand.nextInt(3)+1;
 			for (int i = 0 ; i < res ; i++)
-				this.ogres.add(new Ogre(rand.nextInt(8)+1,rand.nextInt(8)+1,map.getMapSize()));	
+				this.ogres.add(new Ogre(rand.nextInt(8)+1,rand.nextInt(8)+1,map.getMapSize(),false));	
 		}
 	}
 	

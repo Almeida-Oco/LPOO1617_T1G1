@@ -8,9 +8,11 @@ public class Ogre extends Character {
 	private int[] club = new int[2];
 	private String club_representation = "*";
 	private int stun=0;
+	private boolean nearkill=true;
 	
-	public Ogre(int x , int y, int MAP_SIZE){
+	public Ogre(int x , int y, int MAP_SIZE, boolean near){
 		super(x,y);
+		this.nearkill=near;
 		this.representation = "O";
 		if (x >= 0 && x <= MAP_SIZE && y >= 0 && y <= MAP_SIZE){
 			this.position[1] = y;
@@ -103,7 +105,9 @@ public class Ogre extends Character {
 		ArrayList<int[]> temp = new ArrayList<int[]>(2);
 		if(level == 1){
 			temp.add((int[])this.club.clone());
+			if(this.nearkill){
 			temp.add((int[])this.position.clone());
+			}
 		}
 		return temp;
 	}

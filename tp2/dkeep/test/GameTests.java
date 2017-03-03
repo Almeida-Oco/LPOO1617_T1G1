@@ -145,6 +145,7 @@ public class GameTests {
 		game.moveHero('d');
 		assertEquals("K",h.getRepresentation());
 	}
+	
 	@Test(timeout=1000)
 	public void testMoveAndClub(){
 		ArenaMap map = new ArenaMap();
@@ -207,5 +208,53 @@ public class GameTests {
 	private boolean inAdjSquares(int x_previous , int y_previous , int x_current , int y_current){ //check if hero is in adjacent square
 		return ( (x_current == x_previous-1 && y_current == y_previous) || (x_current == x_previous+1 && y_current == y_previous) || 
 			   (x_current == x_previous && y_current == y_previous-1) || (x_current == x_previous && y_current == y_previous+1) );
+	}
+	
+	@Test
+	public void testFailOpenDoor(){
+		int[] door={1,0};
+		int[] heroi={1,1};
+		ArenaMap game_map = new ArenaMap();
+		GameLogic game = new GameLogic(game_map,2);
+		assertEquals('I',game_map.getMap()[door[0]][door[1]]);
+		game.moveHero('a');
+		assertEquals(heroi[0],game.getHero().getX());
+		assertEquals(heroi[1],game.getHero().getY());
+		assertEquals('I',game_map.getMap()[door[0]][door[1]]);
+		
+		
+	}
+	@Test
+	public void testSuccessOpenDoor(){
+		int[] door={1,0};
+		int[] heroi={1,1};
+		ArenaMap game_map = new ArenaMap();
+		GameLogic game = new GameLogic(game_map,2);
+		assertEquals('I',game_map.getMap()[door[0]][door[1]]);
+		Hero h=game.getHero();
+		assertEquals("H",h.getRepresentation());
+		game.moveHero('d');
+		assertEquals("K",h.getRepresentation());
+		game.moveHero('a');
+		game.moveHero('a');
+		assertEquals('S',game_map.getMap()[door[0]][door[1]]);
+		
+		
+	}
+	@Test
+	public void testVictory(){
+		int[] door={1,0};
+		int[] heroi={1,1};
+		ArenaMap game_map = new ArenaMap();
+		GameLogic game = new GameLogic(game_map,2);
+		assertEquals('I',game_map.getMap()[door[0]][door[1]]);
+		Hero h=game.getHero();
+		assertEquals("H",h.getRepresentation());
+		game.moveHero('d');
+		assertEquals("K",h.getRepresentation());
+		game.moveHero('a');
+		game.moveHero('a');
+		game.moveHero('a');
+		assertEquals(true,game. wonGame());
 	}
 }

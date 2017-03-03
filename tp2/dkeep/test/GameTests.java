@@ -128,18 +128,12 @@ public class GameTests {
 		}
 	}
 	
-	
-	private boolean inAdjSquares(int x_previous , int y_previous , int x_current , int y_current){ //check if hero is in adjacent square
-		return ( (x_current == x_previous-1 && y_current == y_previous) || (x_current == x_previous+1 && y_current == y_previous) || 
-			   (x_current == x_previous && y_current == y_previous-1) || (x_current == x_previous && y_current == y_previous+1) );
-	}
 	@Test
-    public void testMoveHeroNextOgre(){
-	ArenaMap game_map = new ArenaMap();
-	GameLogic game = new GameLogic(game_map,1);
-	game.moveHero('d');
-	assertEquals( true,game.isGameOver());
-	
+	public void testMoveHeroNextOgre(){
+		ArenaMap game_map = new ArenaMap();
+		GameLogic game = new GameLogic(game_map,1);
+		game.moveHero('d');
+		assertEquals( true,game.isGameOver());
 	}
 	
 	@Test
@@ -150,5 +144,68 @@ public class GameTests {
 		assertEquals("H",h.getRepresentation());
 		game.moveHero('d');
 		assertEquals("K",h.getRepresentation());
+	}
+	@Test(timeout=1000)
+	public void testMoveAndClub(){
+		ArenaMap map = new ArenaMap();
+		GameLogic game = new GameLogic(map,1);
+		int[] temp;
+		int px = game.getOgres().get(0).getX() , py = game.getOgres().get(0).getY();
+		boolean cnn= false,cns=false,cnw=false,cne=false, csn=false , css=false , csw=false , cse=false, 
+				cen=false , ces=false , cew=false , cee=false , cwn=false , cws=false , cwe=false , cww=false;
+		while ( !(cnn || cns || cnw || cne || csn || css || csw || cse || cen || ces || cew || cee || cwn || cws || cwe || cww) ){
+			do{
+				temp = game.getOgres().get(0).moveCharacter(map.getMapSize());
+			}while( !map.isFree(temp[0], temp[1]) );
+			game.getOgres().get(0).setPos(temp[0],temp[1],map.getMapSize());
+			game.getOgres().get(0).setClub(temp[0], temp[1], map.getMapSize());
+			do{
+				temp = game.getOgres().get(0).moveClub(map.getMapSize());
+			}while( !map.isFree(temp[0], temp[1]) );
+			game.getOgres().get(0).setClub(temp[0], temp[1], map.getMapSize());
+			int ox = game.getOgres().get(0).getX(), oy = game.getOgres().get(0).getY(), 
+				cx = game.getOgres().get(0).getClubX(), cy = game.getOgres().get(0).getClubY();
+			
+			if 		( (px-2) == cx &&   py   == cy && (px-1) == ox && py == oy ) //Ogre north, club north
+				cnn = true;
+			else if ( (px-1) == cx && (py-1) == cy && (px-1) == ox && py == oy ) //Ogre north, club west
+				cnw = true;
+			else if ( (px-1) == cx && (py+1) == cy && (px-1) == ox && py == oy ) //Ogre north, club east
+				cne = true;
+			else if (   px 	 == cx &&   py   == cy && (px-1) == ox && py == oy ) //Ogre north, club south
+				cns = true;
+			else if (   px   == cx &&   py   == cy && (px+1) == ox && py == oy ) //Ogre south, club north
+				csn = true;
+			else if ( (px+1) == cx && (py-1) == cy && (px+1) == ox && py == oy ) //Ogre south, club west
+				csw = true;
+			else if ( (px+1) == cx && (py+1) == cy && (px+1) == ox && py == oy ) //Ogre south, club east
+				cse = true;
+			else if ( (px+2) == cx &&   py   == cy && (px+1) == ox && py == oy ) //Ogre south, club south
+				css = true;
+			else if ( (px-1) == cx && (py-1) == cy && px == ox && (py-1) == oy ) //Ogre west, club north
+				cwn = true;
+			else if (   px   == cx && (py-2) == cy && px == ox && (py-1) == oy ) //Ogre west, club west
+				cww = true;
+			else if (   px   == cx &&   py   == cy && px == ox && (py-1) == oy ) //Ogre west, club east
+				cwe = true;
+			else if ( (px-1) == cx && (py-1) == cy && px == ox && (py-1) == oy ) //Ogre west, club south
+				cws = true;
+			else if ( (px-1) == cx && (py+1) == cy && px == ox && (py+1) == oy ) //Ogre east, club north
+				cen = true;
+			else if (   px   == cx &&   py   == cy && px == ox && (py+1) == oy ) //Ogre east, club west
+				cew = true;
+			else if (   px   == cx && (py+2) == cy && px == ox && (py+1) == oy ) //Ogre east, club east
+				cee = true;
+			else if ( (px+1) == cx && (py+1) == cy && px == ox && (py+1) == oy ) //Ogre east, club south
+				ces = true;
+			else
+				fail("Unknown error");
+		}
+		System.out.println("PINTOU");
+	}
+	
+	private boolean inAdjSquares(int x_previous , int y_previous , int x_current , int y_current){ //check if hero is in adjacent square
+		return ( (x_current == x_previous-1 && y_current == y_previous) || (x_current == x_previous+1 && y_current == y_previous) || 
+			   (x_current == x_previous && y_current == y_previous-1) || (x_current == x_previous && y_current == y_previous+1) );
 	}
 }

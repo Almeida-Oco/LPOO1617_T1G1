@@ -13,7 +13,6 @@ public class GameLogic{
 	public GameLogic(Map game_map,int level){ // WARNING!! ONLY FOR TESTING !!
 		if (level == 0){
 			this.level = level;
-			int[] temp = {3,1};
 			this.guard = new RookieGuard(1,3);
 			this.map = game_map;
 			this.hero = new Hero(1,1);
@@ -215,7 +214,7 @@ public class GameLogic{
 	}
 
 	public ArrayList<Ogre> getOgres(){
-		return (ArrayList<Ogre>)this.ogres.clone();
+		return this.ogres;
 	}
 	
 	public int getLevel(){

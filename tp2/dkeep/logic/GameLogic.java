@@ -33,6 +33,15 @@ public class GameLogic{
 			this.key[0] = 1; 
 			this.key[1] = 2;
 		}
+		else if(level==3){
+			this.map = game_map;
+			this.level=1;
+			this.hero = new Hero(1,1);
+			hero.setArmed(true);
+			Ogre o=new Ogre(1,3,game_map.getMapSize(),false);
+			this.ogres.add(o);
+		}
+		
 	}
 	
 	public GameLogic(int level){

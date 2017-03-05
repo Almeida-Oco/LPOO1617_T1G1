@@ -1,10 +1,14 @@
 package dkeep.test;
 
 import static org.junit.Assert.*;
+
+import java.util.ArrayList;
+
 import org.junit.Test;
 import dkeep.logic.ArenaMap;
 import dkeep.logic.GameLogic;
 import dkeep.logic.Hero;
+import dkeep.logic.Ogre;
 
 
 public class GameTests {
@@ -258,4 +262,23 @@ public class GameTests {
 		game.moveHero('a');
 		assertEquals(true,game. wonGame());
 	}
+	
+	@Test
+	public void stunOgre(){
+		//hero is at position 1,1 and ogre 1,3
+		ArenaMap game_map = new ArenaMap();
+		GameLogic game = new GameLogic(game_map,3);
+		Hero h=game.getHero();
+		ArrayList<Ogre> ogres=game.getOgres();
+		assertEquals("O",ogres.get(0).getRepresentation());
+		game.moveHero('d');
+		game.moveHero('d');
+		assertEquals( false,game.isGameOver());
+		assertEquals(true,game.checkStun(ogres.get(0).getX(), ogres.get(0).getY()));
+		game.moveAllVillains();
+		assertEquals("8",ogres.get(0).getRepresentation());
+		
+		}
+	
+	
 }

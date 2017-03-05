@@ -83,5 +83,9 @@ public class Hero extends Character {
 	public boolean checkArmed(){
 		return this.is_armed;
 	}
+	
+	public void setArmed(boolean armed){
+		this.is_armed=armed;
+	}
 
 }

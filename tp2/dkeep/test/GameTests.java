@@ -154,7 +154,7 @@ public class GameTests {
 		int px = game.getOgres().get(0).getX() , py = game.getOgres().get(0).getY();
 		boolean cnn= false,cns=false,cnw=false,cne=false, csn=false , css=false , csw=false , cse=false, 
 				cen=false , ces=false , cew=false , cee=false , cwn=false , cws=false , cwe=false , cww=false;
-		while ( !(cnn || cns || cnw || cne || csn || css || csw || cse || cen || ces || cew || cee || cwn || cws || cwe || cww) ){
+		while ( !(cnn && cns && cnw && cne && csn && css && csw && cse && cen && ces && cew && cee && cwn && cws && cwe && cww) ){
 			do{
 				temp = game.getOgres().get(0).moveCharacter(map.getMapSize());
 			}while( !map.isFree(temp[0], temp[1]) );
@@ -189,7 +189,7 @@ public class GameTests {
 				cww = true;
 			else if (   px   == cx &&   py   == cy && px == ox && (py-1) == oy ) //Ogre west, club east
 				cwe = true;
-			else if ( (px-1) == cx && (py-1) == cy && px == ox && (py-1) == oy ) //Ogre west, club south
+			else if ( (px+1) == cx && (py-1) == cy && px == ox && (py-1) == oy ) //Ogre west, club south
 				cws = true;
 			else if ( (px-1) == cx && (py+1) == cy && px == ox && (py+1) == oy ) //Ogre east, club north
 				cen = true;
@@ -201,8 +201,9 @@ public class GameTests {
 				ces = true;
 			else
 				fail("Unknown error");
+			
+			px = game.getOgres().get(0).getX(); py = game.getOgres().get(0).getY();
 		}
-		System.out.println("PINTOU");
 	}
 	
 	private boolean inAdjSquares(int x_previous , int y_previous , int x_current , int y_current){ //check if hero is in adjacent square

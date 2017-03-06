@@ -100,37 +100,7 @@ public class GameTests {
 		assertEquals( 'S' , game.getMap().getMap()[0][4]); //door 2
 	}
 
-	@Test
-	public void testMoveOgre(){
-		ArenaMap map = new ArenaMap();
-		GameLogic game = new GameLogic(map,1);
-		int[] test = { game.getOgres().get(0).getX() , game.getOgres().get(0).getY() };
-		int[] temp;
-		for(int i = 0 ; i < 10 ; i++){
-			do{
-				temp = game.getOgres().get(0).moveCharacter(map.getMapSize());
-			}while( !map.isFree( temp[0] , temp[1] ) );
-			game.getOgres().get(0).setPos(temp[0], temp[1], map.getMapSize());
-			
-			assertEquals( inAdjSquares(test[0],test[1],game.getOgres().get(0).getX(),game.getOgres().get(0).getY()) , true);
-			test[0] = game.getOgres().get(0).getX(); test[1] = game.getOgres().get(0).getY();
-		}
-	}
-	
-	public void testClubSwing(){
-		ArenaMap map = new ArenaMap();
-		GameLogic game = new GameLogic(map,1);
-		int[] test = { game.getOgres().get(0).getX() , game.getOgres().get(0).getY() }, temp;
-		for (int i = 0 ; i < 10 ; i++){
-			do{
-				temp = game.getOgres().get(0).moveClub(map.getMapSize());
-			}while( !map.isFree(temp[0], temp[1]) );
-			game.getOgres().get(0).setClub(temp[0], temp[1], map.getMapSize());
-			
-			assertEquals( inAdjSquares(test[0],test[1],game.getOgres().get(0).getClubX(),game.getOgres().get(0).getClubY() ) , true ) ;
-			
-		}
-	}
+
 	
 	@Test
 	public void testMoveHeroNextOgre(){

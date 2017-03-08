@@ -252,6 +252,21 @@ public class GameTests {
 		
 		}
 	
+	@Test
+	
+	public void moveinDungeon(){
+		int[] test1 = {1,1};
+		int[] test2 = {1,2};
+		GameLogic game =new GameLogic(0);
+		assertEquals( test1[0] , game.getHero().getPos()[0]);
+		assertEquals( test1[1] , game.getHero().getPos()[1]);
+		game.moveHero('d');
+		assertEquals( test2[0] , game.getHero().getPos()[0]);
+		assertEquals( test2[1] , game.getHero().getPos()[1]);
+		
+		
+	}
+	
 	
 	
 	

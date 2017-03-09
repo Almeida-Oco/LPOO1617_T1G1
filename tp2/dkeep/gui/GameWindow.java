@@ -28,6 +28,8 @@ public class GameWindow {
 	private JTextField textField;
 	private int ogres;
 	private int guard;
+	private UserInput new_game;
+	private GameLogic game;
 
 	/**
 	 * Launch the application.
@@ -63,10 +65,20 @@ public class GameWindow {
 		JLabel lblNewLabel = new JLabel("New label");
 		
 		JButton button = new JButton("Down");
+		button.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				game.moveHero('s');
+			}
+		});
 		button.setEnabled(false);
 		button.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		
 		JButton button_1 = new JButton("Up");
+		button_1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				game.moveHero('w');
+			}
+		});
 		button_1.setEnabled(false);
 		button_1.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		
@@ -74,6 +86,7 @@ public class GameWindow {
 		button_2.setEnabled(false);
 		button_2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				game.moveHero('a');
 			}
 		});
 		button_2.setFont(new Font("Tahoma", Font.PLAIN, 12));
@@ -82,6 +95,7 @@ public class GameWindow {
 		button_3.setEnabled(false);
 		button_3.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				game.moveHero('d');
 			}
 		});
 		button_3.setFont(new Font("Tahoma", Font.PLAIN, 12));
@@ -104,10 +118,14 @@ public class GameWindow {
 				temp=textField.getText();
 				ogres=Integer.parseInt(temp);
 				guard=comboBox.getSelectedIndex();
-				UserInput new_game= new UserInput(ogres,guard);
+				new_game= new UserInput(ogres,guard);
+				 game=new_game.getGame();
+				 button_2.setEnabled(true);
+				 button_1.setEnabled(true);
+				 button_3.setEnabled(true);
+				 button.setEnabled(true);
+				 
 				
-				GameLogic game=new_game.getGame();
-				new_game.printGame(game.getMap().getMap(),game.getLevel());
 			}
 		});
 		

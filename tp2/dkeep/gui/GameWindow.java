@@ -63,6 +63,9 @@ public class GameWindow {
 		frame = new JFrame();
 		frame.setBounds(100, 100, 755, 581);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		JTextArea textArea = new JTextArea();
+		textArea.setFont(new Font("Courier New", Font.PLAIN, 14));
+		textArea.setEditable(false);
 		
 		JLabel lblNewLabel = new JLabel("New label");
 		
@@ -70,6 +73,10 @@ public class GameWindow {
 		button.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				game.moveHero('s');
+				game.moveAllVillains();
+				if(!game.wonGame() && game.isGameOver())
+					textArea.setText(new_game.printGame(game.getMap().getMap(),game.getLevel()));
+					
 			}
 		});
 		button.setEnabled(false);
@@ -79,6 +86,9 @@ public class GameWindow {
 		button_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				game.moveHero('w');
+				game.moveAllVillains();
+				if(!game.wonGame() && game.isGameOver())
+					textArea.setText(new_game.printGame(game.getMap().getMap(),game.getLevel()));
 			}
 		});
 		button_1.setEnabled(false);
@@ -89,6 +99,9 @@ public class GameWindow {
 		button_2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				game.moveHero('a');
+				game.moveAllVillains();
+				if(!game.wonGame() && game.isGameOver())
+					textArea.setText(new_game.printGame(game.getMap().getMap(),game.getLevel()));
 			}
 		});
 		button_2.setFont(new Font("Tahoma", Font.PLAIN, 12));
@@ -98,6 +111,9 @@ public class GameWindow {
 		button_3.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				game.moveHero('d');
+				game.moveAllVillains();
+				if(!game.wonGame() && game.isGameOver())
+					textArea.setText(new_game.printGame(game.getMap().getMap(),game.getLevel()));
 			}
 		});
 		button_3.setFont(new Font("Tahoma", Font.PLAIN, 12));
@@ -111,9 +127,7 @@ public class GameWindow {
 		
 		JComboBox comboBox = new JComboBox();
 		comboBox.setModel(new DefaultComboBoxModel(new String[] {"Novice", "Drunk", "Suspicious"}));
-		JTextArea textArea = new JTextArea();
-		textArea.setFont(new Font("Courier New", Font.PLAIN, 14));
-		textArea.setEditable(false);
+		
 		
 		JButton btnNewButton = new JButton("New Game");
 		btnNewButton.addActionListener(new ActionListener() {
@@ -129,8 +143,8 @@ public class GameWindow {
 				 button_1.setEnabled(true);
 				 button_3.setEnabled(true);
 				 button.setEnabled(true);
-				 String res=new_game.mapString(game.getMap(),game.getLevel());
-				 textArea.setText(t);
+ 
+				 textArea.setText(new_game.printGame(game.getMap().getMap(),game.getLevel()));
 				 
 				 
 				

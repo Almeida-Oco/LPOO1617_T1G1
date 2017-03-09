@@ -75,7 +75,7 @@ public class GameLogic {
 
 			if (3 == level) {
 				this.map = new DungeonMap();
-				this.hero = new Hero(this.level, false);
+				this.hero = new Hero(0, false);
 				this.key[0] = 8;
 				this.key[1] = 7;
 				if (0 == guard)

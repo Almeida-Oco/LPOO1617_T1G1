@@ -117,21 +117,6 @@ public class GameTests {
 		}
 	}
 	
-	public void testClubSwing(){
-		ArenaMap map = new ArenaMap();
-		GameLogic game = new GameLogic(map,1);
-		int[] test = { game.getOgres().get(0).getX() , game.getOgres().get(0).getY() }, temp;
-		for (int i = 0 ; i < 10 ; i++){
-			do{
-				temp = game.getOgres().get(0).moveClub(map.getMapSize());
-			}while( !map.isFree(temp[0], temp[1]) );
-			game.getOgres().get(0).setClub(temp[0], temp[1], map.getMapSize());
-			
-			assertEquals( inAdjSquares(test[0],test[1],game.getOgres().get(0).getClubX(),game.getOgres().get(0).getClubY() ) , true ) ;
-			
-		}
-	}
-	
 	@Test
 	public void testMoveHeroNextOgre(){
 		ArenaMap game_map = new ArenaMap();
@@ -205,7 +190,6 @@ public class GameTests {
 				ces = true;
 			else
 				fail("Unknown error");
-			
 			px = game.getOgres().get(0).getX(); py = game.getOgres().get(0).getY();
 		}
 	}
@@ -272,7 +256,7 @@ public class GameTests {
 		ArrayList<Ogre> ogres=game.getOgres();
 		assertEquals("O",ogres.get(0).getRepresentation());
 		game.moveHero('d');
-		game.moveHero('d');
+		//game.moveHero('d');
 		assertEquals( false,game.isGameOver());
 		assertEquals(true,game.checkStun(ogres.get(0).getX(), ogres.get(0).getY()));
 		game.moveAllVillains();

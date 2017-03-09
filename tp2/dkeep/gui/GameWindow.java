@@ -10,6 +10,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.TextArea;
+
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.JTextField;
@@ -109,6 +111,9 @@ public class GameWindow {
 		
 		JComboBox comboBox = new JComboBox();
 		comboBox.setModel(new DefaultComboBoxModel(new String[] {"Novice", "Drunk", "Suspicious"}));
+		JTextArea textArea = new JTextArea();
+		textArea.setFont(new Font("Courier New", Font.PLAIN, 14));
+		textArea.setEditable(false);
 		
 		JButton btnNewButton = new JButton("New Game");
 		btnNewButton.addActionListener(new ActionListener() {
@@ -124,14 +129,14 @@ public class GameWindow {
 				 button_1.setEnabled(true);
 				 button_3.setEnabled(true);
 				 button.setEnabled(true);
+				 String res=new_game.mapString(game.getMap(),game.getLevel());
+				 textArea.setText(t);
+				 
 				 
 				
 			}
 		});
 		
-		JTextArea textArea = new JTextArea();
-		textArea.setFont(new Font("Courier New", Font.PLAIN, 14));
-		textArea.setEditable(false);
 		
 		JButton btnExit = new JButton("Exit");
 		GroupLayout groupLayout = new GroupLayout(frame.getContentPane());

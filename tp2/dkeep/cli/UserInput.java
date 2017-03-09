@@ -16,7 +16,15 @@ public class UserInput{
 		this.game = new GameLogic(0);
 	}
 	
-	private void printGame(char[][] map,int level){
+	public UserInput(int ogres, int guard){
+		this.game = new GameLogic(3,ogres,guard);
+	}
+	
+	
+	public GameLogic getGame(){
+		return game;
+	}
+	public void printGame(char[][] map,int level){
 		clearScreen();
 		for(Character ch : this.game.getAllCharacters())
 			for( Pair<int[],String> p : ch.getPrintable() )

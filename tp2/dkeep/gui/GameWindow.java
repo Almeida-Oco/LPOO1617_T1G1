@@ -14,6 +14,10 @@ import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.JTextField;
 import javax.swing.LayoutStyle.ComponentPlacement;
+
+import dkeep.cli.UserInput;
+import dkeep.logic.GameLogic;
+
 import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JTextArea;
@@ -22,6 +26,8 @@ public class GameWindow {
 
 	private JFrame frame;
 	private JTextField textField;
+	private int ogres;
+	private int guard;
 
 	/**
 	 * Launch the application.
@@ -93,6 +99,15 @@ public class GameWindow {
 		JButton btnNewButton = new JButton("New Game");
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				
+				String temp;
+				temp=textField.getText();
+				ogres=Integer.parseInt(temp);
+				guard=comboBox.getSelectedIndex();
+				UserInput new_game= new UserInput(ogres,guard);
+				
+				GameLogic game=new_game.getGame();
+				new_game.printGame(game.getMap().getMap(),game.getLevel());
 			}
 		});
 		

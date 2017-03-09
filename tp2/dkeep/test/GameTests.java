@@ -99,23 +99,6 @@ public class GameTests {
 		assertEquals( 'S' , game.getMap().getMap()[0][3]); //door 1
 		assertEquals( 'S' , game.getMap().getMap()[0][4]); //door 2
 	}
-
-	@Test
-	public void testMoveOgre(){
-		ArenaMap map = new ArenaMap();
-		GameLogic game = new GameLogic(map,1);
-		int[] test = { game.getOgres().get(0).getX() , game.getOgres().get(0).getY() };
-		int[] temp;
-		for(int i = 0 ; i < 10 ; i++){
-			do{
-				temp = game.getOgres().get(0).moveCharacter(map.getMapSize());
-			}while( !map.isFree( temp[0] , temp[1] ) );
-			game.getOgres().get(0).setPos(temp[0], temp[1], map.getMapSize());
-			
-			assertEquals( inAdjSquares(test[0],test[1],game.getOgres().get(0).getX(),game.getOgres().get(0).getY()) , true);
-			test[0] = game.getOgres().get(0).getX(); test[1] = game.getOgres().get(0).getY();
-		}
-	}
 	
 	@Test
 	public void testMoveHeroNextOgre(){
@@ -194,10 +177,7 @@ public class GameTests {
 		}
 	}
 	
-	private boolean inAdjSquares(int x_previous , int y_previous , int x_current , int y_current){ //check if hero is in adjacent square
-		return ( (x_current == x_previous-1 && y_current == y_previous) || (x_current == x_previous+1 && y_current == y_previous) || 
-			   (x_current == x_previous && y_current == y_previous-1) || (x_current == x_previous && y_current == y_previous+1) );
-	}
+
 	
 	@Test
 	public void testFailOpenDoor(){
@@ -216,7 +196,6 @@ public class GameTests {
 	@Test
 	public void testSuccessOpenDoor(){
 		int[] door={1,0};
-		int[] heroi={1,1};
 		ArenaMap game_map = new ArenaMap();
 		GameLogic game = new GameLogic(game_map,2);
 		assertEquals('I',game_map.getMap()[door[0]][door[1]]);
@@ -233,7 +212,6 @@ public class GameTests {
 	@Test
 	public void testVictory(){
 		int[] door={1,0};
-		int[] heroi={1,1};
 		ArenaMap game_map = new ArenaMap();
 		GameLogic game = new GameLogic(game_map,2);
 		assertEquals('I',game_map.getMap()[door[0]][door[1]]);
@@ -252,17 +230,37 @@ public class GameTests {
 		//hero is at position 1,1 and ogre 1,3
 		ArenaMap game_map = new ArenaMap();
 		GameLogic game = new GameLogic(game_map,3);
-		Hero h=game.getHero();
 		ArrayList<Ogre> ogres=game.getOgres();
 		assertEquals("O",ogres.get(0).getRepresentation());
 		game.moveHero('d');
-		//game.moveHero('d');
+		ogres.get(0).stunOgre();
 		assertEquals( false,game.isGameOver());
-		assertEquals(true,game.checkStun(ogres.get(0).getX(), ogres.get(0).getY()));
+		int x=ogres.get(0).getX();
+		int y=ogres.get(0).getY();
+		//assertEquals(true,game.checkStun(ogres.get(0).getX(), ogres.get(0).getY()));
 		game.moveAllVillains();
 		assertEquals("8",ogres.get(0).getRepresentation());
+		assertEquals(x,ogres.get(0).getX());
+		assertEquals(y,ogres.get(0).getY());
 		
 		}
+	
+	@Test
+	
+	public void moveinDungeon(){
+		int[] test1 = {1,1};
+		int[] test2 = {1,2};
+		GameLogic game =new GameLogic(0);
+		assertEquals( test1[0] , game.getHero().getPos()[0]);
+		assertEquals( test1[1] , game.getHero().getPos()[1]);
+		game.moveHero('d');
+		assertEquals( test2[0] , game.getHero().getPos()[0]);
+		assertEquals( test2[1] , game.getHero().getPos()[1]);
+		
+		
+	}
+	
+	
 	
 	
 }

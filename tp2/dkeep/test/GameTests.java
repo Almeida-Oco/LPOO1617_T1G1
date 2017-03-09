@@ -180,10 +180,7 @@ public class GameTests {
 		}
 	}
 	
-	private boolean inAdjSquares(int x_previous , int y_previous , int x_current , int y_current){ //check if hero is in adjacent square
-		return ( (x_current == x_previous-1 && y_current == y_previous) || (x_current == x_previous+1 && y_current == y_previous) || 
-			   (x_current == x_previous && y_current == y_previous-1) || (x_current == x_previous && y_current == y_previous+1) );
-	}
+
 	
 	@Test
 	public void testFailOpenDoor(){

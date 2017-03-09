@@ -24,19 +24,22 @@ public class UserInput{
 	public GameLogic getGame(){
 		return game;
 	}
-	public void printGame(char[][] map,int level){
+	public String printGame(char[][] map,int level){
 		clearScreen();
+		StringBuilder result = new StringBuilder();
 		for(Character ch : this.game.getAllCharacters())
 			for( Pair<int[],String> p : ch.getPrintable() )
 				map[p.getFirst()[0]][p.getFirst()[1]] = p.getSecond().charAt(0);
 
 		for ( int i = 0 ; i < map.length ; i++ ) {
 			for ( int j = 0 ; j < map[i].length ; j++ ) {
-					System.out.print(map[i][j] + " ");
+				result.append(map[i][j] + " ");
 			}
-			System.out.print("\n");
+			result.append("\n");
 		}
-		System.out.println("      W-A-S-D");
+		result.append("      W-A-S-D");
+		
+		return result.toString();
 	}
 
 	private void clearScreen(){
@@ -59,7 +62,7 @@ public class UserInput{
 
 	private void cpu(){
 		do{
-			printGame(this.game.getMap().getMap(),this.game.getLevel());
+			System.out.println(printGame(this.game.getMap().getMap(),this.game.getLevel()));
 			this.game = this.game.moveHero(readChar());
 			this.game.moveAllVillains();			
 		}while (!this.game.wonGame() && !this.game.isGameOver());

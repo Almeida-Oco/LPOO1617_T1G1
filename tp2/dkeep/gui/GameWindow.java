@@ -32,6 +32,7 @@ public class GameWindow {
 	
 	private JFrame frame;
 	private JTextField OgreNumber;
+	private JComboBox Guards;
 	private JTextArea ConsoleArea;
 	private JLabel StatusLabel,LabelNofOgres,LabelGuardPers;
 	private JButton UpButton,DownButton,LeftButton,RightButton;
@@ -68,9 +69,23 @@ public class GameWindow {
 		this.RightButton.setEnabled(false);
 	}
 	
-	public void newGame(int ogres,int guards){
+	public void newGame(){
+		int ogres = 0,guards = this.Guards.getSelectedIndex();
+		try{ 
+			ogres=Integer.parseInt(OgreNumber.getText());
+		}
+		catch (NumberFormatException n){
+			StatusLabel.setText("Ogre number NaN!");
+			disableButtons();
+			return;
+		}	
+		
 		this.input = new UserInput(ogres+1,guards+1);
 		this.game = new GameLogic(0,ogres+1,guards+1);
+		
+		enableButtons();
+		StatusLabel.setText("You can play now.");
+		ConsoleArea.setText(input.printGame(game,game.getLevel(),false));
 	}
 	
 	public void enableButtons(){
@@ -156,24 +171,14 @@ public class GameWindow {
 		
 		this.LabelGuardPers = new JLabel("Guard Personality");
 		
-		JComboBox Guards = new JComboBox();
+		this.Guards = new JComboBox();
 		Guards.setModel(new DefaultComboBoxModel(new String[] {"Novice", "Drunk", "Suspicious"}));
 		
 		
 		JButton NewGame = new JButton("New Game");
 		NewGame.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {	
-				int ogres = 0;
-				try{ 
-					ogres=Integer.parseInt(OgreNumber.getText());
-				}
-				catch (NumberFormatException n){
-					StatusLabel.setText("Ogre number NaN!");
-				}	
-				newGame(ogres, Guards.getSelectedIndex());
-				enableButtons();
-				StatusLabel.setText("You can play now.");
-				ConsoleArea.setText(input.printGame(game,game.getLevel(),false));
+				newGame();
 			}
 		});
 		

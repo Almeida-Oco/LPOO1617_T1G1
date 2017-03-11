@@ -147,10 +147,10 @@ public class GameWindow {
 		ConsoleArea.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyPressed(KeyEvent e) {
-				proccessKey( (e.getKeyCode() == KeyEvent.VK_W) ? 'w' : 
-					       ( (e.getKeyCode() == KeyEvent.VK_A) ? 'a' : 
-					       ( (e.getKeyCode() == KeyEvent.VK_S) ? 's' : 
-					       ( (e.getKeyCode() == KeyEvent.VK_D) ? 'd' : '\n'))));
+				proccessKey( ( (e.getKeyCode() == KeyEvent.VK_W) || (e.getKeyCode() == KeyEvent.VK_UP) ) ? 'w' : 
+					       ( ( (e.getKeyCode() == KeyEvent.VK_A) || (e.getKeyCode() == KeyEvent.VK_LEFT) ) ? 'a' : 
+					       ( ( (e.getKeyCode() == KeyEvent.VK_S) || (e.getKeyCode() == KeyEvent.VK_DOWN) ) ? 's' : 
+					       ( ( (e.getKeyCode() == KeyEvent.VK_D) || (e.getKeyCode() == KeyEvent.VK_RIGHT) ) ? 'd' : '\n'))));
 			
 			}
 		});

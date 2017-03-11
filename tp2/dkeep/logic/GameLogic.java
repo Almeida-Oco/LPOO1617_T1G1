@@ -63,10 +63,9 @@ public class GameLogic {
 			this.key = this.map.getKey();
 			if (ogre == 0) //IF OGRE IS 0 THEN RANDOMLY SELECT NUMBER OF OGRES
 				ogre = rand.nextInt(3) + 1;
-			for (int i = 0; i < ogre; i++){
+			for (int i = 0; i < ogre; i++)
 				this.ogres.add(new Ogre(rand.nextInt(8) + 1, rand.nextInt(8) + 1, map.getMapSize(), false));
-			}
-				
+		
 		}
 	}
 

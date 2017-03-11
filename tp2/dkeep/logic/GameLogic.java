@@ -83,9 +83,6 @@ public class GameLogic {
 	}
 	
 	public void moveAllVillains() { // move all villains based on current level
-		for (Character ch : this.getAllCharacters())
-			System.out.println( ch.getClass()+" POS = "+ch.getPos() );
-		
 		Pair<Integer,Integer> pos;
 		if (0 == this.level) { // move only guards
 			do {

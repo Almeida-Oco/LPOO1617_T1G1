@@ -16,6 +16,7 @@ import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.JTextField;
 import javax.swing.LayoutStyle.ComponentPlacement;
+import javax.swing.SwingConstants;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
@@ -66,13 +67,15 @@ public class GameWindow {
 	}
 	
 	public void proccessKey(char ch){
-		if (ch != '\n'){
+		if (ch != '\n' && !game.isGameOver()){
 			this.game = this.game.moveHero(ch);
 			this.game.moveAllVillains();
 			this.ConsoleArea.setText(input.printGame(game,game.getLevel(),false));
 			if (game.wonGame() || game.isGameOver()){
 				disableButtons();
+				this.StatusLabel.setOpaque(true);
 				this.StatusLabel.setText( (game.wonGame()) ? "YOU WIN!" : "YOU LOSE!" );
+				this.StatusLabel.setBackground(( (game.wonGame()) ? Color.GREEN : Color.RED ));
 			}	
 		}
 	}
@@ -85,6 +88,7 @@ public class GameWindow {
 	}
 	
 	public void newGame(){
+		this.StatusLabel.setOpaque(false);
 		int ogres = 0,guards = this.Guards.getSelectedIndex();
 		try{ 
 			ogres=Integer.parseInt(OgreNumber.getText());
@@ -105,6 +109,7 @@ public class GameWindow {
 		enableButtons();
 		StatusLabel.setText("You can play now.");
 		ConsoleArea.setText(input.printGame(game,game.getLevel(),false));
+		ConsoleArea.requestFocus();
 	}
 	
 	public void enableButtons(){
@@ -136,23 +141,12 @@ public class GameWindow {
 	 */
 	private void initialize() {
 		this.frame = new JFrame();
-		frame.getContentPane().addKeyListener(new KeyAdapter() {
-			@Override
-			public void keyPressed(KeyEvent e) {
-				System.out.println("Pressed key!");
-				proccessKey( (e.getKeyCode() == KeyEvent.VK_W) ? 'w' : 
-					       ( (e.getKeyCode() == KeyEvent.VK_A) ? 'a' : 
-					       ( (e.getKeyCode() == KeyEvent.VK_S) ? 's' : 
-					       ( (e.getKeyCode() == KeyEvent.VK_D) ? 'd' : '\n'))));
-			}
-		});
 		frame.setBounds(100, 100, 755, 581);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.ConsoleArea = new JTextArea();
 		ConsoleArea.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyPressed(KeyEvent e) {
-				System.out.println("Pressed key!");
 				proccessKey( (e.getKeyCode() == KeyEvent.VK_W) ? 'w' : 
 					       ( (e.getKeyCode() == KeyEvent.VK_A) ? 'a' : 
 					       ( (e.getKeyCode() == KeyEvent.VK_S) ? 's' : 
@@ -163,7 +157,7 @@ public class GameWindow {
 		ConsoleArea.setFont(new Font("Courier New", Font.PLAIN, 14));
 		ConsoleArea.setEditable(false);
 		
-		this.StatusLabel = new JLabel("You can start a New Game!");
+		this.StatusLabel = new JLabel("You can start a New Game!",SwingConstants.CENTER);
 		
 		//---- BEGIN BUTTONS ----
 		this.UpButton = new JButton("Up");
@@ -232,40 +226,37 @@ public class GameWindow {
 		groupLayout.setHorizontalGroup(
 			groupLayout.createParallelGroup(Alignment.LEADING)
 				.addGroup(groupLayout.createSequentialGroup()
+					.addGap(25)
+					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+						.addComponent(LabelGuardPers)
+						.addComponent(LabelNofOgres))
+					.addGap(18)
+					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+						.addComponent(Guards, GroupLayout.PREFERRED_SIZE, 79, GroupLayout.PREFERRED_SIZE)
+						.addComponent(OgreNumber, GroupLayout.PREFERRED_SIZE, 54, GroupLayout.PREFERRED_SIZE))
+					.addPreferredGap(ComponentPlacement.RELATED, 317, Short.MAX_VALUE)
+					.addComponent(NewGame, GroupLayout.PREFERRED_SIZE, 128, GroupLayout.PREFERRED_SIZE)
+					.addGap(60))
+				.addGroup(groupLayout.createSequentialGroup()
+					.addGap(27)
+					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+						.addComponent(StatusLabel, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 483, Short.MAX_VALUE)
+						.addComponent(ConsoleArea, GroupLayout.PREFERRED_SIZE, 483, GroupLayout.PREFERRED_SIZE))
+					.addPreferredGap(ComponentPlacement.UNRELATED)
 					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
 						.addGroup(groupLayout.createSequentialGroup()
-							.addGap(25)
-							.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-								.addComponent(LabelGuardPers)
-								.addComponent(LabelNofOgres))
-							.addGap(18)
-							.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-								.addGroup(groupLayout.createSequentialGroup()
-									.addComponent(Guards, GroupLayout.PREFERRED_SIZE, 79, GroupLayout.PREFERRED_SIZE)
-									.addPreferredGap(ComponentPlacement.RELATED, 347, Short.MAX_VALUE)
-									.addComponent(NewGame, GroupLayout.PREFERRED_SIZE, 103, GroupLayout.PREFERRED_SIZE)
-									.addGap(55))
-								.addComponent(OgreNumber, GroupLayout.PREFERRED_SIZE, 54, GroupLayout.PREFERRED_SIZE)))
+							.addComponent(LeftButton, GroupLayout.PREFERRED_SIZE, 69, GroupLayout.PREFERRED_SIZE)
+							.addGap(77)
+							.addComponent(RightButton, GroupLayout.PREFERRED_SIZE, 69, GroupLayout.PREFERRED_SIZE))
 						.addGroup(groupLayout.createSequentialGroup()
-							.addGap(27)
+							.addGap(68)
+							.addComponent(UpButton, GroupLayout.PREFERRED_SIZE, 69, GroupLayout.PREFERRED_SIZE))
+						.addGroup(groupLayout.createSequentialGroup()
+							.addGap(68)
 							.addGroup(groupLayout.createParallelGroup(Alignment.LEADING, false)
-								.addComponent(StatusLabel, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-								.addComponent(ConsoleArea, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 483, Short.MAX_VALUE))
-							.addPreferredGap(ComponentPlacement.UNRELATED)
-							.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-								.addGroup(groupLayout.createSequentialGroup()
-									.addComponent(LeftButton, GroupLayout.PREFERRED_SIZE, 69, GroupLayout.PREFERRED_SIZE)
-									.addGap(77)
-									.addComponent(RightButton, GroupLayout.PREFERRED_SIZE, 69, GroupLayout.PREFERRED_SIZE))
-								.addGroup(groupLayout.createSequentialGroup()
-									.addGap(68)
-									.addComponent(UpButton, GroupLayout.PREFERRED_SIZE, 69, GroupLayout.PREFERRED_SIZE))
-								.addGroup(groupLayout.createSequentialGroup()
-									.addGap(68)
-									.addGroup(groupLayout.createParallelGroup(Alignment.LEADING, false)
-										.addComponent(ExitButton, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-										.addComponent(DownButton, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 69, Short.MAX_VALUE))))))
-					.addContainerGap())
+								.addComponent(ExitButton, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+								.addComponent(DownButton, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 69, Short.MAX_VALUE))))
+					.addContainerGap(12, Short.MAX_VALUE))
 		);
 		groupLayout.setVerticalGroup(
 			groupLayout.createParallelGroup(Alignment.LEADING)
@@ -281,7 +272,7 @@ public class GameWindow {
 								.addComponent(LabelGuardPers)
 								.addComponent(Guards, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)))
 						.addGroup(groupLayout.createSequentialGroup()
-							.addGap(72)
+							.addGap(64)
 							.addComponent(NewGame)))
 					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING, false)
 						.addGroup(groupLayout.createSequentialGroup()
@@ -298,9 +289,9 @@ public class GameWindow {
 							.addComponent(DownButton, GroupLayout.PREFERRED_SIZE, 29, GroupLayout.PREFERRED_SIZE)
 							.addPreferredGap(ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
 							.addComponent(ExitButton)))
-					.addGap(18)
-					.addComponent(StatusLabel)
-					.addGap(34))
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addComponent(StatusLabel, GroupLayout.DEFAULT_SIZE, 0, Short.MAX_VALUE)
+					.addGap(15))
 		);
 		frame.getContentPane().setLayout(groupLayout);
 	}

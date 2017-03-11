@@ -73,7 +73,7 @@ public class GameLogic {
 			Random rand = new Random();
 			this.level = level;
 
-			if (3 == level) {
+			if (0 == level) {
 				this.map = new DungeonMap();
 				this.hero = new Hero(0, false);
 				this.key[0] = 8;
@@ -84,7 +84,7 @@ public class GameLogic {
 					this.guard = new DrunkenGuard();
 				else if (2 == guard)
 					this.guard = new SuspiciousGuard();
-			} else if (4 == level) {
+			} else if (1 == level) {
 				this.map = new ArenaMap();
 				this.hero = new Hero(this.level, true);
 				this.key[0] = 1;

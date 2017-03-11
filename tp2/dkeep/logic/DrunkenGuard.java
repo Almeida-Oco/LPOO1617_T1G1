@@ -12,8 +12,9 @@ public class DrunkenGuard extends Guard{
 	}
 	
 	public DrunkenGuard(){
-		super();
+		super(1,8);
 	}
+	
 	public Pair<Integer,Integer> moveCharacter(int MAP_SIZE){
 		Random rand = new Random();
 		int result = rand.nextInt(2);

@@ -6,6 +6,6 @@ public class RookieGuard extends Guard{
 	}
 	
 	public RookieGuard(){
-		super();
+		super(1,8);
 	}	
 }

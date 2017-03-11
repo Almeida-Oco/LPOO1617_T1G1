@@ -45,7 +45,6 @@ public class Ogre extends Character {
 		else
 			return position;
 	}
-	
 
 	public Pair<Integer,Integer> moveClub(int MAP_SIZE){
 		Random rand = new Random();

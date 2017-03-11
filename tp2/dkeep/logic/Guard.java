@@ -17,11 +17,7 @@ public class Guard extends Character{
 
 	public Guard(int x , int y){
 		super(x,y);
-	}
-	
-	public Guard(){
-		super(1,8);
-		this.representation = "G";
+		this.representation="G";
 	}
 
 	public Pair<Integer,Integer> moveCharacter(int MAP_SIZE){

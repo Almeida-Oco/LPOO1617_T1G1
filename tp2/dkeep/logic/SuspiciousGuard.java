@@ -9,7 +9,7 @@ public class SuspiciousGuard extends Guard{
 	}
 	
 	public SuspiciousGuard(){
-		super();
+		super(1,8);
 	}
 
 	public Pair<Integer, Integer> moveCharacter(int MAP_SIZE){

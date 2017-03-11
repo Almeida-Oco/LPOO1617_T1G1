@@ -24,7 +24,7 @@ public abstract class Character {
 		}
 		return false;
 	}
-
+	
 	public Pair<Integer,Integer> getPos(){
 		return (Pair<Integer,Integer>)this.position.clone();
 	}

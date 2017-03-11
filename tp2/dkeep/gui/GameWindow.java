@@ -16,22 +16,27 @@ import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.JTextField;
 import javax.swing.LayoutStyle.ComponentPlacement;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.SimpleAttributeSet;
+import javax.swing.text.StyleConstants;
 
 import dkeep.cli.UserInput;
 import dkeep.logic.GameLogic;
+import dkeep.logic.Character;
 
 import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JTextArea;
 
 public class GameWindow {
-
+	
 	private JFrame frame;
-	private JTextField textField;
-	private int ogres;
-	private int guard;
-	private UserInput new_game;
-	private GameLogic game;
+	private JTextField OgreNumber;
+	private JTextArea ConsoleArea;
+	private JLabel StatusLabel,LabelNofOgres,LabelGuardPers;
+	private JButton UpButton,DownButton,LeftButton,RightButton;
+	private UserInput input;
+	protected GameLogic game;
 
 	/**
 	 * Launch the application.
@@ -56,6 +61,43 @@ public class GameWindow {
 		initialize();
 	}
 
+	public void disableButtons(){
+		this.DownButton.setEnabled(false);
+		this.UpButton.setEnabled(false);
+		this.LeftButton.setEnabled(false);
+		this.RightButton.setEnabled(false);
+	}
+	
+	public void newGame(int ogres,int guards){
+		this.input = new UserInput(ogres+1,guards+1);
+		this.game = new GameLogic(0,ogres+1,guards+1);
+	}
+	
+	public void enableButtons(){
+		this.DownButton.setEnabled(true);
+		this.UpButton.setEnabled(true);
+		this.LeftButton.setEnabled(true);
+		this.RightButton.setEnabled(true);
+	}
+	
+	public void proccessButton(char pressed){
+		this.game = game.moveHero(pressed);
+		this.game.moveAllVillains();	
+		System.out.println( this.input.printGame(this.game , this.game.getLevel() , true));
+		this.ConsoleArea.setText(input.printGame(game,game.getLevel(),false));
+		if (game.wonGame() || game.isGameOver()){
+			disableButtons();
+			this.StatusLabel.setText( (game.wonGame()) ? "YOU WIN!" : "YOU LOSE!" );
+			
+		}	
+		debug();
+	}
+	
+ 	private void debug(){
+		for (Character ch : this.game.getAllCharacters() )
+			System.out.println( ch.getClass()+" POS = "+ch.getPos());
+	}
+	
 	/**
 	 * Initialize the contents of the frame.
 	 */
@@ -63,96 +105,85 @@ public class GameWindow {
 		frame = new JFrame();
 		frame.setBounds(100, 100, 755, 581);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		JTextArea textArea = new JTextArea();
-		textArea.setFont(new Font("Courier New", Font.PLAIN, 14));
-		textArea.setEditable(false);
+		this.ConsoleArea = new JTextArea();
+		ConsoleArea.setFont(new Font("Courier New", Font.PLAIN, 14));
+		ConsoleArea.setEditable(false);
 		
-		JLabel lblNewLabel = new JLabel("New label");
+		this.StatusLabel = new JLabel("You can start a New Game!");
 		
-		JButton button = new JButton("Down");
-		button.addActionListener(new ActionListener() {
+		//---- BEGIN BUTTONS ----
+		this.UpButton = new JButton("Up");
+		UpButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				game.moveHero('s');
-				game.moveAllVillains();
-				if(!game.wonGame() && game.isGameOver())
-					textArea.setText(new_game.printGame(game.getMap().getMap(),game.getLevel()));
-					
+				proccessButton('w');
 			}
 		});
-		button.setEnabled(false);
-		button.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		UpButton.setEnabled(false);
+		UpButton.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		
-		JButton button_1 = new JButton("Up");
-		button_1.addActionListener(new ActionListener() {
+		this.LeftButton = new JButton("Left");
+		LeftButton.setEnabled(false);
+		LeftButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				game.moveHero('w');
-				game.moveAllVillains();
-				if(!game.wonGame() && game.isGameOver())
-					textArea.setText(new_game.printGame(game.getMap().getMap(),game.getLevel()));
+				proccessButton('a');
 			}
 		});
-		button_1.setEnabled(false);
-		button_1.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		LeftButton.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		
-		JButton button_2 = new JButton("Left");
-		button_2.setEnabled(false);
-		button_2.addActionListener(new ActionListener() {
+		this.RightButton = new JButton("Right");
+		RightButton.setEnabled(false);
+		RightButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				game.moveHero('a');
-				game.moveAllVillains();
-				if(!game.wonGame() && game.isGameOver())
-					textArea.setText(new_game.printGame(game.getMap().getMap(),game.getLevel()));
+				proccessButton('d');
 			}
 		});
-		button_2.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		RightButton.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		
-		JButton button_3 = new JButton("Right");
-		button_3.setEnabled(false);
-		button_3.addActionListener(new ActionListener() {
+		this.DownButton = new JButton("Down");
+		DownButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				game.moveHero('d');
-				game.moveAllVillains();
-				if(!game.wonGame() && game.isGameOver())
-					textArea.setText(new_game.printGame(game.getMap().getMap(),game.getLevel()));
+				proccessButton('s');
 			}
 		});
-		button_3.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		DownButton.setEnabled(false);
+		DownButton.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		// ---- END BUTTONS ----
 		
-		JLabel lblNumberOfOgres = new JLabel("Number of Ogres");
+		this.LabelNofOgres = new JLabel("Number of Ogres");
 		
-		textField = new JTextField();
-		textField.setColumns(10);
+		OgreNumber = new JTextField();
+		OgreNumber.setColumns(10);
 		
-		JLabel lblGuardPersonality = new JLabel("Guard Personality");
+		this.LabelGuardPers = new JLabel("Guard Personality");
 		
-		JComboBox comboBox = new JComboBox();
-		comboBox.setModel(new DefaultComboBoxModel(new String[] {"Novice", "Drunk", "Suspicious"}));
+		JComboBox Guards = new JComboBox();
+		Guards.setModel(new DefaultComboBoxModel(new String[] {"Novice", "Drunk", "Suspicious"}));
 		
 		
-		JButton btnNewButton = new JButton("New Game");
-		btnNewButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				
-				String temp;
-				temp=textField.getText();
-				ogres=Integer.parseInt(temp);
-				guard=comboBox.getSelectedIndex();
-				new_game= new UserInput(ogres,guard);
-				 game=new_game.getGame();
-				 button_2.setEnabled(true);
-				 button_1.setEnabled(true);
-				 button_3.setEnabled(true);
-				 button.setEnabled(true);
- 
-				 textArea.setText(new_game.printGame(game.getMap().getMap(),game.getLevel()));
-				 
-				 
-				
+		JButton NewGame = new JButton("New Game");
+		NewGame.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {	
+				int ogres = 0;
+				try{ 
+					ogres=Integer.parseInt(OgreNumber.getText());
+				}
+				catch (NumberFormatException n){
+					StatusLabel.setText("Ogre number NaN!");
+				}	
+				newGame(ogres, Guards.getSelectedIndex());
+				enableButtons();
+				StatusLabel.setText("You can play now.");
+				ConsoleArea.setText(input.printGame(game,game.getLevel(),false));
 			}
 		});
 		
+		JButton ExitButton = new JButton("Exit");
+		ExitButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				System.exit(0);
+			}
+		});
 		
-		JButton btnExit = new JButton("Exit");
 		GroupLayout groupLayout = new GroupLayout(frame.getContentPane());
 		groupLayout.setHorizontalGroup(
 			groupLayout.createParallelGroup(Alignment.LEADING)
@@ -161,36 +192,35 @@ public class GameWindow {
 						.addGroup(groupLayout.createSequentialGroup()
 							.addGap(25)
 							.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-								.addComponent(lblGuardPersonality)
-								.addComponent(lblNumberOfOgres))
+								.addComponent(LabelGuardPers)
+								.addComponent(LabelNofOgres))
 							.addGap(18)
 							.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
 								.addGroup(groupLayout.createSequentialGroup()
-									.addComponent(comboBox, GroupLayout.PREFERRED_SIZE, 79, GroupLayout.PREFERRED_SIZE)
-									.addPreferredGap(ComponentPlacement.RELATED, 358, Short.MAX_VALUE)
-									.addComponent(btnNewButton, GroupLayout.PREFERRED_SIZE, 103, GroupLayout.PREFERRED_SIZE)
+									.addComponent(Guards, GroupLayout.PREFERRED_SIZE, 79, GroupLayout.PREFERRED_SIZE)
+									.addPreferredGap(ComponentPlacement.RELATED, 347, Short.MAX_VALUE)
+									.addComponent(NewGame, GroupLayout.PREFERRED_SIZE, 103, GroupLayout.PREFERRED_SIZE)
 									.addGap(55))
-								.addComponent(textField, GroupLayout.PREFERRED_SIZE, 54, GroupLayout.PREFERRED_SIZE)))
+								.addComponent(OgreNumber, GroupLayout.PREFERRED_SIZE, 54, GroupLayout.PREFERRED_SIZE)))
 						.addGroup(groupLayout.createSequentialGroup()
 							.addGap(27)
-							.addComponent(textArea, GroupLayout.PREFERRED_SIZE, 483, GroupLayout.PREFERRED_SIZE)
+							.addGroup(groupLayout.createParallelGroup(Alignment.LEADING, false)
+								.addComponent(StatusLabel, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+								.addComponent(ConsoleArea, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 483, Short.MAX_VALUE))
 							.addPreferredGap(ComponentPlacement.UNRELATED)
 							.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
 								.addGroup(groupLayout.createSequentialGroup()
-									.addComponent(button_2, GroupLayout.PREFERRED_SIZE, 69, GroupLayout.PREFERRED_SIZE)
-									.addGap(72)
-									.addComponent(button_3, GroupLayout.PREFERRED_SIZE, 69, GroupLayout.PREFERRED_SIZE))
+									.addComponent(LeftButton, GroupLayout.PREFERRED_SIZE, 69, GroupLayout.PREFERRED_SIZE)
+									.addGap(77)
+									.addComponent(RightButton, GroupLayout.PREFERRED_SIZE, 69, GroupLayout.PREFERRED_SIZE))
 								.addGroup(groupLayout.createSequentialGroup()
 									.addGap(68)
-									.addComponent(button_1, GroupLayout.PREFERRED_SIZE, 69, GroupLayout.PREFERRED_SIZE))
+									.addComponent(UpButton, GroupLayout.PREFERRED_SIZE, 69, GroupLayout.PREFERRED_SIZE))
 								.addGroup(groupLayout.createSequentialGroup()
 									.addGap(68)
 									.addGroup(groupLayout.createParallelGroup(Alignment.LEADING, false)
-										.addComponent(btnExit, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-										.addComponent(button, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 69, Short.MAX_VALUE)))))
-						.addGroup(groupLayout.createSequentialGroup()
-							.addContainerGap()
-							.addComponent(lblNewLabel, GroupLayout.PREFERRED_SIZE, 188, GroupLayout.PREFERRED_SIZE)))
+										.addComponent(ExitButton, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+										.addComponent(DownButton, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 69, Short.MAX_VALUE))))))
 					.addContainerGap())
 		);
 		groupLayout.setVerticalGroup(
@@ -200,33 +230,33 @@ public class GameWindow {
 						.addGroup(groupLayout.createSequentialGroup()
 							.addGap(48)
 							.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
-								.addComponent(lblNumberOfOgres)
-								.addComponent(textField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+								.addComponent(LabelNofOgres)
+								.addComponent(OgreNumber, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
 							.addGap(18)
 							.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
-								.addComponent(lblGuardPersonality)
-								.addComponent(comboBox, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)))
+								.addComponent(LabelGuardPers)
+								.addComponent(Guards, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)))
 						.addGroup(groupLayout.createSequentialGroup()
 							.addGap(72)
-							.addComponent(btnNewButton)))
+							.addComponent(NewGame)))
 					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING, false)
 						.addGroup(groupLayout.createSequentialGroup()
 							.addGap(18)
-							.addComponent(textArea, GroupLayout.PREFERRED_SIZE, 350, GroupLayout.PREFERRED_SIZE))
+							.addComponent(ConsoleArea, GroupLayout.PREFERRED_SIZE, 350, GroupLayout.PREFERRED_SIZE))
 						.addGroup(groupLayout.createSequentialGroup()
 							.addGap(116)
-							.addComponent(button_1, GroupLayout.PREFERRED_SIZE, 29, GroupLayout.PREFERRED_SIZE)
+							.addComponent(UpButton, GroupLayout.PREFERRED_SIZE, 29, GroupLayout.PREFERRED_SIZE)
 							.addGap(11)
 							.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
-								.addComponent(button_2, GroupLayout.PREFERRED_SIZE, 29, GroupLayout.PREFERRED_SIZE)
-								.addComponent(button_3, GroupLayout.PREFERRED_SIZE, 29, GroupLayout.PREFERRED_SIZE))
+								.addComponent(RightButton, GroupLayout.PREFERRED_SIZE, 29, GroupLayout.PREFERRED_SIZE)
+								.addComponent(LeftButton, GroupLayout.PREFERRED_SIZE, 29, GroupLayout.PREFERRED_SIZE))
 							.addGap(11)
-							.addComponent(button, GroupLayout.PREFERRED_SIZE, 29, GroupLayout.PREFERRED_SIZE)
+							.addComponent(DownButton, GroupLayout.PREFERRED_SIZE, 29, GroupLayout.PREFERRED_SIZE)
 							.addPreferredGap(ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-							.addComponent(btnExit)))
+							.addComponent(ExitButton)))
 					.addGap(18)
-					.addComponent(lblNewLabel)
-					.addGap(36))
+					.addComponent(StatusLabel)
+					.addGap(34))
 		);
 		frame.getContentPane().setLayout(groupLayout);
 	}

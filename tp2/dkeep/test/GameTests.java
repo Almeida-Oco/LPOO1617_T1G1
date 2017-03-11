@@ -242,7 +242,7 @@ public class GameTests {
 	
 	public void moveinDungeon(){
 		Pair<Integer,Integer> test1 = new Pair<Integer,Integer>(1,1), test2 = new Pair<Integer,Integer>(1,2);
-		GameLogic game =new GameLogic(0);
+		GameLogic game =new GameLogic(0,0,0);
 		assertEquals( test1 , game.getHero().getPos());
 		game.moveHero('d');
 		assertEquals( test2 , game.getHero().getPos());

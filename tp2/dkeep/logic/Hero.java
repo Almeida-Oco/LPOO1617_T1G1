@@ -27,27 +27,27 @@ public class Hero extends Character {
 			return this.representation;
 	}
 
-	public int[] moveCharacter(int MAP_SIZE){
-		int[] temp = {0,0};
-		return temp;
+	public Pair<Integer, Integer> moveCharacter(int MAP_SIZE){
+		return new Pair<Integer,Integer>(-1,-1);
 	}
 
-	public int[] moveCharacter(int MAP_SIZE,int dir){
-		int[] temp = (int[])this.position.clone();
-		if (dir == 1 && temp[1]+1 < MAP_SIZE) { //move right
-			temp[1]++;
+	public Pair<Integer,Integer> moveCharacter(int MAP_SIZE,int dir){
+		Pair<Integer,Integer> temp = (Pair<Integer,Integer>)this.position.clone();
+		
+		if (dir == 1 && temp.getSecond().intValue()+1 < MAP_SIZE) { //move right
+			temp.setSecond(temp.getSecond().intValue()+1);
 			return temp;
 		}
-		else if (dir == 2 && temp[1]-1 >= 0) { //move left
-			temp[1]--;
+		else if (dir == 2 && temp.getSecond().intValue()-1 >= 0) { //move left
+			temp.setSecond(temp.getSecond().intValue()-1);
 			return temp;
 		}
-		else if (dir == 3 && temp[0]+1 < MAP_SIZE) { //move down
-			temp[0]++;
+		else if (dir == 3 && temp.getFirst().intValue()+1 < MAP_SIZE) { //move down
+			temp.setFirst(temp.getFirst().intValue()+1);
 			return temp;
 		}
-		else if (dir == 4 && temp[0]-1 >= 0) { //move up
-			temp[0]--;
+		else if (dir == 4 && temp.getFirst().intValue()-1 >= 0) { //move up
+			temp.setFirst(temp.getFirst().intValue()-1);
 			return temp;
 		}
 
@@ -62,22 +62,15 @@ public class Hero extends Character {
 		return this.has_key;
 	}
 	
-	public int[] getPos(){
-		return (int[])this.position.clone();
-	}
-	
-	public ArrayList< Pair<int[],String> > getPrintable(){
-		ArrayList< Pair<int[],String> > temp = new ArrayList< Pair<int[],String> >(1);
-		
-		int[] pos = {this.position[0],this.position[1]};
-		temp.add( new Pair<int[],String>(pos,this.representation));
+	public ArrayList< Pair< Pair<Integer,Integer> ,String> > getPrintable(){
+		ArrayList< Pair< Pair<Integer,Integer> ,String> > temp = new ArrayList< Pair< Pair<Integer,Integer> ,String> >(1);
+		temp.add( new Pair< Pair<Integer,Integer > ,String>( this.position,this.representation));
 		
 		return temp;
 	}
 	
-	public ArrayList<int[]> getGameOverPos(int level){
-		ArrayList<int[]> temp = new ArrayList<int[]>(0);
-		return temp;
+	public ArrayList<Pair<Integer,Integer> > getGameOverPos(int level){
+		return new ArrayList<Pair<Integer,Integer> >();
 	}
 
 	public boolean checkArmed(){

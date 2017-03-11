@@ -20,16 +20,16 @@ public class UserInput{
 		this.game = new GameLogic(3,ogres,guard);
 	}
 	
-	
 	public GameLogic getGame(){
 		return game;
 	}
+	
 	public String printGame(char[][] map,int level){
 		clearScreen();
 		StringBuilder result = new StringBuilder();
 		for(Character ch : this.game.getAllCharacters())
-			for( Pair<int[],String> p : ch.getPrintable() )
-				map[p.getFirst()[0]][p.getFirst()[1]] = p.getSecond().charAt(0);
+			for( Pair< Pair<Integer,Integer> ,String> p : ch.getPrintable() )
+				map[p.getFirst().getFirst().intValue()][p.getFirst().getSecond().intValue()] = p.getSecond().charAt(0);
 
 		for ( int i = 0 ; i < map.length ; i++ ) {
 			for ( int j = 0 ; j < map[i].length ; j++ ) {
@@ -66,7 +66,7 @@ public class UserInput{
 			this.game = this.game.moveHero(readChar());
 			this.game.moveAllVillains();			
 		}while (!this.game.wonGame() && !this.game.isGameOver());
-		printGame(this.game.getMap().getMap(),this.game.getLevel());
+		System.out.println(printGame(this.game.getMap().getMap(),this.game.getLevel()));
 		if (this.game.wonGame())
 			System.out.print("   YOU WIN!   \n");
 		else

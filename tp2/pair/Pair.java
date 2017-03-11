@@ -16,7 +16,15 @@ public class Pair<L,R> {
 	public R getSecond(){
 		return this.second;
 	}
-
+	
+	public void setFirst(L f){
+		this.first = f;
+	}
+	
+	public void setSecond(R s){
+		this.second = s;
+	}
+	
 	public String toString(){
 		return "<"+this.first.toString()+","+this.second.toString()+">";
 	}
@@ -29,5 +37,9 @@ public class Pair<L,R> {
 			Pair<L,R> p = o2;
 			return (this.first.equals(p.getFirst()) && this.second.equals(p.getSecond()) );
 		}
+	}
+
+	public Object clone(){
+		return new Pair<L,R>(this.first,this.second);
 	}
 } 

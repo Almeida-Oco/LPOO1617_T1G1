@@ -2,6 +2,8 @@ package dkeep.logic;
 import java.util.ArrayList;
 import java.util.Random;
 
+import pair.Pair;
+
 public class DrunkenGuard extends Guard{
 	private boolean asleep = false;
 
@@ -12,12 +14,12 @@ public class DrunkenGuard extends Guard{
 	public DrunkenGuard(){
 		super();
 	}
-	public int[] moveCharacter(int MAP_SIZE){
+	public Pair<Integer,Integer> moveCharacter(int MAP_SIZE){
 		Random rand = new Random();
 		int result = rand.nextInt(2);
 		if(0 == result){ //Dont fall asleep | Dont wake up
 			if(!this.asleep){
-				this.position = this.movement[this.index];
+				this.position = this.movement.get(this.index);
 				incIndex();
 			}
 		}
@@ -26,7 +28,7 @@ public class DrunkenGuard extends Guard{
 				this.asleep = false;
 				this.representation = "G";
 				this.step*= (rand.nextInt(2) == 0) ? 1 : -1;
-				this.position = this.movement[this.index];
+				this.position = this.movement.get(this.index);
 			}
 			else{
 				this.asleep = true;
@@ -34,17 +36,17 @@ public class DrunkenGuard extends Guard{
 			}
 		}
 
-		return this.position;
+		return (Pair<Integer,Integer>)this.position.clone();
 	}
 
 	public boolean isAsleep(){
 		return this.asleep;
 	}
 
-	public ArrayList<int[]> getGameOverPos(int level){
-		ArrayList<int[]> temp = new ArrayList<int[]>(1);
+	public ArrayList< Pair<Integer,Integer> > getGameOverPos(int level){
+		ArrayList< Pair<Integer,Integer> > temp = new ArrayList< Pair<Integer,Integer> >(1);
 		if(!asleep && level == 0)
-			temp.add((int[])this.position.clone());
+			temp.add(this.position);
 		return temp;
 	}
 	

@@ -1,11 +1,16 @@
 package dkeep.logic;
+import java.util.ArrayList;
 
+import pair.Pair;
+	
 public abstract class Map {
 	protected int MAP_SIZE;
 	protected char[][] map;
-	protected int[][] doors_to_open;
+	protected ArrayList< Pair<Pair<Integer,Integer> , String> > doors = new ArrayList< Pair< Pair<Integer,Integer> , String> >();
+	protected Pair<Integer,Integer> key;
 	
 	public Map(){};
+	
 	public Map(char[][] game_map){
 		this.map = game_map;
 		this.MAP_SIZE = game_map.length;
@@ -21,15 +26,29 @@ public abstract class Map {
 		return temp;
 	}
 
+	public Pair<Integer,Integer> getKey(){
+		return this.key;
+	}
+	
 	public int getMapSize(){
 		return this.MAP_SIZE;
 	}
 
-	public boolean isFree(int x , int y){
-		return (this.map[x][y] == ' ' || this.map[x][y] == 'K' || this.map[x][y] == 'S' || this.map[x][y] == 'k');
+	public char getTile(Pair<Integer,Integer> p){
+		return this.map[p.getFirst().intValue()][p.getSecond().intValue()];
 	}
 	
-	public abstract void openDoors();
+	public boolean isFree( Pair<Integer,Integer> p){
+		return (this.map[p.getFirst().intValue()][p.getSecond().intValue()] == ' ' || 
+				this.map[p.getFirst().intValue()][p.getSecond().intValue()] == 'K' || 
+				this.map[p.getFirst().intValue()][p.getSecond().intValue()] == 'S' || 
+				this.map[p.getFirst().intValue()][p.getSecond().intValue()] == 'k' );
+	}
+	
+	public void openDoors(){
+		for (Pair< Pair<Integer,Integer> , String> pos : this.doors)
+			this.map[ pos.getFirst().getFirst().intValue() ][ pos.getFirst().getSecond().intValue() ] = pos.getSecond().charAt(0);
+	}
 	
 	public abstract Map nextMap();
 	

@@ -1,10 +1,17 @@
 package dkeep.logic;
 import java.util.ArrayList;
+import java.util.Arrays;
 import pair.Pair;
 
 public class Guard extends Character{
-	protected int[][] movement =  {{1,7},{2,7},{3,7},{4,7},{5,7},{5,6},{5,5},{5,4},{5,3},{5,2},{5,1},{6,1},
-								   {6,2},{6,3},{6,4},{6,5},{6,6},{6,7},{6,8},{5,8},{4,8},{3,8},{2,8},{1,8}};
+	protected ArrayList< Pair<Integer,Integer> > movement = new ArrayList< Pair<Integer,Integer> >( 
+   Arrays.asList(new Pair<Integer,Integer>(1,7),new Pair<Integer,Integer>(2,7),new Pair<Integer,Integer>(3,7),new Pair<Integer,Integer>(4,7),
+				 new Pair<Integer,Integer>(5,7),new Pair<Integer,Integer>(5,6),new Pair<Integer,Integer>(5,5),new Pair<Integer,Integer>(5,4),
+				 new Pair<Integer,Integer>(5,3),new Pair<Integer,Integer>(5,2),new Pair<Integer,Integer>(5,1),new Pair<Integer,Integer>(6,1),
+				 new Pair<Integer,Integer>(6,2),new Pair<Integer,Integer>(6,3),new Pair<Integer,Integer>(6,4),new Pair<Integer,Integer>(6,5),
+				 new Pair<Integer,Integer>(6,6),new Pair<Integer,Integer>(6,7),new Pair<Integer,Integer>(6,8),new Pair<Integer,Integer>(5,8),
+				 new Pair<Integer,Integer>(4,8),new Pair<Integer,Integer>(3,8),new Pair<Integer,Integer>(2,8),new Pair<Integer,Integer>(1,8)) );
+				 
 	protected int index = 0;
 	protected int step = 1;
 
@@ -17,35 +24,32 @@ public class Guard extends Character{
 		this.representation = "G";
 	}
 
-	public int[] moveCharacter(int MAP_SIZE){
-		this.position[0] = this.movement[this.index][0];
-		this.position[1] = this.movement[this.index][1];
+	public Pair<Integer,Integer> moveCharacter(int MAP_SIZE){
+		this.position = (Pair<Integer,Integer>)this.movement.get(this.index).clone();
 		incIndex();
 		return this.position;
 	}
 
 	protected void incIndex(){
-		if (this.index+this.step == this.movement.length)
+		if (this.index+this.step == this.movement.size())
 			this.index = 0;
 		else if (this.index+this.step < 0)
-			this.index = (this.movement.length-1);
+			this.index = (this.movement.size()-1);
 		else
 			this.index+=this.step;
 	}
 
-	public ArrayList<int[]> getGameOverPos(int level){
-		ArrayList<int[]> temp = new ArrayList<int[]>(1);
+	public ArrayList< Pair<Integer,Integer> > getGameOverPos(int level){
+		ArrayList< Pair<Integer,Integer> > temp = new ArrayList< Pair<Integer,Integer> >(1);
 		if (level == 0){
-			temp.add((int[])this.position.clone());
+			temp.add(this.position);
 		}
 		return temp;
 	}
 	
-	public ArrayList< Pair<int[],String> > getPrintable(){
-		ArrayList< Pair<int[],String> > temp = new ArrayList< Pair<int[],String> >(1);
-		
-		int[] pos = {this.position[0],this.position[1]};
-		temp.add( new Pair<int[],String>(pos,this.representation));
+	public ArrayList< Pair<Pair<Integer,Integer> , String> > getPrintable(){
+		ArrayList< Pair< Pair<Integer,Integer> ,String> > temp = new ArrayList< Pair< Pair<Integer,Integer> ,String> >(1);
+		temp.add( new Pair< Pair<Integer,Integer> ,String>(this.position,this.representation));
 		
 		return temp;
 	}

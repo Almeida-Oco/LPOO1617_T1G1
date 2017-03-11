@@ -1,5 +1,7 @@
 package dkeep.logic;
 
+import pair.Pair;
+
 public class DungeonMap extends Map{
 	public DungeonMap(char[][] temp){ //WARNING!! USE SOLELY FOR TESTING PURPOSES !!
 		super(temp);
@@ -7,7 +9,6 @@ public class DungeonMap extends Map{
 	
 	public DungeonMap(){
 		super();
-		this.MAP_SIZE = 10;
 		char[][]temp={{'X','X','X','X','X','X','X','X','X','X'} ,
 					  {'X',' ',' ',' ','I',' ','X',' ',' ','X'} ,
 					  {'X','X','X',' ','X','X','X',' ',' ','X'} ,
@@ -18,21 +19,18 @@ public class DungeonMap extends Map{
 					  {'X','X','X',' ','X','X','X','X',' ','X'} ,
 					  {'X',' ','I',' ','I',' ','X','K',' ','X'} ,
 					  {'X','X','X','X','X','X','X','X','X','X'} };
+		
+		this.MAP_SIZE = temp.length;
 		this.map = new char[this.MAP_SIZE][];
-		this.doors_to_open = new int[2][2];
-		this.doors_to_open[0][0] = 0; this.doors_to_open[0][1] = 5; 
-		this.doors_to_open[1][0] = 0; this.doors_to_open[1][1] = 6; 
+		this.key = new Pair<Integer,Integer>(8,7);
+		this.doors.add( new Pair< Pair<Integer,Integer> ,String>( new Pair<Integer,Integer>( new Integer(5) ,new Integer(0)) , new String("S")));
+		this.doors.add( new Pair< Pair<Integer,Integer> ,String>( new Pair<Integer,Integer>( new Integer(6) ,new Integer(0)) , new String("S")));
 		int i = 0;
 		for( char[] c : temp){
 			this.map[i] = c;
 			i++;
 		}
 		
-	}
-	
-	public void openDoors(){
-		this.map[5][0] = 'S';
-		this.map[6][0] = 'S';
 	}
 	
 	public Map nextMap(){

@@ -64,9 +64,9 @@ public class Ogre extends Character {
 		return temp;
 	}
 
-	public boolean setClub(int x , int y, int MAP_SIZE){
-		if (x >= 0 && x <= MAP_SIZE && y >= 0 && y <= MAP_SIZE){
-			this.club = new Pair<Integer,Integer>(x,y);
+	public boolean setClub(Pair<Integer,Integer> p, int MAP_SIZE){
+		if (p.getFirst().intValue() >= 0 && p.getFirst().intValue() <= MAP_SIZE && p.getSecond().intValue() >= 0 && p.getSecond().intValue() <= MAP_SIZE){
+			this.club = new Pair<Integer,Integer>(p.getFirst().intValue(),p.getSecond().intValue());
 			return true;
 		}
 		return false;

@@ -121,13 +121,13 @@ public class GameTests {
 			do{ //MOVE OGRE FIRST
 				temp = game.getOgres().get(0).moveCharacter(map.getMapSize());
 			}while( !map.isFree(temp) );
-			game.getOgres().get(0).setPos(temp.getFirst().intValue(), temp.getSecond().intValue() ,map.getMapSize());
-			game.getOgres().get(0).setClub(temp.getFirst().intValue(), temp.getSecond().intValue() , map.getMapSize());
+			game.getOgres().get(0).setPos(temp ,map.getMapSize());
+			game.getOgres().get(0).setClub(temp , map.getMapSize());
 			
 			do{ //MOVE CLUB
 				temp = game.getOgres().get(0).moveClub(map.getMapSize());
 			}while( !map.isFree(temp) );
-			game.getOgres().get(0).setClub(temp.getFirst().intValue(), temp.getSecond().intValue() , map.getMapSize());
+			game.getOgres().get(0).setClub(temp , map.getMapSize());
 			int ox = game.getOgres().get(0).getX(), oy = game.getOgres().get(0).getY(), 
 				cx = game.getOgres().get(0).getClubX(), cy = game.getOgres().get(0).getClubY();
 			
@@ -226,7 +226,7 @@ public class GameTests {
 		assertEquals("O",ogres.get(0).getRepresentation());
 		game.moveHero('d');
 		ogres.get(0).stunOgre();
-		ogres.get(0).setClub(1, 4, game_map.getMapSize());
+		ogres.get(0).setClub(new Pair<Integer,Integer>(1,4), game_map.getMapSize());
 		assertEquals( false,game.isGameOver());
 		int x=ogres.get(0).getX();
 		int y=ogres.get(0).getY();

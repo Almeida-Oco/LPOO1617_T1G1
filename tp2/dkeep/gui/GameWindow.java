@@ -27,6 +27,8 @@ import dkeep.logic.Character;
 import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JTextArea;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
 public class GameWindow {
 	
@@ -42,6 +44,7 @@ public class GameWindow {
 	/**
 	 * Launch the application.
 	 */
+	
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
@@ -54,14 +57,26 @@ public class GameWindow {
 			}
 		});
 	}
-
+	
 	/**
 	 * Create the application.
 	 */
 	public GameWindow() {
 		initialize();
 	}
-
+	
+	public void proccessKey(char ch){
+		if (ch != '\n'){
+			this.game = this.game.moveHero(ch);
+			this.game.moveAllVillains();
+			this.ConsoleArea.setText(input.printGame(game,game.getLevel(),false));
+			if (game.wonGame() || game.isGameOver()){
+				disableButtons();
+				this.StatusLabel.setText( (game.wonGame()) ? "YOU WIN!" : "YOU LOSE!" );
+			}	
+		}
+	}
+	
 	public void disableButtons(){
 		this.DownButton.setEnabled(false);
 		this.UpButton.setEnabled(false);
@@ -75,9 +90,13 @@ public class GameWindow {
 			ogres=Integer.parseInt(OgreNumber.getText());
 		}
 		catch (NumberFormatException n){
-			StatusLabel.setText("Ogre number NaN!");
-			disableButtons();
-			return;
+			if(OgreNumber.getText().length() == 0)
+				ogres = 0;
+			else{
+				StatusLabel.setText("Ogre number NaN!");
+				disableButtons();
+				return;
+			}
 		}	
 		
 		this.input = new UserInput(ogres+1,guards+1);
@@ -103,7 +122,6 @@ public class GameWindow {
 		if (game.wonGame() || game.isGameOver()){
 			disableButtons();
 			this.StatusLabel.setText( (game.wonGame()) ? "YOU WIN!" : "YOU LOSE!" );
-			
 		}	
 		//debug();
 	}
@@ -117,10 +135,31 @@ public class GameWindow {
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
-		frame = new JFrame();
+		this.frame = new JFrame();
+		frame.getContentPane().addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyPressed(KeyEvent e) {
+				System.out.println("Pressed key!");
+				proccessKey( (e.getKeyCode() == KeyEvent.VK_W) ? 'w' : 
+					       ( (e.getKeyCode() == KeyEvent.VK_A) ? 'a' : 
+					       ( (e.getKeyCode() == KeyEvent.VK_S) ? 's' : 
+					       ( (e.getKeyCode() == KeyEvent.VK_D) ? 'd' : '\n'))));
+			}
+		});
 		frame.setBounds(100, 100, 755, 581);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.ConsoleArea = new JTextArea();
+		ConsoleArea.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyPressed(KeyEvent e) {
+				System.out.println("Pressed key!");
+				proccessKey( (e.getKeyCode() == KeyEvent.VK_W) ? 'w' : 
+					       ( (e.getKeyCode() == KeyEvent.VK_A) ? 'a' : 
+					       ( (e.getKeyCode() == KeyEvent.VK_S) ? 's' : 
+					       ( (e.getKeyCode() == KeyEvent.VK_D) ? 'd' : '\n'))));
+			
+			}
+		});
 		ConsoleArea.setFont(new Font("Courier New", Font.PLAIN, 14));
 		ConsoleArea.setEditable(false);
 		

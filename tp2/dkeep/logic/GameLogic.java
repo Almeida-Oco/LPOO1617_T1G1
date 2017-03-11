@@ -83,23 +83,23 @@ public class GameLogic {
 	}
 	
 	public void moveAllVillains() { // move all villains based on current level
+		for (Character ch : this.getAllCharacters())
+			System.out.println( ch.getClass()+" POS = "+ch.getPos() );
+		
 		Pair<Integer,Integer> pos;
 		if (0 == this.level) { // move only guards
 			do {
 				pos = guard.moveCharacter(map.getMapSize());
-			} while (!this.map.isFree(pos)); 
-			/* !!THIS IS NEVER FALSE!! && this.map.getMap()[pos.getFirst().intValue()][pos.getSecond().intValue()] != 'H'
-			&& this.map.getMap()[pos.getFirst().intValue()][pos.getSecond().intValue()] != 'A' */
-			
+			} while (!this.map.isFree(pos) || pos.equals(this.hero.getPos())); 
 		}
 		else if (1 == this.level) { // move only ogres
 			for (Ogre o : this.ogres) {
 				do {
 					pos = o.moveCharacter(this.map.getMapSize());
-				} while (!this.map.isFree(pos));
+				} while (!this.map.isFree(pos) || pos.equals(this.hero.getPos()));
 				//After getting a valid position sets position of ogre and representation
 				o.setRepresentation( (pos.equals(this.key)) ? "$" : "O");
-				o.setPos(pos.getFirst().intValue(), pos.getSecond().intValue(), this.map.getMapSize());
+				o.setPos(pos, this.map.getMapSize());
 				
 				if (this.hero.checkArmed()) 
 					if (inAdjSquares(pos))
@@ -112,7 +112,7 @@ public class GameLogic {
 				} while (!this.map.isFree(pos));
 				//After getting a valid position sets position of club and representation
 				o.setClubRepresentation( (pos.equals(this.key)) ? "$" : "*");
-				o.setClub(pos.getFirst().intValue(), pos.getSecond().intValue(), this.map.getMapSize());
+				o.setClub(pos, this.map.getMapSize());
 			}
 		}
 	}
@@ -138,7 +138,7 @@ public class GameLogic {
 			for (Character ch : getAllCharacters() )
 				if ( temp.equals(ch.getPos()) ) //If hero tried to jump on top of something just ignore it
 					return this;
-			this.hero.setPos( temp.getFirst().intValue() , temp.getSecond().intValue() , this.map.getMapSize() );
+			this.hero.setPos(temp , this.map.getMapSize() );
 		}
 		if (temp.equals(this.key) && level == 1){
 			hero.setRepresentation("K");
@@ -159,7 +159,7 @@ public class GameLogic {
 			this.hero.setKey(true);
 			this.map.pickUpKey();
 		} else if (this.map.getTile(p) == 'S') {
-			this.hero.setPos(p.getFirst().intValue(), p.getSecond().intValue(), this.map.getMapSize());
+			this.hero.setPos(p, this.map.getMapSize());
 			return true;
 		}
 

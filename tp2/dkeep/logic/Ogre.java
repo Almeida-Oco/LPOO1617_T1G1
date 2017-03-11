@@ -12,10 +12,13 @@ public class Ogre extends Character {
 	
 	public Ogre(int x , int y, int MAP_SIZE, boolean near){
 		super(x,y);
-		this.nearkill=near;
+		this.nearkill= near;
 		this.representation = "O";
-		if (x >= 0 && x <= MAP_SIZE && y >= 0 && y <= MAP_SIZE)
+		if (x >= 0 && x <= MAP_SIZE && y >= 0 && y <= MAP_SIZE){
 			this.position = new Pair<Integer,Integer>(x,y);
+			this.club = new Pair<Integer,Integer>(x,y);
+		}
+			
 		
 	}
 
@@ -79,13 +82,9 @@ public class Ogre extends Character {
 
 	public ArrayList<Pair<Pair<Integer, Integer>, String>> getPrintable(){
 		ArrayList< Pair< Pair<Integer,Integer> ,String> > temp = new ArrayList< Pair< Pair<Integer,Integer> ,String> >(2);
-		
-		int[] pos = new int[2];
-		pos[0] = this.getX() ; pos[1] = this.getY();
+		temp.add( new Pair< Pair<Integer,Integer> ,String>(this.club,this.club_representation));
 		temp.add( new Pair< Pair<Integer,Integer> ,String>(this.position,this.representation));
 		
-		pos[0] = this.getClubX(); pos[1] = this.getClubY();
-		temp.add( new Pair< Pair<Integer,Integer> ,String>(this.position,this.club_representation));
 		return temp;
 	}
 

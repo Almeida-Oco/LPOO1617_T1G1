@@ -226,6 +226,7 @@ public class GameTests {
 		assertEquals("O",ogres.get(0).getRepresentation());
 		game.moveHero('d');
 		ogres.get(0).stunOgre();
+		ogres.get(0).setClub(1, 4, game_map.getMapSize());
 		assertEquals( false,game.isGameOver());
 		int x=ogres.get(0).getX();
 		int y=ogres.get(0).getY();

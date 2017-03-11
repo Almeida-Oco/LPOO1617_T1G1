@@ -13,7 +13,7 @@ public class UserInput{
 	}
 	
 	public UserInput(){
-		this.game = new GameLogic(0);
+		this.game = new GameLogic(1); //CHANGE HERE TO START IN LEVEL 1	
 	}
 	
 	public UserInput(int ogres, int guard){

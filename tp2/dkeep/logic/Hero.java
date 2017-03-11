@@ -34,22 +34,14 @@ public class Hero extends Character {
 	public Pair<Integer,Integer> moveCharacter(int MAP_SIZE,int dir){
 		Pair<Integer,Integer> temp = (Pair<Integer,Integer>)this.position.clone();
 		
-		if (dir == 1 && temp.getSecond().intValue()+1 < MAP_SIZE) { //move right
+		if (dir == 1 && temp.getSecond().intValue()+1 < MAP_SIZE)//move right
 			temp.setSecond(temp.getSecond().intValue()+1);
-			return temp;
-		}
-		else if (dir == 2 && temp.getSecond().intValue()-1 >= 0) { //move left
+		else if (dir == 2 && temp.getSecond().intValue()-1 >= 0)//move left
 			temp.setSecond(temp.getSecond().intValue()-1);
-			return temp;
-		}
-		else if (dir == 3 && temp.getFirst().intValue()+1 < MAP_SIZE) { //move down
+		else if (dir == 3 && temp.getFirst().intValue()+1 < MAP_SIZE)//move down
 			temp.setFirst(temp.getFirst().intValue()+1);
-			return temp;
-		}
-		else if (dir == 4 && temp.getFirst().intValue()-1 >= 0) { //move up
+		else if (dir == 4 && temp.getFirst().intValue()-1 >= 0)//move up
 			temp.setFirst(temp.getFirst().intValue()-1);
-			return temp;
-		}
 
 		return temp;
 	}	

@@ -61,7 +61,9 @@ public class GameLogic {
 			this.hero = new Hero(this.level, true);
 			this.key = this.map.getKey();
 			int res = rand.nextInt(3) + 1;
-			for (int i = 0; i < res; i++)
+			for (int i = 0; i < res; i++){
+				
+			}
 				this.ogres.add(new Ogre(rand.nextInt(8) + 1, rand.nextInt(8) + 1, map.getMapSize(), false));
 		}
 	}
@@ -168,11 +170,12 @@ public class GameLogic {
 			for (Character ch : getAllCharacters() )
 				if ( temp.equals(ch.getPos()) ) //If hero tried to jump on top of something just ignore it
 					return this;
+			this.hero.setPos( temp.getFirst().intValue() , temp.getSecond().intValue() , this.map.getMapSize() );
 		}
-		
-		this.hero.setPos( temp.getFirst().intValue() , temp.getSecond().intValue() , this.map.getMapSize() );
-		if (temp.equals(this.key) && level == 1) 
+		if (temp.equals(this.key) && level == 1){
 			hero.setRepresentation("K");
+			this.map.pickUpKey();
+		}
 
 		return this;
 	}
@@ -192,13 +195,11 @@ public class GameLogic {
 	
 	//TODO DOUBLE CHECK THESE CHANGES!!
 	private boolean checkTriggers( Pair<Integer,Integer> p) { // checks if hero is in a key/lever or entered a door/stairs
-		if (p.equals(this.key))
+		if (p.equals(this.key) && level != 1)
 			this.map.openDoors();
 		else if (this.map.getTile(p) == 'I' && this.hero.hasKey()) {
-			if (level == 1){
+			if (level == 1)
 				p.setSecond(p.getSecond().intValue()+1); // stop hero from going inside stairs at first attempt
-				return false;
-			}
 			this.map.openDoors();
 		} else if (p.equals(this.key) && !this.hero.hasKey()) {
 			this.hero.setKey(true);

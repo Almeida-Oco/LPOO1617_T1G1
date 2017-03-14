@@ -125,6 +125,12 @@ public class Ogre extends Character {
 		}
 	}
 
+	@Override
+	public ArrayList<Pair<Integer, Integer>> getGameOverPos(int level) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 
 
 }

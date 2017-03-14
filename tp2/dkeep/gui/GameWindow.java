@@ -68,7 +68,7 @@ public class GameWindow {
 	
 	public void proccessKey(char ch){
 		if (ch != '\n' && !game.isGameOver()){
-			this.game = this.game.moveHero(ch);
+			this.game.moveHero(ch);
 			this.game.moveAllVillains();
 			this.ConsoleArea.setText(input.printGame(game,game.getLevel(),false));
 			if (game.wonGame() || game.isGameOver()){
@@ -120,15 +120,7 @@ public class GameWindow {
 	}
 	
 	public void proccessButton(char pressed){
-		this.game = game.moveHero(pressed);
-		this.game.moveAllVillains();	
-		//System.out.println( this.input.printGame(this.game , this.game.getLevel() , true));
-		this.ConsoleArea.setText(input.printGame(game,game.getLevel(),false));
-		if (game.wonGame() || game.isGameOver()){
-			disableButtons();
-			this.StatusLabel.setText( (game.wonGame()) ? "YOU WIN!" : "YOU LOSE!" );
-		}	
-		//debug();
+		proccessKey(pressed);
 	}
 	
  	private void debug(){

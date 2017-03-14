@@ -29,7 +29,9 @@ public class Hero extends Character {
 	}
 
 	public ArrayList< Pair<Integer,Integer> > moveCharacter(int MAP_SIZE,int dir){
-		ArrayList< Pair<Integer,Integer> > temp = (ArrayList< Pair<Integer,Integer> >)this.position.clone();
+		ArrayList< Pair<Integer,Integer> > temp = new ArrayList<Pair<Integer,Integer> >();
+		for (Pair<Integer,Integer> p : (ArrayList< Pair<Integer,Integer> >)this.position.clone() )
+			temp.add( (Pair<Integer,Integer>)p.clone());
 		
 		if (dir == 1 && temp.get(0).getSecond().intValue()+1 < MAP_SIZE)//move right
 			temp.get(0).setSecond(temp.get(0).getSecond().intValue()+1);

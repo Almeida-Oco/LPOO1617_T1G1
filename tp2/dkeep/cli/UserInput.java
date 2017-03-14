@@ -13,7 +13,7 @@ public class UserInput{
 	}
 	
 	public UserInput(int ogres, int guard){
-		this.game = new GameLogic(1,ogres,guard);
+		this.game = new GameLogic(0,ogres,guard);
 	}
 	
 	public GameLogic getGame(){
@@ -58,7 +58,7 @@ public class UserInput{
 	private void cpu(){
 		do{
 			System.out.println(printGame(this.game,this.game.getLevel(),true));
-			this.game = this.game.moveHero(readChar());
+			this.game = ( (this.game.moveHero( readChar() )) ? this.game.getNextLevel() : this.game);
 			this.game.moveAllVillains();			
 		}while (!this.game.wonGame() && !this.game.isGameOver());
 		System.out.println(printGame(this.game,this.game.getLevel(),true));

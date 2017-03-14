@@ -8,7 +8,7 @@ public abstract class Map {
 	protected int MAP_SIZE;
 	protected char[][] map;
 	protected ArrayList< Pair<Pair<Integer,Integer> , String> > doors = new ArrayList< Pair< Pair<Integer,Integer> , String> >();
-	protected ArrayList<Character> villains = new ArrayList<Character>();
+	protected ArrayList<Character> chars = new ArrayList<Character>();
 	protected Hero hero;
 	protected Pair<Integer,Integer> key;
 	
@@ -18,14 +18,14 @@ public abstract class Map {
 		if (guards != -1){ //MEANING NO GUARDS TO GENERATE
 			if (guards == 0) //IF GUARD IS 0 THEN RANDOMLY SELECT GUARD
 				guards = rand.nextInt(3)+1;
-			this.villains.add( (1 == guards) ? new RookieGuard() : ( (2 == guards) ? new DrunkenGuard() : new SuspiciousGuard()));
+			this.chars.add( (1 == guards) ? new RookieGuard() : ( (2 == guards) ? new DrunkenGuard() : new SuspiciousGuard()));
 		}
 		
 		if (ogres != -1){ // MEANING NO OGRE TO GENERATE
 			if (ogres == 0) //IF OGRE IS 0 THEN RANDOMLY SELECT NUMBER OF OGRES
 				ogres = rand.nextInt(3) + 1;
 			for (int i = 0; i < ogres; i++)
-				this.villains.add(new Ogre(rand.nextInt(8) + 1, rand.nextInt(8) + 1, this.map.length , false));
+				this.chars.add(new Ogre(rand.nextInt(8) + 1, rand.nextInt(8) + 1, this.map.length , false));
 		}
 	};
 	
@@ -53,7 +53,7 @@ public abstract class Map {
 	}
 
 	public ArrayList<Character> getCharacters(){
-		return (ArrayList<Character>)this.villains.clone();
+		return (ArrayList<Character>)this.chars.clone();
 	}
 	
 	public char getTile(Pair<Integer,Integer> p){
@@ -64,15 +64,15 @@ public abstract class Map {
 		int i = 0;
 		for (Pair<Integer,Integer> p : l){
 			if (this.map[p.getFirst().intValue()][p.getSecond().intValue()] == ' ' || 
-				this.map[p.getFirst().intValue()][p.getSecond().intValue()] == 'K' || 
+				this.map[p.getFirst().intValue()][p.getSecond().intValue()] == 'k' || 
 				this.map[p.getFirst().intValue()][p.getSecond().intValue()] == 'S' || 
 				this.map[p.getFirst().intValue()][p.getSecond().intValue()] == 'k' )
 				i++;
 			else
-				break;
+				return i;
 		}
 		
-		return i;
+		return -1;
 	}
 	
 	public void openDoors(){

@@ -1,5 +1,7 @@
 package dkeep.logic;
 
+import java.util.Random;
+
 import pair.Pair;
 
 public class DungeonMap extends Map{
@@ -9,6 +11,7 @@ public class DungeonMap extends Map{
 	
 	public DungeonMap(int guards , int ogres){
 		super(guards,-1);
+		this.chars.add(new Hero(1,1));
 		char[][]temp={{'X','X','X','X','X','X','X','X','X','X'} ,
 					  {'X',' ',' ',' ','I',' ','X',' ',' ','X'} ,
 					  {'X','X','X',' ','X','X','X',' ',' ','X'} ,
@@ -17,7 +20,7 @@ public class DungeonMap extends Map{
 					  {'I',' ',' ',' ',' ',' ',' ',' ',' ','X'} ,
 					  {'I',' ',' ',' ',' ',' ',' ',' ',' ','X'} ,
 					  {'X','X','X',' ','X','X','X','X',' ','X'} ,
-					  {'X',' ','I',' ','I',' ','X','K',' ','X'} ,
+					  {'X',' ','I',' ','I',' ','X','k',' ','X'} ,
 					  {'X','X','X','X','X','X','X','X','X','X'} };
 		
 		this.MAP_SIZE = temp.length;
@@ -34,7 +37,8 @@ public class DungeonMap extends Map{
 	}
 	
 	public Map nextMap(){
-		return new ArenaMap();
+		Random rand = new Random();
+		return new ArenaMap(-1 , rand.nextInt(3)+1);
 	}
 	
 	public void pickUpKey(){};

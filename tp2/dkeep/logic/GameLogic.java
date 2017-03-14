@@ -7,8 +7,6 @@ import java.util.Random;
 public class GameLogic {
 	private Map map;
 	private ArrayList<Character> villains = new ArrayList<Character>();
-	//private Guard guard;
-	//private ArrayList<Ogre> ogres = new ArrayList<Ogre>();
 	private Hero hero;
 	private Pair<Integer,Integer> key;
 	private int level = 0;
@@ -34,9 +32,9 @@ public class GameLogic {
 			this.key = new Pair<Integer,Integer>(1,2);
 		} else if (level == 2) {
 			this.map = game_map;
-			this.level = 1;
+			this.level = 0;
 			this.hero = new Hero(1, 1);
-			this.key = new Pair<Integer,Integer>(1,2);
+			this.key = new Pair<Integer,Integer>(1,3);
 		} else if (level == 3) {
 			this.map = game_map;
 			this.level = 1;
@@ -66,6 +64,11 @@ public class GameLogic {
 		this.key = this.map.getKey();
 	}
 
+	/**
+	 * @brief Moves all villains
+	 * @detail Before moving the villains it checks overlap and if the map is free in that spot.
+	 * 		   if one of those conditions fail, it will recalculate the position that failed to meet that criteria
+	 */
 	public void moveAllVillains() {
 		ArrayList< Pair<Integer,Integer> > pos;
 		for (Character ch : this.villains){
@@ -73,39 +76,8 @@ public class GameLogic {
 			do{
 				pos = ch.moveCharacter( (change1 > change2) ? change2 : change1 ,map.getMapSize());
 			} while ( ( (change1 = this.checkOverlap(pos)) != -1) && ( (change2 = this.map.isFree(pos)) != 1));
+			ch.setPos(pos, this.map.getMapSize());
 		}
-		
-		
-		/*
-		if (0 == this.level) { // move only guards
-			do {
-				pos = guard.moveCharacter(map.getMapSize());
-			} while (!this.map.isFree(pos) || pos.equals(this.hero.getPos())); 
-		}
-		else if (1 == this.level) { // move only ogres
-			for (Ogre o : this.ogres) {
-				do {
-					pos = o.moveCharacter(this.map.getMapSize());
-				} while (!this.map.isFree(pos) || pos.equals(this.hero.getPos()));
-				//After getting a valid position sets position of ogre and representation
-				o.setRepresentation( (pos.equals(this.key)) ? "$" : "O");
-				o.setPos(pos, this.map.getMapSize());
-				
-				if (this.hero.checkArmed()) 
-					if (inAdjSquares(pos))
-						o.stunOgre();
-					else
-						o.roundPassed();
-				
-				do {
-					pos = o.moveClub(this.map.getMapSize());
-				} while (!this.map.isFree(pos));
-				//After getting a valid position sets position of club and representation
-				o.setClubRepresentation( (pos.equals(this.key)) ? "$" : "*");
-				o.setClub(pos, this.map.getMapSize());
-			}
-		}
-		*/
 	}
 	
 	/**
@@ -113,7 +85,7 @@ public class GameLogic {
 	 * @param direction Direction to move hero
 	 * @return Next level GameLogic object, or this object otherwise
 	 */
-	public GameLogic moveHero(char direction) {
+	public boolean moveHero(char direction) {
 		ArrayList< Pair<Integer,Integer> > temp = new ArrayList<Pair<Integer,Integer> >();
 
 		if ('w' == direction)
@@ -125,17 +97,15 @@ public class GameLogic {
 		else if ('d' == direction)
 			temp = this.hero.moveCharacter(this.map.getMapSize(), 1);
 		else
-			return this;
+			return false;
 
 		if (checkTriggers(temp.get(0))) //IF hero is supposed to go to next level then return the next level 
-			return (this.level == 0) ? new GameLogic(++this.level,0,0) : this;
-		else
-			this.hero.setPos(temp, this.map.getMapSize());
+			return true;
 
 		if (this.map.isFree(temp) == -1) {
-			for (Character ch : getAllCharacters() )
+			for (Character ch : getVillains() )
 				if ( temp.equals(ch.getPos()) ) //If hero tried to jump on top of something just ignore it
-					return this;
+					return false;
 			this.hero.setPos(temp , this.map.getMapSize() );
 		}
 		if (temp.get(0).equals(this.key) && level == 1){
@@ -143,7 +113,7 @@ public class GameLogic {
 			this.map.pickUpKey();
 		}
 
-		return this;
+		return false;
 	}
 	
 	/**
@@ -171,26 +141,6 @@ public class GameLogic {
 		return false;
 	}
 
-	/**
-	 * @brief Checks if hero triggered something
-	 * @param p Position of hero
-	 * @return True if he triggered next level, false otherwise
-	 */
-	private boolean checkTriggers( Pair<Integer,Integer> p) { 
-		if (p.equals(this.key) && level != 1)
-			this.map.openDoors();
-		else if (this.map.getTile(p) == 'I' && this.hero.hasKey()) {
-			if (level == 1)
-				p.setSecond(p.getSecond().intValue()+1); // stop hero from going inside stairs at first attempt
-			this.map.openDoors();
-		} else if (p.equals(this.key) && !this.hero.hasKey()) {
-			this.hero.setKey(true);
-			this.map.pickUpKey();
-		} else if (this.map.getTile(p) == 'S') //Next Level
-			return true;
-
-		return false;
-	}
 	
 	/**
 	 * @brief Checks if hero is in adjacent squares
@@ -226,7 +176,33 @@ public class GameLogic {
 		
 		return -1;
 	}
+	/**
+	 * @brief Checks if hero triggered something
+	 * @param p Position of hero
+	 * @return True if he triggered next level, false otherwise
+	 */
+	private boolean checkTriggers( Pair<Integer,Integer> p) { 
+		if (p.equals(this.key) && level != 1)
+			this.map.openDoors();
+		else if (this.map.getTile(p) == 'I' && this.hero.hasKey()) {
+			if (level == 1)
+				p.setSecond(p.getSecond().intValue()+1); // stop hero from going inside stairs at first attempt
+			this.map.openDoors();
+		} else if (p.equals(this.key) && !this.hero.hasKey()) {
+			this.hero.setKey(true);
+			this.map.pickUpKey();
+		} else if (this.map.getTile(p) == 'S') //Next Level
+			return true;
+
+		return false;
+	}
 	
+	
+	
+	public GameLogic getNextLevel(){
+		Random rand = new Random();
+		return new GameLogic(++this.level, rand.nextInt(3)+1,-1);
+	}
 	/**
 	 * @brief Gets all Villains in a single container
 	 * @return Array with all villains

@@ -7,8 +7,8 @@ public class DungeonMap extends Map{
 		super(temp);
 	}
 	
-	public DungeonMap(){
-		super();
+	public DungeonMap(int guards , int ogres){
+		super(guards,-1);
 		char[][]temp={{'X','X','X','X','X','X','X','X','X','X'} ,
 					  {'X',' ',' ',' ','I',' ','X',' ',' ','X'} ,
 					  {'X','X','X',' ','X','X','X',' ',' ','X'} ,

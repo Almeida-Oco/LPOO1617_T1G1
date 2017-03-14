@@ -12,8 +12,9 @@ public class ArenaMap extends Map{
 		this.doors.add( new Pair< Pair<Integer,Integer> ,String>( new Pair<Integer,Integer>( new Integer(0) ,new Integer(4)) , "S"));
 	}
 	
-	public ArenaMap(){
-		super();
+	public ArenaMap(int guards , int ogres){
+		super(-1,ogres);
+		this.hero = new Hero(1,1);
 		char[][]temp={{'X','X','X','X','X','X','X','X','X','X'} ,
 					  {'I',' ',' ',' ',' ',' ',' ',' ','K','X'} ,
 					  {'X',' ',' ',' ',' ',' ',' ',' ',' ','X'} ,

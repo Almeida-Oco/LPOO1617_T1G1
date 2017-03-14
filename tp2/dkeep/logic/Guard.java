@@ -20,10 +20,11 @@ public class Guard extends Character{
 		this.representation="G";
 	}
 
-	public Pair<Integer,Integer> moveCharacter(int MAP_SIZE){
-		this.position = (Pair<Integer,Integer>)this.movement.get(this.index).clone();
+	public ArrayList< Pair<Integer,Integer> > moveCharacter(int change , int MAP_SIZE){
+		ArrayList<Pair<Integer,Integer> > temp = new ArrayList<Pair<Integer,Integer> >();
+		temp.add((Pair<Integer,Integer>)this.movement.get(this.index).clone());
 		incIndex();
-		return this.position;
+		return temp;
 	}
 
 	protected void incIndex(){
@@ -38,15 +39,21 @@ public class Guard extends Character{
 	public ArrayList< Pair<Integer,Integer> > getGameOverPos(int level){
 		ArrayList< Pair<Integer,Integer> > temp = new ArrayList< Pair<Integer,Integer> >(1);
 		if (level == 0){
-			temp.add(this.position);
+			temp.add(this.position.get(0));
 		}
 		return temp;
 	}
 	
 	public ArrayList< Pair<Pair<Integer,Integer> , String> > getPrintable(){
 		ArrayList< Pair< Pair<Integer,Integer> ,String> > temp = new ArrayList< Pair< Pair<Integer,Integer> ,String> >(1);
-		temp.add( new Pair< Pair<Integer,Integer> ,String>(this.position,this.representation));
+		for (Pair<Integer,Integer> p : this.position )
+			temp.add( new Pair< Pair<Integer,Integer> ,String>(p,this.representation));
 		
 		return temp;
+	}
+
+	@Override
+	public ArrayList<Pair<Integer, Integer>> getGameOverPos() {
+		return this.position;
 	}
 }

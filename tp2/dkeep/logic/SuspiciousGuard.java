@@ -1,4 +1,5 @@
 package dkeep.logic;
+import java.util.ArrayList;
 import java.util.Random;
 
 import pair.Pair;
@@ -12,12 +13,12 @@ public class SuspiciousGuard extends Guard{
 		super(1,8);
 	}
 
-	public Pair<Integer, Integer> moveCharacter(int MAP_SIZE){
+	public ArrayList<Pair<Integer, Integer> > moveCharacter(int MAP_SIZE){
 		Random rand = new Random();
-		this.position = this.movement.get(this.index);
+		this.position.set(0,this.movement.get(this.index));
 		this.step = (rand.nextInt(2) == 0) ? 1 : -1;
 		incIndex();
 		
-		return (Pair<Integer,Integer>)this.position.clone();
+		return (ArrayList<Pair<Integer,Integer> >)this.position.clone();
 	}
 }

@@ -1,5 +1,6 @@
 package dkeep.logic;
 import java.util.ArrayList;
+import java.util.Random;
 
 import pair.Pair;
 	
@@ -7,9 +8,26 @@ public abstract class Map {
 	protected int MAP_SIZE;
 	protected char[][] map;
 	protected ArrayList< Pair<Pair<Integer,Integer> , String> > doors = new ArrayList< Pair< Pair<Integer,Integer> , String> >();
+	protected ArrayList<Character> villains = new ArrayList<Character>();
+	protected Hero hero;
 	protected Pair<Integer,Integer> key;
 	
-	public Map(){};
+	public Map(int guards , int ogres){ // 1-Rookie, 2 - Drunken, 3-Suspicious 
+		Random rand = new Random();
+		
+		if (guards != -1){ //MEANING NO GUARDS TO GENERATE
+			if (guards == 0) //IF GUARD IS 0 THEN RANDOMLY SELECT GUARD
+				guards = rand.nextInt(3)+1;
+			this.villains.add( (1 == guards) ? new RookieGuard() : ( (2 == guards) ? new DrunkenGuard() : new SuspiciousGuard()));
+		}
+		
+		if (ogres != -1){ // MEANING NO OGRE TO GENERATE
+			if (ogres == 0) //IF OGRE IS 0 THEN RANDOMLY SELECT NUMBER OF OGRES
+				ogres = rand.nextInt(3) + 1;
+			for (int i = 0; i < ogres; i++)
+				this.villains.add(new Ogre(rand.nextInt(8) + 1, rand.nextInt(8) + 1, this.map.length , false));
+		}
+	};
 	
 	public Map(char[][] game_map){
 		this.map = game_map;
@@ -34,6 +52,10 @@ public abstract class Map {
 		return this.MAP_SIZE;
 	}
 
+	public ArrayList<Character> getCharacters(){
+		return (ArrayList<Character>)this.villains.clone();
+	}
+	
 	public char getTile(Pair<Integer,Integer> p){
 		return this.map[p.getFirst().intValue()][p.getSecond().intValue()];
 	}

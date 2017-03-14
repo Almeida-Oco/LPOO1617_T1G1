@@ -6,24 +6,29 @@ import java.util.Random;
 
 public class GameLogic {
 	private Map map;
-	private ArrayList<Character> chars = new ArrayList<Character>();
+	private ArrayList<Character> villains = new ArrayList<Character>();
 	//private Guard guard;
 	//private ArrayList<Ogre> ogres = new ArrayList<Ogre>();
 	private Hero hero;
 	private Pair<Integer,Integer> key;
 	private int level = 0;
-
+	
+	/**
+	 * @brief Constructor !!WARNING!! ONLY FOR TESTING !!
+	 * @param game_map Object of game map to use
+	 * @param level what hipothetical level it is
+	 */
 	public GameLogic(Map game_map, int level) { // WARNING!! ONLY FOR TESTING !!
 		
 		if (level == 0) {
 			this.level = level;
-			this.chars.add(new RookieGuard(1, 3));
+			this.villains.add(new RookieGuard(1, 3));
 			this.map = game_map;
 			this.hero = new Hero(1, 1);
 		} else if (level == 1) {
 			this.level = 1;
 			Ogre o = new Ogre(2, 2, game_map.getMapSize(), true);
-			this.chars.add(o);
+			this.villains.add(o);
 			this.map = game_map;
 			this.hero = new Hero(1, 1);
 			this.key = new Pair<Integer,Integer>(1,2);
@@ -38,11 +43,17 @@ public class GameLogic {
 			this.hero = new Hero(1, 1);
 			hero.setArmed(true);
 			Ogre o = new Ogre(1, 3, game_map.getMapSize(), false);
-			this.chars.add(o);
+			this.villains.add(o);
 		}
 
 	}
-
+	
+	/**
+	 * @brief Constructor
+	 * @param level Current Level
+	 * @param ogre How many ogres 
+	 * @param guard How many guards
+	 */
 	public GameLogic(int level, int ogre, int guard) {
 		this.level = level;
 		this.map = ( (level == 0) ? new DungeonMap(guard,-1) : new ArenaMap(-1,ogre) );
@@ -51,20 +62,21 @@ public class GameLogic {
 			if (ch instanceof Hero)
 				this.hero = (Hero)ch;
 			else
-				this.chars.add(ch);
+				this.villains.add(ch);
 		this.key = this.map.getKey();
 	}
 
-	public void moveAllVillains() { // move all villains based on current level
+	public void moveAllVillains() {
 		ArrayList< Pair<Integer,Integer> > pos;
-		for (Character ch : this.chars){
+		for (Character ch : this.villains){
+			int change1 = 0, change2 = 0;
 			do{
-				pos = ch.moveCharacter(map.getMapSize());
-			}
+				pos = ch.moveCharacter( (change1 > change2) ? change2 : change1 ,map.getMapSize());
+			} while ( ( (change1 = this.checkOverlap(pos)) != -1) && ( (change2 = this.map.isFree(pos)) != 1));
 		}
 		
 		
-		
+		/*
 		if (0 == this.level) { // move only guards
 			do {
 				pos = guard.moveCharacter(map.getMapSize());
@@ -93,9 +105,15 @@ public class GameLogic {
 				o.setClub(pos, this.map.getMapSize());
 			}
 		}
+		*/
 	}
-
-	public GameLogic moveHero(char direction) { // moves hero, returns an object of GameLogic, either next level or same level
+	
+	/**
+	 * @brief Moves hero in given direction
+	 * @param direction Direction to move hero
+	 * @return Next level GameLogic object, or this object otherwise
+	 */
+	public GameLogic moveHero(char direction) {
 		ArrayList< Pair<Integer,Integer> > temp = new ArrayList<Pair<Integer,Integer> >();
 
 		if ('w' == direction)
@@ -114,7 +132,7 @@ public class GameLogic {
 		else
 			this.hero.setPos(temp, this.map.getMapSize());
 
-		if (this.map.isFree(temp.get(0))) {
+		if (this.map.isFree(temp) == -1) {
 			for (Character ch : getAllCharacters() )
 				if ( temp.equals(ch.getPos()) ) //If hero tried to jump on top of something just ignore it
 					return this;
@@ -128,6 +146,10 @@ public class GameLogic {
 		return this;
 	}
 	
+	/**
+	 * 
+	 * @return
+	 */
 	public boolean wonGame() { // checks if hero got to the final stairs
 		for ( Pair<Integer,Integer> p : this.hero.getPos() )
 			if (this.level == 1 && this.map.getTile( p )== 'S')
@@ -136,6 +158,10 @@ public class GameLogic {
 		return false;
 	}
 
+	/**
+	 * @brief Checks if its game over
+	 * @return True if it is game over, false otherwise
+	 */
 	public boolean isGameOver() { // Gets all characters game over positions and checks
 		for (Character ch : getAllCharacters())
 			for (Pair<Integer,Integer> pos : ch.getGameOverPos(this.level))
@@ -145,8 +171,12 @@ public class GameLogic {
 		return false;
 	}
 
-	
-	private boolean checkTriggers( Pair<Integer,Integer> p) { // checks if hero is in a key/lever or entered a door/stairs
+	/**
+	 * @brief Checks if hero triggered something
+	 * @param p Position of hero
+	 * @return True if he triggered next level, false otherwise
+	 */
+	private boolean checkTriggers( Pair<Integer,Integer> p) { 
 		if (p.equals(this.key) && level != 1)
 			this.map.openDoors();
 		else if (this.map.getTile(p) == 'I' && this.hero.hasKey()) {
@@ -161,8 +191,13 @@ public class GameLogic {
 
 		return false;
 	}
-
-	private boolean inAdjSquares( Pair<Integer,Integer> p) { // check if hero is in adjacent square
+	
+	/**
+	 * @brief Checks if hero is in adjacent squares
+	 * @param p Square to check
+	 * @return True if hero is in adjacent, false if not
+	 */
+	private boolean inAdjSquares( Pair<Integer,Integer> p) {
 		if (p.getFirst().intValue() != -1 && p.getSecond().intValue() != -1)
 			if ((this.hero.getX() == p.getFirst().intValue() - 1 && this.hero.getY() == p.getSecond().intValue()) || 
 				(this.hero.getX() == p.getFirst().intValue() + 1 && this.hero.getY() == p.getSecond().intValue()) ||
@@ -181,7 +216,7 @@ public class GameLogic {
 	private int checkOverlap( ArrayList< Pair<Integer,Integer> > l){
 		int i = 0;
 		for ( Pair<Integer,Integer> p_l : l){
-			for (Character ch : this.chars ){
+			for (Character ch : this.villains ){
 				for (Pair<Integer,Integer> p_ch : ch.getPos() )
 					if (p_ch.equals(p_l))
 						return i;
@@ -197,14 +232,14 @@ public class GameLogic {
 	 * @return Array with all villains
 	 */
 	public ArrayList<Character> getVillains(){
-		return (ArrayList<Character>)this.chars.clone();
+		return (ArrayList<Character>)this.villains.clone();
 	}
 	/**
 	 * @brief Gets all Characters in a single container
 	 * @return Array with all Characters
 	 */
-	public ArrayList<Character> getAllCharacters() { // gathers all characters (hero,guard,ogre) in an ArrayList
-		ArrayList<Character> temp = (ArrayList<Character>)this.chars.clone();
+	public ArrayList<Character> getAllCharacters() {
+		ArrayList<Character> temp = (ArrayList<Character>)this.villains.clone();
 		temp.add(0, this.hero);
 		return temp;
 	}

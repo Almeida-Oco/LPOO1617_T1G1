@@ -100,7 +100,6 @@ public class Ogre extends Character {
 		
 		return temp;
 	}
-	
 	@Override
 	public ArrayList<Pair<Integer, Integer>> getGameOverPos(){
 		ArrayList< Pair<Integer,Integer> > temp = new ArrayList< Pair<Integer,Integer> >(2);

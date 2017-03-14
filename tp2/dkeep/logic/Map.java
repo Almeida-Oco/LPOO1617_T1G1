@@ -60,11 +60,19 @@ public abstract class Map {
 		return this.map[p.getFirst().intValue()][p.getSecond().intValue()];
 	}
 	
-	public boolean isFree( Pair<Integer,Integer> p){
-		return (this.map[p.getFirst().intValue()][p.getSecond().intValue()] == ' ' || 
+	public int isFree( ArrayList< Pair<Integer,Integer> > l){
+		int i = 0;
+		for (Pair<Integer,Integer> p : l){
+			if (this.map[p.getFirst().intValue()][p.getSecond().intValue()] == ' ' || 
 				this.map[p.getFirst().intValue()][p.getSecond().intValue()] == 'K' || 
 				this.map[p.getFirst().intValue()][p.getSecond().intValue()] == 'S' || 
-				this.map[p.getFirst().intValue()][p.getSecond().intValue()] == 'k' );
+				this.map[p.getFirst().intValue()][p.getSecond().intValue()] == 'k' )
+				i++;
+			else
+				break;
+		}
+		
+		return i;
 	}
 	
 	public void openDoors(){

@@ -28,7 +28,7 @@ public class Hero extends Character {
 		return new ArrayList<Pair<Integer,Integer> >();
 	}
 
-	public ArrayList< Pair<Integer,Integer> > moveCharacter(int MAP_SIZE,int dir){
+	public ArrayList< Pair<Integer,Integer> > moveCharacter(ArrayList<Pair<Integer,Integer> > current, int MAP_SIZE,int dir){
 		ArrayList< Pair<Integer,Integer> > temp = new ArrayList<Pair<Integer,Integer> >();
 		for (Pair<Integer,Integer> p : (ArrayList< Pair<Integer,Integer> >)this.position.clone() )
 			temp.add( (Pair<Integer,Integer>)p.clone());
@@ -60,12 +60,8 @@ public class Hero extends Character {
 		
 		return temp;
 	}
-	
-	public ArrayList<Pair<Integer,Integer> > getGameOverPos(int level){
-		return new ArrayList<Pair<Integer,Integer> >();
-	}
 
-	public boolean checkArmed(){
+	public boolean isArmed(){
 		return this.is_armed;
 	}
 	

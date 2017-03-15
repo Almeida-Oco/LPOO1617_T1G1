@@ -9,12 +9,11 @@ public abstract class Map {
 	protected char[][] map;
 	protected ArrayList< Pair<Pair<Integer,Integer> , String> > doors = new ArrayList< Pair< Pair<Integer,Integer> , String> >();
 	protected ArrayList<Character> chars = new ArrayList<Character>();
-	protected Hero hero;
 	protected Pair<Integer,Integer> key;
 	
-	public Map(int guards , int ogres){ // 1-Rookie, 2 - Drunken, 3-Suspicious 
+	public Map(int guards , int ogres, char[][] map){ // 1-Rookie, 2 - Drunken, 3-Suspicious 
 		Random rand = new Random();
-		
+		this.map = map;
 		if (guards != -1){ //MEANING NO GUARDS TO GENERATE
 			if (guards == 0) //IF GUARD IS 0 THEN RANDOMLY SELECT GUARD
 				guards = rand.nextInt(3)+1;

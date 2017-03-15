@@ -35,11 +35,12 @@ public abstract class Character {
 	
 	/**
 	 * @brief Moves the character
+	 * @param current Used in case there's a need to recalculate something, such as the club, current will hold all positions which were valid after a first pass on this function
 	 * @param change Value returned by checkOverlap in GameLogic, determines which part of the returned array is overlapping
 	 * @param MAP_SIZE Size of the current game map
 	 * @return Returns an array with all the positions all objects associated with the character will try to move to
 	 */
-	public abstract ArrayList< Pair<Integer,Integer> > moveCharacter(int change ,int MAP_SIZE); 
+	public abstract ArrayList< Pair<Integer,Integer> > moveCharacter(ArrayList<Pair<Integer,Integer> > current,int change ,int MAP_SIZE); 
 	
 	/**
 	 * @brief Sets the character position to the values in the array
@@ -79,8 +80,7 @@ public abstract class Character {
 	public String getRepresentation(){
 		return this.representation;
 	}
-	
-	public abstract ArrayList< Pair<Integer,Integer>> getGameOverPos(int level); 
+
 	/**
 	 * @brief Gets what to print for this character 
 	 * @return Array with position to paint and what String to paint there

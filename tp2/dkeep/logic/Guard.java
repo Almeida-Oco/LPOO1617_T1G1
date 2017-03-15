@@ -20,7 +20,7 @@ public class Guard extends Character{
 		this.representation="G";
 	}
 
-	public ArrayList< Pair<Integer,Integer> > moveCharacter(int change , int MAP_SIZE){
+	public ArrayList< Pair<Integer,Integer> > moveCharacter(ArrayList<Pair<Integer,Integer> > current,int change , int MAP_SIZE){
 		ArrayList<Pair<Integer,Integer> > temp = new ArrayList<Pair<Integer,Integer> >();
 		temp.add((Pair<Integer,Integer>)this.movement.get(this.index).clone());
 		incIndex();
@@ -34,14 +34,6 @@ public class Guard extends Character{
 			this.index = (this.movement.size()-1);
 		else
 			this.index+=this.step;
-	}
-
-	public ArrayList< Pair<Integer,Integer> > getGameOverPos(int level){
-		ArrayList< Pair<Integer,Integer> > temp = new ArrayList< Pair<Integer,Integer> >(1);
-		if (level == 0){
-			temp.add(this.position.get(0));
-		}
-		return temp;
 	}
 	
 	public ArrayList< Pair<Pair<Integer,Integer> , String> > getPrintable(){

@@ -37,6 +37,7 @@ public class UserInput{
 		}
 		return result.toString();
 	}
+	
 	private void clearScreen(){
 		for(int i = 0; i < 15 ; i++)
 			System.out.println("");
@@ -56,9 +57,16 @@ public class UserInput{
 	}
 
 	private void cpu(){
+		boolean change_lvl = false;
 		do{
 			System.out.println(printGame(this.game,this.game.getLevel(),true));
-			this.game = ( (this.game.moveHero( readChar() )) ? this.game.getNextLevel() : this.game);
+			change_lvl=this.game.moveHero( readChar());
+			System.out.println( this.game.getHero().getPos() );
+			if (change_lvl && !this.game.wonGame() )
+				this.game = this.game.getNextLevel(-1,-1);
+			if (this.game.isGameOver() || this.game.wonGame())
+				break;
+			
 			this.game.moveAllVillains();			
 		}while (!this.game.wonGame() && !this.game.isGameOver());
 		System.out.println(printGame(this.game,this.game.getLevel(),true));

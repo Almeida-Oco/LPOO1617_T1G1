@@ -32,7 +32,7 @@ public class GameTests {
 	
 	@Test
 	public void testHeroIsCapturedByGuard(){
-		ArenaMap gameMap =new ArenaMap(map);
+		ArenaMap gameMap =new ArenaMap(this.map);
 		GameLogic game=new GameLogic(gameMap,0);
 		assertFalse(game.isGameOver());
 		game.moveHero('d');
@@ -57,11 +57,11 @@ public class GameTests {
 		Pair<Integer,Integer> test1 = new Pair<Integer,Integer>(1,1), test2 = new Pair<Integer,Integer>(2,1);
 		ArenaMap game_map = new ArenaMap(this.map);
 		GameLogic game = new GameLogic(game_map,0);
-		assertEquals( test1, game.getHero().getPos());
+		assertEquals( test1, game.getHero().getPos().get(0));
 		game.moveHero('s');
-		assertEquals( test2, game.getHero().getPos());
+		assertEquals( test2, game.getHero().getPos().get(0));
 		game.moveHero('a');
-		assertEquals( test2, game.getHero().getPos());
+		assertEquals( test2, game.getHero().getPos().get(0));
 }
 
 	@Test
@@ -110,35 +110,24 @@ public class GameTests {
 		assertEquals("K",h.getRepresentation());
 	}
 	
-	@Test(timeout=1000)
+	@Test
 	public void testMoveAndClub(){
 		ArenaMap map = new ArenaMap(-1,1); //generate only 1 ogre
 		GameLogic game = new GameLogic(map,1);
-		ArrayList<Pair<Integer,Integer> > temp;
+		ArrayList<Pair<Integer,Integer> > temp = new ArrayList<Pair<Integer,Integer> >();
 		int px = game.getVillains().get(0).getX() , py = game.getVillains().get(0).getY();
 		boolean cnn= false,cns=false,cnw=false,cne=false, csn=false , css=false , csw=false , cse=false, 
 				cen=false , ces=false , cew=false , cee=false , cwn=false , cws=false , cwe=false , cww=false;
 		while ( !(cnn && cns && cnw && cne && csn && css && csw && cse && cen && ces && cew && cee && cwn && cws && cwe && cww) ){
-			int change1 = 0 , change2 = 0;
+			int change1 = 0;
 			do{
-				temp = game.getVillains().get(0).moveCharacter( change1 ,map.getMapSize());
-			} while ( ( (change1 = map.isFree( temp )) != 1));
+				temp = game.getVillains().get(0).moveCharacter(temp,change1 ,map.getMapSize());
+			} while ( (change1 = game.getMap().isFree( temp )) != -1);
 			game.getVillains().get(0).setPos(temp, map.getMapSize());
-			/*
-			do{ //MOVE OGRE FIRST
-				temp = game.getVillains().get(0).moveCharacter(map.getMapSize());
-			}while( !map.isFree(temp) );
-			game.getVillains().get(0).setPos(temp ,map.getMapSize());
-			game.getVillains().get(0).setClub(temp , map.getMapSize());
 			
-			do{ //MOVE CLUB
-				temp = game.getVillains().get(0).moveClub(map.getMapSize());
-			}while( !map.isFree(temp) );
-			game.getVillains().get(0).setClub(temp , map.getMapSize());
-			*/
 			int ox = game.getVillains().get(0).getX(), oy = game.getVillains().get(0).getY(), 
 				cx = ((Ogre)game.getVillains().get(0)).getClubX(), cy = ((Ogre)game.getVillains().get(0)).getClubY();
-			
+			System.out.print("Club=["+cx+","+cy+"] , Ogre=["+ox+","+oy+"] , Original=["+px+","+py+"] \n");
 			if 		( (px-2) == cx &&   py   == cy && (px-1) == ox && py == oy ) //Ogre north, club north
 				cnn = true;
 			else if ( (px-1) == cx && (py-1) == cy && (px-1) == ox && py == oy ) //Ogre north, club west
@@ -172,7 +161,8 @@ public class GameTests {
 			else if ( (px+1) == cx && (py+1) == cy && px == ox && (py+1) == oy ) //Ogre east, club south
 				ces = true;
 			else
-				fail("Unknown error");
+				fail("ERROR - Club=["+cx+","+cy+"] , Ogre=["+ox+","+oy+"] , Original=["+px+","+py+"] \n");
+			
 			px = game.getVillains().get(0).getX(); py = game.getVillains().get(0).getY();
 		}
 	}
@@ -202,27 +192,23 @@ public class GameTests {
 		assertEquals('I',game_map.getMap()[door2[0]][door2[1]]);
 		Hero h=game.getHero();
 		assertEquals("H",h.getRepresentation());
-		game.moveHero('d');
-		game.moveHero('d');
-		game.moveHero('a');
-		game.moveHero('a');
+		game.moveHero('s');
+		game.moveHero('s');
 		assertEquals('S',game_map.getMap()[door1[0]][door1[1]]);
 		assertEquals('S',game_map.getMap()[door2[0]][door2[1]]);
 	}
 	@Test
 	public void testVictory(){
-		int[] door={1,0};
-		ArenaMap game_map = new ArenaMap(-1,-1);
+		int[] door={2,0};
+		ArenaMap game_map = new ArenaMap(this.map);
 		GameLogic game = new GameLogic(game_map,2);
 		assertEquals('I',game_map.getMap()[door[0]][door[1]]);
 		Hero h=game.getHero();
 		assertEquals("H",h.getRepresentation());
-		game.moveHero('d');
+		game.moveHero('s');
+		game.moveHero('s');
 		assertEquals("K",h.getRepresentation());
-		game.moveHero('a');
-		game.moveHero('a');
-		game.moveHero('a');
-		assertEquals(true,game. wonGame());
+		assertEquals(true , game.moveHero('a'));
 	}
 	
 	@Test
@@ -252,9 +238,9 @@ public class GameTests {
 	public void moveinDungeon(){
 		Pair<Integer,Integer> test1 = new Pair<Integer,Integer>(1,1), test2 = new Pair<Integer,Integer>(1,2);
 		GameLogic game =new GameLogic(0,0,0);
-		assertEquals( test1 , game.getHero().getPos());
+		assertEquals( test1 , game.getHero().getPos().get(0));
 		game.moveHero('d');
-		assertEquals( test2 , game.getHero().getPos());
+		assertEquals( test2 , game.getHero().getPos().get(0));
 		
 	}
 	

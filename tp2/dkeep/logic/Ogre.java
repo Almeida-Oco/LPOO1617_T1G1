@@ -20,28 +20,55 @@ public class Ogre extends Character {
 	}
 	
 	//change must be value returned by checkOverlap in GameLogic
-	public ArrayList< Pair<Integer,Integer> > moveCharacter(int change , int MAP_SIZE){;		
-		ArrayList<Pair<Integer,Integer> > temp = new ArrayList<Pair<Integer,Integer> >();
-		if(stun==0 && change == 0){
+	public ArrayList< Pair<Integer,Integer> > moveCharacter(ArrayList<Pair<Integer,Integer> > current,int change , int MAP_SIZE){;		
+		ArrayList<Pair<Integer,Integer> > temp = new ArrayList<Pair<Integer,Integer> >(current.subList(0, change));
+		
+		if( 0 == this.stun && 0 == change){
 			Random rand = new Random();
-			while(temp.get(0).getFirst().intValue() == -1){
+			while(temp.size() == 0){
 				int dir = rand.nextInt(4);
-				
-				if(dir == 0 && (this.position.get(0).getFirst().intValue()-1) >= 0)// move left
+
+				if		(dir == 0 && (this.position.get(0).getFirst().intValue()-1) >= 0)// move up
 					temp.add(new Pair<Integer,Integer>( this.position.get(0).getFirst().intValue()-1 , this.position.get(0).getSecond().intValue()) );
-				else if (dir == 1 && (this.position.get(0).getFirst().intValue()+1) < MAP_SIZE) //move right
+
+				else if (dir == 1 && (this.position.get(0).getFirst().intValue()+1) < MAP_SIZE) //move down
 					temp.add(new Pair<Integer,Integer>( this.position.get(0).getFirst().intValue()+1 , this.position.get(0).getSecond().intValue()));
-				else if (dir == 2 && (this.position.get(0).getSecond().intValue()-1) >= 0) //move up
+
+				else if (dir == 2 && (this.position.get(0).getSecond().intValue()-1) >= 0) //move left
 					temp.add(new Pair<Integer,Integer>( this.position.get(0).getFirst().intValue() , this.position.get(0).getSecond().intValue()-1));
-				else if (dir == 3 && (this.position.get(0).getSecond().intValue()+1) < MAP_SIZE) //move down
+
+				else if (dir == 3 && (this.position.get(0).getSecond().intValue()+1) < MAP_SIZE) //move right
 					temp.add(new Pair<Integer,Integer>( this.position.get(0).getFirst().intValue() , this.position.get(0).getSecond().intValue()+1));
 			}
-		}
-		else if (change == 1)
-			temp.add( moveClub(MAP_SIZE) );
+		}else if (this.stun > 0)
+			temp = (ArrayList<Pair<Integer,Integer> >)this.position.clone();
+		
+		temp.add( moveClub( temp.get(0) , MAP_SIZE));
 		return temp;
 	}
 
+	
+	public Pair<Integer,Integer> moveClub(Pair<Integer,Integer> pos , int MAP_SIZE){
+		Random rand = new Random();
+		Pair<Integer,Integer> temp = new Pair<Integer,Integer>(-1,-1);
+		while(temp.getFirst().intValue() == -1){
+			int dir = rand.nextInt(4);
+			if		(dir == 0 && (pos.getFirst().intValue()-1) >= 0) // move up
+				temp = new Pair<Integer,Integer>( pos.getFirst().intValue()-1, pos.getSecond().intValue());
+			
+			else if (dir == 1 && (pos.getFirst().intValue()+1) < MAP_SIZE) //move down
+				temp = new Pair<Integer,Integer>( pos.getFirst().intValue()+1, pos.getSecond().intValue());
+			
+			else if (dir == 2 && (pos.getSecond().intValue()-1) >= 0) //move left
+				temp = new Pair<Integer,Integer>( pos.getFirst().intValue() ,  pos.getSecond().intValue()-1);
+			
+			else if (dir == 3 && (pos.getSecond().intValue()+1) < MAP_SIZE) //move right
+				temp = new Pair<Integer,Integer>( pos.getFirst().intValue() ,  pos.getSecond().intValue()+1);
+			
+		}
+		return temp;
+	}
+	
 	//Club must !ALWAYS! be in the last position
 	@Override
 	public boolean setPos(ArrayList<Pair<Integer, Integer>> vp, int MAP_SIZE) { 
@@ -50,31 +77,14 @@ public class Ogre extends Character {
 			if (p.getFirst() >= 0 && p.getFirst() < MAP_SIZE && p.getSecond() >= 0 && p.getSecond() < MAP_SIZE) {
 				if ( i != vp.size()-1) 
 					this.position.set(i, p);
-				else
+				else{
 					this.club = p;
-				return true;
+					return true;
+				}
 			}
 			i++;			
 		}
 		return false;
-	}
-	
-	public Pair<Integer,Integer> moveClub(int MAP_SIZE){
-		Random rand = new Random();
-		Pair<Integer,Integer> temp = new Pair<Integer,Integer>(-1,-1);
-		while(temp.getFirst().intValue() == -1){
-			int dir = rand.nextInt(4);
-			if(dir == 0 && (this.position.get(0).getFirst().intValue()-1) >= 0) // move left
-				temp = new Pair<Integer,Integer>( this.position.get(0).getFirst().intValue()-1 , this.position.get(0).getSecond().intValue());
-			else if (dir == 1 && (this.position.get(0).getFirst().intValue()+1) <= MAP_SIZE) //move right
-				temp = new Pair<Integer,Integer>( this.position.get(0).getFirst().intValue()+1 , this.position.get(0).getSecond().intValue());
-			else if (dir == 2 && (this.position.get(0).getSecond().intValue()-1) >= 0) //move up
-				temp = new Pair<Integer,Integer>( this.position.get(0).getFirst().intValue() , this.position.get(0).getSecond().intValue()-1);
-			else if (dir == 3 && (this.position.get(0).getSecond().intValue()+1) <= MAP_SIZE) //move down
-				temp = new Pair<Integer,Integer>( this.position.get(0).getFirst().intValue() , this.position.get(0).getSecond().intValue()+1);
-			
-		}
-		return temp;
 	}
 
 	public boolean setClub(Pair<Integer,Integer> p, int MAP_SIZE){
@@ -102,10 +112,11 @@ public class Ogre extends Character {
 	}
 	@Override
 	public ArrayList<Pair<Integer, Integer>> getGameOverPos(){
-		ArrayList< Pair<Integer,Integer> > temp = new ArrayList< Pair<Integer,Integer> >(2);
+		ArrayList< Pair<Integer,Integer> > temp = new ArrayList< Pair<Integer,Integer> >();
 		temp.add(this.club);
 		if(this.nearkill)
-			temp.addAll((ArrayList<Pair<Integer,Integer> >)this.position.subList(0, this.position.size()-2 ));
+			for (int i = 0 ; i < this.position.size()-1 ; i++)
+				temp.add( this.position.get(i));
 		return temp;
 	}
 	
@@ -121,14 +132,8 @@ public class Ogre extends Character {
 	public void roundPassed(){
 		if(stun >0){
 			this.stun --;
-			representation="8";
+			representation= (this.stun==0) ? "O" : "8";
 		}
-	}
-
-	@Override
-	public ArrayList<Pair<Integer, Integer>> getGameOverPos(int level) {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 

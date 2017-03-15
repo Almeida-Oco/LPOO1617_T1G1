@@ -34,7 +34,7 @@ public class GameLogic {
 			this.map = game_map;
 			this.level = 0;
 			this.hero = new Hero(1, 1);
-			this.key = new Pair<Integer,Integer>(1,3);
+			this.key = new Pair<Integer,Integer>(3,1);
 		} else if (level == 3) {
 			this.map = game_map;
 			this.level = 1;
@@ -70,13 +70,15 @@ public class GameLogic {
 	 * 		   if one of those conditions fail, it will recalculate the position that failed to meet that criteria
 	 */
 	public void moveAllVillains() {
-		ArrayList< Pair<Integer,Integer> > pos;
+		ArrayList< Pair<Integer,Integer> > pos = new ArrayList<Pair<Integer,Integer> >();
 		for (Character ch : this.villains){
 			int change1 = 0, change2 = 0;
 			do{
-				pos = ch.moveCharacter( (change1 > change2) ? change2 : change1 ,map.getMapSize());
-			} while ( ( (change1 = this.checkOverlap(pos)) != -1) && ( (change2 = this.map.isFree(pos)) != 1));
+ 				pos = ch.moveCharacter(pos, ( (change1 == -1 || (change2 > change1 && change2 != -1)) ? change2 : change1) , map.getMapSize());
+			} while ( ( (change1 = this.checkOverlap(pos)) != -1) || ( (change2 = this.map.isFree(pos)) != -1));
 			ch.setPos(pos, this.map.getMapSize());
+			if(ch instanceof Ogre)
+				checkStuns((Ogre)ch);
 		}
 	}
 	
@@ -86,31 +88,29 @@ public class GameLogic {
 	 * @return Next level GameLogic object, or this object otherwise
 	 */
 	public boolean moveHero(char direction) {
-		ArrayList< Pair<Integer,Integer> > temp = new ArrayList<Pair<Integer,Integer> >();
+		ArrayList< Pair<Integer,Integer> > temp = null;
 
 		if ('w' == direction)
-			temp = this.hero.moveCharacter(this.map.getMapSize(), 4);
+			temp = this.hero.moveCharacter(temp,this.map.getMapSize(), 4);
 		else if ('a' == direction)
-			temp = this.hero.moveCharacter(this.map.getMapSize(), 2);
+			temp = this.hero.moveCharacter(temp,this.map.getMapSize(), 2);
 		else if ('s' == direction)
-			temp = this.hero.moveCharacter(this.map.getMapSize(), 3);
+			temp = this.hero.moveCharacter(temp,this.map.getMapSize(), 3);
 		else if ('d' == direction)
-			temp = this.hero.moveCharacter(this.map.getMapSize(), 1);
+			temp = this.hero.moveCharacter(temp,this.map.getMapSize(), 1);
 		else
 			return false;
 
-		if (checkTriggers(temp.get(0))) //IF hero is supposed to go to next level then return the next level 
+		if (checkTriggers(temp.get(0))){//IF hero is supposed to go to next level then return true
+			this.hero.setPos(temp , this.map.getMapSize() );
 			return true;
-
+		}
+		
 		if (this.map.isFree(temp) == -1) {
 			for (Character ch : getVillains() )
 				if ( temp.equals(ch.getPos()) ) //If hero tried to jump on top of something just ignore it
 					return false;
 			this.hero.setPos(temp , this.map.getMapSize() );
-		}
-		if (temp.get(0).equals(this.key) && level == 1){
-			hero.setRepresentation("K");
-			this.map.pickUpKey();
 		}
 
 		return false;
@@ -133,9 +133,9 @@ public class GameLogic {
 	 * @return True if it is game over, false otherwise
 	 */
 	public boolean isGameOver() { // Gets all characters game over positions and checks
-		for (Character ch : getAllCharacters())
-			for (Pair<Integer,Integer> pos : ch.getGameOverPos(this.level))
-				if (inAdjSquares(pos))
+		for (Character ch : getVillains())
+			for (Pair<Integer,Integer> pos : ch.getGameOverPos())
+				if (inAdjSquares(this.hero.getPos().get(0) , pos))
 					return true;
 
 		return false;
@@ -143,17 +143,17 @@ public class GameLogic {
 
 	
 	/**
-	 * @brief Checks if hero is in adjacent squares
+	 * @brief Checks if p1 is in adjacent square of p2
 	 * @param p Square to check
 	 * @return True if hero is in adjacent, false if not
 	 */
-	private boolean inAdjSquares( Pair<Integer,Integer> p) {
-		if (p.getFirst().intValue() != -1 && p.getSecond().intValue() != -1)
-			if ((this.hero.getX() == p.getFirst().intValue() - 1 && this.hero.getY() == p.getSecond().intValue()) || 
-				(this.hero.getX() == p.getFirst().intValue() + 1 && this.hero.getY() == p.getSecond().intValue()) ||
-				(this.hero.getX() == p.getFirst().intValue() && this.hero.getY() == p.getSecond().intValue() - 1) ||
-				(this.hero.getX() == p.getFirst().intValue() && this.hero.getY() == p.getSecond().intValue() + 1) ||
-				(this.hero.getX() == p.getFirst().intValue() && this.hero.getY() == p.getSecond().intValue()))
+	private boolean inAdjSquares(Pair<Integer,Integer> p1, Pair<Integer,Integer> p2) {
+		if (p2.getFirst().intValue() != -1 && p2.getSecond().intValue() != -1)
+			if ((p1.getFirst().intValue() == p2.getFirst().intValue() - 1 && p1.getSecond().intValue() == p2.getSecond().intValue()) || 
+				(p1.getFirst().intValue() == p2.getFirst().intValue() + 1 && p1.getSecond().intValue() == p2.getSecond().intValue()) ||
+				(p1.getFirst().intValue() == p2.getFirst().intValue() && p1.getSecond().intValue() == p2.getSecond().intValue() - 1) ||
+				(p1.getFirst().intValue() == p2.getFirst().intValue() && p1.getSecond().intValue() == p2.getSecond().intValue() + 1) ||
+				(p1.getFirst().intValue() == p2.getFirst().intValue() && p1.getSecond().intValue() == p2.getSecond().intValue()))
 				return true;
 
 		return false;
@@ -165,11 +165,16 @@ public class GameLogic {
 	 */
 	private int checkOverlap( ArrayList< Pair<Integer,Integer> > l){
 		int i = 0;
+		boolean found_same = false;
 		for ( Pair<Integer,Integer> p_l : l){
-			for (Character ch : this.villains ){
+			for (Character ch : this.getAllCharacters() ){
 				for (Pair<Integer,Integer> p_ch : ch.getPos() )
 					if (p_ch.equals(p_l))
-						return i;
+						if (!found_same)
+							found_same = true;
+						else
+							return i;
+							
 			}
 			i++;
 		}
@@ -182,26 +187,40 @@ public class GameLogic {
 	 * @return True if he triggered next level, false otherwise
 	 */
 	private boolean checkTriggers( Pair<Integer,Integer> p) { 
-		if (p.equals(this.key) && level != 1)
+		if (p.equals(this.key) && level != 1){
 			this.map.openDoors();
+			hero.setRepresentation("K");
+		}
 		else if (this.map.getTile(p) == 'I' && this.hero.hasKey()) {
 			if (level == 1)
 				p.setSecond(p.getSecond().intValue()+1); // stop hero from going inside stairs at first attempt
 			this.map.openDoors();
 		} else if (p.equals(this.key) && !this.hero.hasKey()) {
+			hero.setRepresentation("K");
 			this.hero.setKey(true);
 			this.map.pickUpKey();
 		} else if (this.map.getTile(p) == 'S') //Next Level
 			return true;
+		else if (!this.hero.hasKey())
+			this.hero.setRepresentation("H");
 
 		return false;
 	}
+	/**
+	 * @brief Checks if the hero stunned an Ogre
+	 */
+	private void checkStuns(Ogre ch){
+		if (inAdjSquares(ch.getPos().get(0) , this.hero.getPos().get(0) ) )
+			ch.stunOgre();
+		else
+			ch.roundPassed();
+
+	}
 	
 	
-	
-	public GameLogic getNextLevel(){
+	public GameLogic getNextLevel(int guards,int ogres){
 		Random rand = new Random();
-		return new GameLogic(++this.level, rand.nextInt(3)+1,-1);
+		return new GameLogic(++this.level, (ogres == -1) ? rand.nextInt(3)+1 : ogres , -1 );
 	}
 	/**
 	 * @brief Gets all Villains in a single container

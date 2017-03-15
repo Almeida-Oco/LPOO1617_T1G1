@@ -41,11 +41,11 @@ public class GameWindow {
 	private JButton UpButton,DownButton,LeftButton,RightButton;
 	private UserInput input;
 	protected GameLogic game;
+	private int ogres;
 
 	/**
 	 * Launch the application.
 	 */
-	
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
@@ -67,8 +67,11 @@ public class GameWindow {
 	}
 	
 	public void proccessKey(char ch){
-		if (ch != '\n' && !game.isGameOver()){
-			this.game.moveHero(ch);
+		if (ch != '\n' && !game.isGameOver() && !this.game.wonGame()){
+			this.ConsoleArea.setText("You can play now");	
+			boolean changed_lvl = this.game.moveHero(ch);
+			if(changed_lvl && !this.game.wonGame())
+				this.game = this.game.getNextLevel(-1, this.ogres);
 			this.game.moveAllVillains();
 			this.ConsoleArea.setText(input.printGame(game,game.getLevel(),false));
 			if (game.wonGame() || game.isGameOver()){
@@ -89,13 +92,14 @@ public class GameWindow {
 	
 	public void newGame(){
 		this.StatusLabel.setOpaque(false);
-		int ogres = 0,guards = this.Guards.getSelectedIndex();
+		int guards = this.Guards.getSelectedIndex();
 		try{ 
-			ogres=Integer.parseInt(OgreNumber.getText());
+			this.ogres=Integer.parseInt(OgreNumber.getText());
 		}
 		catch (NumberFormatException n){
+			StatusLabel.setText("Number of ogres will be random!");
 			if(OgreNumber.getText().length() == 0)
-				ogres = 0;
+				this.ogres = 0;
 			else{
 				StatusLabel.setText("Ogre number NaN!");
 				disableButtons();
@@ -107,7 +111,8 @@ public class GameWindow {
 		this.game = new GameLogic(0,ogres+1,guards+1);
 		
 		enableButtons();
-		StatusLabel.setText("You can play now.");
+		if(this.ogres != 0)
+			StatusLabel.setText("You can play now.");
 		ConsoleArea.setText(input.printGame(game,game.getLevel(),false));
 		ConsoleArea.requestFocus();
 	}

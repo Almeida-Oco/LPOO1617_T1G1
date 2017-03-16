@@ -34,12 +34,14 @@ import java.awt.event.KeyEvent;
 public class GameWindow {
 	
 	private JFrame frame;
+	private PrettyPanel frame2;
 	private JTextField OgreNumber;
 	private JComboBox Guards;
 	private JTextArea ConsoleArea;
 	private JLabel StatusLabel,LabelNofOgres,LabelGuardPers;
 	private JButton UpButton,DownButton,LeftButton,RightButton;
 	private UserInput input;
+	//private Container temp;
 	protected GameLogic game;
 	private int ogres;
 
@@ -51,7 +53,9 @@ public class GameWindow {
 			public void run() {
 				try {
 					GameWindow window = new GameWindow();
+					//PrettyWindow window2 = new PrettyWindow();
 					window.frame.setVisible(true);
+					//window.frame2.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -70,8 +74,11 @@ public class GameWindow {
 		if (ch != '\n' && !game.isGameOver() && !this.game.wonGame()){
 			this.ConsoleArea.setText("You can play now");	
 			boolean changed_lvl = this.game.moveHero(ch);
-			if(changed_lvl && !this.game.wonGame())
+			if(changed_lvl && !this.game.wonGame()){
+				//System.out.println("NUMBER OF OGRES = "+this.ogres);
 				this.game = this.game.getNextLevel(-1, this.ogres);
+			}
+				
 			this.game.moveAllVillains();
 			this.ConsoleArea.setText(input.printGame(game,game.getLevel(),false));
 			if (game.wonGame() || game.isGameOver()){
@@ -106,15 +113,24 @@ public class GameWindow {
 				return;
 			}
 		}	
-		
+		System.out.print(this.ogres);
 		this.input = new UserInput(ogres+1,guards+1);
 		this.game = new GameLogic(0,ogres+1,guards+1);
 		
-		enableButtons();
+		//enableButtons();
 		if(this.ogres != 0)
 			StatusLabel.setText("You can play now.");
 		ConsoleArea.setText(input.printGame(game,game.getLevel(),false));
 		ConsoleArea.requestFocus();
+		this.frame2 = new PrettyPanel(this.game.getMap().getMap());
+		
+		/*
+		this.frame.getCon
+		this.frame.getContentPane();
+		this.frame.getContentPane().removeAll();(this.frame2);
+		this.frame2.setBounds(50,50,1024,780);
+		*/
+		 
 	}
 	
 	public void enableButtons(){
@@ -291,5 +307,8 @@ public class GameWindow {
 					.addGap(15))
 		);
 		frame.getContentPane().setLayout(groupLayout);
+	
 	}
+	
+	
 }

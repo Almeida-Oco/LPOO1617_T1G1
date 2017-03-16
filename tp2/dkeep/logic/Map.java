@@ -13,6 +13,7 @@ public abstract class Map {
 	
 	public Map(int guards , int ogres, char[][] map){ // 1-Rookie, 2 - Drunken, 3-Suspicious 
 		Random rand = new Random();
+		System.out.print("NO of ogres = "+ogres);
 		this.map = map;
 		if (guards != -1){ //MEANING NO GUARDS TO GENERATE
 			if (guards == 0) //IF GUARD IS 0 THEN RANDOMLY SELECT GUARD

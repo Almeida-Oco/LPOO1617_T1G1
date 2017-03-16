@@ -167,7 +167,7 @@ public class GameLogic {
 		int i = 0;
 		boolean found_same = false;
 		for ( Pair<Integer,Integer> p_l : l){
-			for (Character ch : this.getAllCharacters() ){
+			for (Character ch : this.villains ){
 				for (Pair<Integer,Integer> p_ch : ch.getPos() )
 					if (p_ch.equals(p_l))
 						if (!found_same)

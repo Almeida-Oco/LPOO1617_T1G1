@@ -151,7 +151,7 @@ public class GameWindow {
 			
 			}
 		});
-		ConsoleArea.setFont(new Font("Courier New", Font.PLAIN, 14));
+		ConsoleArea.setFont(new Font("Courier 10 Pitch", Font.PLAIN, 30));
 		ConsoleArea.setEditable(false);
 		
 		this.StatusLabel = new JLabel("You can start a New Game!",SwingConstants.CENTER);

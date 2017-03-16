@@ -54,11 +54,10 @@ public abstract class Character {
 			if (p.getFirst() >= 0 && p.getFirst() < MAP_SIZE && p.getSecond() >= 0 && p.getSecond() < MAP_SIZE) {
 				this.position.set(i, p);
 				i++;
-				return true;
 			}
 			
 		}
-		return false;
+		return (i!=0);
 	}
 		
 	public ArrayList< Pair<Integer,Integer> > getPos(){

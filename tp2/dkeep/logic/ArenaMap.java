@@ -14,7 +14,7 @@ public class ArenaMap extends Map{
 	
 	public ArenaMap(int guards , int ogres){
 		super(-1,ogres,new char[][]{{'X','X','X','X','X','X','X','X','X','X'} ,
-									{'I',' ',' ',' ',' ',' ',' ',' ','k','X'} ,
+									{'I',' ',' ',' ',' ',' ',' ',' ','K','X'} ,
 									{'X',' ',' ',' ',' ',' ',' ',' ',' ','X'} ,
 									{'X',' ',' ',' ',' ',' ',' ',' ',' ','X'} ,
 									{'X',' ',' ',' ',' ',' ',' ',' ',' ','X'} ,

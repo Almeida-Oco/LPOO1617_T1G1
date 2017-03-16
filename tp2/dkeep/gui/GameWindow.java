@@ -105,7 +105,7 @@ public class GameWindow {
 		try{ 
 			this.ogres=Integer.parseInt(OgreNumber.getText());
 			if(this.ogres>5){
-				JOptionPane.showMessageDialog(frame, "Its supoesed to be 1-5 ogres");
+				JOptionPane.showMessageDialog(frame, "It's supoesed to be 1-5 ogres");
 				disableButtons();
 				return;
 			}
@@ -115,7 +115,7 @@ public class GameWindow {
 			if(OgreNumber.getText().length() == 0)
 				this.ogres = 0;
 			else{
-				JOptionPane.showMessageDialog(frame, "Its supoesed to be 1-5 ogres");
+				JOptionPane.showMessageDialog(frame, "It's supoesed to be 1-5 ogres");
 				StatusLabel.setText("Ogre number NaN!");
 				disableButtons();
 				return;
@@ -125,7 +125,7 @@ public class GameWindow {
 		this.input = new UserInput(ogres+1,guards+1);
 		this.game = new GameLogic(0,ogres+1,guards+1);
 		
-		//enableButtons();
+		enableButtons();
 		if(this.ogres != 0)
 			StatusLabel.setText("You can play now.");
 		ConsoleArea.setText(input.printGame(game,game.getLevel(),false));

@@ -4,6 +4,8 @@ import java.awt.EventQueue;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
 import java.awt.BorderLayout;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
@@ -108,6 +110,7 @@ public class GameWindow {
 			if(OgreNumber.getText().length() == 0)
 				this.ogres = 0;
 			else{
+				JOptionPane.showMessageDialog(frame, "Its supoesed to be 1-5 ogres");
 				StatusLabel.setText("Ogre number NaN!");
 				disableButtons();
 				return;

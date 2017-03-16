@@ -36,7 +36,7 @@ import java.awt.event.KeyEvent;
 public class GameWindow {
 	
 	private JFrame frame;
-	private PrettyPanel frame2;
+	//private PrettyPanel frame2;
 	private JTextField OgreNumber;
 	private JComboBox Guards;
 	private JTextArea ConsoleArea;
@@ -104,6 +104,11 @@ public class GameWindow {
 		int guards = this.Guards.getSelectedIndex();
 		try{ 
 			this.ogres=Integer.parseInt(OgreNumber.getText());
+			if(this.ogres>5){
+				JOptionPane.showMessageDialog(frame, "Its supoesed to be 1-5 ogres");
+				disableButtons();
+				return;
+			}
 		}
 		catch (NumberFormatException n){
 			StatusLabel.setText("Number of ogres will be random!");
@@ -125,7 +130,7 @@ public class GameWindow {
 			StatusLabel.setText("You can play now.");
 		ConsoleArea.setText(input.printGame(game,game.getLevel(),false));
 		ConsoleArea.requestFocus();
-		this.frame2 = new PrettyPanel(this.game.getMap().getMap());
+		//this.frame2 = new PrettyPanel(this.game.getMap().getMap());
 		
 		/*
 		this.frame.getCon
@@ -170,7 +175,7 @@ public class GameWindow {
 			
 			}
 		});
-		ConsoleArea.setFont(new Font("Courier 10 Pitch", Font.PLAIN, 30));
+		ConsoleArea.setFont(new Font("Consolas", Font.ITALIC, 30));
 		ConsoleArea.setEditable(false);
 		
 		this.StatusLabel = new JLabel("You can start a New Game!",SwingConstants.CENTER);

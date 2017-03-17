@@ -3,7 +3,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import pair.Pair;
 
-public class Guard extends Character{
+public class Guard extends GameCharacter{
 	protected ArrayList< Pair<Integer,Integer> > movement = new ArrayList< Pair<Integer,Integer> >( 
    Arrays.asList(new Pair<Integer,Integer>(1,7),new Pair<Integer,Integer>(2,7),new Pair<Integer,Integer>(3,7),new Pair<Integer,Integer>(4,7),
 				 new Pair<Integer,Integer>(5,7),new Pair<Integer,Integer>(5,6),new Pair<Integer,Integer>(5,5),new Pair<Integer,Integer>(5,4),

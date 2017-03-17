@@ -8,7 +8,7 @@ import java.util.ArrayList;
  * @var representation The String representation of the Character
  * @details Possible to have multi tiles characters
  */
-public abstract class Character {
+public abstract class GameCharacter {
 	protected ArrayList< Pair<Integer,Integer> > position;
 	protected String representation;
 	
@@ -17,7 +17,7 @@ public abstract class Character {
 	 * @param x X Position 
 	 * @param y Y Position
 	 */
-	public Character(int x , int y){
+	public GameCharacter(int x , int y){
 		ArrayList<Pair<Integer,Integer> > temp = new ArrayList<Pair<Integer,Integer> >();
 		if(x >= 0 && y >= 0){
 			temp.add(new Pair<Integer,Integer>(x,y));
@@ -74,10 +74,6 @@ public abstract class Character {
 	
 	public void setRepresentation(String s ){
 		this.representation=s;
-	}
-		
-	public String getRepresentation(){
-		return this.representation;
 	}
 
 	/**

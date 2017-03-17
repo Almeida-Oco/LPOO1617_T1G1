@@ -1,5 +1,6 @@
 package dkeep.logic;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Random;
 
 import pair.Pair;
@@ -10,12 +11,14 @@ public abstract class Map {
 	protected int MAP_SIZE;
 	protected char[][] map;
 	protected ArrayList< Pair<Pair<Integer,Integer> , String> > doors = new ArrayList< Pair< Pair<Integer,Integer> , String> >();
-	protected ArrayList<Character> chars = new ArrayList<Character>();
+	private   HashMap<Character, GameCharacter> char_to_character;
+	protected ArrayList<GameCharacter> chars = new ArrayList<GameCharacter>();
 	protected Pair<Integer,Integer> key;
 	
 	public Map(int guards , int ogres, char[][] map){ // 1-Rookie, 2 - Drunken, 3-Suspicious 
 		Random rand = new Random();
 		this.map = map;
+		this.MAP_SIZE = map.length;
 		if (guards != -1){ //MEANING NO GUARDS TO GENERATE
 			if (guards == 0) //IF GUARD IS 0 THEN RANDOMLY SELECT GUARD
 				guards = rand.nextInt(3)+1;
@@ -60,6 +63,15 @@ public abstract class Map {
 	public abstract void pickUpKey();
 	
 	
+	public void parseMap( char[][] map ){
+		this.map = new char[map.length][];
+		for(int i = 0 ; i < map.length ; i++){
+			for(int j = 0 ; j < map[i].length ; j++){
+				this.map[i][j] = map[i][j];
+			}
+		}
+	}
+	
 	public char[][] getMap(){
 		char[][] temp = new char[this.MAP_SIZE][];
 		int i = 0;
@@ -78,8 +90,8 @@ public abstract class Map {
 		return this.MAP_SIZE;
 	}
 
-	public ArrayList<Character> getCharacters(){
-		return (ArrayList<Character>)this.chars.clone();
+	public ArrayList<GameCharacter> getCharacters(){
+		return (ArrayList<GameCharacter>)this.chars.clone();
 	}
 	
 	public char getTile(Pair<Integer,Integer> p){

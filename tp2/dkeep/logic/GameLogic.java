@@ -6,7 +6,7 @@ import java.util.Random;
 
 public class GameLogic {
 	private Map map;
-	private ArrayList<Character> villains = new ArrayList<Character>();
+	private ArrayList<GameCharacter> villains = new ArrayList<GameCharacter>();
 	private Hero hero;
 	private Pair<Integer,Integer> key;
 	private int level = 0;
@@ -20,13 +20,12 @@ public class GameLogic {
 		
 		if (level == 0) {
 			this.level = level;
-			this.villains.add(new RookieGuard(1, 3));
+			this.villains.add( new RookieGuard(1, 3) );
 			this.map = game_map;
 			this.hero = new Hero(1, 1);
 		} else if (level == 1) {
 			this.level = 1;
-			Ogre o = new Ogre(2, 2, game_map.getMapSize(), true);
-			this.villains.add(o);
+			this.villains.add( new Ogre(2, 2, game_map.getMapSize(), true));
 			this.map = game_map;
 			this.hero = new Hero(1, 1);
 			this.key = new Pair<Integer,Integer>(1,2);
@@ -56,7 +55,7 @@ public class GameLogic {
 		this.level = level;
 		this.map = ( (level == 0) ? new DungeonMap(guard,-1) : new ArenaMap(-1,ogre) );
 		//get initial characters from map
-		for (Character ch : this.map.getCharacters() )
+		for (GameCharacter ch : this.map.getCharacters() )
 			if (ch instanceof Hero)
 				this.hero = (Hero)ch;
 			else
@@ -71,7 +70,7 @@ public class GameLogic {
 	 */
 	public void moveAllVillains() {
 		ArrayList< Pair<Integer,Integer> > pos = new ArrayList<Pair<Integer,Integer> >();
-		for (Character ch : this.villains){
+		for (GameCharacter ch : this.villains){
 			int change1 = 0, change2 = 0;
 			do{
  				pos = ch.moveCharacter(pos, ( (change1 == -1 || (change2 > change1 && change2 != -1)) ? change2 : change1) , map.getMapSize());
@@ -107,7 +106,7 @@ public class GameLogic {
 		}
 		
 		if (this.map.isFree(temp) == -1) {
-			for (Character ch : getVillains() )
+			for (GameCharacter ch : getVillains() )
 				if ( temp.equals(ch.getPos()) ) //If hero tried to jump on top of something just ignore it
 					return false;
 			this.hero.setPos(temp , this.map.getMapSize() );
@@ -115,7 +114,7 @@ public class GameLogic {
 
 		return false;
 	}
-	
+
 	/**
 	 * 
 	 * @return
@@ -133,7 +132,7 @@ public class GameLogic {
 	 * @return True if it is game over, false otherwise
 	 */
 	public boolean isGameOver() { // Gets all characters game over positions and checks
-		for (Character ch : getVillains())
+		for (GameCharacter ch : getVillains())
 			for (Pair<Integer,Integer> pos : ch.getGameOverPos())
 				if (inAdjSquares(this.hero.getPos().get(0) , pos))
 					return true;
@@ -167,7 +166,7 @@ public class GameLogic {
 		int i = 0;
 		boolean found_same = false;
 		for ( Pair<Integer,Integer> p_l : l){
-			for (Character ch : this.villains ){
+			for (GameCharacter ch : this.villains ){
 				for (Pair<Integer,Integer> p_ch : ch.getPos() )
 					if (p_ch.equals(p_l))
 						if (!found_same)
@@ -226,15 +225,15 @@ public class GameLogic {
 	 * @brief Gets all Villains in a single container
 	 * @return Array with all villains
 	 */
-	public ArrayList<Character> getVillains(){
-		return (ArrayList<Character>)this.villains.clone();
+	public ArrayList<GameCharacter> getVillains(){
+		return (ArrayList<GameCharacter>)this.villains.clone();
 	}
 	/**
 	 * @brief Gets all Characters in a single container
 	 * @return Array with all Characters
 	 */
-	public ArrayList<Character> getAllCharacters() {
-		ArrayList<Character> temp = (ArrayList<Character>)this.villains.clone();
+	public ArrayList<GameCharacter> getAllCharacters() {
+		ArrayList<GameCharacter> temp = (ArrayList<GameCharacter>)this.villains.clone();
 		temp.add(0, this.hero);
 		return temp;
 	}

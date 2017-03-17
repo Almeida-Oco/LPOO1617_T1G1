@@ -6,7 +6,7 @@ import pair.Pair;
 public class ArenaMap extends Map{
 	
 	public ArenaMap(char[][] temp){ //WARNING!! USE ONLY FOR TESTING PURPOSES !!
-		super(temp);
+		super(-1,-1,temp);
 		this.doors = new ArrayList< Pair< Pair<Integer,Integer> , String> >();
 		this.doors.add( new Pair< Pair<Integer,Integer> ,String>( new Pair<Integer,Integer>( new Integer(2) ,new Integer(0)) , "S"));
 		this.doors.add( new Pair< Pair<Integer,Integer> ,String>( new Pair<Integer,Integer>( new Integer(3) ,new Integer(0)) , "S"));
@@ -14,7 +14,7 @@ public class ArenaMap extends Map{
 	
 	public ArenaMap(int guards , int ogres){
 		super(-1,ogres,new char[][]{{'X','X','X','X','X','X','X','X','X','X'} ,
-									{'I',' ',' ',' ',' ',' ',' ',' ','k','X'} ,
+									{'I',' ',' ',' ',' ',' ',' ',' ','K','X'} ,
 									{'X',' ',' ',' ',' ',' ',' ',' ',' ','X'} ,
 									{'X',' ',' ',' ',' ',' ',' ',' ',' ','X'} ,
 									{'X',' ',' ',' ',' ',' ',' ',' ',' ','X'} ,

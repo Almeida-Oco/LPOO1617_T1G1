@@ -1,6 +1,6 @@
 package dkeep.cli;
 import dkeep.logic.GameLogic;
-import dkeep.logic.Character;
+import dkeep.logic.GameCharacter;
 import java.util.Scanner;
 import pair.Pair;
 
@@ -25,7 +25,7 @@ public class UserInput{
 		if(clear)
 			clearScreen();
 		StringBuilder result = new StringBuilder();
-		for(Character ch : gm.getAllCharacters())
+		for(GameCharacter ch : gm.getAllCharacters())
 			for( Pair< Pair<Integer,Integer> ,String> p : ch.getPrintable() )
 				temp_map[p.getFirst().getFirst().intValue()][p.getFirst().getSecond().intValue()] = p.getSecond().charAt(0);
 

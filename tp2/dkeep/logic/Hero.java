@@ -2,7 +2,7 @@ package dkeep.logic;
 import pair.Pair;
 import java.util.ArrayList;
 
-public class Hero extends Character {
+public class Hero extends GameCharacter {
 	private boolean has_key = false;
 	private boolean is_armed=false;
 	
@@ -11,21 +11,11 @@ public class Hero extends Character {
 		representation="H";
 	}
 	
-	public Hero(int level, boolean armed){
-		super((level == 0) ? 1 : 8 ,(level == 0) ? 1 : 1 );
-		this.representation = (armed == false) ? "H" : "A";
-		this.is_armed=armed;
-	}
-
 	public String toString(){
 		if (has_key)
 			return "K";
 		else
 			return this.representation;
-	}
-
-	public ArrayList< Pair<Integer, Integer> > moveCharacter(int MAP_SIZE){
-		return new ArrayList<Pair<Integer,Integer> >();
 	}
 
 	public ArrayList< Pair<Integer,Integer> > moveCharacter(ArrayList<Pair<Integer,Integer> > current, int MAP_SIZE,int dir){
@@ -70,8 +60,6 @@ public class Hero extends Character {
 	}
 
 	@Override
-	public ArrayList<Pair<Integer, Integer>> getGameOverPos() {
-		return null;
-	}
+	public ArrayList<Pair<Integer, Integer>> getGameOverPos() {return null;}
 
 }

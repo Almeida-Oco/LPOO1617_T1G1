@@ -6,7 +6,7 @@ import pair.Pair;
 
 public class DungeonMap extends Map{
 	public DungeonMap(char[][] temp){ //WARNING!! USE SOLELY FOR TESTING PURPOSES !!
-		super(temp);
+		super(-1,-1,temp);
 	}
 	
 	public DungeonMap(int guards , int ogres){

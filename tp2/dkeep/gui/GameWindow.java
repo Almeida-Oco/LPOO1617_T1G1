@@ -4,6 +4,8 @@ import java.awt.EventQueue;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
 import java.awt.BorderLayout;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
@@ -27,7 +29,7 @@ import javax.swing.text.StyleConstants;
 
 import dkeep.cli.UserInput;
 import dkeep.logic.GameLogic;
-import dkeep.logic.Character;
+import dkeep.logic.GameCharacter;
 
 import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;
@@ -45,7 +47,6 @@ public class GameWindow {
 	private JTextArea console_area;
 	private JLabel status_label,ogres_txt,guard_txt;
 	private JButton up_b,down_b,left_b,right_b;
-	
 	private UserInput input;
 	private Container temp;
 	protected GameLogic game;
@@ -117,13 +118,20 @@ public class GameWindow {
 		int guards = this.select_guard.getSelectedIndex();
 		try{ 
 			this.ogres=Integer.parseInt(no_of_ogres.getText());
+			/* !THIS CODE CANNOT BE HERE AS IT MIGHT THROW ANOTHER EXCEPTION IF OGRE IS NOT A NUMBER!
+			if(this.ogres>5){
+				JOptionPane.showMessageDialog(frame, "It's supoesed to be 1-5 ogres");
+				disableButtons();
+				return;
+			}
+			*/
 		}
 		catch (NumberFormatException n){
 			status_label.setText("Number of ogres will be random!");
 			if(no_of_ogres.getText().length() == 0)
 				this.ogres = 0;
 			else{
-				status_label.setText("Ogre number NaN!");
+				JOptionPane.showMessageDialog(frame, "It's supoesed to be 1-5 ogres");
 				disableButtons();
 				return;
 			}
@@ -132,15 +140,15 @@ public class GameWindow {
 		this.input = new UserInput(ogres+1,guards+1);
 		this.game = new GameLogic(0,ogres+1,guards+1);
 		
-		//enableButtons();
+		enableButtons();
 		if(this.ogres != 0)
 			status_label.setText("You can play now.");
 		
 		console_area.setText(input.getPrintableMap(game,false,true));
 		console_area.requestFocus();
 		
-		//Save current Frame and clear it to show only map
 		
+		//Save current Frame and clear it to show only map
 		this.imgs_panel = new PrettyPanel( this.input.getPrintableMap(this.game, false , false));
 		initializeImgPanelListeners();
 		this.temp = this.frame.getContentPane();
@@ -193,7 +201,8 @@ public class GameWindow {
 			
 			}
 		});
-		console_area.setFont(new Font("Courier 10 Pitch", Font.PLAIN, 30));
+		//TODO Find font that is multiplatform and monospaced!
+		console_area.setFont(new Font("Consolas", Font.PLAIN, 30));
 		console_area.setEditable(false);
 		
 		this.status_label = new JLabel("You can start a New Game!",SwingConstants.CENTER);

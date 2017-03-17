@@ -4,7 +4,7 @@ import java.util.Random;
 
 import pair.Pair;
 
-public class Ogre extends Character {
+public class Ogre extends GameCharacter {
 	private Pair<Integer,Integer> club = new Pair<Integer,Integer>(-1,-1);
 	private String club_representation = "*";
 	private int stun=0;
@@ -22,8 +22,8 @@ public class Ogre extends Character {
 	//change must be value returned by checkOverlap in GameLogic
 	public ArrayList< Pair<Integer,Integer> > moveCharacter(ArrayList<Pair<Integer,Integer> > current,int change , int MAP_SIZE){;		
 		ArrayList<Pair<Integer,Integer> > temp = new ArrayList<Pair<Integer,Integer> >(current.subList(0, change));
-		
-		if( 0 == this.stun && 0 == change){
+
+		if( 0 == this.stun && 0 == change){ //If he is not stunned and is supposed to change all positions
 			Random rand = new Random();
 			while(temp.size() == 0){
 				int dir = rand.nextInt(4);
@@ -40,7 +40,7 @@ public class Ogre extends Character {
 				else if (dir == 3 && (this.position.get(0).getSecond().intValue()+1) < MAP_SIZE) //move right
 					temp.add(new Pair<Integer,Integer>( this.position.get(0).getFirst().intValue() , this.position.get(0).getSecond().intValue()+1));
 			}
-		}else if (this.stun > 0)
+		}else if (this.stun > 0) //if he is stunned only move club, maintain current ogre position
 			temp = (ArrayList<Pair<Integer,Integer> >)this.position.clone();
 		
 		temp.add( moveClub( temp.get(0) , MAP_SIZE));
@@ -115,7 +115,7 @@ public class Ogre extends Character {
 		ArrayList< Pair<Integer,Integer> > temp = new ArrayList< Pair<Integer,Integer> >();
 		temp.add(this.club);
 		if(this.nearkill)
-			for (int i = 0 ; i < this.position.size()-1 ; i++)
+			for (int i = 0 ; i < this.position.size() ; i++)
 				temp.add( this.position.get(i));
 		return temp;
 	}

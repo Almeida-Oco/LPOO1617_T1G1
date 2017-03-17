@@ -5,6 +5,8 @@ import java.util.Random;
 import pair.Pair;
 	
 public abstract class Map {
+	protected int width;
+	protected int height;
 	protected int MAP_SIZE;
 	protected char[][] map;
 	protected ArrayList< Pair<Pair<Integer,Integer> , String> > doors = new ArrayList< Pair< Pair<Integer,Integer> , String> >();
@@ -13,7 +15,6 @@ public abstract class Map {
 	
 	public Map(int guards , int ogres, char[][] map){ // 1-Rookie, 2 - Drunken, 3-Suspicious 
 		Random rand = new Random();
-		System.out.print("NO of ogres = "+ogres);
 		this.map = map;
 		if (guards != -1){ //MEANING NO GUARDS TO GENERATE
 			if (guards == 0) //IF GUARD IS 0 THEN RANDOMLY SELECT GUARD
@@ -33,6 +34,31 @@ public abstract class Map {
 		this.map = game_map;
 		this.MAP_SIZE = game_map.length;
 	}
+	
+	public int isFree( ArrayList< Pair<Integer,Integer> > l){
+		int i = 0;
+		for (Pair<Integer,Integer> p : l){
+			if (this.map[p.getFirst().intValue()][p.getSecond().intValue()] == ' ' || 
+				this.map[p.getFirst().intValue()][p.getSecond().intValue()] == 'k' || 
+				this.map[p.getFirst().intValue()][p.getSecond().intValue()] == 'S' || 
+				this.map[p.getFirst().intValue()][p.getSecond().intValue()] == 'k' )
+				i++;
+			else
+				return i;
+		}
+		
+		return -1;
+	}
+	
+	public void openDoors(){
+		for (Pair< Pair<Integer,Integer> , String> pos : this.doors)
+			this.map[ pos.getFirst().getFirst().intValue() ][ pos.getFirst().getSecond().intValue() ] = pos.getSecond().charAt(0);
+	}
+	
+	public abstract Map nextMap();
+	
+	public abstract void pickUpKey();
+	
 	
 	public char[][] getMap(){
 		char[][] temp = new char[this.MAP_SIZE][];
@@ -59,29 +85,5 @@ public abstract class Map {
 	public char getTile(Pair<Integer,Integer> p){
 		return this.map[p.getFirst().intValue()][p.getSecond().intValue()];
 	}
-	
-	public int isFree( ArrayList< Pair<Integer,Integer> > l){
-		int i = 0;
-		for (Pair<Integer,Integer> p : l){
-			if (this.map[p.getFirst().intValue()][p.getSecond().intValue()] == ' ' || 
-				this.map[p.getFirst().intValue()][p.getSecond().intValue()] == 'k' || 
-				this.map[p.getFirst().intValue()][p.getSecond().intValue()] == 'S' || 
-				this.map[p.getFirst().intValue()][p.getSecond().intValue()] == 'k' )
-				i++;
-			else
-				return i;
-		}
-		
-		return -1;
-	}
-	
-	public void openDoors(){
-		for (Pair< Pair<Integer,Integer> , String> pos : this.doors)
-			this.map[ pos.getFirst().getFirst().intValue() ][ pos.getFirst().getSecond().intValue() ] = pos.getSecond().charAt(0);
-	}
-	
-	public abstract Map nextMap();
-	
-	public abstract void pickUpKey();
 	
 }

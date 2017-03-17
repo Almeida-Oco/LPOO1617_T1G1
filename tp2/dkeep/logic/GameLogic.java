@@ -217,7 +217,7 @@ public class GameLogic {
 
 	}
 	
-	
+		
 	public GameLogic getNextLevel(int guards,int ogres){
 		Random rand = new Random();
 		return new GameLogic(++this.level, (ogres == -1) ? rand.nextInt(3)+1 : ogres , -1 );

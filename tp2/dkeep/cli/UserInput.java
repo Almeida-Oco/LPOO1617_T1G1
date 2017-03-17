@@ -20,7 +20,7 @@ public class UserInput{
 		return game;
 	}
 	
-	public String printGame(GameLogic gm,int level, boolean clear){
+	public String getPrintableMap(GameLogic gm, boolean clear, boolean spaced){
 		char[][] temp_map = gm.getMap().getMap();
 		if(clear)
 			clearScreen();
@@ -31,7 +31,7 @@ public class UserInput{
 
 		for ( int i = 0 ; i < gm.getMap().getMap().length ; i++ ) {
 			for ( int j = 0 ; j < gm.getMap().getMap()[i].length ; j++ ) {
-				result.append(temp_map[i][j] + " ");
+				result.append(temp_map[i][j] + ((spaced) ? " " : ""));
 			}
 			result.append("\n");
 		}
@@ -59,7 +59,7 @@ public class UserInput{
 	private void cpu(){
 		boolean change_lvl = false;
 		do{
-			System.out.println(printGame(this.game,this.game.getLevel(),true));
+			System.out.println(getPrintableMap(this.game,true,true));
 			change_lvl=this.game.moveHero( readChar());
 			System.out.println( this.game.getHero().getPos() );
 			if (change_lvl && !this.game.wonGame() )
@@ -69,7 +69,7 @@ public class UserInput{
 			
 			this.game.moveAllVillains();			
 		}while (!this.game.wonGame() && !this.game.isGameOver());
-		System.out.println(printGame(this.game,this.game.getLevel(),true));
+		System.out.println(getPrintableMap(this.game,true,true));
 		if (this.game.wonGame())
 			System.out.print("   YOU WIN!   \n");
 		else

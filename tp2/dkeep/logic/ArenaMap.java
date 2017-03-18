@@ -5,16 +5,9 @@ import pair.Pair;
 
 public class ArenaMap extends Map{
 	
-	public ArenaMap(char[][] temp){ //WARNING!! USE ONLY FOR TESTING PURPOSES !!
-		super(-1,-1,temp);
-		this.doors = new ArrayList< Pair< Pair<Integer,Integer> , String> >();
-		this.doors.add( new Pair< Pair<Integer,Integer> ,String>( new Pair<Integer,Integer>( new Integer(2) ,new Integer(0)) , "S"));
-		this.doors.add( new Pair< Pair<Integer,Integer> ,String>( new Pair<Integer,Integer>( new Integer(3) ,new Integer(0)) , "S"));
-	}
-	
 	public ArenaMap(int guards , int ogres){
 		super(-1,ogres,new char[][]{{'X','X','X','X','X','X','X','X','X','X'} ,
-									{'I',' ',' ',' ',' ',' ',' ',' ','K','X'} ,
+									{'I',' ',' ',' ',' ',' ',' ',' ','k','X'} ,
 									{'X',' ',' ',' ',' ',' ',' ',' ',' ','X'} ,
 									{'X',' ',' ',' ',' ',' ',' ',' ',' ','X'} ,
 									{'X',' ',' ',' ',' ',' ',' ',' ',' ','X'} ,
@@ -30,11 +23,12 @@ public class ArenaMap extends Map{
 		this.doors.add( new Pair< Pair<Integer,Integer> ,String>( new Pair<Integer,Integer>( new Integer(1) ,new Integer(0)) , "S"));
 	}
 	
-	public Map nextMap(){
+	public Map nextMap(int enemies){
 		return null;
 	}
 
-	public void pickUpKey(){
+	public boolean pickUpKey(){
 		this.map[ this.key.getFirst().intValue() ][ this.key.getSecond().intValue() ] = ' ';
+		return true;
 	}
 }

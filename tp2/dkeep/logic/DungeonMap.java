@@ -5,9 +5,6 @@ import java.util.Random;
 import pair.Pair;
 
 public class DungeonMap extends Map{
-	public DungeonMap(char[][] temp){ //WARNING!! USE SOLELY FOR TESTING PURPOSES !!
-		super(-1,-1,temp);
-	}
 	
 	public DungeonMap(int guards , int ogres){
 		super(guards,-1, new char[][]{{'X','X','X','X','X','X','X','X','X','X'} ,
@@ -20,6 +17,7 @@ public class DungeonMap extends Map{
 			  						  {'X','X','X',' ','X','X','X','X',' ','X'} ,
 			  						  {'X',' ','I',' ','I',' ','X','k',' ','X'} ,
 			  						  {'X','X','X','X','X','X','X','X','X','X'} });
+		
 		this.chars.add(new Hero(1,1));
 		this.MAP_SIZE = this.map.length;
 		this.key = new Pair<Integer,Integer>(8,7);
@@ -28,10 +26,12 @@ public class DungeonMap extends Map{
 		
 	}
 	
-	public Map nextMap(){
+	public Map nextMap(int enemies){
 		Random rand = new Random();
-		return new ArenaMap(-1 , rand.nextInt(3)+1);
+		return new ArenaMap(-1 , (enemies == 0) ? rand.nextInt(3)+1 : enemies);
 	}
 	
-	public void pickUpKey(){};
+	public boolean pickUpKey(){
+		return false;
+	}
 }

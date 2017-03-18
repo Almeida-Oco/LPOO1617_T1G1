@@ -11,10 +11,16 @@ public abstract class Map {
 	protected int MAP_SIZE;
 	protected char[][] map;
 	protected ArrayList< Pair<Pair<Integer,Integer> , String> > doors = new ArrayList< Pair< Pair<Integer,Integer> , String> >();
-	private   HashMap<Character, GameCharacter> char_to_character;
+	//private   HashMap<Character, GameCharacter> char_to_character;
 	protected ArrayList<GameCharacter> chars = new ArrayList<GameCharacter>();
 	protected Pair<Integer,Integer> key;
 	
+	/**
+	 * @brief Constructor
+	 * @param guards (-1, No guards to generate) , (0, Randomly select guard) , (1 , generate RookieGuard) , (2, generate DrunkenGuard) , (3, generate SuspiciousGuard) 
+	 * @param ogres (-1, No ogre to generate) , (0, Randomly generate number of ogres) , (x , generate x ogres)
+	 * @param map Map to use for the specified level.
+	 */ //TODO Change this constructor to accept maps from varying size AKA != 10
 	public Map(int guards , int ogres, char[][] map){ // 1-Rookie, 2 - Drunken, 3-Suspicious 
 		Random rand = new Random();
 		this.map = map;
@@ -27,22 +33,22 @@ public abstract class Map {
 		
 		if (ogres != -1){ // MEANING NO OGRE TO GENERATE
 			if (ogres == 0) //IF OGRE IS 0 THEN RANDOMLY SELECT NUMBER OF OGRES
-				ogres = rand.nextInt(3) + 1;
+				ogres = rand.nextInt(5) + 1;
 			for (int i = 0; i < ogres; i++)
 				this.chars.add(new Ogre(rand.nextInt(8) + 1, rand.nextInt(8) + 1, this.map.length , false));
 		}
 	};
 	
-	public Map(char[][] game_map){
-		this.map = game_map;
-		this.MAP_SIZE = game_map.length;
-	}
-	
+	/**
+	 * @brief Checks if the positions passed are free
+	 * @param l Array of positions to check 
+	 * @return -1 if all positions are free, else number that is the position of the array which has the not free pposition
+	 * @details A tile is considered free if it is either a ' ', 'S' or a 'k'. Anything else is considered occupied.
+	 */
 	public int isFree( ArrayList< Pair<Integer,Integer> > l){
 		int i = 0;
 		for (Pair<Integer,Integer> p : l){
 			if (this.map[p.getFirst().intValue()][p.getSecond().intValue()] == ' ' || 
-				this.map[p.getFirst().intValue()][p.getSecond().intValue()] == 'k' || 
 				this.map[p.getFirst().intValue()][p.getSecond().intValue()] == 'S' || 
 				this.map[p.getFirst().intValue()][p.getSecond().intValue()] == 'k' )
 				i++;
@@ -52,17 +58,28 @@ public abstract class Map {
 		
 		return -1;
 	}
-	
-	public void openDoors(){
-		for (Pair< Pair<Integer,Integer> , String> pos : this.doors)
-			this.map[ pos.getFirst().getFirst().intValue() ][ pos.getFirst().getSecond().intValue() ] = pos.getSecond().charAt(0);
+	/**
+	 * @brief Opens the doors of the map
+	 * @param keep_closed Whether to keep the doors closed or not
+	 * @details If the map has a lever keep_closed should be false, if the map has a key which the hero picks up then
+	 * 			keep_closed should be true
+	 */
+	public void openDoors( boolean keep_closed){
+		if( !keep_closed){
+			for (Pair< Pair<Integer,Integer> , String> pos : this.doors)
+				this.map[ pos.getFirst().getFirst().intValue() ][ pos.getFirst().getSecond().intValue() ] = pos.getSecond().charAt(0);
+		}
 	}
 	
-	public abstract Map nextMap();
+	public abstract Map nextMap(int enemies);
 	
-	public abstract void pickUpKey();
+	/**
+	 * @brief Picks up key from map, to be implemented by child classes
+	 * @return true if hero is supposed to keep the key, or false if it aint (AKA if its a lever)
+	 */
+	public abstract boolean pickUpKey();
 	
-	
+	/*
 	public void parseMap( char[][] map ){
 		this.map = new char[map.length][];
 		for(int i = 0 ; i < map.length ; i++){
@@ -71,7 +88,13 @@ public abstract class Map {
 			}
 		}
 	}
+	*/
 	
+	
+	/**
+	 * @brief Gets the map
+	 * @return map
+	 */
 	public char[][] getMap(){
 		char[][] temp = new char[this.MAP_SIZE][];
 		int i = 0;
@@ -81,19 +104,37 @@ public abstract class Map {
 		}
 		return temp;
 	}
-
+	
+	/**
+	 * @brief Gets the key
+	 * @return The position of the key
+	 */
 	public Pair<Integer,Integer> getKey(){
 		return this.key;
 	}
 	
+	/**
+	 * TODO Change this to width and height
+	 * @brief Gets the map size
+	 * @return var MAP_SIZE
+	 */
 	public int getMapSize(){
 		return this.MAP_SIZE;
 	}
 
+	/**
+	 * @brief Gets all characters of the map
+	 * @return Array with all map characters(including hero)
+	 */
 	public ArrayList<GameCharacter> getCharacters(){
 		return (ArrayList<GameCharacter>)this.chars.clone();
 	}
 	
+	/**
+	 * @brief Gets a specific tile of the map
+	 * @param p Tile to get
+	 * @return What is in the specified tile
+	 */
 	public char getTile(Pair<Integer,Integer> p){
 		return this.map[p.getFirst().intValue()][p.getSecond().intValue()];
 	}

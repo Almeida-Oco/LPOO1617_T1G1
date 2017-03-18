@@ -13,7 +13,7 @@ public class UserInput{
 	}
 	
 	public UserInput(int ogres, int guard){
-		this.game = new GameLogic(0,ogres,guard);
+		this.game = new GameLogic(null,3);
 	}
 	
 	public GameLogic getGame(){
@@ -43,7 +43,7 @@ public class UserInput{
 			System.out.println("");
 	}
 	
-	private char readChar(){
+	private static char readChar(){
 		Scanner scan = new Scanner(System.in);
 		String line;
 		line = scan.nextLine();
@@ -63,7 +63,7 @@ public class UserInput{
 			change_lvl=this.game.moveHero( readChar());
 			System.out.println( this.game.getHero().getPos() );
 			if (change_lvl && !this.game.wonGame() )
-				this.game = this.game.getNextLevel(-1,-1);
+				this.game = this.game.getNextLevel(0); //0 -> random number of enemies
 			if (this.game.isGameOver() || this.game.wonGame())
 				break;
 			
@@ -75,5 +75,4 @@ public class UserInput{
 		else
 			System.out.print("   GAME OVER!  \n");
 	}
-	
 }

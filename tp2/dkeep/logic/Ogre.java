@@ -47,7 +47,6 @@ public class Ogre extends GameCharacter {
 		return temp;
 	}
 
-	
 	public Pair<Integer,Integer> moveClub(Pair<Integer,Integer> pos , int MAP_SIZE){
 		Random rand = new Random();
 		Pair<Integer,Integer> temp = new Pair<Integer,Integer>(-1,-1);
@@ -98,6 +97,7 @@ public class Ogre extends GameCharacter {
 	public int getClubX(){
 		return this.club.getFirst().intValue();
 	}
+	
 	public int getClubY(){
 		return this.club.getSecond().intValue();
 	}
@@ -110,7 +110,8 @@ public class Ogre extends GameCharacter {
 		
 		return temp;
 	}
-	@Override
+	
+	@Override	
 	public ArrayList<Pair<Integer, Integer>> getGameOverPos(){
 		ArrayList< Pair<Integer,Integer> > temp = new ArrayList< Pair<Integer,Integer> >();
 		temp.add(this.club);
@@ -130,12 +131,9 @@ public class Ogre extends GameCharacter {
 	}
 	
 	public void roundPassed(){
-		if(stun >0){
+		if(stun > 0){
 			this.stun --;
 			representation= (this.stun==0) ? "O" : "8";
 		}
 	}
-
-
-
 }

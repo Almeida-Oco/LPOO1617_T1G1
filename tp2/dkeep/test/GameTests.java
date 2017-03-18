@@ -3,76 +3,123 @@ package dkeep.test;
 import static org.junit.Assert.*;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import org.junit.Test;
 import dkeep.logic.ArenaMap;
+import dkeep.logic.DrunkenGuard;
+import dkeep.logic.DungeonMap;
 import dkeep.logic.GameLogic;
+import dkeep.logic.Guard;
 import dkeep.logic.Hero;
+import dkeep.logic.Map;
 import dkeep.logic.Ogre;
+import dkeep.logic.RookieGuard;
+import dkeep.logic.SuspiciousGuard;
+import dkeep.logic.TestMap;
 import dkeep.logic.GameCharacter;
 import pair.Pair;
 
 
 public class GameTests {
+	//assuming this is a lever not a key
 	char[][] map = {{'X','X','X','X','X'},
-					{'X','H',' ','G','X'},
+					{'X',' ',' ',' ','X'},
 					{'I',' ',' ',' ','X'},
 					{'I','k',' ',' ','X'},
 					{'X','X','X','X','X'}};
+	private TestMap game_map;
+	private static ArrayList< Pair<Integer,Integer> > movement = new ArrayList< Pair<Integer,Integer> >( 
+			   Arrays.asList(new Pair<Integer,Integer>(1,7),new Pair<Integer,Integer>(2,7),new Pair<Integer,Integer>(3,7),new Pair<Integer,Integer>(4,7),
+							 new Pair<Integer,Integer>(5,7),new Pair<Integer,Integer>(5,6),new Pair<Integer,Integer>(5,5),new Pair<Integer,Integer>(5,4),
+							 new Pair<Integer,Integer>(5,3),new Pair<Integer,Integer>(5,2),new Pair<Integer,Integer>(5,1),new Pair<Integer,Integer>(6,1),
+							 new Pair<Integer,Integer>(6,2),new Pair<Integer,Integer>(6,3),new Pair<Integer,Integer>(6,4),new Pair<Integer,Integer>(6,5),
+							 new Pair<Integer,Integer>(6,6),new Pair<Integer,Integer>(6,7),new Pair<Integer,Integer>(6,8),new Pair<Integer,Integer>(5,8),
+							 new Pair<Integer,Integer>(4,8),new Pair<Integer,Integer>(3,8),new Pair<Integer,Integer>(2,8),new Pair<Integer,Integer>(1,8)) );
 	
-	/*
-	@Test
-	public void testHeroOpenDoor(){
-		Pair<Integer,Integer> test1 = new Pair<Integer,Integer>(2,1) , test2 = new Pair<Integer,Integer>(3,1);
-		ArenaMap game_map = new ArenaMap(this.map);
-		GameLogic game = new GameLogic(game_map,1);
-		game.moveHero('s');
-		assertEquals(test1,game.getHero().getPos().get(0));
-		game.moveHero('s');
-		assertEquals(test2,game.getHero().getPos().get(0));
+	private void setDefaultMap(int guard_type){
+		ArrayList<GameCharacter> characters = new ArrayList<GameCharacter>();
+		ArrayList<Pair<Pair<Integer,Integer> , String > > doors = new ArrayList<Pair<Pair<Integer,Integer> , String> >();
+		this.game_map = new TestMap( (this.map).clone() );
+		doors.add( new Pair< Pair<Integer,Integer> ,String>( new Pair<Integer,Integer>( new Integer(2) ,new Integer(0)) , "S"));
+		doors.add( new Pair< Pair<Integer,Integer> ,String>( new Pair<Integer,Integer>( new Integer(3) ,new Integer(0)) , "S"));
+		characters.add( (guard_type == 0) ? new RookieGuard(1,3) : (guard_type == 1) ? new SuspiciousGuard(1,3) : new DrunkenGuard(1,3) );
+		characters.add(new Hero(1,1));
 		
+		this.game_map.setDoors(doors);
+		this.game_map.setKey(new Pair<Integer,Integer>(3,1) , ' ');
+		this.game_map.setCharacters(characters);
 	}
-	*/
+	
+	private boolean validGuardPos(Pair<Integer,Integer> p , int guard_type, int index){ //1 -> Rookie , 2 -> Suspicious/Drunken
+		int ip = ( index+1 == movement.size() ) ? 0 : index+1 , il = ( index-1 < 0) ? movement.size()-1 : index-1;
+		if( guard_type >= 2)
+			return movement.contains(p);
+		else
+			return p.equals(movement.get(index));
+	}
+	
+
 	@Test
 	public void testMoveHeroIntoFreeCell(){
 		Pair<Integer,Integer> test1 = new Pair<Integer,Integer>(1,1),test2 = new Pair<Integer,Integer>(2,1);
-		ArenaMap game_map = new ArenaMap(this.map);
-		GameLogic game = new GameLogic(game_map,0);
+		this.setDefaultMap(0);
+		GameLogic game = new GameLogic(this.game_map,0); //number is irrelevant
 		assertEquals( test1 , game.getHero().getPos().get(0));
 		game.moveHero('s');
+		assertEquals( test2 , game.getHero().getPos().get(0));
+		game.moveHero(' ');
 		assertEquals( test2 , game.getHero().getPos().get(0));
 	}
 	
 	@Test
 	public void testHeroIsCapturedByGuard(){
-		
-		ArenaMap gameMap =new ArenaMap(this.map);
-		GameLogic game=new GameLogic(gameMap,0);
-		assertFalse(game.isGameOver());
-		game.moveHero('d');
-		assertTrue(game.isGameOver());
-		//assertEquals(Game:DEFEAT,game.getEndStatus());
+		for(int i = 0 ; i < 3 ; i++){ //test if all guards capture hero
+			this.setDefaultMap(i);
+			GameLogic game=new GameLogic(this.game_map,0); //number is irrelevant
+			assertFalse(game.isGameOver());
+			game.moveHero('d');
+			assertTrue(game.isGameOver());
+		}
 	}
 
 	@Test
-	public void testMoveHeroIntoOccupiedCell(){
-		Pair<Integer,Integer> test1 = new Pair<Integer,Integer>(1,1);
-		ArenaMap game_map = new ArenaMap(this.map);
-		GameLogic game = new GameLogic(game_map,0);
+	public void testMoveHeroIntoWall(){
+		this.setDefaultMap(0);
+		Pair<Integer,Integer> test1 = new Pair<Integer,Integer>(1,1), test2 = new Pair<Integer,Integer>(2,1),
+							  test3 = new Pair<Integer,Integer>(3,1), test4 = new Pair<Integer,Integer>(3,2),
+							  test5 = new Pair<Integer,Integer>(3,3);
+		GameLogic game = new GameLogic(this.game_map,0); //number is irrelevant
 		assertEquals( test1 , game.getHero().getPos().get(0));
 		game.moveHero('a');
 		assertEquals( test1 , game.getHero().getPos().get(0));
 		game.moveHero('w');
 		assertEquals( test1 , game.getHero().getPos().get(0));
+		game.moveHero('s');
+		assertEquals( test2 , game.getHero().getPos().get(0));
+		game.moveHero('s');
+		assertEquals( test3 , game.getHero().getPos().get(0));
+		game.moveHero('d');
+		assertEquals( test4 , game.getHero().getPos().get(0));
+		game.moveHero('d');
+		assertEquals( test5 , game.getHero().getPos().get(0));
+		game.moveHero('d');
+		assertEquals( test5 , game.getHero().getPos().get(0));
+		game.moveHero('s');
+		assertEquals( test5 , game.getHero().getPos().get(0));
+		
 	}
 
 	@Test
 	public void testMoveHeroIntoClosedDoor(){
-		Pair<Integer,Integer> test1 = new Pair<Integer,Integer>(1,1), test2 = new Pair<Integer,Integer>(2,1);
+		this.setDefaultMap(0);
+		Pair<Integer,Integer> test1 = new Pair<Integer,Integer>(1,1), 
+				 			  test2 = new Pair<Integer,Integer>(2,1);
 		ArrayList< Pair< Pair<Integer,Integer> , String> > test3 = new ArrayList< Pair<Pair<Integer,Integer> , String> >();
+		
 		test3.add( new Pair<Pair<Integer,Integer> , String>( new Pair<Integer,Integer>(1,1) , "H"));
-		ArenaMap game_map = new ArenaMap(this.map);
-		GameLogic game = new GameLogic(game_map,0);
+		
+		GameLogic game = new GameLogic(this.game_map,0); //number is irrelevant
 		assertEquals( test1, game.getHero().getPos().get(0));
 		assertEquals( test3, game.getHero().getPrintable());
 		game.moveHero('s');
@@ -82,32 +129,34 @@ public class GameTests {
 		game.moveHero('a');
 		assertEquals( test3, game.getHero().getPrintable());
 		assertEquals( test2, game.getHero().getPos().get(0));
+		assertEquals( false, game.wonGame() );
 }
 
 	@Test
 	public void testOpenDoors(){
 		Pair<Integer,Integer> test1 = new Pair<Integer,Integer>(3,1);
-		ArenaMap game_map = new ArenaMap(this.map);
-		GameLogic game = new GameLogic(game_map,2);
+		this.setDefaultMap(0);
+		GameLogic game = new GameLogic(game_map,0); //number is irrelevant
+		assertEquals( 'I' , game_map.getTile(new Pair<Integer,Integer>(2,0) )); //door 1
+		assertEquals( 'I' , game_map.getTile(new Pair<Integer,Integer>(3,0) )); //door 2
 		game.moveHero('s');
+		assertEquals( 'I' , game_map.getTile(new Pair<Integer,Integer>(2,0) )); //door 1
+		assertEquals( 'I' , game_map.getTile(new Pair<Integer,Integer>(3,0) )); //door 2
 		game.moveHero('s');
 		assertEquals( test1 , game.getHero().getPos().get(0));
-		game.getMap().openDoors();
-		assertEquals( 'S' , game.getMap().getMap()[2][0]); //door 1
-		assertEquals( 'S' , game.getMap().getMap()[3][0]); //door 2
+		assertEquals( 'S' , game_map.getTile(new Pair<Integer,Integer>(2,0) )); //door 1
+		assertEquals( 'S' , game_map.getTile(new Pair<Integer,Integer>(3,0) )); //door 2
 	}
 
 	@Test
 	public void testEnterDoors(){
 		Pair<Integer,Integer> test1 = new Pair<Integer,Integer>(3,1);
-		ArenaMap game_map = new ArenaMap(this.map);
-		GameLogic game = new GameLogic(game_map,0);
+		this.setDefaultMap(0);
+		GameLogic game = new GameLogic(game_map,0); //number is irrelevant
 		game.moveHero('s');
 		game.moveHero('s');
-		//System.out.print( "HERO["+game.getHero().getPos()[0]+","+game.getHero().getPos()[1]+"]\n");
 		assertEquals( test1 , game.getHero().getPos().get(0));
 		assertEquals( test1 , game.getHero().getPos().get(0));
-		game.getMap().openDoors();
 		assertEquals( 'S' , game.getMap().getMap()[2][0]); //door 1
 		assertEquals( 'S' , game.getMap().getMap()[3][0]); //door 2
 	}
@@ -115,13 +164,17 @@ public class GameTests {
 	@Test
 	public void testMoveHeroNextOgre(){
 		ArrayList<Pair<Pair<Integer,Integer>,String > > test_printable = new ArrayList<Pair<Pair<Integer,Integer>,String > >();
+		ArrayList<GameCharacter> chars = new ArrayList<GameCharacter>();
 		ArrayList<Pair<Integer,Integer> > test_game_over_pos = new ArrayList<Pair<Integer,Integer> >();
-		test_printable.add(new Pair< Pair<Integer,Integer> , String >( new Pair<Integer,Integer>(2,2) , "*") );
-		test_printable.add(new Pair< Pair<Integer,Integer> , String >( new Pair<Integer,Integer>(2,2) , "O") );
-		test_game_over_pos.add( new Pair<Integer,Integer>(2,2));
-		test_game_over_pos.add( new Pair<Integer,Integer>(2,2));
-		ArenaMap game_map = new ArenaMap(-1,-1);
-		GameLogic game = new GameLogic(game_map,1);
+		test_printable.add(new Pair< Pair<Integer,Integer> , String >( new Pair<Integer,Integer>(1,3) , "*") );
+		test_printable.add(new Pair< Pair<Integer,Integer> , String >( new Pair<Integer,Integer>(1,3) , "O") );
+		test_game_over_pos.add( new Pair<Integer,Integer>(1,3));
+		test_game_over_pos.add( new Pair<Integer,Integer>(1,3));
+		this.setDefaultMap(0);
+		chars.add(new Hero(1,1));
+		chars.add(new Ogre(1,3,this.game_map.getMapSize() , true));
+		this.game_map.setCharacters(chars);
+		GameLogic game = new GameLogic(game_map,0); //number is irrelevant
 		game.moveHero('d');
 		assertEquals(null,game.getHero().getGameOverPos());
 		assertEquals( test_game_over_pos, game.getVillains().get(0).getGameOverPos());
@@ -131,18 +184,19 @@ public class GameTests {
 	
 	@Test
 	public void testChangeRepresentation(){
-		ArenaMap game_map = new ArenaMap(-1,-1);
-		GameLogic game = new GameLogic(game_map,1);
+		this.setDefaultMap(0);
+		GameLogic game = new GameLogic(game_map,0); //number is irrelevant
 		Hero h=game.getHero();
 		assertEquals("H",h.toString());
-		game.moveHero('d');
+		game.moveHero('s');
+		game.moveHero('s');
 		assertEquals("K",h.toString());
 	}
 	
 	@Test
 	public void testMoveAndClub(){
 		ArenaMap map = new ArenaMap(-1,1); //generate only 1 ogre
-		GameLogic game = new GameLogic(map,1);
+		GameLogic game = new GameLogic(map,0); //Number is irrelevant
 		ArrayList<Pair<Integer,Integer> > temp = new ArrayList<Pair<Integer,Integer> >();
 		int px = game.getVillains().get(0).getX() , py = game.getVillains().get(0).getY();
 		boolean cnn= false,cns=false,cnw=false,cne=false, csn=false , css=false , csw=false , cse=false, 
@@ -196,85 +250,174 @@ public class GameTests {
 		}
 	}
 	
-
-	
-	@Test
-	public void testFailOpenDoor(){
-		int[] door={1,0};
-		int[] heroi={1,1};
-		ArenaMap game_map = new ArenaMap(-1,-1);
-		GameLogic game = new GameLogic(game_map,2);
-		assertEquals('I',game_map.getMap()[door[0]][door[1]]);
-		game.moveHero('a');
-		assertEquals(heroi[0],game.getHero().getX());
-		assertEquals(heroi[1],game.getHero().getY());
-		assertEquals('I',game_map.getMap()[door[0]][door[1]]);
-		
-		
-	}
-	@Test
-	public void testSuccessOpenDoor(){
-		int[] door1={2,0}, door2 = {3,0};
-		ArenaMap game_map = new ArenaMap(this.map);
-		GameLogic game = new GameLogic(game_map,2);
-		assertEquals('I',game_map.getMap()[door1[0]][door1[1]]);
-		assertEquals('I',game_map.getMap()[door2[0]][door2[1]]);
-		Hero h=game.getHero();
-		assertEquals("H",h.toString());
-		game.moveHero('s');
-		game.moveHero('s');
-		assertEquals("K",h.toString());
-		assertEquals('S',game_map.getMap()[door1[0]][door1[1]]);
-		assertEquals('S',game_map.getMap()[door2[0]][door2[1]]);
-	}
 	@Test
 	public void testVictory(){
-		int[] door={2,0};
-		ArenaMap game_map = new ArenaMap(this.map);
-		GameLogic game = new GameLogic(game_map,2);
-		assertEquals('I',game_map.getMap()[door[0]][door[1]]);
-		Hero h=game.getHero();
-		assertEquals("H",h.toString());
+		this.setDefaultMap(0);
+		GameLogic game = new GameLogic(game_map,0); //number is irrelevant
+		assertEquals("H",game.getHero().toString());
 		game.moveHero('s');
 		game.moveHero('s');
-		assertEquals("K",h.toString());
-		assertEquals(true , game.moveHero('a'));
+		game.getHero().setKey(true);
+		this.game_map.pickUpKey();
+		assertEquals('k' , this.game_map.getTile( new Pair<Integer,Integer>(3,1)));
+		assertEquals(null,this.game_map.nextMap(0));
+		assertEquals("K",game.getHero().toString());
+		game.moveHero('a');
+		assertEquals(true , game.wonGame() ); //moveHero returns true if it jumped on top of stairs
 	}
 	
 	@Test
 	public void stunOgre(){
-		//hero is at position 1,1 and ogre 1,3
-		ArenaMap game_map = new ArenaMap(-1,-1);
-		GameLogic game = new GameLogic(game_map,3);
+		Hero h = new Hero(1,1);
+		h.setArmed(true);
+		ArrayList< GameCharacter > chars = new ArrayList< GameCharacter >();
+		this.setDefaultMap(0);
+		chars.add( new Ogre(1,3,game_map.getMapSize() , false ) );
+		chars.add( h );
+		this.game_map.setCharacters(chars);
+		GameLogic game = new GameLogic(game_map,0); //number is irrelevant
 		ArrayList<GameCharacter> ogres = game.getVillains();
+		
 		assertEquals(true,game.getHero().isArmed());
 		assertEquals("O",ogres.get(0).toString());
 		game.moveHero('d');
 		((Ogre)ogres.get(0)).stunOgre();
-		((Ogre)ogres.get(0)).setClub(new Pair<Integer,Integer>(1,4), game_map.getMapSize());
+		((Ogre)ogres.get(0)).setClub(new Pair<Integer,Integer>(2,3), game_map.getMapSize()); //remove club from same pos as ogre
+		((Ogre)ogres.get(0)).setClubRepresentation("$");
+		game.moveHero('a');
+		
+		assertEquals( "$" , ogres.get(0).getPrintable().get(0).getSecond() );
 		assertEquals( false,game.isGameOver());
-		int x=ogres.get(0).getX();
-		int y=ogres.get(0).getY();
-		//assertEquals(true,game.checkStun(ogres.get(0).getX(), ogres.get(0).getY()));
 		game.moveAllVillains();
 		assertEquals("8",ogres.get(0).toString());
-		assertEquals(x,ogres.get(0).getX());
-		assertEquals(y,ogres.get(0).getY());
+		assertEquals(new Pair<Integer,Integer>(1,3) , ogres.get(0).moveCharacter( ogres.get(0).getPos() , 0, game_map.getMapSize() ).get(0) );
+		game.moveAllVillains();
+		assertEquals("O",ogres.get(0).toString());
+		//test if diferent position
+		assertEquals( false , ogres.get(0).moveCharacter( ogres.get(0).getPos() , 0, game_map.getMapSize() ).get(0).equals( new Pair<Integer,Integer>(1,3) ) );
 		
 		}
 	
 	@Test
-	
-	public void moveinDungeon(){
-		Pair<Integer,Integer> test1 = new Pair<Integer,Integer>(1,1), test2 = new Pair<Integer,Integer>(1,2);
-		GameLogic game =new GameLogic(0,0,0);
-		assertEquals( test1 , game.getHero().getPos().get(0));
-		game.moveHero('d');
-		assertEquals( test2 , game.getHero().getPos().get(0));
+	public void testCreateDungeonMap(){
+		for(int i = -1 ; i <= 3 ; i++){
+			DungeonMap map = new DungeonMap(i, -1);
+			GameLogic game = new GameLogic(map,0); //number is irrelevant
+			char[][] test_map = new char[][]{{'X','X','X','X','X','X','X','X','X','X'} ,
+											 {'X',' ',' ',' ','I',' ','X',' ',' ','X'} ,
+											 {'X','X','X',' ','X','X','X',' ',' ','X'} ,
+											 {'X',' ','I',' ','I',' ','X',' ',' ','X'} ,
+											 {'X','X','X',' ','X','X','X',' ',' ','X'} ,
+											 {'I',' ',' ',' ',' ',' ',' ',' ',' ','X'} ,
+											 {'I',' ',' ',' ',' ',' ',' ',' ',' ','X'} ,
+											 {'X','X','X',' ','X','X','X','X',' ','X'} ,
+											 {'X',' ','I',' ','I',' ','X','k',' ','X'} ,
+											 {'X','X','X','X','X','X','X','X','X','X'} };
+
+			assertEquals(test_map , map.getMap() );
+			assertEquals(true , (map.nextMap(0) instanceof ArenaMap) );
+			
+			if(i == -1)
+				assertEquals(true , game.getAllCharacters().size() == 1);
+			else if (i == 0)
+				assertEquals(true , game.getAllCharacters().size() == 2);
+			else if (i > 0){
+				boolean b = false;
+				for (GameCharacter ch : game.getAllCharacters() )
+					if ((ch instanceof RookieGuard && i == 1) || (ch instanceof DrunkenGuard && i == 2) || (ch instanceof SuspiciousGuard && i == 3))
+						b = true;
+				assertEquals(true,b);
+			}
+		}
 		
 	}
 	
+	@Test
+	public void testCreateArenaMap(){
+		for(int i = -1 ; i <= 5 ; i++){
+			ArenaMap map = new ArenaMap(-1,i);
+			GameLogic game = new GameLogic(map,0); //number is irrelevant
+			char[][] test_map = new char[][]{{'X','X','X','X','X','X','X','X','X','X'} ,
+											 {'I',' ',' ',' ',' ',' ',' ',' ','k','X'} ,
+											 {'X',' ',' ',' ',' ',' ',' ',' ',' ','X'} ,
+											 {'X',' ',' ',' ',' ',' ',' ',' ',' ','X'} ,
+											 {'X',' ',' ',' ',' ',' ',' ',' ',' ','X'} ,
+											 {'X',' ',' ',' ',' ',' ',' ',' ',' ','X'} ,
+											 {'X',' ',' ',' ',' ',' ',' ',' ',' ','X'} ,
+											 {'X',' ',' ',' ',' ',' ',' ',' ',' ','X'} ,
+											 {'X',' ',' ',' ',' ',' ',' ',' ',' ','X'} ,
+											 {'X','X','X','X','X','X','X','X','X','X'} };
+			assertEquals(test_map , map.getMap() );
+			assertEquals(null ,  map.nextMap(0) );
+			//test ogres generated
+			if (i == -1)
+				assertEquals(true , (game.getAllCharacters().size() == 1)); //only generate hero
+			else if (i == 0)	
+				assertEquals(true , (game.getAllCharacters().size() >= 2 && game.getAllCharacters().size() <= 6)); //generate random ogres + hero
+			else
+				assertEquals(true , (game.getAllCharacters().size() == (i+1) ));
+		}
+		
+	}
 	
+	@Test
+	public void testMoveGuards(){
+		
+		for(int i = 1 ; i < 4 ; i++){ //generate all three guards
+			DungeonMap map = new DungeonMap(i,-1);
+			GameLogic game = new GameLogic(map,0); //number is irrelevant
+			for(int j = 0 ; j < 50 ; j++){			
+				game.moveAllVillains();
+				assertEquals(true, validGuardPos(game.getVillains().get(0).getPos().get(0) , i, j%movement.size()) );
 	
+				if (i == 1){
+					ArrayList< Pair<Pair<Integer,Integer> , String > > temp = new ArrayList< Pair< Pair<Integer,Integer> , String> >();
+					temp.add( new Pair<Pair<Integer,Integer>,String>(movement.get(j % movement.size()) , "G") );
+					assertEquals(temp, game.getVillains().get(0).getPrintable());
+				}
+			}
+		}
+	}
+	
+	@Test
+	public void testGuardsGameOverPos(){
+		for(int i = 1 ; i < 4 ; i++){ //generate all three guards
+			DungeonMap map = new DungeonMap(i,-1);
+			GameLogic game = new GameLogic(map,0); //number is irrelevant
+			for(int j = 0 ; j < 50 ; j++){
+				game.moveAllVillains();
+				if (game.getVillains().get(0).toString() != "g")
+					assertEquals( game.getVillains().get(0).getPos().get(0) , game.getVillains().get(0).getGameOverPos().get(0)  );
+				else{
+					assertEquals(new ArrayList<Pair<Integer,Integer> >() , game.getVillains().get(0).getGameOverPos());
+					assertEquals( true, ((DrunkenGuard)game.getVillains().get(0)).isAsleep() );
+				}
+					
+
+			}
+		}
+	}
+	
+	@Test
+	public void testPickUpKeyArenaMap(){
+		ArenaMap map = new ArenaMap(-1,-1); //generate no enemies
+		GameLogic game = new GameLogic(map,0); //number is irrelevant
+		Pair<Integer,Integer> test1 = new Pair<Integer,Integer>(1,1), test2 = new Pair<Integer,Integer>(1,8);
+		
+		for(int i = 0 ; i < 7 ; i++)
+			game.moveHero('w');
+		assertEquals(test1,game.getHero().getPos().get(0));
+		for(int i = 0 ; i < 7 ; i++)
+			game.moveHero('d');
+		assertEquals(test2,game.getHero().getPos().get(0));
+		assertEquals(' ', map.getTile(test2) );
+		for(int i = 0 ; i < 7 ; i++)
+			game.moveHero('a');
+		game.moveHero('a');
+		assertEquals(test1,game.getHero().getPos().get(0));
+		assertEquals('S',map.getTile( new Pair<Integer,Integer>(1,0) ));
+		game.moveHero('a');
+		assertEquals(true,game.wonGame());
+	}
 	
 }

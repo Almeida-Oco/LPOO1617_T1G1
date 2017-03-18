@@ -4,7 +4,7 @@ import java.util.Arrays;
 import pair.Pair;
 
 public class Guard extends GameCharacter{
-	protected ArrayList< Pair<Integer,Integer> > movement = new ArrayList< Pair<Integer,Integer> >( 
+	protected static ArrayList< Pair<Integer,Integer> > movement = new ArrayList< Pair<Integer,Integer> >( 
    Arrays.asList(new Pair<Integer,Integer>(1,7),new Pair<Integer,Integer>(2,7),new Pair<Integer,Integer>(3,7),new Pair<Integer,Integer>(4,7),
 				 new Pair<Integer,Integer>(5,7),new Pair<Integer,Integer>(5,6),new Pair<Integer,Integer>(5,5),new Pair<Integer,Integer>(5,4),
 				 new Pair<Integer,Integer>(5,3),new Pair<Integer,Integer>(5,2),new Pair<Integer,Integer>(5,1),new Pair<Integer,Integer>(6,1),
@@ -14,12 +14,23 @@ public class Guard extends GameCharacter{
 				 
 	protected int index = 0;
 	protected int step = 1;
-
-	public Guard(int x , int y){
-		super(x,y);
-		this.representation="G";
+	
+	public Guard(Pair<Integer,Integer> pos){
+		super(pos.getFirst().intValue() , pos.getSecond().intValue() );
+		this.representation = "G";
 	}
 
+	public boolean setPos(ArrayList<Pair<Integer,Integer> > vp , int MAP_SIZE){
+		int i = 0;
+		for ( Pair<Integer,Integer> p : vp){
+			if (p.getFirst() >= 0 && p.getFirst() < MAP_SIZE && p.getSecond() >= 0 && p.getSecond() < MAP_SIZE) {
+				this.position.set(i, p);
+				i++;
+			}
+		}
+		return i != 0;
+	}
+	
 	public ArrayList< Pair<Integer,Integer> > moveCharacter(ArrayList<Pair<Integer,Integer> > current,int change , int MAP_SIZE){
 		ArrayList<Pair<Integer,Integer> > temp = new ArrayList<Pair<Integer,Integer> >();
 		temp.add((Pair<Integer,Integer>)this.movement.get(this.index).clone());

@@ -55,7 +55,6 @@ public abstract class GameCharacter {
 				this.position.set(i, p);
 				i++;
 			}
-			
 		}
 		return (i!=0);
 	}

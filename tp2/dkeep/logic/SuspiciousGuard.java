@@ -6,19 +6,23 @@ import pair.Pair;
 
 public class SuspiciousGuard extends Guard{
 	public SuspiciousGuard(int x , int y){
-		super(x,y);
+		super(new Pair<Integer,Integer>(x,y) );
 	}
 	
 	public SuspiciousGuard(){
-		super(1,8);
+		super( Guard.movement.get( movement.size()-1));
 	}
-
-	public ArrayList<Pair<Integer, Integer> > moveCharacter(int MAP_SIZE){
+	
+	public boolean setPos(ArrayList<Pair<Integer,Integer> > vp , int MAP_SIZE){
 		Random rand = new Random();
-		this.position.set(0,this.movement.get(this.index));
 		this.step = (rand.nextInt(2) == 0) ? 1 : -1;
-		incIndex();
-		
-		return (ArrayList<Pair<Integer,Integer> >)this.position.clone();
+		this.incIndex();
+		return super.setPos(vp, MAP_SIZE);
+	}
+	
+	public ArrayList<Pair<Integer, Integer> > moveCharacter(ArrayList<Pair<Integer,Integer> > current,int change , int MAP_SIZE){
+		ArrayList<Pair<Integer,Integer> > temp = new ArrayList<Pair<Integer,Integer> >();
+		temp.add(this.movement.get(this.index));
+		return temp;
 	}
 }

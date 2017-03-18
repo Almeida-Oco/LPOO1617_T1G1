@@ -2,64 +2,41 @@ package dkeep.logic;
 import pair.Pair;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Random;
 
+
 public class GameLogic {
+	private static final HashMap<Character,Integer> DIR = new HashMap<Character,Integer>();
+	static{
+		DIR.put(new Character('w') , 4);
+		DIR.put(new Character('a') , 2);
+		DIR.put(new Character('s') , 3);
+		DIR.put(new Character('d') , 1);
+	}
+	
 	private Map map;
 	private ArrayList<GameCharacter> villains = new ArrayList<GameCharacter>();
 	private Hero hero;
 	private Pair<Integer,Integer> key;
-	private int level = 0;
-	
-	/**
-	 * @brief Constructor !!WARNING!! ONLY FOR TESTING !!
-	 * @param game_map Object of game map to use
-	 * @param level what hipothetical level it is
-	 */
-	public GameLogic(Map game_map, int level) { // WARNING!! ONLY FOR TESTING !!
-		
-		if (level == 0) {
-			this.level = level;
-			this.villains.add( new RookieGuard(1, 3) );
-			this.map = game_map;
-			this.hero = new Hero(1, 1);
-		} else if (level == 1) {
-			this.level = 1;
-			this.villains.add( new Ogre(2, 2, game_map.getMapSize(), true));
-			this.map = game_map;
-			this.hero = new Hero(1, 1);
-			this.key = new Pair<Integer,Integer>(1,2);
-		} else if (level == 2) {
-			this.map = game_map;
-			this.level = 0;
-			this.hero = new Hero(1, 1);
-			this.key = new Pair<Integer,Integer>(3,1);
-		} else if (level == 3) {
-			this.map = game_map;
-			this.level = 1;
-			this.hero = new Hero(1, 1);
-			hero.setArmed(true);
-			Ogre o = new Ogre(1, 3, game_map.getMapSize(), false);
-			this.villains.add(o);
-		}
 
-	}
 	
 	/**
 	 * @brief Constructor
 	 * @param level Current Level
-	 * @param ogre How many ogres 
-	 * @param guard How many guards
+	 * @param ogre How many ogres to generate (see Map constructor for specifics)
+	 * @param guard Which guard to generate (see Map constructor for specifics)
+	 * @details If game_map is null default first level will be used, if game_map is not null then it will use its map
+	 * 			and its characters, making guard variable irrelevant
 	 */
-	public GameLogic(int level, int ogre, int guard) {
-		this.level = level;
-		this.map = ( (level == 0) ? new DungeonMap(guard,-1) : new ArenaMap(-1,ogre) );
-		//get initial characters from map
-		for (GameCharacter ch : this.map.getCharacters() )
+	public GameLogic(Map game_map, int guard) {
+		this.map = (game_map == null) ? new DungeonMap(guard,-1) : game_map;
+		for (GameCharacter ch : this.map.getCharacters() ) //get all characters from the map
 			if (ch instanceof Hero)
 				this.hero = (Hero)ch;
 			else
 				this.villains.add(ch);
+		
 		this.key = this.map.getKey();
 	}
 
@@ -74,7 +51,7 @@ public class GameLogic {
 			int change1 = 0, change2 = 0;
 			do{
  				pos = ch.moveCharacter(pos, ( (change1 == -1 || (change2 > change1 && change2 != -1)) ? change2 : change1) , map.getMapSize());
-			} while ( ( (change1 = this.checkOverlap(pos)) != -1) || ( (change2 = this.map.isFree(pos)) != -1));
+			} while ( (( (change1 = this.checkOverlap(pos)) != -1) || ( (change2 = this.map.isFree(pos)) != -1)));
 			ch.setPos(pos, this.map.getMapSize());
 			if(ch instanceof Ogre)
 				checkStuns((Ogre)ch);
@@ -88,15 +65,9 @@ public class GameLogic {
 	 */
 	public boolean moveHero(char direction) {
 		ArrayList< Pair<Integer,Integer> > temp = null;
-
-		if ('w' == direction)
-			temp = this.hero.moveCharacter(temp,this.map.getMapSize(), 4);
-		else if ('a' == direction)
-			temp = this.hero.moveCharacter(temp,this.map.getMapSize(), 2);
-		else if ('s' == direction)
-			temp = this.hero.moveCharacter(temp,this.map.getMapSize(), 3);
-		else if ('d' == direction)
-			temp = this.hero.moveCharacter(temp,this.map.getMapSize(), 1);
+		Integer dir;
+		if ( (dir = GameLogic.DIR.get(new Character(direction))) != null ) //translate char to int
+			temp = this.hero.moveCharacter(temp, this.map.getMapSize(), dir);
 		else
 			return false;
 
@@ -116,12 +87,12 @@ public class GameLogic {
 	}
 
 	/**
-	 * 
-	 * @return
+	 * @brief Checks if hero got to the final stairs
+	 * @return true if hero is in final stairs
 	 */
-	public boolean wonGame() { // checks if hero got to the final stairs
+	public boolean wonGame() {
 		for ( Pair<Integer,Integer> p : this.hero.getPos() )
-			if (this.level == 1 && this.map.getTile( p )== 'S')
+			if (this.map.getTile( p )== 'S' && this.map.nextMap(0) == null)
 				return true;
 				
 		return false;
@@ -130,8 +101,9 @@ public class GameLogic {
 	/**
 	 * @brief Checks if its game over
 	 * @return True if it is game over, false otherwise
+	 * @details First gathers all villains game over positions then checks to see if it is in an adjacent square of any
 	 */
-	public boolean isGameOver() { // Gets all characters game over positions and checks
+	public boolean isGameOver() { 
 		for (GameCharacter ch : getVillains())
 			for (Pair<Integer,Integer> pos : ch.getGameOverPos())
 				if (inAdjSquares(this.hero.getPos().get(0) , pos))
@@ -141,7 +113,8 @@ public class GameLogic {
 	}
 
 	
-	/**
+	
+	/**	
 	 * @brief Checks if p1 is in adjacent square of p2
 	 * @param p Square to check
 	 * @return True if hero is in adjacent, false if not
@@ -157,6 +130,7 @@ public class GameLogic {
 
 		return false;
 	}
+	
 	/**
 	 * @brief Checks if positions passed overlap with another character
 	 * @param l Array of Positions to check overlap
@@ -180,24 +154,22 @@ public class GameLogic {
 		
 		return -1;
 	}
+	
 	/**
 	 * @brief Checks if hero triggered something
 	 * @param p Position of hero
 	 * @return True if he triggered next level, false otherwise
 	 */
 	private boolean checkTriggers( Pair<Integer,Integer> p) { 
-		if (p.equals(this.key) && level != 1){
-			this.map.openDoors();
+		if (p.equals(this.key)){
+			boolean b = this.map.pickUpKey();
+			this.map.openDoors( b );
+			this.hero.setKey( b );
 			hero.setRepresentation("K");
 		}
 		else if (this.map.getTile(p) == 'I' && this.hero.hasKey()) {
-			if (level == 1)
-				p.setSecond(p.getSecond().intValue()+1); // stop hero from going inside stairs at first attempt
-			this.map.openDoors();
-		} else if (p.equals(this.key) && !this.hero.hasKey()) {
-			hero.setRepresentation("K");
-			this.hero.setKey(true);
-			this.map.pickUpKey();
+			p.setSecond(p.getSecond().intValue()+1); // stop hero from going inside stairs at first attempt
+			this.map.openDoors( false );
 		} else if (this.map.getTile(p) == 'S') //Next Level
 			return true;
 		else if (!this.hero.hasKey())
@@ -205,6 +177,7 @@ public class GameLogic {
 
 		return false;
 	}
+	
 	/**
 	 * @brief Checks if the hero stunned an Ogre
 	 */
@@ -217,10 +190,11 @@ public class GameLogic {
 	}
 	
 		
-	public GameLogic getNextLevel(int guards,int ogres){
+	public GameLogic getNextLevel(int enemies){
 		Random rand = new Random();
-		return new GameLogic(++this.level, (ogres == -1) ? rand.nextInt(3)+1 : ogres , -1 );
+		return new GameLogic(this.map.nextMap(enemies) , 0); //number is irrelevant
 	}
+	
 	/**
 	 * @brief Gets all Villains in a single container
 	 * @return Array with all villains
@@ -228,6 +202,7 @@ public class GameLogic {
 	public ArrayList<GameCharacter> getVillains(){
 		return (ArrayList<GameCharacter>)this.villains.clone();
 	}
+	
 	/**
 	 * @brief Gets all Characters in a single container
 	 * @return Array with all Characters
@@ -237,6 +212,7 @@ public class GameLogic {
 		temp.add(0, this.hero);
 		return temp;
 	}
+	
 	/**
 	 * @brief Gets current game Map
 	 * @return Current Game Map
@@ -244,13 +220,7 @@ public class GameLogic {
 	public Map getMap() {
 		return this.map;
 	}
-	/**
-	 * @brief Gets current level
-	 * @return Current level
-	 */
-	public int getLevel() {
-		return this.level;
-	}
+	
 	/**
 	 * @brief Gets Hero
 	 * @return Hero

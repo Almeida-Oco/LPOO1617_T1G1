@@ -83,7 +83,7 @@ public class GameWindow {
 			boolean changed_lvl = this.game.moveHero(ch);
 			if(changed_lvl && !this.game.wonGame()){
 				//System.out.println("NUMBER OF OGRES = "+this.ogres);
-				this.game = this.game.getNextLevel(-1, this.ogres);
+				this.game = this.game.getNextLevel(this.ogres);
 			}
 				
 			this.game.moveAllVillains();
@@ -138,7 +138,7 @@ public class GameWindow {
 		}	
 		
 		this.input = new UserInput(ogres+1,guards+1);
-		this.game = new GameLogic(0,ogres+1,guards+1);
+		this.game = new GameLogic(null,guards+1);
 		
 		enableButtons();
 		if(this.ogres != 0)

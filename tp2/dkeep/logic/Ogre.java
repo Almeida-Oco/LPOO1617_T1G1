@@ -70,20 +70,19 @@ public class Ogre extends GameCharacter {
 	
 	//Club must !ALWAYS! be in the last position
 	@Override
-	public boolean setPos(ArrayList<Pair<Integer, Integer>> vp, int MAP_SIZE) { 
+	public int setPos(ArrayList<Pair<Integer, Integer>> vp, int MAP_SIZE) { 
 		int i = 0;
 		for ( Pair<Integer,Integer> p : vp){
 			if (p.getFirst() >= 0 && p.getFirst() < MAP_SIZE && p.getSecond() >= 0 && p.getSecond() < MAP_SIZE) {
 				if ( i != vp.size()-1) 
-					this.position.set(i, p);
-				else{
-					this.club = p;
-					return true;
-				}
+					this.position.set(i++, p);
+				else 
+					setClub(p,MAP_SIZE);
 			}
-			i++;			
+			else //if fail to set ogre position
+				return i;
 		}
-		return false;
+		return -1;
 	}
 
 	public boolean setClub(Pair<Integer,Integer> p, int MAP_SIZE){

@@ -30,7 +30,7 @@ public class GameLogic {
 	 * 			and its characters, making guard variable irrelevant
 	 */
 	public GameLogic(Map game_map, int guard) {
-		this.map = (game_map == null) ? new DungeonMap(guard,-1) : game_map;
+		this.map = (game_map == null) ? new DungeonMap(guard,-1) : game_map; //if null assume New Game
 		for (GameCharacter ch : this.map.getCharacters() ) //get all characters from the map
 			if (ch instanceof Hero)
 				this.hero = (Hero)ch;
@@ -48,11 +48,11 @@ public class GameLogic {
 	public void moveAllVillains() {
 		ArrayList< Pair<Integer,Integer> > pos = new ArrayList<Pair<Integer,Integer> >();
 		for (GameCharacter ch : this.villains){
-			int change1 = 0, change2 = 0;
+			int change = 0;
 			do{
- 				pos = ch.moveCharacter(pos, ( (change1 == -1 || (change2 > change1 && change2 != -1)) ? change2 : change1) , map.getMapSize());
-			} while ( (( (change1 = this.checkOverlap(pos)) != -1) || ( (change2 = this.map.isFree(pos)) != -1)));
-			ch.setPos(pos, this.map.getMapSize());
+ 				pos = ch.moveCharacter(pos, change , map.getMapSize());
+			} while ( ( (change = this.checkOverlap(pos)) != -1) || ( (change = this.map.isFree(pos)) != -1 ) || ( (change = ch.setPos(pos , this.map.getMapSize()) ) != -1) );
+			//ch.setPos(pos, this.map.getMapSize());
 			if(ch instanceof Ogre)
 				checkStuns((Ogre)ch);
 		}

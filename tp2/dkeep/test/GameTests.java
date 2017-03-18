@@ -202,11 +202,11 @@ public class GameTests {
 		boolean cnn= false,cns=false,cnw=false,cne=false, csn=false , css=false , csw=false , cse=false, 
 				cen=false , ces=false , cew=false , cee=false , cwn=false , cws=false , cwe=false , cww=false;
 		while ( !(cnn && cns && cnw && cne && csn && css && csw && cse && cen && ces && cew && cee && cwn && cws && cwe && cww) ){
-			int change1 = 0;
+			int change = 0;
 			do{
-				temp = game.getVillains().get(0).moveCharacter(temp,change1 ,map.getMapSize());
-			} while ( (change1 = game.getMap().isFree( temp )) != -1);
-			game.getVillains().get(0).setPos(temp, map.getMapSize());
+				temp = game.getVillains().get(0).moveCharacter(temp,change ,map.getMapSize());
+			} while ( ( (change = game.getMap().isFree( temp )) != -1) || ( (change = game.getVillains().get(0).setPos(temp, map.getMapSize())) != -1));
+			//game.getVillains().get(0).setPos(temp, map.getMapSize());
 			
 			int ox = game.getVillains().get(0).getX(), oy = game.getVillains().get(0).getY(), 
 				cx = ((Ogre)game.getVillains().get(0)).getClubX(), cy = ((Ogre)game.getVillains().get(0)).getClubY();
@@ -248,6 +248,8 @@ public class GameTests {
 			
 			px = game.getVillains().get(0).getX(); py = game.getVillains().get(0).getY();
 		}
+		
+		assertEquals( true , ( ( game.getNextLevel(0).getMap() instanceof DungeonMap ) && (map.nextMap(0) == null) ) );
 	}
 	
 	@Test
@@ -277,6 +279,11 @@ public class GameTests {
 		this.game_map.setCharacters(chars);
 		GameLogic game = new GameLogic(game_map,0); //number is irrelevant
 		ArrayList<GameCharacter> ogres = game.getVillains();
+		ArrayList<Pair<Integer,Integer> > test1 = new ArrayList<Pair<Integer,Integer> >(), test2 = new ArrayList<Pair<Integer,Integer> >();
+		test1.add( new Pair<Integer,Integer>( this.game_map.getMapSize()+1 , 0 ));
+		test1.add( new Pair<Integer,Integer>(1,1));
+		test2.add( new Pair<Integer,Integer>(1,1));
+		test2.add( new Pair<Integer,Integer>(this.game_map.getMapSize()+1,0));
 		
 		assertEquals(true,game.getHero().isArmed());
 		assertEquals("O",ogres.get(0).toString());
@@ -296,6 +303,9 @@ public class GameTests {
 		//test if diferent position
 		assertEquals( false , ogres.get(0).moveCharacter( ogres.get(0).getPos() , 0, game_map.getMapSize() ).get(0).equals( new Pair<Integer,Integer>(1,3) ) );
 		
+		
+		assertEquals( 0 , ((Ogre)ogres.get(0)).setPos( test1 , this.game_map.getMapSize() ));
+		assertEquals( 1 , ((Ogre)ogres.get(0)).setPos(test2 , this.game_map.getMapSize() ));
 		}
 	
 	@Test
@@ -376,6 +386,7 @@ public class GameTests {
 					assertEquals(temp, game.getVillains().get(0).getPrintable());
 				}
 			}
+			assertEquals( true , ( game.getNextLevel(0).getMap() instanceof ArenaMap ));
 		}
 	}
 	

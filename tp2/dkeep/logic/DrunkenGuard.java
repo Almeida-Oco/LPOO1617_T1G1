@@ -10,12 +10,12 @@ public class DrunkenGuard extends Guard{
 	public DrunkenGuard(int x , int y){
 		super(new Pair<Integer,Integer>(x,y) );
 	}
-	
+
 	public DrunkenGuard(){
 		super( Guard.movement.get( movement.size()-1));
 	}
 	
-	public boolean setPos(ArrayList<Pair<Integer,Integer> > vp , int MAP_SIZE){
+	public int setPos(ArrayList<Pair<Integer,Integer> > vp , int MAP_SIZE){
 		this.asleep = (vp.get(0).equals(this.position.get(0))); //if the position wanting to set is same as previous then guard is asleep
 		this.representation = (this.asleep) ? "g" : "G" ; 
 			

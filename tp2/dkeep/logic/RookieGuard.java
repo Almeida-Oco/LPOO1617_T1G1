@@ -8,7 +8,7 @@ public class RookieGuard extends Guard{
 		super(new Pair<Integer,Integer>(x,y) );
 	}
 	
-	public boolean setPos(ArrayList<Pair<Integer,Integer> > vp , int MAP_SIZE){
+	public int setPos(ArrayList<Pair<Integer,Integer> > vp , int MAP_SIZE){
 		return super.setPos(vp, MAP_SIZE);
 	}
 	

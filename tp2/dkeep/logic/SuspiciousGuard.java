@@ -13,7 +13,7 @@ public class SuspiciousGuard extends Guard{
 		super( Guard.movement.get( movement.size()-1));
 	}
 	
-	public boolean setPos(ArrayList<Pair<Integer,Integer> > vp , int MAP_SIZE){
+	public int setPos(ArrayList<Pair<Integer,Integer> > vp , int MAP_SIZE){
 		Random rand = new Random();
 		this.step = (rand.nextInt(2) == 0) ? 1 : -1;
 		this.incIndex();

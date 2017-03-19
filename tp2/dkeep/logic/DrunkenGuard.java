@@ -15,11 +15,11 @@ public class DrunkenGuard extends Guard{
 		super( Guard.movement.get( movement.size()-1));
 	}
 	
-	public int setPos(ArrayList<Pair<Integer,Integer> > vp , int MAP_SIZE){
+	public void setPos(ArrayList<Pair<Integer,Integer> > vp){
 		this.asleep = (vp.get(0).equals(this.position.get(0))); //if the position wanting to set is same as previous then guard is asleep
 		this.representation = (this.asleep) ? "g" : "G" ; 
 			
-		return super.setPos(vp, MAP_SIZE);
+		super.setPos(vp);
 	}
 	
 	public ArrayList< Pair<Integer,Integer> > moveCharacter(ArrayList<Pair<Integer,Integer> > current,int change , int MAP_SIZE){

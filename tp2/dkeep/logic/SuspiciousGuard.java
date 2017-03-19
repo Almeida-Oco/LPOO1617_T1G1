@@ -13,11 +13,11 @@ public class SuspiciousGuard extends Guard{
 		super( Guard.movement.get( movement.size()-1));
 	}
 	
-	public int setPos(ArrayList<Pair<Integer,Integer> > vp , int MAP_SIZE){
+	public void setPos(ArrayList<Pair<Integer,Integer> > vp){
 		Random rand = new Random();
 		this.step = (rand.nextInt(2) == 0) ? 1 : -1;
 		this.incIndex();
-		return super.setPos(vp, MAP_SIZE);
+		super.setPos(vp);
 	}
 	
 	public ArrayList<Pair<Integer, Integer> > moveCharacter(ArrayList<Pair<Integer,Integer> > current,int change , int MAP_SIZE){

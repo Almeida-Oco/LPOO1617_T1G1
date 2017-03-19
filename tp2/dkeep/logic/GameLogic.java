@@ -51,8 +51,8 @@ public class GameLogic {
 			int change = 0;
 			do{
  				pos = ch.moveCharacter(pos, change , map.getMapSize());
-			} while ( ( (change = this.checkOverlap(pos)) != -1) || ( (change = this.map.isFree(pos)) != -1 ) || ( (change = ch.setPos(pos , this.map.getMapSize()) ) != -1) );
-			//ch.setPos(pos, this.map.getMapSize());
+			} while ( ( (change = this.checkOverlap(pos)) != -1) || ( (change = this.map.isFree(pos)) != -1 ) );
+			ch.setPos(pos);
 			if(ch instanceof Ogre)
 				checkStuns((Ogre)ch);
 		}
@@ -72,7 +72,7 @@ public class GameLogic {
 			return false;
 
 		if (checkTriggers(temp.get(0))){//IF hero is supposed to go to next level then return true
-			this.hero.setPos(temp , this.map.getMapSize() );
+			this.hero.setPos(temp);
 			return true;
 		}
 		
@@ -80,7 +80,7 @@ public class GameLogic {
 			for (GameCharacter ch : getVillains() )
 				if ( temp.equals(ch.getPos()) ) //If hero tried to jump on top of something just ignore it
 					return false;
-			this.hero.setPos(temp , this.map.getMapSize() );
+			this.hero.setPos(temp);
 		}
 
 		return false;

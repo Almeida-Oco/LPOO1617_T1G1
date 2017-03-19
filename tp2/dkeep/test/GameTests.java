@@ -59,7 +59,7 @@ public class GameTests {
 			return p.equals(movement.get(index));
 	}
 	
-
+	
 	@Test
 	public void testMoveHeroIntoFreeCell(){
 		Pair<Integer,Integer> test1 = new Pair<Integer,Integer>(1,1),test2 = new Pair<Integer,Integer>(2,1);
@@ -183,6 +183,23 @@ public class GameTests {
 	}
 	
 	@Test
+	public void testMoveHeroIntoEnemy(){
+		ArrayList<GameCharacter> chars = new ArrayList<GameCharacter>();
+		Pair<Integer,Integer> test = new Pair<Integer,Integer>(1,2);
+		this.setDefaultMap(0);
+		chars.add(new Hero(1,1));
+		chars.add(new Ogre(1,3,this.game_map.getMapSize() , true));
+		this.game_map.setCharacters(chars);
+		GameLogic game = new GameLogic(game_map,0); //number is irrelevant
+		game.moveHero('d');
+		assertEquals(test , game.getHero().getPos().get(0));
+		assertEquals(false , game.moveHero('d'));
+		assertEquals(test , game.getHero().getPos().get(0));
+		
+		
+	}
+	
+	@Test
 	public void testChangeRepresentation(){
 		this.setDefaultMap(0);
 		GameLogic game = new GameLogic(game_map,0); //number is irrelevant
@@ -205,12 +222,12 @@ public class GameTests {
 			int change = 0;
 			do{
 				temp = game.getVillains().get(0).moveCharacter(temp,change ,map.getMapSize());
-			} while ( ( (change = game.getMap().isFree( temp )) != -1) || ( (change = game.getVillains().get(0).setPos(temp, map.getMapSize())) != -1));
-			//game.getVillains().get(0).setPos(temp, map.getMapSize());
+			} while ( ( (change = game.getMap().isFree( temp )) != -1) ); //Map only contains ogre
+			game.getVillains().get(0).setPos(temp);
 			
 			int ox = game.getVillains().get(0).getX(), oy = game.getVillains().get(0).getY(), 
 				cx = ((Ogre)game.getVillains().get(0)).getClubX(), cy = ((Ogre)game.getVillains().get(0)).getClubY();
-			//System.out.print("Club=["+cx+","+cy+"] , Ogre=["+ox+","+oy+"] , Original=["+px+","+py+"] \n");
+
 			if 		( (px-2) == cx &&   py   == cy && (px-1) == ox && py == oy ) //Ogre north, club north
 				cnn = true;
 			else if ( (px-1) == cx && (py-1) == cy && (px-1) == ox && py == oy ) //Ogre north, club west
@@ -243,8 +260,8 @@ public class GameTests {
 				cee = true;
 			else if ( (px+1) == cx && (py+1) == cy && px == ox && (py+1) == oy ) //Ogre east, club south
 				ces = true;
-			//else
-				//fail("ERROR - Club=["+cx+","+cy+"] , Ogre=["+ox+","+oy+"] , Original=["+px+","+py+"] \n");
+			else
+				fail("ERROR - Club=["+cx+","+cy+"] , Ogre=["+ox+","+oy+"] , Original=["+px+","+py+"] \n");
 			
 			px = game.getVillains().get(0).getX(); py = game.getVillains().get(0).getY();
 		}
@@ -289,7 +306,7 @@ public class GameTests {
 		assertEquals("O",ogres.get(0).toString());
 		game.moveHero('d');
 		((Ogre)ogres.get(0)).stunOgre();
-		((Ogre)ogres.get(0)).setClub(new Pair<Integer,Integer>(2,3), game_map.getMapSize()); //remove club from same pos as ogre
+		((Ogre)ogres.get(0)).setClub(new Pair<Integer,Integer>(2,3)); //remove club from same pos as ogre
 		((Ogre)ogres.get(0)).setClubRepresentation("$");
 		game.moveHero('a');
 		
@@ -302,10 +319,6 @@ public class GameTests {
 		assertEquals("O",ogres.get(0).toString());
 		//test if diferent position
 		assertEquals( false , ogres.get(0).moveCharacter( ogres.get(0).getPos() , 0, game_map.getMapSize() ).get(0).equals( new Pair<Integer,Integer>(1,3) ) );
-		
-		
-		assertEquals( 0 , ((Ogre)ogres.get(0)).setPos( test1 , this.game_map.getMapSize() ));
-		assertEquals( 1 , ((Ogre)ogres.get(0)).setPos(test2 , this.game_map.getMapSize() ));
 		}
 	
 	@Test
@@ -387,6 +400,27 @@ public class GameTests {
 				}
 			}
 			assertEquals( true , ( game.getNextLevel(0).getMap() instanceof ArenaMap ));
+			assertEquals( false , map.pickUpKey() );
+		}
+		
+	}
+	
+	@Test
+	public void testIsFreeOutOfRange(){
+		Map map;
+		ArrayList<Pair<Integer,Integer> > test1 = new ArrayList<Pair<Integer,Integer> >(), test2 = new ArrayList<Pair<Integer,Integer> >(),
+				  						  test3 = new ArrayList<Pair<Integer,Integer> >(), test4 = new ArrayList<Pair<Integer,Integer> >();
+		for (int i = 0 ; i < 3 ; i++){
+			map = (i == 0) ? new DungeonMap(-1,-1) : ( (i == 1) ? new ArenaMap(-1,-1) : new TestMap(this.map));
+			test1.add( new Pair<Integer,Integer>( map.getMapSize()+1 , 1 ));
+			test2.add( new Pair<Integer,Integer>( 1 , map.getMapSize()+1 ));
+			test3.add( new Pair<Integer,Integer>(-1, 1) );
+			test4.add( new Pair<Integer,Integer>(1, -1 ) );
+			assertEquals( 0 , map.isFree(test1));
+			assertEquals( 0 , map.isFree(test2));
+			assertEquals( 0 , map.isFree(test3));
+			assertEquals( 0 , map.isFree(test4));
+				
 		}
 	}
 	

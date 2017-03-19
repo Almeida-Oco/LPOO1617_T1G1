@@ -43,19 +43,25 @@ public abstract class Map {
 	 * @brief Checks if the positions passed are free
 	 * @param l Array of positions to check 
 	 * @return -1 if all positions are free, else number that is the position of the array which has the not free pposition
-	 * @details A tile is considered free if it is either a ' ', 'S' or a 'k'. Anything else is considered occupied.
+	 * @details Before it checks if the tile is free it checks if the coordinates are valid.
+	 * 		 	A tile is considered free if it is either a ' ', 'S' or a 'k'. Anything else is considered occupied.
 	 */
 	public int isFree( ArrayList< Pair<Integer,Integer> > l){
+		//TODO change to width and height
 		int i = 0;
 		for (Pair<Integer,Integer> p : l){
-			if (this.map[p.getFirst().intValue()][p.getSecond().intValue()] == ' ' || 
-				this.map[p.getFirst().intValue()][p.getSecond().intValue()] == 'S' || 
-				this.map[p.getFirst().intValue()][p.getSecond().intValue()] == 'k' )
-				i++;
+			if (p.getFirst() >= 0 && p.getFirst() < this.map.length && p.getSecond() >= 0 && p.getSecond() < this.map.length ){
+				if (this.map[p.getFirst().intValue()][p.getSecond().intValue()] == ' ' || 
+						this.map[p.getFirst().intValue()][p.getSecond().intValue()] == 'S' || 
+						this.map[p.getFirst().intValue()][p.getSecond().intValue()] == 'k' )
+					i++;
+				else
+					return i;
+			}
 			else
 				return i;
 		}
-		
+
 		return -1;
 	}
 	/**

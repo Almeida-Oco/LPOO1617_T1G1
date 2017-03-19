@@ -48,15 +48,10 @@ public abstract class GameCharacter {
 	 * @param MAP_SIZE Size of the current gameMap
 	 * @return True if assignment was successful , false otherwise
 	 */
-	public int setPos(ArrayList<Pair<Integer,Integer> > vp, int MAP_SIZE){
+	public void setPos(ArrayList<Pair<Integer,Integer> > vp){
 		int i = 0;
-		for ( Pair<Integer,Integer> p : vp){
-			if (p.getFirst() >= 0 && p.getFirst() < MAP_SIZE && p.getSecond() >= 0 && p.getSecond() < MAP_SIZE) 
+		for ( Pair<Integer,Integer> p : vp)
 				this.position.set(i++ , p);
-			else
-				return i;
-		}
-		return -1;
 	}
 		
 	public ArrayList< Pair<Integer,Integer> > getPos(){

@@ -20,17 +20,6 @@ public class Guard extends GameCharacter{
 		this.representation = "G";
 	}
 
-	public int setPos(ArrayList<Pair<Integer,Integer> > vp , int MAP_SIZE){
-		int i = 0;
-		for ( Pair<Integer,Integer> p : vp){
-			if (p.getFirst() >= 0 && p.getFirst() < MAP_SIZE && p.getSecond() >= 0 && p.getSecond() < MAP_SIZE) 
-				this.position.set(i++, p);
-			else
-				return i;
-		}
-		return -1;
-	}
-	
 	public ArrayList< Pair<Integer,Integer> > moveCharacter(ArrayList<Pair<Integer,Integer> > current,int change , int MAP_SIZE){
 		ArrayList<Pair<Integer,Integer> > temp = new ArrayList<Pair<Integer,Integer> >();
 		temp.add((Pair<Integer,Integer>)this.movement.get(this.index).clone());

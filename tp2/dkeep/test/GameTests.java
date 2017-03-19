@@ -40,11 +40,13 @@ public class GameTests {
 	private void setDefaultMap(int guard_type){
 		ArrayList<GameCharacter> characters = new ArrayList<GameCharacter>();
 		ArrayList<Pair<Pair<Integer,Integer> , String > > doors = new ArrayList<Pair<Pair<Integer,Integer> , String> >();
+		Pair<Integer,Integer> init_pos = new Pair<Integer,Integer>(1,3);
 		this.game_map = new TestMap( (this.map).clone() );
 		doors.add( new Pair< Pair<Integer,Integer> ,String>( new Pair<Integer,Integer>( new Integer(2) ,new Integer(0)) , "S"));
 		doors.add( new Pair< Pair<Integer,Integer> ,String>( new Pair<Integer,Integer>( new Integer(3) ,new Integer(0)) , "S"));
-		characters.add( (guard_type == 0) ? new RookieGuard(1,3) : (guard_type == 1) ? new SuspiciousGuard(1,3) : new DrunkenGuard(1,3) );
-		characters.add(new Hero(1,1));
+		characters.add( (guard_type == 0) ? new RookieGuard(init_pos ,game_map.getSize()) : 
+					    (guard_type == 1) ? new SuspiciousGuard(init_pos ,game_map.getSize()) : new DrunkenGuard(init_pos ,game_map.getSize()) );
+		characters.add(new Hero(new Pair<Integer,Integer>(1,1) , game_map.getSize() ) );
 		
 		this.game_map.setDoors(doors);
 		this.game_map.setKey(new Pair<Integer,Integer>(3,1) , ' ');
@@ -171,8 +173,8 @@ public class GameTests {
 		test_game_over_pos.add( new Pair<Integer,Integer>(1,3));
 		test_game_over_pos.add( new Pair<Integer,Integer>(1,3));
 		this.setDefaultMap(0);
-		chars.add(new Hero(1,1));
-		chars.add(new Ogre(1,3,this.game_map.getMapSize() , true));
+		chars.add(new Hero( new Pair<Integer,Integer>(1,1) , this.game_map.getSize() ));
+		chars.add(new Ogre(new Pair<Integer,Integer>(1,3) ,this.game_map.getSize() , true));
 		this.game_map.setCharacters(chars);
 		GameLogic game = new GameLogic(game_map,0); //number is irrelevant
 		game.moveHero('d');
@@ -187,8 +189,8 @@ public class GameTests {
 		ArrayList<GameCharacter> chars = new ArrayList<GameCharacter>();
 		Pair<Integer,Integer> test = new Pair<Integer,Integer>(1,2);
 		this.setDefaultMap(0);
-		chars.add(new Hero(1,1));
-		chars.add(new Ogre(1,3,this.game_map.getMapSize() , true));
+		chars.add(new Hero( new Pair<Integer,Integer>(1,1) , this.game_map.getSize() ));
+		chars.add(new Ogre(new Pair<Integer,Integer>(1,3) ,this.game_map.getSize() , true));
 		this.game_map.setCharacters(chars);
 		GameLogic game = new GameLogic(game_map,0); //number is irrelevant
 		game.moveHero('d');
@@ -220,9 +222,7 @@ public class GameTests {
 				cen=false , ces=false , cew=false , cee=false , cwn=false , cws=false , cwe=false , cww=false;
 		while ( !(cnn && cns && cnw && cne && csn && css && csw && cse && cen && ces && cew && cee && cwn && cws && cwe && cww) ){
 			int change = 0;
-			do{
-				temp = game.getVillains().get(0).moveCharacter(temp,change ,map.getMapSize());
-			} while ( ( (change = game.getMap().isFree( temp )) != -1) ); //Map only contains ogre
+			game.moveAllVillains();
 			game.getVillains().get(0).setPos(temp);
 			
 			int ox = game.getVillains().get(0).getX(), oy = game.getVillains().get(0).getY(), 
@@ -287,20 +287,21 @@ public class GameTests {
 	
 	@Test
 	public void stunOgre(){
-		Hero h = new Hero(1,1);
-		h.setArmed(true);
+		
 		ArrayList< GameCharacter > chars = new ArrayList< GameCharacter >();
 		this.setDefaultMap(0);
-		chars.add( new Ogre(1,3,game_map.getMapSize() , false ) );
+		Hero h = new Hero( new Pair<Integer,Integer>(1,1) , this.game_map.getSize() );
+		h.setArmed(true);
+		chars.add( new Ogre(new Pair<Integer,Integer>(1,3) ,game_map.getSize() , false ) );
 		chars.add( h );
 		this.game_map.setCharacters(chars);
 		GameLogic game = new GameLogic(game_map,0); //number is irrelevant
 		ArrayList<GameCharacter> ogres = game.getVillains();
 		ArrayList<Pair<Integer,Integer> > test1 = new ArrayList<Pair<Integer,Integer> >(), test2 = new ArrayList<Pair<Integer,Integer> >();
-		test1.add( new Pair<Integer,Integer>( this.game_map.getMapSize()+1 , 0 ));
+		test1.add( new Pair<Integer,Integer>( this.game_map.getHeight()+1 , 0 ));
 		test1.add( new Pair<Integer,Integer>(1,1));
 		test2.add( new Pair<Integer,Integer>(1,1));
-		test2.add( new Pair<Integer,Integer>(this.game_map.getMapSize()+1,0));
+		test2.add( new Pair<Integer,Integer>(this.game_map.getWidth()+1,0));
 		
 		assertEquals(true,game.getHero().isArmed());
 		assertEquals("O",ogres.get(0).toString());
@@ -314,11 +315,11 @@ public class GameTests {
 		assertEquals( false,game.isGameOver());
 		game.moveAllVillains();
 		assertEquals("8",ogres.get(0).toString());
-		assertEquals(new Pair<Integer,Integer>(1,3) , ogres.get(0).moveCharacter( ogres.get(0).getPos() , 0, game_map.getMapSize() ).get(0) );
+		assertEquals(new Pair<Integer,Integer>(1,3) , ogres.get(0).moveCharacter( ogres.get(0).getPos() , 0).get(0) );
 		game.moveAllVillains();
 		assertEquals("O",ogres.get(0).toString());
 		//test if diferent position
-		assertEquals( false , ogres.get(0).moveCharacter( ogres.get(0).getPos() , 0, game_map.getMapSize() ).get(0).equals( new Pair<Integer,Integer>(1,3) ) );
+		assertEquals( false , ogres.get(0).moveCharacter( ogres.get(0).getPos() , 0).get(0).equals( new Pair<Integer,Integer>(1,3) ) );
 		}
 	
 	@Test
@@ -412,8 +413,8 @@ public class GameTests {
 				  						  test3 = new ArrayList<Pair<Integer,Integer> >(), test4 = new ArrayList<Pair<Integer,Integer> >();
 		for (int i = 0 ; i < 3 ; i++){
 			map = (i == 0) ? new DungeonMap(-1,-1) : ( (i == 1) ? new ArenaMap(-1,-1) : new TestMap(this.map));
-			test1.add( new Pair<Integer,Integer>( map.getMapSize()+1 , 1 ));
-			test2.add( new Pair<Integer,Integer>( 1 , map.getMapSize()+1 ));
+			test1.add( new Pair<Integer,Integer>( map.getHeight()+1 , 1 ));
+			test2.add( new Pair<Integer,Integer>( 1 , map.getWidth()+1 ));
 			test3.add( new Pair<Integer,Integer>(-1, 1) );
 			test4.add( new Pair<Integer,Integer>(1, -1 ) );
 			assertEquals( 0 , map.isFree(test1));

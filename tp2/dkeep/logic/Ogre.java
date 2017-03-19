@@ -10,65 +10,64 @@ public class Ogre extends GameCharacter {
 	private int stun=0;
 	private boolean nearkill=true;
 	
-	public Ogre(int x , int y, int MAP_SIZE, boolean near){
-		super(x,y);
+	public Ogre(Pair<Integer,Integer> pos , Pair<Integer,Integer> map_size, boolean near){
+		super(pos , map_size);
 		this.nearkill= near;
 		this.representation = "O";
-		if (x >= 0 && x <= MAP_SIZE && y >= 0 && y <= MAP_SIZE)
-			this.club = new Pair<Integer,Integer>(x,y);
+		if(pos.getFirst() >= 0 && pos.getFirst() < map_size.getSecond() && pos.getSecond() >= 0 && pos.getSecond() < map_size.getFirst() )
+			this.club = pos;
 		
 	}
 	
-	//change must be value returned by checkOverlap in GameLogic
-	public ArrayList< Pair<Integer,Integer> > moveCharacter(ArrayList<Pair<Integer,Integer> > current,int change , int MAP_SIZE){;		
+	
+	public ArrayList< Pair<Integer,Integer> > moveCharacter(ArrayList<Pair<Integer,Integer> > current,int change){;		
 		ArrayList<Pair<Integer,Integer> > temp = new ArrayList<Pair<Integer,Integer> >(current.subList(0, change));
 
 		if( 0 == this.stun && 0 == change){ //If he is not stunned and is supposed to change all positions
 			Random rand = new Random();
-			while(temp.size() == 0){
-				int dir = rand.nextInt(4);
+			int dir = rand.nextInt(4);
 
-				if		(dir == 0 && (this.position.get(0).getFirst().intValue()-1) >= 0)// move up
-					temp.add(new Pair<Integer,Integer>( this.position.get(0).getFirst().intValue()-1 , this.position.get(0).getSecond().intValue()) );
+			if		(dir == 0)// move up
+				temp.add(new Pair<Integer,Integer>( this.position.get(0).getFirst().intValue()-1 , this.position.get(0).getSecond().intValue()) );
+			else if (dir == 1) //move down
+				temp.add(new Pair<Integer,Integer>( this.position.get(0).getFirst().intValue()+1 , this.position.get(0).getSecond().intValue()));
+			else if (dir == 2) //move left
+				temp.add(new Pair<Integer,Integer>( this.position.get(0).getFirst().intValue() , this.position.get(0).getSecond().intValue()-1));
+			else if (dir == 3) //move right
+				temp.add(new Pair<Integer,Integer>( this.position.get(0).getFirst().intValue() , this.position.get(0).getSecond().intValue()+1));
 
-				else if (dir == 1 && (this.position.get(0).getFirst().intValue()+1) < MAP_SIZE) //move down
-					temp.add(new Pair<Integer,Integer>( this.position.get(0).getFirst().intValue()+1 , this.position.get(0).getSecond().intValue()));
-
-				else if (dir == 2 && (this.position.get(0).getSecond().intValue()-1) >= 0) //move left
-					temp.add(new Pair<Integer,Integer>( this.position.get(0).getFirst().intValue() , this.position.get(0).getSecond().intValue()-1));
-
-				else if (dir == 3 && (this.position.get(0).getSecond().intValue()+1) < MAP_SIZE) //move right
-					temp.add(new Pair<Integer,Integer>( this.position.get(0).getFirst().intValue() , this.position.get(0).getSecond().intValue()+1));
-			}
 		}else if (this.stun > 0) //if he is stunned only move club, maintain current ogre position
 			temp = (ArrayList<Pair<Integer,Integer> >)this.position.clone();
-		
-		temp.add( moveClub( temp.get(0) , MAP_SIZE));
-		return temp;
-	}
 
-	public Pair<Integer,Integer> moveClub(Pair<Integer,Integer> pos , int MAP_SIZE){
-		Random rand = new Random();
-		Pair<Integer,Integer> temp = new Pair<Integer,Integer>(-1,-1);
-		while(temp.getFirst().intValue() == -1){
-			int dir = rand.nextInt(4);
-			if		(dir == 0 && (pos.getFirst().intValue()-1) >= 0) // move up
-				temp = new Pair<Integer,Integer>( pos.getFirst().intValue()-1, pos.getSecond().intValue());
-			
-			else if (dir == 1 && (pos.getFirst().intValue()+1) < MAP_SIZE) //move down
-				temp = new Pair<Integer,Integer>( pos.getFirst().intValue()+1, pos.getSecond().intValue());
-			
-			else if (dir == 2 && (pos.getSecond().intValue()-1) >= 0) //move left
-				temp = new Pair<Integer,Integer>( pos.getFirst().intValue() ,  pos.getSecond().intValue()-1);
-			
-			else if (dir == 3 && (pos.getSecond().intValue()+1) < MAP_SIZE) //move right
-				temp = new Pair<Integer,Integer>( pos.getFirst().intValue() ,  pos.getSecond().intValue()+1);
-			
-		}
+		temp.add( moveClub( temp.get(0)));
 		return temp;
 	}
 	
-	//Club must !ALWAYS! be in the last position
+	/**
+	 * @brief Moves the ogre club
+	 * @param pos Position of the ogre
+	 * @return Position where it should put the club (this position will then be verified)
+	 */
+	private Pair<Integer,Integer> moveClub(Pair<Integer,Integer> pos){
+		Random rand = new Random();
+		Pair<Integer,Integer> temp = new Pair<Integer,Integer>(-1,-1);
+		int dir = rand.nextInt(4);
+
+		if		(dir == 0) // move up
+			temp = new Pair<Integer,Integer>( pos.getFirst().intValue()-1, pos.getSecond().intValue());
+		else if (dir == 1) //move down
+			temp = new Pair<Integer,Integer>( pos.getFirst().intValue()+1, pos.getSecond().intValue());
+		else if (dir == 2) //move left
+			temp = new Pair<Integer,Integer>( pos.getFirst().intValue() ,  pos.getSecond().intValue()-1);
+		else if (dir == 3) //move right
+			temp = new Pair<Integer,Integer>( pos.getFirst().intValue() ,  pos.getSecond().intValue()+1);
+		return temp;
+	}
+	
+	/**
+	 * @brief Sets the ogre and club position
+	 * @param vp Array of positions (!last position must always be the club!)
+	 */
 	@Override
 	public void setPos(ArrayList<Pair<Integer, Integer>> vp) { 
 		int i = 0;

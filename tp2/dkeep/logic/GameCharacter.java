@@ -14,13 +14,14 @@ public abstract class GameCharacter {
 	
 	/**
 	 * @brief Constructor
-	 * @param x X Position 
-	 * @param y Y Position
+	 * @param pos Pair with (x,y) coordinate of character
+	 * @param map_size Pair with (width,height) of map
+	 * @details Before initializing the x and y coordinates it check if they are valid
 	 */
-	public GameCharacter(int x , int y){
+	public GameCharacter( Pair<Integer,Integer> pos, Pair<Integer,Integer> map_size){
 		ArrayList<Pair<Integer,Integer> > temp = new ArrayList<Pair<Integer,Integer> >();
-		if(x >= 0 && y >= 0){
-			temp.add(new Pair<Integer,Integer>(x,y));
+		if(pos.getFirst() >= 0 && pos.getFirst() < map_size.getSecond() && pos.getSecond() >= 0 && pos.getSecond() < map_size.getFirst() ){
+			temp.add(pos);
 			this.position = temp;
 		}
 	}
@@ -36,36 +37,51 @@ public abstract class GameCharacter {
 	/**
 	 * @brief Moves the character
 	 * @param current Used in case there's a need to recalculate something, such as the club, current will hold all positions which were valid after a first pass on this function
-	 * @param change Value returned by checkOverlap in GameLogic, determines which part of the returned array is overlapping
-	 * @param MAP_SIZE Size of the current game map
+	 * @param change Value returned by checkOverlap from GameLogic or isFree from Map, determines which part of the returned array is overlapping
 	 * @return Returns an array with all the positions all objects associated with the character will try to move to
+	 * 		   For more complex game mechanics override this function
 	 */
-	public abstract ArrayList< Pair<Integer,Integer> > moveCharacter(ArrayList<Pair<Integer,Integer> > current,int change ,int MAP_SIZE); 
+	public abstract ArrayList< Pair<Integer,Integer> > moveCharacter(ArrayList<Pair<Integer,Integer> > current,int change); 
 	
 	/**
 	 * @brief Sets the character position to the values in the array
-	 * @param vp Array returned by moveCharacter (must be Overwritten for more complex game mechanics)
-	 * @param MAP_SIZE Size of the current gameMap
-	 * @return True if assignment was successful , false otherwise
+	 * @param vp Array returned by moveCharacter 
+	 * @details For more complex game mechanics override this function
 	 */
 	public void setPos(ArrayList<Pair<Integer,Integer> > vp){
 		int i = 0;
 		for ( Pair<Integer,Integer> p : vp)
 				this.position.set(i++ , p);
 	}
-		
+	
+	/**
+	 * @brief Gets the position of the character
+	 * @return Clone of the current position
+	 */
 	public ArrayList< Pair<Integer,Integer> > getPos(){
 		return (ArrayList<Pair<Integer,Integer> >)this.position.clone();
 	}
 	
+	/**
+	 * @brief Get X coordinate
+	 * @return X coordinate
+	 */
 	public int getX(){
 		return this.position.get(0).getFirst().intValue();
 	}
 	
+	/**
+	 * @brief Get Y coordinate
+	 * @return Y coordinate
+	 */
 	public int getY(){
 		return this.position.get(0).getSecond().intValue();
 	}
 	
+	/**
+	 * @brief Sets the character representation
+	 * @param s String to set the representation (can be longet than 1 char, but the game will only use the first char)
+	 */
 	public void setRepresentation(String s ){
 		this.representation=s;
 	}

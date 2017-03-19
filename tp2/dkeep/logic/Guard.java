@@ -15,18 +15,21 @@ public class Guard extends GameCharacter{
 	protected int index = 0;
 	protected int step = 1;
 	
-	public Guard(Pair<Integer,Integer> pos){
-		super(pos.getFirst().intValue() , pos.getSecond().intValue() );
+	public Guard(Pair<Integer,Integer> pos, Pair<Integer,Integer> map_size){
+		super(pos,map_size);
 		this.representation = "G";
 	}
 
-	public ArrayList< Pair<Integer,Integer> > moveCharacter(ArrayList<Pair<Integer,Integer> > current,int change , int MAP_SIZE){
+	public ArrayList< Pair<Integer,Integer> > moveCharacter(ArrayList<Pair<Integer,Integer> > current,int change){
 		ArrayList<Pair<Integer,Integer> > temp = new ArrayList<Pair<Integer,Integer> >();
 		temp.add((Pair<Integer,Integer>)this.movement.get(this.index).clone());
 		incIndex();
 		return temp;
 	}
-
+	
+	/**
+	 * @brief Increments the guard movement index
+	 */
 	protected void incIndex(){
 		if (this.index+this.step == this.movement.size())
 			this.index = 0;

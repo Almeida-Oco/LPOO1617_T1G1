@@ -7,12 +7,12 @@ import pair.Pair;
 public class DrunkenGuard extends Guard{
 	private boolean asleep = false;
 	
-	public DrunkenGuard(int x , int y){
-		super(new Pair<Integer,Integer>(x,y) );
+	public DrunkenGuard(Pair<Integer,Integer> pos , Pair<Integer,Integer> map_size){
+		super(pos,map_size);
 	}
 
-	public DrunkenGuard(){
-		super( Guard.movement.get( movement.size()-1));
+	public DrunkenGuard(Pair<Integer,Integer> map_size){
+		super( Guard.movement.get( movement.size()-1) , map_size);
 	}
 	
 	public void setPos(ArrayList<Pair<Integer,Integer> > vp){
@@ -22,7 +22,7 @@ public class DrunkenGuard extends Guard{
 		super.setPos(vp);
 	}
 	
-	public ArrayList< Pair<Integer,Integer> > moveCharacter(ArrayList<Pair<Integer,Integer> > current,int change , int MAP_SIZE){
+	public ArrayList< Pair<Integer,Integer> > moveCharacter(ArrayList<Pair<Integer,Integer> > current,int change){
 		Random rand = new Random();
 		ArrayList<Pair<Integer,Integer> > temp = new ArrayList<Pair<Integer,Integer> >();
 		int result = rand.nextInt(2);

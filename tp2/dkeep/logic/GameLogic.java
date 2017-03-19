@@ -50,7 +50,7 @@ public class GameLogic {
 		for (GameCharacter ch : this.villains){
 			int change = 0;
 			do{
- 				pos = ch.moveCharacter(pos, change , map.getMapSize());
+ 				pos = ch.moveCharacter(pos, change);
 			} while ( ( (change = this.checkOverlap(pos)) != -1) || ( (change = this.map.isFree(pos)) != -1 ) );
 			ch.setPos(pos);
 			if(ch instanceof Ogre)
@@ -67,7 +67,7 @@ public class GameLogic {
 		ArrayList< Pair<Integer,Integer> > temp = null;
 		Integer dir;
 		if ( (dir = GameLogic.DIR.get(new Character(direction))) != null ) //translate char to int
-			temp = this.hero.moveCharacter(temp, this.map.getMapSize(), dir);
+			temp = this.hero.moveCharacter(temp,dir);
 		else
 			return false;
 
@@ -189,7 +189,12 @@ public class GameLogic {
 
 	}
 	
-		
+	/**
+	 * @brief Returns the next level to go	
+	 * @param enemies How many enemies of the next level to generate
+	 * @return If current game map is DungeonMap it returns an object of ArenaMap, if current is ArenaMap it returns 
+	 * 		   an object of DungeonMap (because of GameLogic(Map,int) specifics), !DO NOT USE TO CHECK GAME OVER!
+	 */
 	public GameLogic getNextLevel(int enemies){
 		Random rand = new Random();
 		return new GameLogic(this.map.nextMap(enemies) , 0); //number is irrelevant

@@ -16,9 +16,8 @@ public class ArenaMap extends Map{
 									{'X',' ',' ',' ',' ',' ',' ',' ',' ','X'} ,
 									{'X',' ',' ',' ',' ',' ',' ',' ',' ','X'} ,
 									{'X','X','X','X','X','X','X','X','X','X'} });
-		this.chars.add(0,new Hero(8,1) );
+		this.chars.add(0,new Hero(new Pair<Integer,Integer>(8,1) , new Pair<Integer,Integer>(this.width,this.height) ));
 		((Hero)this.chars.get(0)).setArmed(true);
-		this.MAP_SIZE = this.map.length;
 		this.key = new Pair<Integer,Integer>( new Integer(1) , new Integer(8) );
 		this.doors.add( new Pair< Pair<Integer,Integer> ,String>( new Pair<Integer,Integer>( new Integer(1) ,new Integer(0)) , "S"));
 	}

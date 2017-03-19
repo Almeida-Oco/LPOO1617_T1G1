@@ -15,7 +15,7 @@ public abstract class Map {
 	protected Pair<Integer,Integer> key;
 	
 	private ArrayList<Character> game_chars = new ArrayList<Character>( Arrays.asList( 'H' , 'O' , '8' , 'g' , 'A' , 'K' , '*'));
-	private ArrayList<Character> game_obstacles = new ArrayList<Character>( Arrays.asList( 'X' , 'I' ) );
+	//private ArrayList<Character> game_obstacles = new ArrayList<Character>( Arrays.asList( 'X' , 'I' ) );
 	private ArrayList<Character> game_specials = new ArrayList<Character>( Arrays.asList( 'k' , 'l' , 'S', 'i'));
 	//k -> Key , l -> Lever , S -> Stairs , i -> Door which key/lever opens
 	
@@ -104,14 +104,17 @@ public abstract class Map {
 	 */
 	//TODO finish function
 	public void parseMap( char[][] map ){
+		Pair<Integer,Integer> pos_club;
 		this.map = new char[map.length][];
+		
 		for(int i = 0 ; i < map.length ; i++){
 			for(int j = 0 ; j < map[i].length ; j++){
 				this.map[i][j] = map[i][j];
-				if ( this.game_chars.contains(map[i][j]) )
-					this.chars.add( parseCharacter(map[i][j] ));
-//				else if ( this.game_specials.contains(map[i][j]) )
-//					parseSpecials(map[i][j]);
+				
+				if ( this.game_chars.contains(map[i][j]) ){
+					GameCharacter chr = parseCharacter(new Pair<Integer,Integer>(i,j) , map[i][j]);
+				}
+				
 			}
 		}
 	}
@@ -189,7 +192,18 @@ public abstract class Map {
 	
 	
 
-	private GameCharacter parseCharacter( char chr ){
+	private GameCharacter parseCharacter(Pair<Integer,Integer> pos ,  char chr ){
+		if ('H' == chr)
+			return new Hero(pos,this.getSize() );
+		else if ('O' == chr)
+			return new Ogre(pos,this.getSize() , false );
+		else if ('g' == chr)
+			return new DrunkenGuard(pos,this.getSize(),true);
+		else if ('A' == chr){
+			Hero h = new Hero(pos,this.getSize());
+			h.setArmed(true);
+			return h;
+		}
 		
 		
 		return null;

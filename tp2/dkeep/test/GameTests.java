@@ -45,7 +45,7 @@ public class GameTests {
 		doors.add( new Pair< Pair<Integer,Integer> ,String>( new Pair<Integer,Integer>( new Integer(2) ,new Integer(0)) , "S"));
 		doors.add( new Pair< Pair<Integer,Integer> ,String>( new Pair<Integer,Integer>( new Integer(3) ,new Integer(0)) , "S"));
 		characters.add( (guard_type == 0) ? new RookieGuard(init_pos ,game_map.getSize()) : 
-					    (guard_type == 1) ? new SuspiciousGuard(init_pos ,game_map.getSize()) : new DrunkenGuard(init_pos ,game_map.getSize()) );
+					    (guard_type == 1) ? new SuspiciousGuard(init_pos ,game_map.getSize()) : new DrunkenGuard(init_pos ,game_map.getSize(),false) );
 		characters.add(new Hero(new Pair<Integer,Integer>(1,1) , game_map.getSize() ) );
 		
 		this.game_map.setDoors(doors);

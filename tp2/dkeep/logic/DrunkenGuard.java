@@ -7,8 +7,9 @@ import pair.Pair;
 public class DrunkenGuard extends Guard{
 	private boolean asleep = false;
 	
-	public DrunkenGuard(Pair<Integer,Integer> pos , Pair<Integer,Integer> map_size){
+	public DrunkenGuard(Pair<Integer,Integer> pos , Pair<Integer,Integer> map_size, boolean is_asleep){
 		super(pos,map_size);
+		this.asleep = is_asleep;
 	}
 
 	public DrunkenGuard(Pair<Integer,Integer> map_size){

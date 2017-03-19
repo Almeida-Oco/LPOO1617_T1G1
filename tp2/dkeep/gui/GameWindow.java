@@ -302,7 +302,7 @@ public void chooseOgre(){
 		
 		
 		JButton new_game = new JButton("New Game");
-		new_game.setBounds(567, 64, 128, 25);
+		new_game.setBounds(296, 204, 193, 70);
 		new_game.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {	
 				newGame();

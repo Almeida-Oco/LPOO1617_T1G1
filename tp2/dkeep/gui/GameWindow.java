@@ -41,16 +41,13 @@ public class GameWindow {
 	
 	private JFrame frame;
 	private PrettyPanel imgs_panel;
-	
-	private JTextField no_of_ogres;
-	private JComboBox select_guard;
-	private JTextArea console_area;
-	private JLabel status_label,ogres_txt,guard_txt;
+	private JLabel status_label;
 	private JButton up_b,down_b,left_b,right_b;
 	private UserInput input;
 	private Container temp;
 	protected GameLogic game;
 	private int ogres;
+	private int guard;
 
 	/**
 	 * Launch the application.
@@ -79,7 +76,7 @@ public class GameWindow {
 	
 	public void proccessKey(char ch){
 		if (ch != '\n' && !game.isGameOver() && !this.game.wonGame()){
-			this.console_area.setText("You can play now");	
+			//this.console_area.setText("You can play now");	
 			boolean changed_lvl = this.game.moveHero(ch);
 			if(changed_lvl && !this.game.wonGame()){
 				//System.out.println("NUMBER OF OGRES = "+this.ogres);
@@ -87,7 +84,7 @@ public class GameWindow {
 			}
 				
 			this.game.moveAllVillains();
-			this.console_area.setText(input.getPrintableMap(game,false,true));
+			//this.console_area.setText(input.getPrintableMap(game,false,true));
 			if (game.wonGame() || game.isGameOver()){
 				disableButtons();
 				this.status_label.setOpaque(true);
@@ -113,10 +110,68 @@ public class GameWindow {
 		this.right_b.setEnabled(false);
 	}
 	
+public void chooseGuard(){
+		
+		Object[] possibilities = {"Novice", "Drunk", "Suspicious"};
+		String s = (String)JOptionPane.showInputDialog(
+		                    frame,
+		                    "Choose the type of Guard: \n",
+		                    "Game Options",
+		                    JOptionPane.PLAIN_MESSAGE,
+		                    null,
+		                    possibilities,
+		                    "Guard");
+		if(s=="Novice")
+			this.guard=0;
+		else if(s== "Drunk")
+			this.guard=1;
+		else if(s=="Suspicious")
+		this.guard=2;
+		
+		
+			
+		
+		
+		//JOptionPane.showMessageDialog(frame, "It's supoesed to be 1-5 ogres");
+		
+	}
+
+public void chooseOgre(){
+	JTextField field1 = new JTextField();
+	Object[] message = {
+		    "Introduza o número de Ogres(1-5):", field1,
+	};
+	JOptionPane.showConfirmDialog(frame, message, "Ogre Options", JOptionPane.PLAIN_MESSAGE);
+	String value1 = field1.getText();
+	try{ 
+		this.ogres=Integer.parseInt(value1);
+		/* !THIS CODE CANNOT BE HERE AS IT MIGHT THROW ANOTHER EXCEPTION IF OGRE IS NOT A NUMBER!
+		if(this.ogres>5){
+			JOptionPane.showMessageDialog(frame, "It's supoesed to be 1-5 ogres");
+			disableButtons();
+			return;
+		}
+		*/
+	}
+	catch (NumberFormatException n){
+		status_label.setText("Number of ogres will be random!");
+		if(value1.length() == 0)
+			this.ogres = 0;
+		else{
+			JOptionPane.showMessageDialog(frame, "It's supoesed to be 1-5 ogres");
+			disableButtons();
+			//return;
+		}
+}
+}
+	
+	
 	public void newGame(){
 		this.status_label.setOpaque(false);
-		int guards = this.select_guard.getSelectedIndex();
-		try{ 
+		chooseGuard();
+		chooseOgre();
+		//int guards = this.select_guard.getSelectedIndex();
+		/*try{ 
 			this.ogres=Integer.parseInt(no_of_ogres.getText());
 			/* !THIS CODE CANNOT BE HERE AS IT MIGHT THROW ANOTHER EXCEPTION IF OGRE IS NOT A NUMBER!
 			if(this.ogres>5){
@@ -124,7 +179,7 @@ public class GameWindow {
 				disableButtons();
 				return;
 			}
-			*/
+			
 		}
 		catch (NumberFormatException n){
 			status_label.setText("Number of ogres will be random!");
@@ -135,17 +190,17 @@ public class GameWindow {
 				disableButtons();
 				return;
 			}
-		}	
-		
-		this.input = new UserInput(ogres+1,guards+1);
-		this.game = new GameLogic(null,guards+1);
+		} 
+		*/
+		this.input = new UserInput(ogres+1,guard+1);
+		this.game = new GameLogic(null,guard+1);
 		
 		enableButtons();
 		if(this.ogres != 0)
 			status_label.setText("You can play now.");
 		
-		console_area.setText(input.getPrintableMap(game,false,true));
-		console_area.requestFocus();
+		//console_area.setText(input.getPrintableMap(game,false,true));
+		//console_area.requestFocus();
 		
 		
 		//Save current Frame and clear it to show only map
@@ -191,9 +246,6 @@ public class GameWindow {
 		this.frame = new JFrame();
 		frame.setBounds(100, 100, 755, 581);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		
-		this.console_area = new JTextArea();
-		console_area.setBounds(27, 127, 483, 350);
 		frame.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyPressed(KeyEvent e) {
@@ -201,9 +253,6 @@ public class GameWindow {
 			
 			}
 		});
-		//TODO Find font that is multiplatform and monospaced!
-		console_area.setFont(new Font("Consolas", Font.PLAIN, 30));
-		console_area.setEditable(false);
 		
 		this.status_label = new JLabel("You can start a New Game!",SwingConstants.CENTER);
 		status_label.setBounds(37, 467, 473, 46);
@@ -250,21 +299,6 @@ public class GameWindow {
 		});
 		down_b.setEnabled(false);
 		down_b.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		// ---- END BUTTONS ----
-		
-		this.ogres_txt = new JLabel("Number of Ogres");
-		ogres_txt.setBounds(25, 50, 120, 15);
-		
-		no_of_ogres = new JTextField();
-		no_of_ogres.setBounds(171, 48, 54, 19);
-		no_of_ogres.setColumns(10);
-		
-		this.guard_txt = new JLabel("Guard Personality");
-		guard_txt.setBounds(25, 90, 128, 15);
-		
-		this.select_guard = new JComboBox();
-		select_guard.setBounds(171, 85, 79, 24);
-		select_guard.setModel(new DefaultComboBoxModel(new String[] {"Novice", "Drunk", "Suspicious"}));
 		
 		
 		JButton new_game = new JButton("New Game");
@@ -284,13 +318,8 @@ public class GameWindow {
 		});
 		
 		this.frame.getContentPane().setLayout(null);
-		this.frame.getContentPane().add(this.guard_txt);
-		this.frame.getContentPane().add(this.ogres_txt);
-		this.frame.getContentPane().add(this.select_guard);
-		this.frame.getContentPane().add(this.no_of_ogres);
 		this.frame.getContentPane().add(new_game);
 		this.frame.getContentPane().add(this.status_label);
-		this.frame.getContentPane().add(this.console_area);
 		this.frame.getContentPane().add(this.left_b);
 		this.frame.getContentPane().add(this.right_b);
 		this.frame.getContentPane().add(this.up_b);

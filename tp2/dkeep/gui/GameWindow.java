@@ -138,9 +138,12 @@ public void chooseGuard(){
 
 public void chooseOgre(){
 	JTextField field1 = new JTextField();
+	Boolean exit=true;
 	Object[] message = {
 		    "Introduza o número de Ogres(1-5):", field1,
 	};
+	while(true){
+		exit=true;
 	JOptionPane.showConfirmDialog(frame, message, "Ogre Options", JOptionPane.PLAIN_MESSAGE);
 	String value1 = field1.getText();
 	try{ 
@@ -155,13 +158,24 @@ public void chooseOgre(){
 	}
 	catch (NumberFormatException n){
 		status_label.setText("Number of ogres will be random!");
+		exit=false;
 		if(value1.length() == 0)
 			this.ogres = 0;
 		else{
 			JOptionPane.showMessageDialog(frame, "It's supoesed to be 1-5 ogres");
 			disableButtons();
 			//return;
+		
 		}
+
+	}
+	if(ogres<0 ||ogres>5){
+		JOptionPane.showMessageDialog(frame, "It's supoesed to be 1-5 ogres");
+		exit=false;
+	}
+		
+	if(exit)
+		return;
 }
 }
 	
@@ -325,9 +339,32 @@ public void chooseOgre(){
 		this.frame.getContentPane().add(this.up_b);
 		this.frame.getContentPane().add(exit_b);
 		this.frame.getContentPane().add(this.down_b);
+		
+		JButton btnMapCreation = new JButton("Map Creation");
+		btnMapCreation.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				JTextField field1 = new JTextField();
+				JTextField field2 = new JTextField();
+				Object[] message = {
+				    "Choose the grid height:", field1,
+				    "Choose the grid width:", field2,
+				};
+			int option =JOptionPane.showConfirmDialog(frame, message, "Choose the dimensions", JOptionPane.OK_CANCEL_OPTION);
+			if (option != JOptionPane.OK_OPTION)
+				return;
+				    String value1 = field1.getText();
+				    String value2 = field2.getText();
+				    
+				    
+				    
+				
+				
+				
+			}
+		});
+		btnMapCreation.setBounds(565, 92, 118, 26);
+		frame.getContentPane().add(btnMapCreation);
 
 		this.frame.repaint();
 	}
-	
-	
 }

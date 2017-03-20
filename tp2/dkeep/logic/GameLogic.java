@@ -1,6 +1,8 @@
 package dkeep.logic;
 import pair.Pair;
 
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
@@ -236,5 +238,37 @@ public class GameLogic {
 	public Hero getHero() {
 		return this.hero;
 	}
+	
+	public Boolean saveGame(String fileName){
+		StringBuilder result = new StringBuilder();
+		String w;
+		char[][] temp_map =map.getMap();
+		for(GameCharacter ch :getAllCharacters())
+			for( Pair< Pair<Integer,Integer> ,String> p : ch.getPrintable() )
+				temp_map[p.getFirst().getFirst().intValue()][p.getFirst().getSecond().intValue()] = p.getSecond().charAt(0);
 
+		for ( int i = 0 ; i < map.getMap().length ; i++ ) {
+			for ( int j = 0 ; j < map.getMap()[i].length ; j++ ) {
+				result.append(temp_map[i][j] +  "");
+			}
+			result.append("\n");
+
+		}
+			w=result.toString();
+			
+			
+			try{
+				//temos que ver como gravar a parte do numero de ogres e 
+			    PrintWriter writer = new PrintWriter(fileName, "UTF-8");
+			    //writer.println(ogres.size());
+			    writer.print(w);
+			    writer.close();
+			} catch (IOException e) {
+			   // do something
+			
+			
+	}
+			return true;
+			
+}
 }

@@ -273,15 +273,15 @@ public class GameTests {
 	@Test
 	public void testVictory(){
 		this.setDefaultMap(0);
+		this.game_map.setKey( this.game_map.getKey() , false );
 		GameLogic game = new GameLogic(game_map,0); //number is irrelevant
 		assertEquals("H",game.getHero().toString());
 		game.moveHero('s');
 		game.moveHero('s');
-		game.getHero().setKey(true);
-		this.game_map.pickUpKey();
-		assertEquals('k' , this.game_map.getTile( new Pair<Integer,Integer>(3,1)));
+		assertEquals(' ' , this.game_map.getTile( new Pair<Integer,Integer>(3,1)));
 		assertEquals(null,this.game_map.nextMap(0));
 		assertEquals("K",game.getHero().toString());
+		game.moveHero('a');
 		game.moveHero('a');
 		assertEquals(true , game.wonGame() ); //moveHero returns true if it jumped on top of stairs
 	}
@@ -322,6 +322,23 @@ public class GameTests {
 		//test if diferent position
 		assertEquals( false , ogres.get(0).moveCharacter( ogres.get(0).getPos() , 0).get(0).equals( new Pair<Integer,Integer>(1,3) ) );
 		}
+	
+	@Test (timeout = 1000)
+	public void stunOgreMoveVillains(){
+		ArrayList< GameCharacter > chars = new ArrayList< GameCharacter >();
+		this.setDefaultMap(0);
+		Hero h = new Hero(new Pair<Integer,Integer>(1,1) , this.game_map.getSize() );
+		h.setArmed(true);
+		chars.add(new Ogre( new Pair<Integer,Integer>(3,3) , game_map.getSize() , false));
+		chars.add(h);
+		this.game_map.setCharacters(chars);
+		GameLogic game = new GameLogic(game_map , 0); //number is irrelevant
+		while( game.getVillains().get(0).toString() != "8" )
+			game.moveAllVillains();
+		
+		assertEquals("8" , game.getVillains().get(0).toString() );
+	}
+	
 	
 	@Test
 	public void testCreateDungeonMap(){

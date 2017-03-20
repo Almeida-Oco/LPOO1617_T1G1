@@ -238,7 +238,7 @@ public class GameLogic {
 	public Hero getHero() {
 		return this.hero;
 	}
-	
+	/*
 	public Boolean saveGame(String fileName){
 		StringBuilder result = new StringBuilder();
 		String w;
@@ -255,8 +255,8 @@ public class GameLogic {
 
 		}
 			w=result.toString();
-			
-			
+
+
 			try{
 				//temos que ver como gravar a parte do numero de ogres e 
 			    PrintWriter writer = new PrintWriter(fileName, "UTF-8");
@@ -265,10 +265,9 @@ public class GameLogic {
 			    writer.close();
 			} catch (IOException e) {
 			   // do something
-			
-			
-	}
+			}
 			return true;
-			
-}
+
+	}
+	 */
 }

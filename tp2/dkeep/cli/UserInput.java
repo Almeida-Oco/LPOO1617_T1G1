@@ -20,7 +20,7 @@ public class UserInput{
 		return game;
 	}
 	
-	public String getPrintableMap(GameLogic gm, boolean clear, boolean spaced){
+	public static String getPrintableMap(GameLogic gm, boolean clear, boolean spaced){
 		char[][] temp_map = gm.getMap().getMap();
 		if(clear)
 			clearScreen();
@@ -38,7 +38,7 @@ public class UserInput{
 		return result.toString();
 	}
 	
-	private void clearScreen(){
+	private static void clearScreen(){
 		for(int i = 0; i < 15 ; i++)
 			System.out.println("");
 	}

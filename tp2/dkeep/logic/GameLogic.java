@@ -161,17 +161,19 @@ public class GameLogic {
 	 * @return True if he triggered next level, false otherwise
 	 */
 	private boolean checkTriggers( Pair<Integer,Integer> p) { 
+		//TODO instead of opening all doors at once open only the door which the hero is trying to open (ArenaMap)
 		if (p.equals(this.key)){
 			boolean b = this.map.pickUpKey();
 			this.map.openDoors( b );
 			this.hero.setKey( b );
 			hero.setRepresentation("K");
 		}
-		else if (this.map.getTile(p) == 'I' && this.hero.hasKey()) {
+		else if (this.map.getTile(p) == 'S') //Next Level
+			return true;
+		else if ( this.map.getDoors().contains( p ) && this.hero.hasKey()) {
 			p.setSecond(p.getSecond().intValue()+1); // stop hero from going inside stairs at first attempt
 			this.map.openDoors( false );
-		} else if (this.map.getTile(p) == 'S') //Next Level
-			return true;
+		}
 		else if (!this.hero.hasKey())
 			this.hero.setRepresentation("H");
 
@@ -183,7 +185,7 @@ public class GameLogic {
 	 */
 	private void checkStuns(Ogre ch){
 		if (inAdjSquares(ch.getPos().get(0) , this.hero.getPos().get(0) ) )
-			ch.stunOgre();
+			ch.stunOgre( Ogre.STUN_ROUNDS );
 		else
 			ch.roundPassed();
 
@@ -214,7 +216,8 @@ public class GameLogic {
 	 */
 	public ArrayList<GameCharacter> getAllCharacters() {
 		ArrayList<GameCharacter> temp = (ArrayList<GameCharacter>)this.villains.clone();
-		temp.add(0, this.hero);
+		if (null != this.hero)
+			temp.add(0, this.hero);
 		return temp;
 	}
 	

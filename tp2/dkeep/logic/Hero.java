@@ -57,6 +57,7 @@ public class Hero extends GameCharacter {
 	
 	public void setArmed(boolean armed){
 		this.is_armed=armed;
+		this.representation = (armed) ? "A" : "H";
 	}
 
 	@Override

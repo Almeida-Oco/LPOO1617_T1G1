@@ -5,6 +5,8 @@ import java.util.Random;
 import pair.Pair;
 
 public class Ogre extends GameCharacter {
+	public static final int STUN_ROUNDS = 2;
+	
 	private Pair<Integer,Integer> club = new Pair<Integer,Integer>(-1,-1);
 	private String club_representation = "*";
 	private int stun=0;
@@ -79,15 +81,12 @@ public class Ogre extends GameCharacter {
 	}
 
 	public void setClub(Pair<Integer,Integer> p){
-		this.club = p;
-	}
+		if( p != null)
+			this.club = p;
+	}	
 
-	public int getClubX(){
-		return this.club.getFirst().intValue();
-	}
-	
-	public int getClubY(){
-		return this.club.getSecond().intValue();
+	public Pair<Integer,Integer> getClub(){
+		return this.club;
 	}
 
 	public ArrayList<Pair<Pair<Integer, Integer>, String>> getPrintable(){
@@ -113,8 +112,8 @@ public class Ogre extends GameCharacter {
 		this.club_representation=s;
 	}
 	
-	public void stunOgre(){
-		this.stun=2;
+	public void stunOgre( int rounds ){
+		this.stun=rounds;
 		representation="8";
 	}
 	

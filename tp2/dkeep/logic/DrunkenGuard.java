@@ -10,6 +10,7 @@ public class DrunkenGuard extends Guard{
 	public DrunkenGuard(Pair<Integer,Integer> pos , Pair<Integer,Integer> map_size, boolean is_asleep){
 		super(pos,map_size);
 		this.asleep = is_asleep;
+		this.representation = (this.asleep) ? "g" : "G";
 	}
 
 	public DrunkenGuard(Pair<Integer,Integer> map_size){
@@ -47,7 +48,11 @@ public class DrunkenGuard extends Guard{
 	public boolean isAsleep(){
 		return this.asleep;
 	}
-
+	
+	public String toString(){
+		return (this.asleep) ? "g" : "G";
+	}
+	
 	@Override
 	public ArrayList<Pair<Integer, Integer>> getGameOverPos() {
 		return (this.asleep) ? new ArrayList<Pair<Integer,Integer> >() : this.position;

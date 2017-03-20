@@ -6,17 +6,18 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 import org.junit.Test;
+
+import dkeep.cli.UserInput;
 import dkeep.logic.ArenaMap;
 import dkeep.logic.DrunkenGuard;
 import dkeep.logic.DungeonMap;
 import dkeep.logic.GameLogic;
-import dkeep.logic.Guard;
 import dkeep.logic.Hero;
 import dkeep.logic.Map;
 import dkeep.logic.Ogre;
 import dkeep.logic.RookieGuard;
 import dkeep.logic.SuspiciousGuard;
-import dkeep.logic.TestMap;
+import dkeep.logic.GenericMap;
 import dkeep.logic.GameCharacter;
 import pair.Pair;
 
@@ -28,7 +29,8 @@ public class GameTests {
 					{'I',' ',' ',' ','X'},
 					{'I','k',' ',' ','X'},
 					{'X','X','X','X','X'}};
-	private TestMap game_map;
+	
+	private GenericMap game_map;
 	private static ArrayList< Pair<Integer,Integer> > movement = new ArrayList< Pair<Integer,Integer> >( 
 			   Arrays.asList(new Pair<Integer,Integer>(1,7),new Pair<Integer,Integer>(2,7),new Pair<Integer,Integer>(3,7),new Pair<Integer,Integer>(4,7),
 							 new Pair<Integer,Integer>(5,7),new Pair<Integer,Integer>(5,6),new Pair<Integer,Integer>(5,5),new Pair<Integer,Integer>(5,4),
@@ -41,7 +43,7 @@ public class GameTests {
 		ArrayList<GameCharacter> characters = new ArrayList<GameCharacter>();
 		ArrayList<Pair<Pair<Integer,Integer> , String > > doors = new ArrayList<Pair<Pair<Integer,Integer> , String> >();
 		Pair<Integer,Integer> init_pos = new Pair<Integer,Integer>(1,3);
-		this.game_map = new TestMap( (this.map).clone() );
+		this.game_map = new GenericMap( (this.map).clone() );
 		doors.add( new Pair< Pair<Integer,Integer> ,String>( new Pair<Integer,Integer>( new Integer(2) ,new Integer(0)) , "S"));
 		doors.add( new Pair< Pair<Integer,Integer> ,String>( new Pair<Integer,Integer>( new Integer(3) ,new Integer(0)) , "S"));
 		characters.add( (guard_type == 0) ? new RookieGuard(init_pos ,game_map.getSize()) : 
@@ -49,7 +51,7 @@ public class GameTests {
 		characters.add(new Hero(new Pair<Integer,Integer>(1,1) , game_map.getSize() ) );
 		
 		this.game_map.setDoors(doors);
-		this.game_map.setKey(new Pair<Integer,Integer>(3,1) , ' ');
+		this.game_map.setKey(new Pair<Integer,Integer>(3,1) , true );
 		this.game_map.setCharacters(characters);
 	}
 	
@@ -216,17 +218,16 @@ public class GameTests {
 	public void testMoveAndClub(){
 		ArenaMap map = new ArenaMap(-1,1); //generate only 1 ogre
 		GameLogic game = new GameLogic(map,0); //Number is irrelevant
-		ArrayList<Pair<Integer,Integer> > temp = new ArrayList<Pair<Integer,Integer> >();
+		game.getHero().setPos(new ArrayList<Pair<Integer,Integer>>(Arrays.asList(new Pair<Integer,Integer>(0,0))) );
+		
 		int px = game.getVillains().get(0).getX() , py = game.getVillains().get(0).getY();
 		boolean cnn= false,cns=false,cnw=false,cne=false, csn=false , css=false , csw=false , cse=false, 
 				cen=false , ces=false , cew=false , cee=false , cwn=false , cws=false , cwe=false , cww=false;
 		while ( !(cnn && cns && cnw && cne && csn && css && csw && cse && cen && ces && cew && cee && cwn && cws && cwe && cww) ){
-			int change = 0;
 			game.moveAllVillains();
-			game.getVillains().get(0).setPos(temp);
 			
 			int ox = game.getVillains().get(0).getX(), oy = game.getVillains().get(0).getY(), 
-				cx = ((Ogre)game.getVillains().get(0)).getClubX(), cy = ((Ogre)game.getVillains().get(0)).getClubY();
+				cx = ((Ogre)game.getVillains().get(0)).getClub().getFirst(), cy = ((Ogre)game.getVillains().get(0)).getClub().getSecond();
 
 			if 		( (px-2) == cx &&   py   == cy && (px-1) == ox && py == oy ) //Ogre north, club north
 				cnn = true;
@@ -306,7 +307,7 @@ public class GameTests {
 		assertEquals(true,game.getHero().isArmed());
 		assertEquals("O",ogres.get(0).toString());
 		game.moveHero('d');
-		((Ogre)ogres.get(0)).stunOgre();
+		((Ogre)ogres.get(0)).stunOgre( Ogre.STUN_ROUNDS );
 		((Ogre)ogres.get(0)).setClub(new Pair<Integer,Integer>(2,3)); //remove club from same pos as ogre
 		((Ogre)ogres.get(0)).setClubRepresentation("$");
 		game.moveHero('a');
@@ -412,7 +413,7 @@ public class GameTests {
 		ArrayList<Pair<Integer,Integer> > test1 = new ArrayList<Pair<Integer,Integer> >(), test2 = new ArrayList<Pair<Integer,Integer> >(),
 				  						  test3 = new ArrayList<Pair<Integer,Integer> >(), test4 = new ArrayList<Pair<Integer,Integer> >();
 		for (int i = 0 ; i < 3 ; i++){
-			map = (i == 0) ? new DungeonMap(-1,-1) : ( (i == 1) ? new ArenaMap(-1,-1) : new TestMap(this.map));
+			map = (i == 0) ? new DungeonMap(-1,-1) : ( (i == 1) ? new ArenaMap(-1,-1) : new GenericMap(this.map));
 			test1.add( new Pair<Integer,Integer>( map.getHeight()+1 , 1 ));
 			test2.add( new Pair<Integer,Integer>( 1 , map.getWidth()+1 ));
 			test3.add( new Pair<Integer,Integer>(-1, 1) );
@@ -438,8 +439,6 @@ public class GameTests {
 					assertEquals(new ArrayList<Pair<Integer,Integer> >() , game.getVillains().get(0).getGameOverPos());
 					assertEquals( true, ((DrunkenGuard)game.getVillains().get(0)).isAsleep() );
 				}
-					
-
 			}
 		}
 	}
@@ -466,4 +465,158 @@ public class GameTests {
 		assertEquals(true,game.wonGame());
 	}
 	
+	@Test
+	public void testParseMap1(){
+		char[][] test1_map = new char[][]{{'X' , 'X' , 'X' , 'X' , 'X'},
+										  {'X' , 'H' , ' ' , 'G' , 'X'},
+										  {'X' , 'O' , '*' , 'g' , 'X'},
+										  {'X' , ' ' , 'D' , ' ' , 'X'},
+										  {'X' , 'X' , 'X' , 'X' , 'X'}};
+		char[][] test1 = new char[][]	 {{'X' , 'X' , 'X' , 'X' , 'X'},
+										  {'X' , ' ' , ' ' , ' ' , 'X'},
+										  {'X' , ' ' , ' ' , ' ' , 'X'},
+										  {'X' , ' ' , ' ' , ' ' , 'X'},
+										  {'X' , 'X' , 'X' , 'X' , 'X'}};
+		String test2 = new String("XXXXX\nXH GX\nXO*gX\nX G X\nXXXXX\n");
+		GenericMap test_map = new GenericMap( null );
+		test_map.parseMap( test1_map );
+		GameLogic game = new GameLogic(test_map, 0); //number irrelevant
+		assertEquals( test1 , test_map.getMap() );
+		assertEquals( test2 , UserInput.getPrintableMap(game, false, false));
+	}
+	
+	@Test
+	public void testParseMap2(){
+		char[][] test1_map = new char[][]{{'X' , 'X' , 'X' , 'X' , 'X'},
+										  {'X' , '*' , 'A' , 'G' , 'X'},
+										  {'X' , 'O' , ' ' , 'g' , 'X'},
+										  {'X' , ' ' , 'l' , ' ' , 'X'},
+										  {'X' , 'X' , 'X' , 'X' , 'X'}};
+										  
+		char[][] test1 = new char[][]	 {{'X' , 'X' , 'X' , 'X' , 'X'},
+										  {'X' , ' ' , ' ' , ' ' , 'X'},
+										  {'X' , ' ' , ' ' , ' ' , 'X'},
+										  {'X' , ' ' , 'k' , ' ' , 'X'},
+										  {'X' , 'X' , 'X' , 'X' , 'X'}};
+		String test2 = new String("XXXXX\nX*AGX\nXO gX\nX k X\nXXXXX\n");
+										  
+		GenericMap test_map = new GenericMap( null );
+		test_map.parseMap( test1_map );
+		GameLogic game = new GameLogic(test_map, 0); //number irrelevant
+		assertEquals( test1 , test_map.getMap() );
+		assertEquals( test2 , UserInput.getPrintableMap(game, false, false));
+	}
+	
+	@Test
+	public void testParseMap3(){
+		char[][] test1_map = new char[][]{{'X' , 'X' , 'X' , 'X' , 'X'},
+										  {'X' , ' ' , 'a' , ' ' , 'X'},
+										  {'X' , '*' , 'O' , 'g' , 'X'},
+										  {'X' , ' ' , 'k' , 'D' , 'X'},
+										  {'X' , 'X' , 'X' , 'X' , 'X'}};
+										  
+		char[][] test1 = new char[][]	 {{'X' , 'X' , 'X' , 'X' , 'X'},
+										  {'X' , ' ' , ' ' , ' ' , 'X'},
+										  {'X' , ' ' , ' ' , ' ' , 'X'},
+										  {'X' , ' ' , 'k' , ' ' , 'X'},
+										  {'X' , 'X' , 'X' , 'X' , 'X'}};
+		String test2 = new String("XXXXX\nX A X\nX*OgX\nX kGX\nXXXXX\n");
+										  
+		GenericMap test_map = new GenericMap( null );
+		test_map.parseMap( test1_map );
+		GameLogic game = new GameLogic(test_map, 0); //number irrelevant
+		assertEquals( test1 , test_map.getMap() );
+		assertEquals( test2 , UserInput.getPrintableMap(game, false, false));
+	}
+	
+	@Test
+	public void testParseMap4(){
+		char[][] test1_map = new char[][]{{'X' , 'X' , 'X' , 'X' , 'X'},
+										  {'X' , ' ' , 'H' , ' ' , 'X'},
+										  {'X' , 'O' , ' ' , 'g' , 'X'},
+										  {'X' , '*' , 'l' , 'R' , 'X'},
+										  {'X' , 'X' , 'X' , 'X' , 'X'}};
+										  
+		char[][] test1 = new char[][]	 {{'X' , 'X' , 'X' , 'X' , 'X'},
+										  {'X' , ' ' , ' ' , ' ' , 'X'},
+										  {'X' , ' ' , ' ' , ' ' , 'X'},
+										  {'X' , ' ' , 'k' , ' ' , 'X'},
+										  {'X' , 'X' , 'X' , 'X' , 'X'}};
+		String test2 = new String("XXXXX\nX H X\nXO gX\nX*kGX\nXXXXX\n");
+										  
+		GenericMap test_map = new GenericMap( null );
+		test_map.parseMap( test1_map );
+		GameLogic game = new GameLogic(test_map, 0); //number irrelevant
+		assertEquals( test1 , test_map.getMap() );
+		assertEquals( test2 , UserInput.getPrintableMap(game, false, false));
+	}
+	
+	@Test
+	public void testParseMap5(){
+		char[][] test1_map = new char[][]{{'X' , 'X' , 'X' , 'X' , 'X'},
+										  {'X' , '*' , 'i' , 'G' , 'X'},
+										  {'X' , 'O' , 'I' , 'g' , 'S'},
+										  {'X' , ' ' , 'l' , ' ' , 'X'},
+										  {'X' , 'X' , 'X' , 'X' , 'X'}};
+										  
+		char[][] test1 = new char[][]	 {{'X' , 'X' , 'X' , 'X' , 'X'},
+										  {'X' , ' ' , 'I' , ' ' , 'X'},
+										  {'X' , ' ' , 'I' , ' ' , 'S'},
+										  {'X' , ' ' , 'k' , ' ' , 'X'},
+										  {'X' , 'X' , 'X' , 'X' , 'X'}};
+		String test2 = new String("XXXXX\nX*IGX\nXOIgS\nX k X\nXXXXX\n");
+										  
+		GenericMap test_map = new GenericMap( null );
+		test_map.parseMap( test1_map );
+		GameLogic game = new GameLogic(test_map, 0); //number irrelevant
+		assertEquals( test1 , test_map.getMap() );
+		assertEquals( test2 , UserInput.getPrintableMap(game, false, false));
+	}
+	
+	@Test
+	public void testParseMap6(){
+		char[][] test1_map = new char[][]{{'X' , 'X' , 'X' , 'X' , 'X'},
+										  {'X' , '1' , '*' , 'S' , 'X'},
+										  {'X' , '2' , '*' , 'k' , 'X'},
+										  {'X' , 'O' , '*' , 'l' , 'X'},
+										  {'X' , 'X' , 'X' , 'X' , 'X'}};
+										  
+		char[][] test1 = new char[][]	 {{'X' , 'X' , 'X' , 'X' , 'X'},
+										  {'X' , ' ' , ' ' , 'S' , 'X'},
+										  {'X' , ' ' , ' ' , 'k' , 'X'},
+										  {'X' , ' ' , ' ' , 'k' , 'X'},
+										  {'X' , 'X' , 'X' , 'X' , 'X'}};
+		String test2 = new String("XXXXX\nX8*SX\nX8*kX\nXO*kX\nXXXXX\n");
+										  
+		GenericMap test_map = new GenericMap( null );
+		test_map.parseMap( test1_map );
+		GameLogic game = new GameLogic(test_map, 0); //number irrelevant
+		assertEquals( test1 , test_map.getMap() );
+		assertEquals( test2 , UserInput.getPrintableMap(game, false, false));
+	}
+	
+	@Test
+	public void testParseMap7(){
+		char[][] test1_map = new char[][]{{'X' , 'X' , 'X' , 'X' , 'X'},
+										  {'X' , '*' , '1' , 'G' , 'X'},
+										  {'X' , '*' , '2' , 'D' , 'X'},
+										  {'X' , '*' , 'O' , 'R' , 'X'},
+										  {'X' , 'X' , 'X' , 'X' , 'X'}};
+										  
+		char[][] test1 = new char[][]	 {{'X' , 'X' , 'X' , 'X' , 'X'},
+										  {'X' , ' ' , ' ' , ' ' , 'X'},
+										  {'X' , ' ' , ' ' , ' ' , 'X'},
+										  {'X' , ' ' , ' ' , ' ' , 'X'},
+										  {'X' , 'X' , 'X' , 'X' , 'X'}};
+		String test2 = new String("XXXXX\nX*8GX\nX*8GX\nX*OGX\nXXXXX\n");
+										  
+		GenericMap test_map = new GenericMap( null );
+		test_map.parseMap( test1_map );
+		GameLogic game = new GameLogic(test_map, 0); //number irrelevant
+		assertEquals( test1 , test_map.getMap() );
+		assertEquals( test2 , UserInput.getPrintableMap(game, false, false));
+	}
+	
+	
+
 }

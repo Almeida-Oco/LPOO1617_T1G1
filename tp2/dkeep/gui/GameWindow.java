@@ -185,28 +185,6 @@ public void chooseOgre(){
 		this.status_label.setOpaque(false);
 		chooseGuard();
 		chooseOgre();
-		//int guards = this.select_guard.getSelectedIndex();
-		/*try{ 
-			this.ogres=Integer.parseInt(no_of_ogres.getText());
-			/* !THIS CODE CANNOT BE HERE AS IT MIGHT THROW ANOTHER EXCEPTION IF OGRE IS NOT A NUMBER!
-			if(this.ogres>5){
-				JOptionPane.showMessageDialog(frame, "It's supoesed to be 1-5 ogres");
-				disableButtons();
-				return;
-			}
-			
-		}
-		catch (NumberFormatException n){
-			status_label.setText("Number of ogres will be random!");
-			if(no_of_ogres.getText().length() == 0)
-				this.ogres = 0;
-			else{
-				JOptionPane.showMessageDialog(frame, "It's supoesed to be 1-5 ogres");
-				disableButtons();
-				return;
-			}
-		} 
-		*/
 		this.input = new UserInput(ogres+1,guard+1);
 		this.game = new GameLogic(null,guard+1);
 		
@@ -355,13 +333,34 @@ public void chooseOgre(){
 				return;
 				    String value1 = field1.getText();
 				    String value2 = field2.getText();
+				    int height=0;
+				    int width=0;
 				    
 				    
 				    
-				
-				
-				
-			}
+				    try{ 
+						height=Integer.parseInt(value1);
+					}
+					catch (NumberFormatException n){
+							JOptionPane.showMessageDialog(frame, "It's supoesed to be a number");
+							return;
+						
+						}
+				    
+				    
+				    try{ 
+						width=Integer.parseInt(value2);
+					}
+					catch (NumberFormatException n){
+							JOptionPane.showMessageDialog(frame, "It's supoesed to be a number");
+							return;
+						
+						}
+				    
+				   
+				    CreateMap cmap= new CreateMap(height);
+				    frame=cmap.getframe();
+					}
 		});
 		btnMapCreation.setBounds(565, 92, 118, 26);
 		frame.getContentPane().add(btnMapCreation);

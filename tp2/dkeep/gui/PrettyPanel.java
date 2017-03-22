@@ -15,6 +15,10 @@ import java.awt.SystemColor;
 
 public class PrettyPanel extends JPanel {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private final int IMG_WIDTH = 50;
 	private final int IMG_HEIGHT= 50;
 	private HashMap<Character,BufferedImage> char_to_img = new HashMap<Character,BufferedImage>();

@@ -16,5 +16,11 @@ public class RookieGuard extends Guard{
 		super.setPos(vp);
 	}
 	
-	
+	public ArrayList<Pair<Pair<Integer,Integer> , String > > getPrintable(boolean to_file){
+		if (to_file)
+			this.representation = "R";
+		ArrayList<Pair<Pair<Integer,Integer> , String > > temp = super.getPrintable(to_file);
+		this.representation = "G";
+		return temp;
+	}
 }

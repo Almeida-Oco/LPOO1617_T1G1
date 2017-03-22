@@ -1,5 +1,6 @@
 package dkeep.gui;
 
+
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
@@ -140,7 +141,7 @@ public void chooseOgre(){
 	JTextField field1 = new JTextField();
 	Boolean exit=true;
 	Object[] message = {
-		    "Introduza o número de Ogres(1-5):", field1,
+		    "Introduza o nï¿½mero de Ogres(1-5):", field1,
 	};
 	while(true){
 		exit=true;

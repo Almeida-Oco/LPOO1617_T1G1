@@ -89,11 +89,16 @@ public class Ogre extends GameCharacter {
 		return this.club;
 	}
 
-	public ArrayList<Pair<Pair<Integer, Integer>, String>> getPrintable(){
+	public ArrayList<Pair<Pair<Integer, Integer>, String>> getPrintable( boolean to_file){
 		ArrayList< Pair< Pair<Integer,Integer> ,String> > temp = new ArrayList< Pair< Pair<Integer,Integer> ,String> >(2);
 		temp.add( new Pair< Pair<Integer,Integer> ,String>(this.club,this.club_representation));
-		for(Pair<Integer,Integer> p : this.position)
-			temp.add( new Pair< Pair<Integer,Integer> ,String>(p,this.representation));
+		for(Pair<Integer,Integer> p : this.position){
+			if (to_file && this.stun > 0)
+				temp.add( new Pair< Pair<Integer,Integer> ,String>(p,Integer.toString(this.stun)));
+			else
+				temp.add( new Pair< Pair<Integer,Integer> ,String>(p,this.representation));
+		}
+			
 		
 		return temp;
 	}
@@ -114,7 +119,8 @@ public class Ogre extends GameCharacter {
 	
 	public void stunOgre( int rounds ){
 		this.stun=rounds;
-		representation="8";
+		if(rounds > 0)
+			representation="8";
 	}
 	
 	public void roundPassed(){

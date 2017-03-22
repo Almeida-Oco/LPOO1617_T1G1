@@ -25,4 +25,8 @@ public class SuspiciousGuard extends Guard{
 		temp.add(this.movement.get(this.index));
 		return temp;
 	}
+	
+	public ArrayList<Pair<Pair<Integer,Integer> , String > > getPrintable(boolean to_file){
+		return super.getPrintable(to_file);
+	}
 }

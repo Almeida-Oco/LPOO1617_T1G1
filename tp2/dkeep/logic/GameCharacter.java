@@ -88,9 +88,10 @@ public abstract class GameCharacter {
 
 	/**
 	 * @brief Gets what to print for this character 
+	 * @param to_file Whether this printable is supposed to go to a file or not
 	 * @return Array with position to paint and what String to paint there
 	 */
-	public abstract ArrayList< Pair< Pair<Integer,Integer> ,String> > getPrintable();
+	public abstract ArrayList< Pair< Pair<Integer,Integer> ,String> > getPrintable( boolean to_file);
 	
 	/**
 	 * @brief Gets the gameOver position for this character

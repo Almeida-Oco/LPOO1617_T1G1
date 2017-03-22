@@ -26,7 +26,7 @@ public class UserInput{
 			clearScreen();
 		StringBuilder result = new StringBuilder();
 		for(GameCharacter ch : gm.getAllCharacters())
-			for( Pair< Pair<Integer,Integer> ,String> p : ch.getPrintable() )
+			for( Pair< Pair<Integer,Integer> ,String> p : ch.getPrintable(false) )
 				temp_map[p.getFirst().getFirst().intValue()][p.getFirst().getSecond().intValue()] = p.getSecond().charAt(0);
 
 		for ( int i = 0 ; i < gm.getMap().getMap().length ; i++ ) {

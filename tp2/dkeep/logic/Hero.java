@@ -44,10 +44,16 @@ public class Hero extends GameCharacter {
 		return this.has_key;
 	}
 	
-	public ArrayList< Pair< Pair<Integer,Integer> ,String> > getPrintable(){
+	public ArrayList< Pair< Pair<Integer,Integer> ,String> > getPrintable( boolean to_file){
+		String temp_rep = this.representation;
 		ArrayList< Pair< Pair<Integer,Integer> ,String> > temp = new ArrayList< Pair< Pair<Integer,Integer> ,String> >(1);
+		if( to_file ){
+			this.representation = ( ( this.is_armed && this.has_key ) ? "a" :
+								  ( ( !this.is_armed && !this.has_key)? "H" :
+								  ( ( this.is_armed ) ? "A" : "K" )));
+		}
 		temp.add( new Pair< Pair<Integer,Integer > ,String>( this.position.get(0) ,this.representation));
-		
+		this.representation = temp_rep;
 		return temp;
 	}
 

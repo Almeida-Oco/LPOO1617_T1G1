@@ -139,6 +139,7 @@ public class GameLogic {
 	 * @return Position of array with overlap or -1 if no position overlaps
 	 */
 	private int checkOverlap( ArrayList< Pair<Integer,Integer> > l){
+		//TODO check if p_ch.equals(p_l) is truly needed
 		int i = 0;
 		boolean found_same = false;
 		for ( Pair<Integer,Integer> p_l : l){
@@ -210,6 +211,16 @@ public class GameLogic {
 	 */
 	public ArrayList<GameCharacter> getVillains(){
 		return (ArrayList<GameCharacter>)this.villains.clone();
+	}
+	
+	
+	public ArrayList<Pair<Pair<Integer,Integer> , String > > getOutputToFile(  ){
+		ArrayList<Pair<Pair<Integer,Integer> , String > > temp = new ArrayList<Pair<Pair<Integer,Integer>,String> >();
+		for ( GameCharacter chr : this.getAllCharacters() )
+			for (Pair<Pair<Integer,Integer> , String> p : chr.getPrintable(true) )
+				temp.add( p );
+		
+		return temp;
 	}
 	
 	/**

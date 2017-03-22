@@ -125,13 +125,13 @@ public class GameTests {
 		
 		GameLogic game = new GameLogic(this.game_map,0); //number is irrelevant
 		assertEquals( test1, game.getHero().getPos().get(0));
-		assertEquals( test3, game.getHero().getPrintable());
+		assertEquals( test3, game.getHero().getPrintable(false));
 		game.moveHero('s');
 		test3.remove(0);
 		test3.add( new Pair<Pair<Integer,Integer> , String>( new Pair<Integer,Integer>(2,1) , "H"));
 		assertEquals( test2, game.getHero().getPos().get(0));
 		game.moveHero('a');
-		assertEquals( test3, game.getHero().getPrintable());
+		assertEquals( test3, game.getHero().getPrintable(false));
 		assertEquals( test2, game.getHero().getPos().get(0));
 		assertEquals( false, game.wonGame() );
 }
@@ -182,7 +182,7 @@ public class GameTests {
 		game.moveHero('d');
 		assertEquals(null,game.getHero().getGameOverPos());
 		assertEquals( test_game_over_pos, game.getVillains().get(0).getGameOverPos());
-		assertEquals( test_printable , game.getVillains().get(0).getPrintable() );
+		assertEquals( test_printable , game.getVillains().get(0).getPrintable(false) );
 		assertEquals( true,game.isGameOver());
 	}
 	
@@ -312,7 +312,7 @@ public class GameTests {
 		((Ogre)ogres.get(0)).setClubRepresentation("$");
 		game.moveHero('a');
 		
-		assertEquals( "$" , ogres.get(0).getPrintable().get(0).getSecond() );
+		assertEquals( "$" , ogres.get(0).getPrintable(false).get(0).getSecond() );
 		assertEquals( false,game.isGameOver());
 		game.moveAllVillains();
 		assertEquals("8",ogres.get(0).toString());
@@ -338,7 +338,6 @@ public class GameTests {
 		
 		assertEquals("8" , game.getVillains().get(0).toString() );
 	}
-	
 	
 	@Test
 	public void testCreateDungeonMap(){
@@ -415,7 +414,7 @@ public class GameTests {
 				if (i == 1){
 					ArrayList< Pair<Pair<Integer,Integer> , String > > temp = new ArrayList< Pair< Pair<Integer,Integer> , String> >();
 					temp.add( new Pair<Pair<Integer,Integer>,String>(movement.get(j % movement.size()) , "G") );
-					assertEquals(temp, game.getVillains().get(0).getPrintable());
+					assertEquals(temp, game.getVillains().get(0).getPrintable(false));
 				}
 			}
 			assertEquals( true , ( game.getNextLevel(0).getMap() instanceof ArenaMap ));
@@ -480,6 +479,44 @@ public class GameTests {
 		assertEquals('S',map.getTile( new Pair<Integer,Integer>(1,0) ));
 		game.moveHero('a');
 		assertEquals(true,game.wonGame());
+	}
+	
+	//TODO make it also test Hero different representations
+	@Test
+	public void testGetPrintableToFile(){
+		for (int i = 0 ; i < 4 ; i++){
+			this.setDefaultMap(i);
+			if ( i == 3){
+				ArrayList<GameCharacter> chrs = new ArrayList<GameCharacter>();
+				chrs.add( new Hero( new Pair<Integer,Integer>(1,1) , this.game_map.getSize()) );
+				chrs.add( new DrunkenGuard(new Pair<Integer,Integer>(1,3) , this.game_map.getSize() , true) );
+				this.game_map.setCharacters(chrs);
+			}
+			ArrayList<Pair<Pair<Integer,Integer> , String> > test = new ArrayList<Pair<Pair<Integer,Integer> , String > >();
+			test.add( new Pair< Pair<Integer,Integer> , String>( new Pair<Integer,Integer>(1,1) , "H" ));
+			test.add( new Pair< Pair<Integer,Integer> , String>( new Pair<Integer,Integer>(1,3) , (i == 0) ? "R" : ( (i == 1) ? "G" : ( (i==2) ? "D" : "g" ))));
+			GameLogic game = new GameLogic(this.game_map , 0); //number is irrelevant
+			assertEquals( test , game.getOutputToFile() );
+			
+		}
+		
+		for (int i = 0 ; i < 3 ; i++){
+			this.setDefaultMap(1); //irrelevant
+			ArrayList<GameCharacter> chrs = new ArrayList<GameCharacter>();
+			chrs.add( new Hero( new Pair<Integer,Integer>(1,1) , this.game_map.getSize()) );
+			Ogre o = new Ogre( new Pair<Integer,Integer>(1,3) , this.game_map.getSize() , false);
+			o.stunOgre(i);
+			chrs.add( o );
+			this.game_map.setCharacters(chrs);
+			
+			ArrayList<Pair<Pair<Integer,Integer> , String> > test = new ArrayList<Pair<Pair<Integer,Integer> , String > >();
+			test.add( new Pair< Pair<Integer,Integer> , String>( new Pair<Integer,Integer>(1,1) , "H" ));
+			test.add( new Pair< Pair<Integer,Integer> , String>( new Pair<Integer,Integer>(1,3),"*"));
+			test.add( new Pair< Pair<Integer,Integer> , String>( new Pair<Integer,Integer>(1,3), (i == 0) ? "O" : Integer.toString(i) ));
+			GameLogic game = new GameLogic(this.game_map,0); //number is irrelevant
+			assertEquals( test , game.getOutputToFile() );
+		}
+			
 	}
 	
 	@Test

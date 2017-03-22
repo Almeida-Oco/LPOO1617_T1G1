@@ -39,7 +39,7 @@ public class Guard extends GameCharacter{
 			this.index+=this.step;
 	}
 	
-	public ArrayList< Pair<Pair<Integer,Integer> , String> > getPrintable(){
+	public ArrayList< Pair<Pair<Integer,Integer> , String> > getPrintable( boolean to_file ){
 		ArrayList< Pair< Pair<Integer,Integer> ,String> > temp = new ArrayList< Pair< Pair<Integer,Integer> ,String> >(1);
 		for (Pair<Integer,Integer> p : this.position )
 			temp.add( new Pair< Pair<Integer,Integer> ,String>(p,this.representation));

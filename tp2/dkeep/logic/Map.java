@@ -193,6 +193,9 @@ public abstract class Map {
 	 * @details (l,Lever) , (k, key) , (i,door which lever/key opens)
 	 */
 	//TODO finish function
+	/*
+	 *  ArrayList< Pair<String,Pair<Integer,Integer> > > 
+	 */
 	public void parseMap( char[][] map ){
 		this.map = map;
 		this.height= map.length;
@@ -253,7 +256,7 @@ public abstract class Map {
 //		if ( (index = this.ogreClubInPosition( ogre_pos , true) ) == -1 ){
 			Ogre o = new Ogre(ogre_pos,this.getSize(),false);
 			if ('O' != this.map[ogre_pos.getFirst()][ogre_pos.getSecond()])
-				o.stunOgre( Character.getNumericValue( this.map[pos.getFirst()][pos.getSecond()]));
+				o.stunOgre( Character.getNumericValue( this.map[ogre_pos.getFirst()][ogre_pos.getSecond()]));
 			o.setClub( pos );
 			this.chars.add(o);
 //		}
@@ -322,6 +325,7 @@ public abstract class Map {
 	 * @param ogre Whether to check for an Ogre or a Club
 	 * @return Index of the chars array in which the Ogre/Club is located, -1 if none was found
 	 */
+	//TODO check whether this function is needed or not
 //	private int ogreClubInPosition( Pair<Integer,Integer> pos , boolean ogre){
 //		int i = 0;
 //		for( GameCharacter chr : this.chars ){

@@ -57,4 +57,13 @@ public class DrunkenGuard extends Guard{
 	public ArrayList<Pair<Integer, Integer>> getGameOverPos() {
 		return (this.asleep) ? new ArrayList<Pair<Integer,Integer> >() : this.position;
 	}
+
+	public ArrayList<Pair<Pair<Integer,Integer> , String > > getPrintable(boolean to_file ){
+		String t = this.representation;
+		if (to_file)
+			this.representation = (this.asleep) ? "g" : "D";
+		ArrayList<Pair<Pair<Integer,Integer> , String > > temp = super.getPrintable(to_file);
+		this.representation = t;
+		return temp;
+	}
 }

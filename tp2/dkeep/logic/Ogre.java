@@ -4,7 +4,7 @@ import java.util.Random;
 
 import pair.Pair;
 
-//TODO nearkill must be rethought or changed, no sense in Hero and Ogre both having a boolean that says whether they die or not
+
 public class Ogre extends GameCharacter {
 	public static final int STUN_ROUNDS = 2;
 	

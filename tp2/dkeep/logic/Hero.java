@@ -19,18 +19,8 @@ public class Hero extends GameCharacter {
 
 	public ArrayList< Pair<Integer,Integer> > moveCharacter(ArrayList<Pair<Integer,Integer> > current,int dir){
 		ArrayList< Pair<Integer,Integer> > temp = new ArrayList<Pair<Integer,Integer> >();
-		for (Pair<Integer,Integer> p : (ArrayList< Pair<Integer,Integer> >)this.position.clone() )
-			temp.add( (Pair<Integer,Integer>)p.clone());
+		temp.add( changePos(this.position.get(0) , dir) );
 		
-		if (dir == 1)//move right
-			temp.get(0).setSecond(temp.get(0).getSecond().intValue()+1);
-		else if (dir == 2)//move left
-			temp.get(0).setSecond(temp.get(0).getSecond().intValue()-1);
-		else if (dir == 3)//move down
-			temp.get(0).setFirst(temp.get(0).getFirst().intValue()+1);
-		else if (dir == 4)//move up
-			temp.get(0).setFirst(temp.get(0).getFirst().intValue()-1);
-
 		return temp;
 	}	
 

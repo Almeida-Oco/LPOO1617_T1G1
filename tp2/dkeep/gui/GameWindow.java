@@ -58,9 +58,7 @@ public class GameWindow {
 			public void run() {
 				try {
 					GameWindow window = new GameWindow();
-					//PrettyWindow window2 = new PrettyWindow();
 					window.frame.setVisible(true);
-					//window.frame2.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}

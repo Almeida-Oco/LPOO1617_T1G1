@@ -36,11 +36,7 @@ public class Hero extends GameCharacter {
 	public ArrayList< Pair< Pair<Integer,Integer> ,String> > getPrintable( boolean to_file){
 		String temp_rep = this.representation;
 		ArrayList< Pair< Pair<Integer,Integer> ,String> > temp = new ArrayList< Pair< Pair<Integer,Integer> ,String> >(1);
-		if( to_file ){
-			this.representation = ( ( this.is_armed && this.has_key ) ? "a" :
-								  ( ( !this.is_armed && !this.has_key)? "H" :
-								  ( ( this.is_armed ) ? "A" : "K" )));
-		}
+		updateRepresentation(to_file);
 		temp.add( new Pair< Pair<Integer,Integer > ,String>( this.position.get(0) ,this.representation));
 		this.representation = temp_rep;
 		return temp;
@@ -62,7 +58,7 @@ public class Hero extends GameCharacter {
 		if (to_file)
 			this.representation = ( ( this.is_armed && this.has_key ) ? "a" : ( ( !this.is_armed && !this.has_key)? "H" :  ( ( this.is_armed ) ? "A" : "K" )));
 		else
-			this.representation = ( ( !this.is_armed && !this.has_key)? "H" :  ( ( this.is_armed ) ? "A" : "K" ) );
+			this.representation = ( ( !this.is_armed && !this.has_key)? "H" :  ( ( this.has_key) ? "K" : "A" ) );
 
 	}
 }

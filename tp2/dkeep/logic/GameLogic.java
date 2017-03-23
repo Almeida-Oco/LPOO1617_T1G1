@@ -159,7 +159,6 @@ public class GameLogic implements java.io.Serializable{
 			boolean b = this.map.pickUpKey();
 			this.map.openDoors( b );
 			this.hero.setKey( b );
-			hero.setRepresentation("K");
 		}
 		else if (this.map.getTile(p) == 'S') //Next Level
 			return true;
@@ -167,8 +166,8 @@ public class GameLogic implements java.io.Serializable{
 			p.setSecond(p.getSecond().intValue()+1); // stop hero from going inside stairs at first attempt
 			this.map.openDoors( false );
 		}
-		else if (!this.hero.hasKey() )
-			this.hero.updateRepresentation(false);
+		
+		this.hero.updateRepresentation(false);
 
 		return false;
 	}

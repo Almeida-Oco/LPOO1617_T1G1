@@ -46,7 +46,7 @@ public class PrettyPanel extends JPanel {
 		});
 		System.out.print("CREATING PRETTY PANEL!\n");
 		try {                
-			this.char_to_img.put(new Character('G') ,ImageIO.read(new File(System.getProperty("user.dir")+"/imgs/Guard.png")));
+			this.char_to_img.put(new Character('G') , ImageIO.read(new File(System.getProperty("user.dir")+"/imgs/Guard.png")));
 		} catch (IOException ex) {
 			System.out.println("Error reading guard image!");
 		}

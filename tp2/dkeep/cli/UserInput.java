@@ -13,7 +13,7 @@ public class UserInput{
 	}
 	
 	public UserInput(int ogres, int guard){
-		this.game = new GameLogic(null,2);
+		this.game = new GameLogic(null,0);
 	}
 	
 
@@ -52,15 +52,15 @@ public class UserInput{
 	}
 
 	private void cpu(){
-		boolean change_lvl = false;
 		do{
 			System.out.println(getPrintableMap(this.game,true,true));
 			
-			change_lvl=this.game.moveHero( readChar());
+			boolean change_lvl=this.game.moveHero( readChar());
 			if (change_lvl && !this.game.wonGame() )
 				this.game = this.game.getNextLevel(0); //0 -> random number of enemies
 			if (this.game.isGameOver() || this.game.wonGame())
 				break;
+			
 			this.game.moveAllVillains();			
 		}while (!this.game.wonGame() && !this.game.isGameOver());
 		System.out.println(getPrintableMap(this.game,true,true));

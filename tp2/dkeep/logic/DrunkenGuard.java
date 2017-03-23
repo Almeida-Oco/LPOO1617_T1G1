@@ -28,17 +28,14 @@ public class DrunkenGuard extends Guard{
 		Random rand = new Random();
 		ArrayList<Pair<Integer,Integer> > temp = new ArrayList<Pair<Integer,Integer> >();
 		int result = rand.nextInt(2);
-		if(0 == result){ //Dont fall asleep | Dont wake up
-			if(!this.asleep)
-				temp.add(Guard.movement.get(this.index));
-			
-		}
-		else if (1 == result) //Fall asleep | Wake up
-			if (this.asleep){
-				this.step *= (rand.nextInt(2) == 0) ? 1 : -1;
-				temp.add(Guard.movement.get(this.index));
-			}
+		if(0 == result && !this.asleep) //Dont fall asleep | Dont wake up
+			temp.add(Guard.movement.get(this.index));
 		
+		else if (1 == result && this.asleep){ //Fall asleep | Wake up
+			this.step *= (rand.nextInt(2) == 0) ? 1 : -1;
+			temp.add(Guard.movement.get(this.index));
+		}
+
 		return ((temp.size() == 0) ? this.position : temp);
 	}
 

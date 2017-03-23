@@ -1,5 +1,4 @@
 package dkeep.logic;
-import pair.Pair;
 import java.util.ArrayList;
 
 public class Hero extends GameCharacter {

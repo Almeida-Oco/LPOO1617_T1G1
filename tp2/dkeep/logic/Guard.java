@@ -1,7 +1,6 @@
 package dkeep.logic;
 import java.util.ArrayList;
 import java.util.Arrays;
-import pair.Pair;
 
 public class Guard extends GameCharacter{
 	protected static ArrayList< Pair<Integer,Integer> > movement = new ArrayList< Pair<Integer,Integer> >( 

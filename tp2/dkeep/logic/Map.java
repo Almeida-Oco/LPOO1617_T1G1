@@ -3,8 +3,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Random;
-
-import pair.Pair;
 	
 public abstract class Map implements java.io.Serializable{
 	protected int width;

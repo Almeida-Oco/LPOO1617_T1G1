@@ -2,8 +2,6 @@ package dkeep.logic;
 
 import java.util.ArrayList;
 
-import pair.Pair;
-
 public class GenericMap extends Map {
 	
 	public GenericMap(char[][] map){

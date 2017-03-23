@@ -2,8 +2,6 @@ package dkeep.logic;
 import java.util.ArrayList;
 import java.util.Random;
 
-import pair.Pair;
-
 public class DrunkenGuard extends Guard{
 	private boolean asleep = false;
 	

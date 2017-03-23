@@ -2,8 +2,6 @@ package dkeep.logic;
 
 import java.util.Random;
 
-import pair.Pair;
-
 public class DungeonMap extends Map{
 	
 	public DungeonMap(int guards , int ogres){

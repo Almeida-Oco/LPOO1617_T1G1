@@ -1,8 +1,6 @@
 package dkeep.logic;
 import java.util.ArrayList;
 
-import pair.Pair;
-
 public class RookieGuard extends Guard{
 	public RookieGuard(Pair<Integer,Integer> pos , Pair<Integer,Integer> map_size){
 		super( pos , map_size);

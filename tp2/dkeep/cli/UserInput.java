@@ -1,8 +1,8 @@
 package dkeep.cli;
 import dkeep.logic.GameLogic;
+import dkeep.logic.Pair;
 import dkeep.logic.GameCharacter;
 import java.util.Scanner;
-import pair.Pair;
 
 public class UserInput{
 	GameLogic game;
@@ -57,6 +57,7 @@ public class UserInput{
 		boolean change_lvl = false;
 		do{
 			System.out.println(getPrintableMap(this.game,true,true));
+			
 			change_lvl=this.game.moveHero( readChar());
 			if (change_lvl && !this.game.wonGame() )
 				this.game = this.game.getNextLevel(0); //0 -> random number of enemies

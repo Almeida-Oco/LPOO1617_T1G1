@@ -14,7 +14,6 @@ import java.util.Arrays;
 import org.junit.Test;
 
 import dkeep.logic.*;
-import pair.Pair;
 
 
 public class GameTests {

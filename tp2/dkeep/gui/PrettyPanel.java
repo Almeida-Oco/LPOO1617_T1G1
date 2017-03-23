@@ -103,7 +103,34 @@ public class PrettyPanel extends JPanel {
 		this.setBounds(0, 0,200, 200);
 	}
 
+<<<<<<< HEAD
 
+=======
+	public int calculateWidth(){
+		int max = -1, cont = 0;
+		for (int i = 0 ; i < this.current_map.length() ; i++){
+			if ( this.current_map.charAt(i) != '\n')
+				cont++;
+			else{
+				max = (max > cont) ? max : cont;
+				cont = 0;
+			}
+		}
+		System.out.print("WIDTH = "+max);
+		return max*this.IMG_WIDTH;
+	}
+	
+	public int calculateHeight(){
+		int cont = 0;
+		for (int i = 0 ; i < this.current_map.length() ; i++)
+			if ( this.current_map.charAt(i) == '\n')
+				cont++;
+		
+		System.out.print("HEIGHT = "+cont);
+		return (cont*this.IMG_HEIGHT);
+		//TODO check if there is a multiplatform way of making the window perfect size
+	}
+>>>>>>> origin/MapCreator
 	
 	public void updateCurrentMap(String map){
 		this.current_map = map;
@@ -127,9 +154,13 @@ public class PrettyPanel extends JPanel {
 
 	public void paint(Graphics g){
 		super.paint(g);
+<<<<<<< HEAD
 		mapsize();
 		System.out.println("Trying to paint Panel!");
+=======
+>>>>>>> origin/MapCreator
 		int x = 0, y = 0;
+		System.out.println(this.current_map);
 		for(int i = 0 ; i < this.current_map.length() ; i++){
 			if(this.current_map.charAt(i) == '\n'){
 				y+=(getHeight()/map_height);

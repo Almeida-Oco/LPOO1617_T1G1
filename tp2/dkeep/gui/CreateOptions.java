@@ -16,7 +16,7 @@ public class CreateOptions extends JPanel{
 	static JComboBox<String> lista;
 	
 	/**
-	 * Cria as opções do menu de criação de um labirinto
+	 * Cria as opcoes do menu de criacao de um labirinto
 	 */
 	CreateOptions(){
 		JButton salvar = new JButton("Salvar");
@@ -41,11 +41,11 @@ public class CreateOptions extends JPanel{
 	    });
 		
 		lista = new JComboBox<String>();
-		lista.addItem("Saida");
-		lista.addItem("Parede");
-		lista.addItem("Herói");
+		lista.addItem("Exit");
+		lista.addItem("Wall");
+		lista.addItem("Hero");
 		lista.addItem("Ogre");
-		lista.addItem("Guarda");
+		lista.addItem("Guard");
 		this.add(salvar);
 		this.add(voltar);
 		this.add(lista);

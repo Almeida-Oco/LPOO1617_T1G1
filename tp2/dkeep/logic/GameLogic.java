@@ -8,7 +8,7 @@ import java.util.HashMap;
 import java.util.Random;
 
 
-public class GameLogic {
+public class GameLogic implements java.io.Serializable{
 	private static final HashMap<Character,Integer> DIR = new HashMap<Character,Integer>();
 	static{
 		DIR.put(new Character('w') , 4);
@@ -63,7 +63,7 @@ public class GameLogic {
 	/**
 	 * @brief Moves hero in given direction
 	 * @param direction Direction to move hero
-	 * @return Next level GameLogic object, or this object otherwise
+	 * @return True if its supposed to go to next level, false otherwise
 	 */
 	public boolean moveHero(char direction) {
 		ArrayList< Pair<Integer,Integer> > temp = null;
@@ -103,13 +103,15 @@ public class GameLogic {
 	/**
 	 * @brief Checks if its game over
 	 * @return True if it is game over, false otherwise
-	 * @details First gathers all villains game over positions then checks to see if it is in an adjacent square of any
+	 * @detail First gathers all villains game over positions then checks to see if it is in an adjacent square of any
+	 * 		   If a villain is an Ogre then only check the first position(its the club), if the hero is armed
 	 */
-	public boolean isGameOver() { 
+	public boolean isGameOver(){
 		for (GameCharacter ch : getVillains())
-			for (Pair<Integer,Integer> pos : ch.getGameOverPos())
-				if (inAdjSquares(this.hero.getPos().get(0) , pos))
+			for (Pair<Integer,Integer> pos : ( (ch instanceof Ogre) ? ch.getGameOverPos().subList(0,1) : ch.getGameOverPos()) ){
+				if (inAdjSquares(this.hero.getPos().get(0) , pos) )
 					return true;
+			}
 
 		return false;
 	}
@@ -149,12 +151,10 @@ public class GameLogic {
 						if (!found_same)
 							found_same = true;
 						else
-							return i;
-							
+							return i;			
 			}
 			i++;
 		}
-		
 		return -1;
 	}
 	
@@ -163,8 +163,8 @@ public class GameLogic {
 	 * @param p Position of hero
 	 * @return True if he triggered next level, false otherwise
 	 */
+	//TODO instead of opening all doors at once open only the door which the hero is trying to open (ArenaMap)
 	private boolean checkTriggers( Pair<Integer,Integer> p) { 
-		//TODO instead of opening all doors at once open only the door which the hero is trying to open (ArenaMap)
 		if (p.equals(this.key)){
 			boolean b = this.map.pickUpKey();
 			this.map.openDoors( b );
@@ -191,7 +191,6 @@ public class GameLogic {
 			ch.stunOgre( Ogre.STUN_ROUNDS );
 		else
 			ch.roundPassed();
-
 	}
 	
 	/**
@@ -249,36 +248,4 @@ public class GameLogic {
 	public Hero getHero() {
 		return this.hero;
 	}
-	/*
-	public Boolean saveGame(String fileName){
-		StringBuilder result = new StringBuilder();
-		String w;
-		char[][] temp_map =map.getMap();
-		for(GameCharacter ch :getAllCharacters())
-			for( Pair< Pair<Integer,Integer> ,String> p : ch.getPrintable() )
-				temp_map[p.getFirst().getFirst().intValue()][p.getFirst().getSecond().intValue()] = p.getSecond().charAt(0);
-
-		for ( int i = 0 ; i < map.getMap().length ; i++ ) {
-			for ( int j = 0 ; j < map.getMap()[i].length ; j++ ) {
-				result.append(temp_map[i][j] +  "");
-			}
-			result.append("\n");
-
-		}
-			w=result.toString();
-
-
-			try{
-				//temos que ver como gravar a parte do numero de ogres e 
-			    PrintWriter writer = new PrintWriter(fileName, "UTF-8");
-			    //writer.println(ogres.size());
-			    writer.print(w);
-			    writer.close();
-			} catch (IOException e) {
-			   // do something
-			}
-			return true;
-
-	}
-	 */
 }

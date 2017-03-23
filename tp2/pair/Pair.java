@@ -1,6 +1,6 @@
 package pair;
 
-public class Pair<L,R> {
+public class Pair<L,R> implements java.io.Serializable{
 	private L first;
 	private R second;
 	
@@ -8,7 +8,7 @@ public class Pair<L,R> {
 		this.first = left;
 		this.second = right;
 	}
-
+	
 	public L getFirst(){
 		return this.first;
 	}

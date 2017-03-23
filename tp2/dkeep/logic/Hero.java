@@ -23,7 +23,6 @@ public class Hero extends GameCharacter {
 		
 		return temp;
 	}	
-
 	
 	public void setKey(boolean val){
 		this.has_key = val;

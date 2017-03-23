@@ -38,13 +38,6 @@ public class PrettyPanel extends JPanel {
 	 */
 	public PrettyPanel(){
 		setBackground(Color.WHITE);
-		addKeyListener(new KeyAdapter() {
-			@Override
-			public void keyPressed(KeyEvent e) {
-				System.out.println("KEY PRESSED!");
-			}
-		});
-		System.out.print("CREATING PRETTY PANEL!\n");
 		try {                
 			this.char_to_img.put(new Character('G') , ImageIO.read(new File(System.getProperty("user.dir")+"/imgs/Guard.png")));
 		} catch (IOException ex) {

@@ -285,7 +285,6 @@ public class GameTests {
 	
 	@Test
 	public void stunOgre(){
-		
 		ArrayList< GameCharacter > chars = new ArrayList< GameCharacter >();
 		this.setDefaultMap(0);
 		Hero h = new Hero( new Pair<Integer,Integer>(1,1) , this.game_map.getSize() );
@@ -354,6 +353,7 @@ public class GameTests {
 
 			assertEquals(test_map , map.getMap() );
 			assertEquals(true , (map.nextMap(0) instanceof ArenaMap) );
+			assertEquals(false , map.getLever() );
 			
 			if(i == -1)
 				assertEquals(true , game.getAllCharacters().size() == 1);
@@ -387,6 +387,7 @@ public class GameTests {
 											 {'X','X','X','X','X','X','X','X','X','X'} };
 			assertEquals(test_map , map.getMap() );
 			assertEquals(null ,  map.nextMap(0) );
+			assertEquals(false , map.getLever() );
 			//test ogres generated
 			if (i == -1)
 				assertEquals(true , (game.getAllCharacters().size() == 1)); //only generate hero
@@ -520,7 +521,19 @@ public class GameTests {
 			
 	}
 	
-
+	@Test
+	public void testPairClass(){
+		Pair<Integer,Integer> test = new Pair<Integer,Integer>(1,1);
+		assertEquals(1,((Integer)test.getFirst()).intValue()); assertEquals(1, ((Integer)test.getSecond()).intValue());
+		test.setFirst(2);
+		assertEquals(2,((Integer)test.getFirst()).intValue());
+		test.setSecond(2);
+		assertEquals(2, ((Integer)test.getSecond()).intValue());
+		assertEquals( "[2,2]" , test.toString());
+		assertEquals(false , test.equals( new Pair<Integer,Integer>(1,1)));
+		assertEquals(false , test.equals( new Integer(1) ));
+	}
+	
 	private void save(GameLogic game){
 		try {
 	         FileOutputStream fileOut =

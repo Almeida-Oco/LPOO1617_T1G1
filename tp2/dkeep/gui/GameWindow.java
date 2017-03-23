@@ -126,12 +126,9 @@ public void chooseGuard(){
 
 public void chooseOgre(){
 	JTextField field1 = new JTextField();
-	Boolean exit=true;
-	Object[] message = {
-		    "Number of Ogres (1-5):", field1,
-	};
+	Object[] message = {  "Number of Ogres (1-5):", field1, };
 	while(true){
-		exit=true;
+		Boolean exit=true;
 		JOptionPane.showConfirmDialog(frame, message, "Ogre Options", JOptionPane.PLAIN_MESSAGE);
 		String value1 = field1.getText();
 		try{ 
@@ -139,18 +136,14 @@ public void chooseOgre(){
 		}
 		catch (NumberFormatException n){
 			status_label.setText("Number of ogres will be random!");
-			exit=false;
 			if(value1.length() == 0)
 				this.ogres = 0;
 			else{
 				JOptionPane.showMessageDialog(frame, "It's supoesed to be 1-5 ogres");
 				disableButtons();
-				//return;
-
 			}
-
 		}
-		if(ogres<0 ||ogres>5){
+		if( ogres<0 ||ogres>5 ){
 			JOptionPane.showMessageDialog(frame, "It's supoesed to be 1-5 ogres");
 			exit=false;
 		}

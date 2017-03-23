@@ -34,6 +34,7 @@ public class CreateMap extends JPanel implements MouseListener{
 
 	private static final long serialVersionUID = 1L;
 	private char[][] map;
+	private char[][] definitive_map;
 	private static int height;
 	private static int width;
 	private HashMap<Character,BufferedImage> char_to_img = new HashMap<Character,BufferedImage>();
@@ -53,10 +54,12 @@ public class CreateMap extends JPanel implements MouseListener{
 		CreateMap.width=width;
 		ogres_number=0;
 		map = new char[height][width];
+		definitive_map = new char[height][width];
 
 		for (int linha = 0; linha < height; linha++) {
 			for (int coluna = 0; coluna < width; coluna++) {
 				map[linha][coluna] = ' ';
+				definitive_map[linha][coluna] = ' ';
 			}
 		}
 				
@@ -65,6 +68,7 @@ public class CreateMap extends JPanel implements MouseListener{
 			for(int j=0; j< width;j++){
 				if(i==0 || j==0 || j==width-1|| i==height-1){
 					map[i][j] = 'X';
+					definitive_map[i][j]  = 'X';
 				}
 				
 			}
@@ -82,6 +86,11 @@ public class CreateMap extends JPanel implements MouseListener{
 		}
 		try {                
 			this.char_to_img.put(new Character('H') ,ImageIO.read(new File(System.getProperty("user.dir")+"/imgs/Hero.png")));
+		} catch (IOException ex) {
+			System.out.println("Error reading hero image!");
+		}
+		try {                
+			this.char_to_img.put(new Character('A') ,ImageIO.read(new File(System.getProperty("user.dir")+"/imgs/Hero.png")));
 		} catch (IOException ex) {
 			System.out.println("Error reading hero image!");
 		}
@@ -141,7 +150,7 @@ public class CreateMap extends JPanel implements MouseListener{
 	}
 	
 	char[][] getMap(){
-		return map;
+		return definitive_map;
 	}
 	
 
@@ -184,8 +193,10 @@ public class CreateMap extends JPanel implements MouseListener{
 	void removesComp(char c){
 		for (int i = 0; i < height; i++) {
 			for(int j=0; j< width;j++){
-				if (map[i][j]==c)
+				if (map[i][j]==c){
 					map[i][j]=' ';
+					definitive_map[i][j]=' ';
+				}
 			}
 			}
 	}
@@ -201,7 +212,6 @@ public class CreateMap extends JPanel implements MouseListener{
 	
 	
 
-	
 	
 	
 	@Override
@@ -244,9 +254,12 @@ public class CreateMap extends JPanel implements MouseListener{
 		else if(CreateOptions.getSelecionado()=="Wall"){
 			if(map[i_map][j_map]!='X'){
 				map[i_map][j_map]='X';
+				definitive_map[i_map][j_map]='X';
 			}
-			else
+			else{
 				map[i_map][j_map]=' ';
+				definitive_map[i_map][j_map]=' ';
+			}
 			repaint();
 		}
 		
@@ -255,10 +268,13 @@ public class CreateMap extends JPanel implements MouseListener{
 			if(contaisComp('I'))
 				removesComp('I');
 				map[i_map][j_map]='I';
+				definitive_map[i_map][j_map]='I';
 				door=new Pair< Pair<Integer,Integer> ,String>( new Pair<Integer,Integer>( new Integer(2) ,new Integer(0)) , "I");
 			}
-			else
+			else{
 				map[i_map][j_map]=' ';
+				definitive_map[i_map][j_map]=' ';
+			}
 			repaint();
 		}
 		else if(CreateOptions.getSelecionado()=="Key"){
@@ -266,10 +282,13 @@ public class CreateMap extends JPanel implements MouseListener{
 			if(contaisComp('k'))
 				removesComp('k');
 				map[i_map][j_map]='k';
+				definitive_map[i_map][j_map]='k';
 				key=new Pair<Integer,Integer>(i_map,j_map);
 			}
-			else
+			else{
 				map[i_map][j_map]=' ';
+				definitive_map[i_map][j_map]=' ';
+			}
 			repaint();
 		}
 		

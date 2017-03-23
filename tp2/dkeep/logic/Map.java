@@ -62,7 +62,6 @@ public abstract class Map implements java.io.Serializable{
 			else
 				return i;
 		}
-
 		return -1;
 	}
 	
@@ -121,6 +120,10 @@ public abstract class Map implements java.io.Serializable{
 		return temp;
 	}
 	
+	
+	public boolean getLever(){
+		return this.lever;
+	}
 	
 	/**
 	 * @brief Gets the key

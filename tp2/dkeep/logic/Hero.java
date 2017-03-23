@@ -69,4 +69,11 @@ public class Hero extends GameCharacter {
 	@Override
 	public ArrayList<Pair<Integer, Integer>> getGameOverPos() {return null;}
 
+	public void updateRepresentation(boolean to_file){
+		if (to_file)
+			this.representation = ( ( this.is_armed && this.has_key ) ? "a" : ( ( !this.is_armed && !this.has_key)? "H" :  ( ( this.is_armed ) ? "A" : "K" )));
+		else
+			this.representation = ( ( !this.is_armed && !this.has_key)? "H" :  ( ( this.is_armed ) ? "A" : "K" ) );
+
+	}
 }

@@ -31,7 +31,7 @@ public class GameLogic implements java.io.Serializable{
 	 * @details If game_map is null default first level will be used, if game_map is not null then it will use its map
 	 * 			and its characters, making guard variable irrelevant
 	 */
-	public GameLogic(Map game_map, int guard) {
+	public GameLogic(Map game_map, int guard) { 
 		this.map = (game_map == null) ? new DungeonMap(guard,-1) : game_map; //if null assume New Game
 		for (GameCharacter ch : this.map.getCharacters() ) //get all characters from the map
 			if (ch instanceof Hero)
@@ -135,13 +135,13 @@ public class GameLogic implements java.io.Serializable{
 		return false;
 	}
 	
+	//TODO check if p_ch.equals(p_l) is truly needed
 	/**
 	 * @brief Checks if positions passed overlap with another character
 	 * @param l Array of Positions to check overlap
 	 * @return Position of array with overlap or -1 if no position overlaps
 	 */
 	private int checkOverlap( ArrayList< Pair<Integer,Integer> > l){
-		//TODO check if p_ch.equals(p_l) is truly needed
 		int i = 0;
 		boolean found_same = false;
 		for ( Pair<Integer,Integer> p_l : l){
@@ -177,8 +177,8 @@ public class GameLogic implements java.io.Serializable{
 			p.setSecond(p.getSecond().intValue()+1); // stop hero from going inside stairs at first attempt
 			this.map.openDoors( false );
 		}
-		else if (!this.hero.hasKey())
-			this.hero.setRepresentation("H");
+		else if (!this.hero.hasKey() )
+			this.hero.updateRepresentation(false);
 
 		return false;
 	}

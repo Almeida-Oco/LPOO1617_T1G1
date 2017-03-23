@@ -66,12 +66,10 @@ public class UserInput{
 		do{
 			System.out.println(getPrintableMap(this.game,true,true));
 			change_lvl=this.game.moveHero( readChar());
-			System.out.println( this.game.getHero().getPos() );
 			if (change_lvl && !this.game.wonGame() )
 				this.game = this.game.getNextLevel(0); //0 -> random number of enemies
 			if (this.game.isGameOver() || this.game.wonGame())
 				break;
-			
 			this.game.moveAllVillains();			
 		}while (!this.game.wonGame() && !this.game.isGameOver());
 		System.out.println(getPrintableMap(this.game,true,true));

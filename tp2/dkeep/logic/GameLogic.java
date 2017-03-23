@@ -118,17 +118,13 @@ public class GameLogic implements java.io.Serializable{
 	 * @return True if hero is in adjacent, false if not
 	 */
 	private boolean inAdjSquares(Pair<Integer,Integer> p1, Pair<Integer,Integer> p2) {
-		if (p2.getFirst().intValue() != -1 && p2.getSecond().intValue() != -1)
-			if ((p1.getFirst().intValue() == p2.getFirst().intValue() - 1 && p1.getSecond().intValue() == p2.getSecond().intValue()) || 
-				(p1.getFirst().intValue() == p2.getFirst().intValue() + 1 && p1.getSecond().intValue() == p2.getSecond().intValue()) ||
-				(p1.getFirst().intValue() == p2.getFirst().intValue() && p1.getSecond().intValue() == p2.getSecond().intValue() - 1) ||
-				(p1.getFirst().intValue() == p2.getFirst().intValue() && p1.getSecond().intValue() == p2.getSecond().intValue() + 1) ||
-				(p1.getFirst().intValue() == p2.getFirst().intValue() && p1.getSecond().intValue() == p2.getSecond().intValue()))
-				return true;
-
-		return false;
+		return ((p1.getFirst() == p2.getFirst() - 1 && p1.getSecond() == p2.getSecond()) || 
+				(p1.getFirst() == p2.getFirst() + 1 && p1.getSecond() == p2.getSecond()) ||
+				(p1.getFirst() == p2.getFirst() && p1.getSecond() == p2.getSecond() - 1) ||
+				(p1.getFirst() == p2.getFirst() && p1.getSecond() == p2.getSecond() + 1) ||
+				(p1.getFirst() == p2.getFirst() && p1.getSecond() == p2.getSecond()));
 	}
-	
+
 	//TODO check if p_ch.equals(p_l) is truly needed
 	/**
 	 * @brief Checks if positions passed overlap with another character

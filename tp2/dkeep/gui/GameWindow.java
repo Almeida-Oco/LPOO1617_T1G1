@@ -41,6 +41,7 @@ import java.awt.event.KeyEvent;
 public class GameWindow {
 	
 	private JFrame frame;
+	private JFrame frame2;
 	private PrettyPanel imgs_panel;
 	private JLabel status_label;
 	private JButton up_b,down_b,left_b,right_b;
@@ -342,8 +343,9 @@ this.frame.setLayout(new BorderLayout());
 						}
 				    
 				   
-				    CreateMap cmap= new CreateMap(height,width);
-				    frame=cmap.getframe();
+				    //CreationFrame cf= new CreationFrame(height,width);
+				    frame.setVisible(false);
+				    CreateMap.Construct(height,width);
 					}
 
 		});

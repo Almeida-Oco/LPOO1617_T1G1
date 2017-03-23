@@ -10,29 +10,13 @@ import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.FlowLayout;
-import java.awt.SystemColor;
 
 public class PrettyPanel extends JPanel {
 
-	/**
-	 * 
-	 */
+
 	private static final long serialVersionUID = 1L;
-	private final int IMG_WIDTH = 50;
-	private final int IMG_HEIGHT= 50;
 	private HashMap<Character,BufferedImage> char_to_img = new HashMap<Character,BufferedImage>();
-	private BufferedImage guard_image;
-	private BufferedImage ogre_image;
-	private BufferedImage hero_image;
-	private BufferedImage floor_image;
-	private BufferedImage wall_image;
-	private BufferedImage club_image;
-	private BufferedImage door_image;
-	private BufferedImage stair_image;
-	private BufferedImage lever_image;
 	private String current_map;
 	private int map_width;
 	private int map_height;
@@ -131,7 +115,7 @@ public class PrettyPanel extends JPanel {
 		mapsize();
 		System.out.println("Trying to paint Panel!");
 		int x = 0, y = 0;
-		System.out.println(this.current_map);
+		//System.out.println(this.current_map);
 		for(int i = 0 ; i < this.current_map.length() ; i++){
 			if(this.current_map.charAt(i) == '\n'){
 				y+=(getHeight()/map_height);

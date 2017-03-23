@@ -24,21 +24,13 @@ public class CreateMap implements MouseListener {
 		CreateMap.height=width;
 		CreateMap.map = new char[height][width];
 		String mapa="";
-<<<<<<< HEAD
+
 		for (int linha = 0; linha < height; linha++) {
 			for (int coluna = 0; coluna < width; coluna++) {
 				map[linha][coluna] = ' ';
-				
-=======
-		for (int linha = 0; linha < size; linha++) {
-			for (int coluna = 0; coluna < size; coluna++) {
-				map[linha][coluna] = (0 == linha || 0 == coluna || (size-1) == linha || (size-1) == coluna) ? 'X' : ' ';
-				mapa+=map[linha][coluna];
->>>>>>> origin/MapCreator
 			}
-			mapa+="\n";
 		}
-<<<<<<< HEAD
+				
 
 		for (int i = 0; i < height; i++) {
 			for(int j=0; j< width;j++){
@@ -46,25 +38,9 @@ public class CreateMap implements MouseListener {
 					map[i][j] = 'X';
 				}
 				
-		}
-=======
-/*
-		for (int i = 0; i < size; i++) {
-			map[0][i] = 'X';
-			map[i][0] = 'X';
-			map[size - 1][i] = 'X';
-			map[i][size - 1] = 'X';
->>>>>>> origin/MapCreator
-		}
-		
-		for (int linha = 0; linha < height; linha++) {
-			for (int coluna = 0; coluna < width; coluna++) {
-				mapa+=map[linha][coluna];
-				
 			}
-			mapa+="\n";
 		}
-*/
+
 		
 		f = new JFrame("Constroi o teu labirinto");
 		f.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
@@ -85,7 +61,9 @@ public class CreateMap implements MouseListener {
 		f.requestFocus();
 		
 		
-	}
+	
+		
+			}
 	
 	
 	JFrame getframe(){

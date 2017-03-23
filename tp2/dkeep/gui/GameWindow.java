@@ -311,7 +311,7 @@ this.frame.setLayout(new BorderLayout());
 						"Choose the grid height:", field1,
 						"Choose the grid width:", field2,
 				};
-<<<<<<< HEAD
+
 			int option =JOptionPane.showConfirmDialog(frame, message, "Choose the dimensions", JOptionPane.OK_CANCEL_OPTION);
 			if (option != JOptionPane.OK_OPTION)
 				return;
@@ -345,35 +345,7 @@ this.frame.setLayout(new BorderLayout());
 				    CreateMap cmap= new CreateMap(height,width);
 				    frame=cmap.getframe();
 					}
-=======
-				int option =JOptionPane.showConfirmDialog(frame, message, "Choose the dimensions", JOptionPane.OK_CANCEL_OPTION);
-				if (option != JOptionPane.OK_OPTION)
-					return;
-				int height,width;
 
-				try{ 
-					height=Integer.parseInt(field1.getText());
-				}
-				catch (NumberFormatException n){
-					JOptionPane.showMessageDialog(frame, "It's supposed to be a number");
-					return;
-
-				}
-
-				try{ 
-					width=Integer.parseInt(field2.getText());
-				}
-				catch (NumberFormatException n){
-					JOptionPane.showMessageDialog(frame, "It's supposed to be a number");
-					return;
-
-				}
-
-
-				CreateMap cmap= new CreateMap(height);
-				frame = cmap.getframe();
-			}
->>>>>>> origin/MapCreator
 		});
 		btnMapCreation.setBounds(565, 92, 118, 26);
 		frame.getContentPane().add(btnMapCreation);

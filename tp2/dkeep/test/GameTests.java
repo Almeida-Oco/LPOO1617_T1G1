@@ -25,6 +25,7 @@ public class GameTests {
 					{'I','k',' ',' ','X'},
 					{'X','X','X','X','X'}};
 	
+	
 	private GenericMap game_map;
 	private static ArrayList< Pair<Integer,Integer> > movement = new ArrayList< Pair<Integer,Integer> >( 
 			   Arrays.asList(new Pair<Integer,Integer>(1,7),new Pair<Integer,Integer>(2,7),new Pair<Integer,Integer>(3,7),new Pair<Integer,Integer>(4,7),
@@ -171,7 +172,7 @@ public class GameTests {
 		test_game_over_pos.add( new Pair<Integer,Integer>(1,3));
 		this.setDefaultMap(0);
 		chars.add(new Hero( new Pair<Integer,Integer>(1,1) , this.game_map.getSize() ));
-		chars.add(new Ogre(new Pair<Integer,Integer>(1,3) ,this.game_map.getSize() , true));
+		chars.add(new Ogre(new Pair<Integer,Integer>(1,3) ,this.game_map.getSize()));
 		this.game_map.setCharacters(chars);
 		GameLogic game = new GameLogic(game_map,0); //number is irrelevant
 		game.moveHero('d');
@@ -187,15 +188,17 @@ public class GameTests {
 		Pair<Integer,Integer> test = new Pair<Integer,Integer>(1,2);
 		this.setDefaultMap(0);
 		chars.add(new Hero( new Pair<Integer,Integer>(1,1) , this.game_map.getSize() ));
-		chars.add(new Ogre(new Pair<Integer,Integer>(1,3) ,this.game_map.getSize() , true));
+		chars.add(new Ogre(new Pair<Integer,Integer>(1,3) ,this.game_map.getSize()));
 		this.game_map.setCharacters(chars);
 		GameLogic game = new GameLogic(game_map,0); //number is irrelevant
 		game.moveHero('d');
-		assertEquals(test , game.getHero().getPos().get(0));
-		assertEquals(false , game.moveHero('d'));
-		assertEquals(test , game.getHero().getPos().get(0));
-		
-		
+		assertEquals( true , game.isGameOver() );
+		((Hero)this.game_map.getCharacters().get(0)).setArmed(true);
+		((Ogre)this.game_map.getCharacters().get(1)).setClub(new Pair<Integer,Integer>(2,3));
+		assertEquals( false, game.isGameOver());
+		assertEquals( test , game.getHero().getPos().get(0) );
+		assertEquals( false , game.moveHero('d'));
+		assertEquals( test , game.getHero().getPos().get(0) );
 	}
 	
 	@Test
@@ -288,7 +291,7 @@ public class GameTests {
 		this.setDefaultMap(0);
 		Hero h = new Hero( new Pair<Integer,Integer>(1,1) , this.game_map.getSize() );
 		h.setArmed(true);
-		chars.add( new Ogre(new Pair<Integer,Integer>(1,3) ,game_map.getSize() , false ) );
+		chars.add( new Ogre(new Pair<Integer,Integer>(1,3) ,game_map.getSize() ) );
 		chars.add( h );
 		this.game_map.setCharacters(chars);
 		GameLogic game = new GameLogic(game_map,0); //number is irrelevant
@@ -324,7 +327,7 @@ public class GameTests {
 		this.setDefaultMap(0);
 		Hero h = new Hero(new Pair<Integer,Integer>(1,1) , this.game_map.getSize() );
 		h.setArmed(true);
-		chars.add(new Ogre( new Pair<Integer,Integer>(3,3) , game_map.getSize() , false));
+		chars.add(new Ogre( new Pair<Integer,Integer>(3,3) , game_map.getSize() ));
 		chars.add(h);
 		this.game_map.setCharacters(chars);
 		GameLogic game = new GameLogic(game_map , 0); //number is irrelevant
@@ -502,7 +505,7 @@ public class GameTests {
 			Hero h = new Hero (new Pair<Integer,Integer>(1,1) , this.game_map.getSize() );
 			h.setArmed( (i == 0 || i == 2) );
 			h.setKey( (i == 0 || i == 1) );
-			Ogre o = new Ogre( new Pair<Integer,Integer>(1,3) , this.game_map.getSize() , false);
+			Ogre o = new Ogre( new Pair<Integer,Integer>(1,3) , this.game_map.getSize());
 			o.stunOgre(i);
 			chrs.add(h);
 			chrs.add( o );
@@ -518,17 +521,6 @@ public class GameTests {
 			
 	}
 	
-	
-	public void testSaveCharacters(){
-		Map map = new ArenaMap(-1,3);
-		GameLogic game = new GameLogic(map , 0); //number is irrelevant
-		save(game);
-		
-		game = load();
-		new UserInput(game);
-		
-	}
-
 
 	private void save(GameLogic game){
 		try {

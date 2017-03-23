@@ -63,7 +63,7 @@ public class GameLogic implements java.io.Serializable{
 	/**
 	 * @brief Moves hero in given direction
 	 * @param direction Direction to move hero
-	 * @return Next level GameLogic object, or this object otherwise
+	 * @return True if its supposed to go to next level, false otherwise
 	 */
 	public boolean moveHero(char direction) {
 		ArrayList< Pair<Integer,Integer> > temp = null;
@@ -103,13 +103,15 @@ public class GameLogic implements java.io.Serializable{
 	/**
 	 * @brief Checks if its game over
 	 * @return True if it is game over, false otherwise
-	 * @details First gathers all villains game over positions then checks to see if it is in an adjacent square of any
+	 * @detail First gathers all villains game over positions then checks to see if it is in an adjacent square of any
+	 * 		   If a villain is an Ogre then only check the first position(its the club), if the hero is armed
 	 */
-	public boolean isGameOver() { 
+	public boolean isGameOver(){
 		for (GameCharacter ch : getVillains())
-			for (Pair<Integer,Integer> pos : ch.getGameOverPos())
-				if (inAdjSquares(this.hero.getPos().get(0) , pos))
+			for (Pair<Integer,Integer> pos : ( (ch instanceof Ogre) ? ch.getGameOverPos().subList(0,1) : ch.getGameOverPos()) ){
+				if (inAdjSquares(this.hero.getPos().get(0) , pos) )
 					return true;
+			}
 
 		return false;
 	}

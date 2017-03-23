@@ -20,6 +20,8 @@ public class DrunkenGuard extends Guard{
 	public void setPos(ArrayList<Pair<Integer,Integer> > vp){
 		this.asleep = (vp.get(0).equals(this.position.get(0))); //if the position wanting to set is same as previous then guard is asleep
 		this.representation = (this.asleep) ? "g" : "G" ; 
+		if (!this.asleep)
+			this.incIndex();
 			
 		super.setPos(vp);
 	}
@@ -29,16 +31,13 @@ public class DrunkenGuard extends Guard{
 		ArrayList<Pair<Integer,Integer> > temp = new ArrayList<Pair<Integer,Integer> >();
 		int result = rand.nextInt(2);
 		if(0 == result){ //Dont fall asleep | Dont wake up
-			if(!this.asleep){
+			if(!this.asleep)
 				temp.add(Guard.movement.get(this.index));
-				this.incIndex();
-			}
 			
 		}
 		else if (1 == result) //Fall asleep | Wake up
 			if (this.asleep){
 				this.step *= (rand.nextInt(2) == 0) ? 1 : -1;
-				this.incIndex();
 				temp.add(Guard.movement.get(this.index));
 			}
 		

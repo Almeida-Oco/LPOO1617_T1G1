@@ -18,7 +18,7 @@ public class UserInput{
 	}
 	
 	public UserInput(int ogres, int guard){
-		this.game = new GameLogic(null,3);
+		this.game = new GameLogic(null,2);
 	}
 	
 	public GameLogic getGame(){

@@ -359,7 +359,7 @@ this.frame.setLayout(new BorderLayout());
 						}
 				    
 				   
-				    CreateMap cmap= new CreateMap(height);
+				    CreateMap cmap= new CreateMap(height,width);
 				    frame=cmap.getframe();
 					}
 		});

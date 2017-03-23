@@ -20,29 +20,33 @@ public class CreateMap implements MouseListener {
 	private static JPanel panel;
 	private static char[][] map;
 	private static JFrame f;
-	private static int size;
+	private static int height;
+	private static int width;
 
-	CreateMap(int size){
+	CreateMap(int height, int width){
 		
-		CreateMap.size=size;
-		CreateMap.map = new char[size][size];
+		CreateMap.height=height;
+		CreateMap.height=width;
+		CreateMap.map = new char[height][width];
 		String mapa="";
-		for (int linha = 0; linha < size; linha++) {
-			for (int coluna = 0; coluna < size; coluna++) {
+		for (int linha = 0; linha < height; linha++) {
+			for (int coluna = 0; coluna < width; coluna++) {
 				map[linha][coluna] = ' ';
 				
 			}
 		}
 
-		for (int i = 0; i < size; i++) {
-			map[0][i] = 'X';
-			map[i][0] = 'X';
-			map[size - 1][i] = 'X';
-			map[i][size - 1] = 'X';
+		for (int i = 0; i < height; i++) {
+			for(int j=0; j< width;j++){
+				if(i==0 || j==0 || j==width-1|| i==height-1){
+					map[i][j] = 'X';
+				}
+				
+		}
 		}
 		
-		for (int linha = 0; linha < size; linha++) {
-			for (int coluna = 0; coluna < size; coluna++) {
+		for (int linha = 0; linha < height; linha++) {
+			for (int coluna = 0; coluna < width; coluna++) {
 				mapa+=map[linha][coluna];
 				
 			}

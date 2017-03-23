@@ -64,25 +64,21 @@ public class GameLogic implements java.io.Serializable{
 	 * @return True if its supposed to go to next level, false otherwise
 	 */
 	public boolean moveHero(char direction) {
-		ArrayList< Pair<Integer,Integer> > temp = null;
-		Integer dir;
+		ArrayList< Pair<Integer,Integer> > temp = null;  Integer dir;
 		if ( (dir = GameLogic.DIR.get(new Character(direction))) != null ) //translate char to int
 			temp = this.hero.moveCharacter(temp,dir);
 		else
 			return false;
-
 		if (checkTriggers(temp.get(0))){//IF hero is supposed to go to next level then return true
 			this.hero.setPos(temp);
 			return true;
 		}
-		
 		if (this.map.isFree(temp) == -1) {
 			for (GameCharacter ch : getVillains() )
 				if ( temp.equals(ch.getPos()) ) //If hero tried to jump on top of something just ignore it
 					return false;
 			this.hero.setPos(temp);
 		}
-
 		return false;
 	}
 

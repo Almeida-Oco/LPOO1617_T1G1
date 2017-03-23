@@ -9,10 +9,10 @@ import java.util.Random;
 public class GameLogic implements java.io.Serializable{
 	private static final HashMap<Character,Integer> DIR = new HashMap<Character,Integer>();
 	static{
-		DIR.put(new Character('w') , 4);
+		DIR.put(new Character('w') , 0);
 		DIR.put(new Character('a') , 2);
-		DIR.put(new Character('s') , 3);
-		DIR.put(new Character('d') , 1);
+		DIR.put(new Character('s') , 1);
+		DIR.put(new Character('d') , 3);
 	}
 	
 	private Map map;

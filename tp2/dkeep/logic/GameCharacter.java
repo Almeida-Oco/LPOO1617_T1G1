@@ -100,13 +100,13 @@ public abstract class GameCharacter implements java.io.Serializable{
 
 	protected Pair<Integer,Integer> changePos(Pair<Integer,Integer> pos , int dir){
 		if		(dir == 0)// move up
-			return new Pair<Integer,Integer>( pos.getFirst().intValue()-1 , pos.getSecond().intValue()) ;
+			return new Pair<Integer,Integer>( pos.getFirst()-1 , pos.getSecond()) ;
 		else if (dir == 1) //move down
-			return new Pair<Integer,Integer>( pos.getFirst().intValue()+1 , pos.getSecond().intValue());
+			return new Pair<Integer,Integer>( pos.getFirst()+1 , pos.getSecond());
 		else if (dir == 2) //move left
-			return new Pair<Integer,Integer>( pos.getFirst().intValue() , pos.getSecond().intValue()-1);
+			return new Pair<Integer,Integer>( pos.getFirst() , pos.getSecond()-1);
 		else if (dir == 3) //move right
-			return new Pair<Integer,Integer>( pos.getFirst().intValue() , pos.getSecond().intValue()+1);
+			return new Pair<Integer,Integer>( pos.getFirst() , pos.getSecond()+1);
 		
 		return null;
 	}

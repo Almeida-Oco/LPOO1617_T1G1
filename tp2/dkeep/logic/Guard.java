@@ -3,8 +3,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import pair.Pair;
 
-public class Guard extends Character{
-	protected ArrayList< Pair<Integer,Integer> > movement = new ArrayList< Pair<Integer,Integer> >( 
+public class Guard extends GameCharacter{
+	protected static ArrayList< Pair<Integer,Integer> > movement = new ArrayList< Pair<Integer,Integer> >( 
    Arrays.asList(new Pair<Integer,Integer>(1,7),new Pair<Integer,Integer>(2,7),new Pair<Integer,Integer>(3,7),new Pair<Integer,Integer>(4,7),
 				 new Pair<Integer,Integer>(5,7),new Pair<Integer,Integer>(5,6),new Pair<Integer,Integer>(5,5),new Pair<Integer,Integer>(5,4),
 				 new Pair<Integer,Integer>(5,3),new Pair<Integer,Integer>(5,2),new Pair<Integer,Integer>(5,1),new Pair<Integer,Integer>(6,1),
@@ -14,18 +14,22 @@ public class Guard extends Character{
 				 
 	protected int index = 0;
 	protected int step = 1;
-
-	public Guard(int x , int y){
-		super(x,y);
-		this.representation="G";
+	
+	public Guard(Pair<Integer,Integer> pos, Pair<Integer,Integer> map_size){
+		super(pos,map_size);
+		this.representation = "G";
 	}
 
-	public Pair<Integer,Integer> moveCharacter(int MAP_SIZE){
-		this.position = (Pair<Integer,Integer>)this.movement.get(this.index).clone();
+	public ArrayList< Pair<Integer,Integer> > moveCharacter(ArrayList<Pair<Integer,Integer> > current,int change){
+		ArrayList<Pair<Integer,Integer> > temp = new ArrayList<Pair<Integer,Integer> >();
+		temp.add((Pair<Integer,Integer>)this.movement.get(this.index).clone());
 		incIndex();
-		return this.position;
+		return temp;
 	}
-
+	
+	/**
+	 * @brief Increments the guard movement index
+	 */
 	protected void incIndex(){
 		if (this.index+this.step == this.movement.size())
 			this.index = 0;
@@ -34,19 +38,17 @@ public class Guard extends Character{
 		else
 			this.index+=this.step;
 	}
-
-	public ArrayList< Pair<Integer,Integer> > getGameOverPos(int level){
-		ArrayList< Pair<Integer,Integer> > temp = new ArrayList< Pair<Integer,Integer> >(1);
-		if (level == 0){
-			temp.add(this.position);
-		}
-		return temp;
-	}
 	
-	public ArrayList< Pair<Pair<Integer,Integer> , String> > getPrintable(){
+	public ArrayList< Pair<Pair<Integer,Integer> , String> > getPrintable( boolean to_file ){
 		ArrayList< Pair< Pair<Integer,Integer> ,String> > temp = new ArrayList< Pair< Pair<Integer,Integer> ,String> >(1);
-		temp.add( new Pair< Pair<Integer,Integer> ,String>(this.position,this.representation));
+		for (Pair<Integer,Integer> p : this.position )
+			temp.add( new Pair< Pair<Integer,Integer> ,String>(p,this.representation));
 		
 		return temp;
+	}
+
+	@Override
+	public ArrayList<Pair<Integer, Integer>> getGameOverPos() {
+		return this.position;
 	}
 }

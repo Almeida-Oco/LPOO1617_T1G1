@@ -6,49 +6,63 @@ import pair.Pair;
 
 public class DrunkenGuard extends Guard{
 	private boolean asleep = false;
+	
+	public DrunkenGuard(Pair<Integer,Integer> pos , Pair<Integer,Integer> map_size, boolean is_asleep){
+		super(pos,map_size);
+		this.asleep = is_asleep;
+		this.representation = (this.asleep) ? "g" : "G";
+	}
 
-	public DrunkenGuard(int x, int y){
-		super(x,y);
+	public DrunkenGuard(Pair<Integer,Integer> map_size){
+		super( Guard.movement.get( movement.size()-1) , map_size);
 	}
 	
-	public DrunkenGuard(){
-		super(1,8);
+	public void setPos(ArrayList<Pair<Integer,Integer> > vp){
+		this.asleep = (vp.get(0).equals(this.position.get(0))); //if the position wanting to set is same as previous then guard is asleep
+		this.representation = (this.asleep) ? "g" : "G" ; 
+		if (!this.asleep)
+			this.incIndex();
+			
+		super.setPos(vp);
 	}
 	
-	public Pair<Integer,Integer> moveCharacter(int MAP_SIZE){
+	public ArrayList< Pair<Integer,Integer> > moveCharacter(ArrayList<Pair<Integer,Integer> > current,int change){
 		Random rand = new Random();
+		ArrayList<Pair<Integer,Integer> > temp = new ArrayList<Pair<Integer,Integer> >();
 		int result = rand.nextInt(2);
 		if(0 == result){ //Dont fall asleep | Dont wake up
-			if(!this.asleep){
-				this.position = this.movement.get(this.index);
-				incIndex();
-			}
+			if(!this.asleep)
+				temp.add(Guard.movement.get(this.index));
+			
 		}
-		else if (1 == result){ //Fall asleep | Wake up
+		else if (1 == result) //Fall asleep | Wake up
 			if (this.asleep){
-				this.asleep = false;
-				this.representation = "G";
-				this.step*= (rand.nextInt(2) == 0) ? 1 : -1;
-				this.position = this.movement.get(this.index);
+				this.step *= (rand.nextInt(2) == 0) ? 1 : -1;
+				temp.add(Guard.movement.get(this.index));
 			}
-			else{
-				this.asleep = true;
-				this.representation = "g";
-			}
-		}
-
-		return (Pair<Integer,Integer>)this.position.clone();
+		
+		return ((temp.size() == 0) ? this.position : temp);
 	}
 
 	public boolean isAsleep(){
 		return this.asleep;
 	}
-
-	public ArrayList< Pair<Integer,Integer> > getGameOverPos(int level){
-		ArrayList< Pair<Integer,Integer> > temp = new ArrayList< Pair<Integer,Integer> >(1);
-		if(!asleep && level == 0)
-			temp.add(this.position);
-		return temp;
+	
+	public String toString(){
+		return (this.asleep) ? "g" : "G";
 	}
 	
+	@Override
+	public ArrayList<Pair<Integer, Integer>> getGameOverPos() {
+		return (this.asleep) ? new ArrayList<Pair<Integer,Integer> >() : this.position;
+	}
+
+	public ArrayList<Pair<Pair<Integer,Integer> , String > > getPrintable(boolean to_file ){
+		String t = this.representation;
+		if (to_file)
+			this.representation = (this.asleep) ? "g" : "D";
+		ArrayList<Pair<Pair<Integer,Integer> , String > > temp = super.getPrintable(to_file);
+		this.representation = t;
+		return temp;
+	}
 }

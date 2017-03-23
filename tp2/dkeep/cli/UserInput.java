@@ -1,6 +1,6 @@
 package dkeep.cli;
 import dkeep.logic.GameLogic;
-import dkeep.logic.Character;
+import dkeep.logic.GameCharacter;
 import java.util.Scanner;
 import pair.Pair;
 
@@ -12,37 +12,43 @@ public class UserInput{
 		io.cpu();
 	}
 	
+	public UserInput(GameLogic game){
+		this.game = game;
+		this.cpu();
+	}
+	
 	public UserInput(int ogres, int guard){
-		this.game = new GameLogic(1,ogres,guard);
+		this.game = new GameLogic(null,2);
 	}
 	
 	public GameLogic getGame(){
 		return game;
 	}
 	
-	public String printGame(GameLogic gm,int level, boolean clear){
+	public static String getPrintableMap(GameLogic gm, boolean clear, boolean spaced){
 		char[][] temp_map = gm.getMap().getMap();
 		if(clear)
 			clearScreen();
 		StringBuilder result = new StringBuilder();
-		for(Character ch : gm.getAllCharacters())
-			for( Pair< Pair<Integer,Integer> ,String> p : ch.getPrintable() )
+		for(GameCharacter ch : gm.getAllCharacters())
+			for( Pair< Pair<Integer,Integer> ,String> p : ch.getPrintable(false) )
 				temp_map[p.getFirst().getFirst().intValue()][p.getFirst().getSecond().intValue()] = p.getSecond().charAt(0);
 
 		for ( int i = 0 ; i < gm.getMap().getMap().length ; i++ ) {
 			for ( int j = 0 ; j < gm.getMap().getMap()[i].length ; j++ ) {
-				result.append(temp_map[i][j] + " ");
+				result.append(temp_map[i][j] + ((spaced) ? " " : ""));
 			}
 			result.append("\n");
 		}
 		return result.toString();
 	}
-	private void clearScreen(){
+	
+	private static void clearScreen(){
 		for(int i = 0; i < 15 ; i++)
 			System.out.println("");
 	}
 	
-	private char readChar(){
+	private static char readChar(){
 		Scanner scan = new Scanner(System.in);
 		String line;
 		line = scan.nextLine();
@@ -56,16 +62,22 @@ public class UserInput{
 	}
 
 	private void cpu(){
+		boolean change_lvl = false;
 		do{
-			System.out.println(printGame(this.game,this.game.getLevel(),true));
-			this.game = this.game.moveHero(readChar());
+			System.out.println(getPrintableMap(this.game,true,true));
+			change_lvl=this.game.moveHero( readChar());
+			System.out.println( this.game.getHero().getPos() );
+			if (change_lvl && !this.game.wonGame() )
+				this.game = this.game.getNextLevel(0); //0 -> random number of enemies
+			if (this.game.isGameOver() || this.game.wonGame())
+				break;
+			
 			this.game.moveAllVillains();			
 		}while (!this.game.wonGame() && !this.game.isGameOver());
-		System.out.println(printGame(this.game,this.game.getLevel(),true));
+		System.out.println(getPrintableMap(this.game,true,true));
 		if (this.game.wonGame())
 			System.out.print("   YOU WIN!   \n");
 		else
 			System.out.print("   GAME OVER!  \n");
 	}
-	
 }

@@ -11,19 +11,17 @@ public class Ogre extends GameCharacter {
 	private Pair<Integer,Integer> club = new Pair<Integer,Integer>(-1,-1);
 	private String club_representation = "*";
 	private int stun=0;
-	private boolean nearkill=true;
 	
-	public Ogre(Pair<Integer,Integer> pos , Pair<Integer,Integer> map_size, boolean near){
+	
+	public Ogre(Pair<Integer,Integer> pos , Pair<Integer,Integer> map_size){
 		super(pos , map_size);
-		this.nearkill= near;
 		this.representation = "O";
 		if(pos.getFirst() >= 0 && pos.getFirst() < map_size.getSecond() && pos.getSecond() >= 0 && pos.getSecond() < map_size.getFirst() )
 			this.club = pos;
 		
 	}
 	
-	
-	public ArrayList< Pair<Integer,Integer> > moveCharacter(ArrayList<Pair<Integer,Integer> > current,int change){;		
+	public ArrayList< Pair<Integer,Integer> > moveCharacter(ArrayList<Pair<Integer,Integer> > current,int change){		
 		ArrayList<Pair<Integer,Integer> > temp = new ArrayList<Pair<Integer,Integer> >(current.subList(0, change));
 
 		if( 0 == this.stun && 0 == change){ //If he is not stunned and is supposed to change all positions
@@ -108,9 +106,8 @@ public class Ogre extends GameCharacter {
 	public ArrayList<Pair<Integer, Integer>> getGameOverPos(){
 		ArrayList< Pair<Integer,Integer> > temp = new ArrayList< Pair<Integer,Integer> >();
 		temp.add(this.club);
-		if(this.nearkill)
-			for (int i = 0 ; i < this.position.size() ; i++)
-				temp.add( this.position.get(i));
+		for (int i = 0 ; i < this.position.size() ; i++)
+			temp.add( this.position.get(i));
 		return temp;
 	}
 	

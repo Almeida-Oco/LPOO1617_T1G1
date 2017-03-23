@@ -99,12 +99,4 @@ public abstract class GameCharacter implements java.io.Serializable{
 	 */
 	public abstract ArrayList<Pair<Integer, Integer>> getGameOverPos();
 
-//	public abstract static GameCharacter parseCharacter(String line);
-//	
-//	private abstract static GameCharacter matchType( Pair<Integer,Integer> pos , char chr);
-//	
-	//TODO check errors function?
-//	private boolean lineErrorFree(String line){
-//		
-//	}
 }

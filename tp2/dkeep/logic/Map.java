@@ -15,13 +15,6 @@ public abstract class Map implements java.io.Serializable{
 	protected ArrayList<GameCharacter> chars = new ArrayList<GameCharacter>();
 	protected Pair<Integer,Integer> key;
 	
-	//TODO These arrays will most likely not be needed
-	//private ArrayList<Character> game_chars = new ArrayList<Character>( Arrays.asList( 'H' , 'A' , 'K' , 'a' , 'O' , '1' , '2' , '*'  , 'g' , 'G' , 'D' , 'R'));
-	//a -> Armed and has key , K -> has key and is not armed , A -> armed without keys, 1 -> Ogre stunned 1 turn to go, 2->Ogre stunned 2 turns to go
-	// g -> Drunked guard sleeping, G -> Suspicious Guard , D -> Drunked guard awake , R -> RookieGuard
-	//private ArrayList<Character> game_specials = new ArrayList<Character>( Arrays.asList( 'k' , 'l' , 'S', 'i'));
-	//k -> Key , l -> Lever , S -> Stairs , i -> Door which key/lever opens
-	
 	/**
 	 * @brief Constructor
 	 * @param guards (-1, No guards to generate) , (0, Randomly select guard) , (1 , generate RookieGuard) , (2, generate DrunkenGuard) , (3, generate SuspiciousGuard) 
@@ -31,9 +24,7 @@ public abstract class Map implements java.io.Serializable{
 	public Map(int guards , int ogres, char[][] map){ // 1-Rookie, 2 - Drunken, 3-Suspicious 
 		if(map != null){
 			Random rand = new Random();
-			this.map = map;
-			this.height = map.length;
-			this.width = map[0].length;
+			this.map = map; this.height = map.length; this.width = map[0].length;
 			Pair<Integer,Integer> map_size = new Pair<Integer,Integer>(this.width,this.height);
 			if (guards != -1){ //MEANING NO GUARDS TO GENERATE
 				if (guards == 0) //IF GUARD IS 0 THEN RANDOMLY SELECT GUARD
@@ -45,7 +36,7 @@ public abstract class Map implements java.io.Serializable{
 				if (ogres == 0) //IF OGRE IS 0 THEN RANDOMLY SELECT NUMBER OF OGRES
 					ogres = rand.nextInt(5) + 1;
 				for (int i = 0; i < ogres; i++)
-					this.chars.add(new Ogre(new Pair<Integer,Integer>(rand.nextInt(8) + 1, rand.nextInt(8) + 1) , map_size , false));
+					this.chars.add(new Ogre(new Pair<Integer,Integer>(rand.nextInt(8) + 1, rand.nextInt(8) + 1) , map_size ));
 			}
 		}
 	}

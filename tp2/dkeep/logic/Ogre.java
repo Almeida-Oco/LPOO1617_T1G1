@@ -4,117 +4,130 @@ import java.util.Random;
 
 import pair.Pair;
 
-public class Ogre extends Character {
+//TODO nearkill must be rethought or changed, no sense in Hero and Ogre both having a boolean that says whether they die or not
+public class Ogre extends GameCharacter {
+	public static final int STUN_ROUNDS = 2;
+	
 	private Pair<Integer,Integer> club = new Pair<Integer,Integer>(-1,-1);
 	private String club_representation = "*";
 	private int stun=0;
 	private boolean nearkill=true;
 	
-	public Ogre(int x , int y, int MAP_SIZE, boolean near){
-		super(x,y);
+	public Ogre(Pair<Integer,Integer> pos , Pair<Integer,Integer> map_size, boolean near){
+		super(pos , map_size);
 		this.nearkill= near;
 		this.representation = "O";
-		if (x >= 0 && x <= MAP_SIZE && y >= 0 && y <= MAP_SIZE){
-			this.position = new Pair<Integer,Integer>(x,y);
-			this.club = new Pair<Integer,Integer>(x,y);
-		}
-			
+		if(pos.getFirst() >= 0 && pos.getFirst() < map_size.getSecond() && pos.getSecond() >= 0 && pos.getSecond() < map_size.getFirst() )
+			this.club = pos;
 		
 	}
+	
+	
+	public ArrayList< Pair<Integer,Integer> > moveCharacter(ArrayList<Pair<Integer,Integer> > current,int change){;		
+		ArrayList<Pair<Integer,Integer> > temp = new ArrayList<Pair<Integer,Integer> >(current.subList(0, change));
 
-	public Pair<Integer,Integer> moveCharacter(int MAP_SIZE){
-		
-		if(stun==0){
-			
+		if( 0 == this.stun && 0 == change){ //If he is not stunned and is supposed to change all positions
 			Random rand = new Random();
-			Pair<Integer,Integer> temp = new Pair<Integer,Integer>(-1,-1);
-			while(temp.getFirst().intValue() == -1){
-				int dir = rand.nextInt(4);
-
-				if(dir == 0 && (this.position.getFirst().intValue()-1) >= 0)// move left
-					temp = new Pair<Integer,Integer>( this.position.getFirst().intValue()-1 , this.position.getSecond().intValue());
-				else if (dir == 1 && (this.position.getFirst().intValue()+1) < MAP_SIZE) //move right
-					temp = new Pair<Integer,Integer>( this.position.getFirst().intValue()+1 , this.position.getSecond().intValue());
-				else if (dir == 2 && (this.position.getSecond().intValue()-1) >= 0) //move up
-					temp = new Pair<Integer,Integer>( this.position.getFirst().intValue() , this.position.getSecond().intValue()-1);
-				else if (dir == 3 && (this.position.getSecond().intValue()+1) < MAP_SIZE) //move down
-					temp = new Pair<Integer,Integer>( this.position.getFirst().intValue() , this.position.getSecond().intValue()+1);
-			}
-			return temp;
-		}
-		else
-			return position;
-	}
-
-	public Pair<Integer,Integer> moveClub(int MAP_SIZE){
-		Random rand = new Random();
-		Pair<Integer,Integer> temp = new Pair<Integer,Integer>(-1,-1);
-		while(temp.getFirst().intValue() == -1){
 			int dir = rand.nextInt(4);
-			if(dir == 0 && (this.position.getFirst().intValue()-1) >= 0) // move left
-				temp = new Pair<Integer,Integer>( this.position.getFirst().intValue()-1 , this.position.getSecond().intValue());
-			else if (dir == 1 && (this.position.getFirst().intValue()+1) <= MAP_SIZE) //move right
-				temp = new Pair<Integer,Integer>( this.position.getFirst().intValue()+1 , this.position.getSecond().intValue());
-			else if (dir == 2 && (this.position.getSecond().intValue()-1) >= 0) //move up
-				temp = new Pair<Integer,Integer>( this.position.getFirst().intValue() , this.position.getSecond().intValue()-1);
-			else if (dir == 3 && (this.position.getSecond().intValue()+1) <= MAP_SIZE) //move down
-				temp = new Pair<Integer,Integer>( this.position.getFirst().intValue() , this.position.getSecond().intValue()+1);
-			
-		}
-		return temp;
-	}
 
-	public boolean setClub(Pair<Integer,Integer> p, int MAP_SIZE){
-		if (p.getFirst().intValue() >= 0 && p.getFirst().intValue() <= MAP_SIZE && p.getSecond().intValue() >= 0 && p.getSecond().intValue() <= MAP_SIZE){
-			this.club = new Pair<Integer,Integer>(p.getFirst().intValue(),p.getSecond().intValue());
-			return true;
-		}
-		return false;
-	}
+			if		(dir == 0)// move up
+				temp.add(new Pair<Integer,Integer>( this.position.get(0).getFirst().intValue()-1 , this.position.get(0).getSecond().intValue()) );
+			else if (dir == 1) //move down
+				temp.add(new Pair<Integer,Integer>( this.position.get(0).getFirst().intValue()+1 , this.position.get(0).getSecond().intValue()));
+			else if (dir == 2) //move left
+				temp.add(new Pair<Integer,Integer>( this.position.get(0).getFirst().intValue() , this.position.get(0).getSecond().intValue()-1));
+			else if (dir == 3) //move right
+				temp.add(new Pair<Integer,Integer>( this.position.get(0).getFirst().intValue() , this.position.get(0).getSecond().intValue()+1));
 
-	public int getClubX(){
-		return this.club.getFirst().intValue();
-	}
-	public int getClubY(){
-		return this.club.getSecond().intValue();
-	}
+		}else if (this.stun > 0) //if he is stunned only move club, maintain current ogre position
+			temp = (ArrayList<Pair<Integer,Integer> >)this.position.clone();
 
-	public ArrayList<Pair<Pair<Integer, Integer>, String>> getPrintable(){
-		ArrayList< Pair< Pair<Integer,Integer> ,String> > temp = new ArrayList< Pair< Pair<Integer,Integer> ,String> >(2);
-		temp.add( new Pair< Pair<Integer,Integer> ,String>(this.club,this.club_representation));
-		temp.add( new Pair< Pair<Integer,Integer> ,String>(this.position,this.representation));
-		
-		return temp;
-	}
-
-	public ArrayList<Pair<Integer, Integer>> getGameOverPos(int level){
-		ArrayList< Pair<Integer,Integer> > temp = new ArrayList< Pair<Integer,Integer> >(2);
-		if(level == 1){
-			temp.add(this.club);
-			if(this.nearkill){
-			temp.add(this.position);
-			}
-		}
+		temp.add( moveClub( temp.get(0)));
 		return temp;
 	}
 	
-	public void setClubRepresentation(String s ){
+	/**
+	 * @brief Moves the ogre club
+	 * @param pos Position of the ogre
+	 * @return Position where it should put the club (this position will then be verified)
+	 */
+	private Pair<Integer,Integer> moveClub(Pair<Integer,Integer> pos){
+		Random rand = new Random();
+		Pair<Integer,Integer> temp = new Pair<Integer,Integer>(-1,-1);
+		int dir = rand.nextInt(4);
+
+		if		(dir == 0) // move up
+			temp = new Pair<Integer,Integer>( pos.getFirst().intValue()-1, pos.getSecond().intValue());
+		else if (dir == 1) //move down
+			temp = new Pair<Integer,Integer>( pos.getFirst().intValue()+1, pos.getSecond().intValue());
+		else if (dir == 2) //move left
+			temp = new Pair<Integer,Integer>( pos.getFirst().intValue() ,  pos.getSecond().intValue()-1);
+		else if (dir == 3) //move right
+			temp = new Pair<Integer,Integer>( pos.getFirst().intValue() ,  pos.getSecond().intValue()+1);
+		return temp;
+	}
+	
+	/**
+	 * @brief Sets the ogre and club position
+	 * @param vp Array of positions (!last position must always be the club!)
+	 */
+	@Override
+	public void setPos(ArrayList<Pair<Integer, Integer>> vp) { 
+		int i = 0;
+		for ( Pair<Integer,Integer> p : vp)
+			if ( i != vp.size()-1) 
+				this.position.set(i++, p);
+			else 
+				setClub(p);
+	}
+
+	public void setClub(Pair<Integer,Integer> p){
+		if( p != null)
+			this.club = p;
+	}	
+
+	public Pair<Integer,Integer> getClub(){
+		return this.club;
+	}
+
+	public ArrayList<Pair<Pair<Integer, Integer>, String>> getPrintable( boolean to_file){
+		ArrayList< Pair< Pair<Integer,Integer> ,String> > temp = new ArrayList< Pair< Pair<Integer,Integer> ,String> >(2);
+		temp.add( new Pair< Pair<Integer,Integer> ,String>(this.club,this.club_representation));
+		for(Pair<Integer,Integer> p : this.position){
+			if (to_file && this.stun > 0)
+				temp.add( new Pair< Pair<Integer,Integer> ,String>(p,Integer.toString(this.stun)));
+			else
+				temp.add( new Pair< Pair<Integer,Integer> ,String>(p,this.representation));
+		}
+			
+		
+		return temp;
+	}
+	
+	@Override	
+	public ArrayList<Pair<Integer, Integer>> getGameOverPos(){
+		ArrayList< Pair<Integer,Integer> > temp = new ArrayList< Pair<Integer,Integer> >();
+		temp.add(this.club);
+		if(this.nearkill)
+			for (int i = 0 ; i < this.position.size() ; i++)
+				temp.add( this.position.get(i));
+		return temp;
+	}
+	
+	public void setClubRepresentation(String s){
 		this.club_representation=s;
 	}
 	
-	public void stunOgre(){
-		this.stun=2;
-		representation="8";
+	public void stunOgre( int rounds ){
+		this.stun=rounds;
+		if(rounds > 0)
+			representation="8";
 	}
 	
 	public void roundPassed(){
-		if(stun >0){
-		this.stun --;
-		representation="8";
+		if(stun > 0){
+			this.stun --;
+			representation= (this.stun==0) ? "O" : "8";
 		}
 	}
-	
-	
-	
-
 }

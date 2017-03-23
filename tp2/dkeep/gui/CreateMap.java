@@ -227,6 +227,7 @@ public class CreateMap extends JPanel implements MouseListener{
 			if(contaisComp('H'))
 				removesComp('H');
 				map[i_map][j_map]='H';
+				definitive_map[i_map][j_map]=' ';
 				hero= new Hero(new Pair<Integer,Integer>(i_map,j_map) , new Pair<Integer,Integer>(height,width) );
 			}
 			else
@@ -238,6 +239,7 @@ public class CreateMap extends JPanel implements MouseListener{
 			if(map[i_map][j_map]!='O'){
 			if(ogres_number<5){
 				map[i_map][j_map]='O';
+				definitive_map[i_map][j_map]=' ';
 			ogres_number++;
 			Ogre o=new Ogre(new Pair<Integer,Integer>(i_map,j_map) ,new Pair<Integer,Integer>(height,width));
 			ogres.add(o);
@@ -269,7 +271,7 @@ public class CreateMap extends JPanel implements MouseListener{
 				removesComp('I');
 				map[i_map][j_map]='I';
 				definitive_map[i_map][j_map]='I';
-				door=new Pair< Pair<Integer,Integer> ,String>( new Pair<Integer,Integer>( new Integer(2) ,new Integer(0)) , "I");
+				door=new Pair< Pair<Integer,Integer> ,String>( new Pair<Integer,Integer>( new Integer(i_map) ,new Integer(j_map)) , "I");
 			}
 			else{
 				map[i_map][j_map]=' ';

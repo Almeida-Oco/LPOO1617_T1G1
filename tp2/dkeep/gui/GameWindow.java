@@ -76,16 +76,12 @@ public class GameWindow {
 	}
 	
 	public void proccessKey(char ch){
-		if (ch != '\n' && !game.isGameOver() && !this.game.wonGame()){
-			//this.console_area.setText("You can play now");	
+		if (ch != '\n' && !game.isGameOver() && !this.game.wonGame()){	
 			boolean changed_lvl = this.game.moveHero(ch);
-			if(changed_lvl && !this.game.wonGame()){
-				//System.out.println("NUMBER OF OGRES = "+this.ogres);
+			if(changed_lvl && !this.game.wonGame())
 				this.game = this.game.getNextLevel(this.ogres);
-			}
 				
 			this.game.moveAllVillains();
-			//this.console_area.setText(input.getPrintableMap(game,false,true));
 			if (game.wonGame() || game.isGameOver()){
 				disableButtons();
 				this.status_label.setOpaque(true);
@@ -128,56 +124,42 @@ public void chooseGuard(){
 			this.guard=1;
 		else if(s=="Suspicious")
 		this.guard=2;
-		
-		
-			
-		
-		
-		//JOptionPane.showMessageDialog(frame, "It's supoesed to be 1-5 ogres");
-		
 	}
 
 public void chooseOgre(){
 	JTextField field1 = new JTextField();
 	Boolean exit=true;
 	Object[] message = {
-		    "Introduza o n�mero de Ogres(1-5):", field1,
+		    "Number of Ogres (1-5):", field1,
 	};
 	while(true){
 		exit=true;
-	JOptionPane.showConfirmDialog(frame, message, "Ogre Options", JOptionPane.PLAIN_MESSAGE);
-	String value1 = field1.getText();
-	try{ 
-		this.ogres=Integer.parseInt(value1);
-		/* !THIS CODE CANNOT BE HERE AS IT MIGHT THROW ANOTHER EXCEPTION IF OGRE IS NOT A NUMBER!
-		if(this.ogres>5){
-			JOptionPane.showMessageDialog(frame, "It's supoesed to be 1-5 ogres");
-			disableButtons();
-			return;
+		JOptionPane.showConfirmDialog(frame, message, "Ogre Options", JOptionPane.PLAIN_MESSAGE);
+		String value1 = field1.getText();
+		try{ 
+			this.ogres=Integer.parseInt(value1);
 		}
-		*/
-	}
-	catch (NumberFormatException n){
-		status_label.setText("Number of ogres will be random!");
-		exit=false;
-		if(value1.length() == 0)
-			this.ogres = 0;
-		else{
+		catch (NumberFormatException n){
+			status_label.setText("Number of ogres will be random!");
+			exit=false;
+			if(value1.length() == 0)
+				this.ogres = 0;
+			else{
+				JOptionPane.showMessageDialog(frame, "It's supoesed to be 1-5 ogres");
+				disableButtons();
+				//return;
+
+			}
+
+		}
+		if(ogres<0 ||ogres>5){
 			JOptionPane.showMessageDialog(frame, "It's supoesed to be 1-5 ogres");
-			disableButtons();
-			//return;
-		
+			exit=false;
 		}
 
+		if(exit)
+			return;
 	}
-	if(ogres<0 ||ogres>5){
-		JOptionPane.showMessageDialog(frame, "It's supoesed to be 1-5 ogres");
-		exit=false;
-	}
-		
-	if(exit)
-		return;
-}
 }
 	
 	
@@ -318,49 +300,43 @@ public void chooseOgre(){
 		this.frame.getContentPane().add(this.up_b);
 		this.frame.getContentPane().add(exit_b);
 		this.frame.getContentPane().add(this.down_b);
-		
+
 		JButton btnMapCreation = new JButton("Map Creation");
 		btnMapCreation.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				JTextField field1 = new JTextField();
 				JTextField field2 = new JTextField();
 				Object[] message = {
-				    "Choose the grid height:", field1,
-				    "Choose the grid width:", field2,
+						"Choose the grid height:", field1,
+						"Choose the grid width:", field2,
 				};
-			int option =JOptionPane.showConfirmDialog(frame, message, "Choose the dimensions", JOptionPane.OK_CANCEL_OPTION);
-			if (option != JOptionPane.OK_OPTION)
-				return;
-				    String value1 = field1.getText();
-				    String value2 = field2.getText();
-				    int height=0;
-				    int width=0;
-				    
-				    
-				    
-				    try{ 
-						height=Integer.parseInt(value1);
-					}
-					catch (NumberFormatException n){
-							JOptionPane.showMessageDialog(frame, "It's supoesed to be a number");
-							return;
-						
-						}
-				    
-				    
-				    try{ 
-						width=Integer.parseInt(value2);
-					}
-					catch (NumberFormatException n){
-							JOptionPane.showMessageDialog(frame, "It's supoesed to be a number");
-							return;
-						
-						}
-				    
-				   
-				    CreateMap cmap= new CreateMap(height);
-				    frame=cmap.getframe();
-					}
+				int option =JOptionPane.showConfirmDialog(frame, message, "Choose the dimensions", JOptionPane.OK_CANCEL_OPTION);
+				if (option != JOptionPane.OK_OPTION)
+					return;
+				int height,width;
+
+				try{ 
+					height=Integer.parseInt(field1.getText());
+				}
+				catch (NumberFormatException n){
+					JOptionPane.showMessageDialog(frame, "It's supposed to be a number");
+					return;
+
+				}
+
+				try{ 
+					width=Integer.parseInt(field2.getText());
+				}
+				catch (NumberFormatException n){
+					JOptionPane.showMessageDialog(frame, "It's supposed to be a number");
+					return;
+
+				}
+
+
+				CreateMap cmap= new CreateMap(height);
+				frame = cmap.getframe();
+			}
 		});
 		btnMapCreation.setBounds(565, 92, 118, 26);
 		frame.getContentPane().add(btnMapCreation);

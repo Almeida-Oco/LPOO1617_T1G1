@@ -12,6 +12,11 @@ public class UserInput{
 		io.cpu();
 	}
 	
+	public UserInput(GameLogic game){
+		this.game = game;
+		this.cpu();
+	}
+	
 	public UserInput(int ogres, int guard){
 		this.game = new GameLogic(null,3);
 	}

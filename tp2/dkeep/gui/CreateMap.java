@@ -10,11 +10,6 @@ import javax.swing.JPanel;
 
 //import maze.gui.CreateOptions;
 
-
-
-
-
-
 public class CreateMap implements MouseListener {
 	
 	private static JPanel panel;
@@ -29,11 +24,12 @@ public class CreateMap implements MouseListener {
 		String mapa="";
 		for (int linha = 0; linha < size; linha++) {
 			for (int coluna = 0; coluna < size; coluna++) {
-				map[linha][coluna] = ' ';
-				
+				map[linha][coluna] = (0 == linha || 0 == coluna || (size-1) == linha || (size-1) == coluna) ? 'X' : ' ';
+				mapa+=map[linha][coluna];
 			}
+			mapa+="\n";
 		}
-
+/*
 		for (int i = 0; i < size; i++) {
 			map[0][i] = 'X';
 			map[i][0] = 'X';
@@ -48,7 +44,7 @@ public class CreateMap implements MouseListener {
 			}
 			mapa+="\n";
 		}
-		
+*/
 		
 		f = new JFrame("Constroi o teu labirinto");
 		f.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);

@@ -2,23 +2,18 @@ package dkeep.test;
 
 import static org.junit.Assert.*;
 
+import dkeep.cli.UserInput;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 
 import org.junit.Test;
 
-import dkeep.cli.UserInput;
-import dkeep.logic.ArenaMap;
-import dkeep.logic.DrunkenGuard;
-import dkeep.logic.DungeonMap;
-import dkeep.logic.GameLogic;
-import dkeep.logic.Hero;
-import dkeep.logic.Map;
-import dkeep.logic.Ogre;
-import dkeep.logic.RookieGuard;
-import dkeep.logic.SuspiciousGuard;
-import dkeep.logic.GenericMap;
-import dkeep.logic.GameCharacter;
+import dkeep.logic.*;
 import pair.Pair;
 
 
@@ -481,9 +476,9 @@ public class GameTests {
 		assertEquals(true,game.wonGame());
 	}
 	
-	//TODO make it also test Hero different representations
 	@Test
 	public void testGetPrintableToFile(){
+		//Test Ogre + Default Hero
 		for (int i = 0 ; i < 4 ; i++){
 			this.setDefaultMap(i);
 			if ( i == 3){
@@ -499,18 +494,22 @@ public class GameTests {
 			assertEquals( test , game.getOutputToFile() );
 			
 		}
-		
+		//Test Ogre + Hero not default
+		// i = 0 -> Hero armed + key (a) , i = 1 -> Hero armed no key (A) , i = 2 -> Hero unarmed with key (K)
 		for (int i = 0 ; i < 3 ; i++){
 			this.setDefaultMap(1); //irrelevant
 			ArrayList<GameCharacter> chrs = new ArrayList<GameCharacter>();
-			chrs.add( new Hero( new Pair<Integer,Integer>(1,1) , this.game_map.getSize()) );
+			Hero h = new Hero (new Pair<Integer,Integer>(1,1) , this.game_map.getSize() );
+			h.setArmed( (i == 0 || i == 2) );
+			h.setKey( (i == 0 || i == 1) );
 			Ogre o = new Ogre( new Pair<Integer,Integer>(1,3) , this.game_map.getSize() , false);
 			o.stunOgre(i);
+			chrs.add(h);
 			chrs.add( o );
 			this.game_map.setCharacters(chrs);
 			
 			ArrayList<Pair<Pair<Integer,Integer> , String> > test = new ArrayList<Pair<Pair<Integer,Integer> , String > >();
-			test.add( new Pair< Pair<Integer,Integer> , String>( new Pair<Integer,Integer>(1,1) , "H" ));
+			test.add( new Pair< Pair<Integer,Integer> , String>( new Pair<Integer,Integer>(1,1) , (i == 0) ? "a" : ( (i == 1) ? "K" : "A" ) )) ;
 			test.add( new Pair< Pair<Integer,Integer> , String>( new Pair<Integer,Integer>(1,3),"*"));
 			test.add( new Pair< Pair<Integer,Integer> , String>( new Pair<Integer,Integer>(1,3), (i == 0) ? "O" : Integer.toString(i) ));
 			GameLogic game = new GameLogic(this.game_map,0); //number is irrelevant
@@ -519,158 +518,49 @@ public class GameTests {
 			
 	}
 	
-	@Test
-	public void testParseMap1(){
-		char[][] test1_map = new char[][]{{'X' , 'X' , 'X' , 'X' , 'X'},
-										  {'X' , 'H' , ' ' , 'G' , 'X'},
-										  {'X' , 'O' , '*' , 'g' , 'X'},
-										  {'X' , ' ' , 'D' , ' ' , 'X'},
-										  {'X' , 'X' , 'X' , 'X' , 'X'}};
-		char[][] test1 = new char[][]	 {{'X' , 'X' , 'X' , 'X' , 'X'},
-										  {'X' , ' ' , ' ' , ' ' , 'X'},
-										  {'X' , ' ' , ' ' , ' ' , 'X'},
-										  {'X' , ' ' , ' ' , ' ' , 'X'},
-										  {'X' , 'X' , 'X' , 'X' , 'X'}};
-		String test2 = new String("XXXXX\nXH GX\nXO*gX\nX G X\nXXXXX\n");
-		GenericMap test_map = new GenericMap( null );
-		test_map.parseMap( test1_map );
-		GameLogic game = new GameLogic(test_map, 0); //number irrelevant
-		assertEquals( test1 , test_map.getMap() );
-		assertEquals( test2 , UserInput.getPrintableMap(game, false, false));
+	
+	public void testSaveCharacters(){
+		Map map = new ArenaMap(-1,3);
+		GameLogic game = new GameLogic(map , 0); //number is irrelevant
+		save(game);
+		
+		game = load();
+		new UserInput(game);
+		
 	}
-	
-	@Test
-	public void testParseMap2(){
-		char[][] test1_map = new char[][]{{'X' , 'X' , 'X' , 'X' , 'X'},
-										  {'X' , '*' , 'A' , 'G' , 'X'},
-										  {'X' , 'O' , ' ' , 'g' , 'X'},
-										  {'X' , ' ' , 'l' , ' ' , 'X'},
-										  {'X' , 'X' , 'X' , 'X' , 'X'}};
-										  
-		char[][] test1 = new char[][]	 {{'X' , 'X' , 'X' , 'X' , 'X'},
-										  {'X' , ' ' , ' ' , ' ' , 'X'},
-										  {'X' , ' ' , ' ' , ' ' , 'X'},
-										  {'X' , ' ' , 'k' , ' ' , 'X'},
-										  {'X' , 'X' , 'X' , 'X' , 'X'}};
-		String test2 = new String("XXXXX\nX*AGX\nXO gX\nX k X\nXXXXX\n");
-										  
-		GenericMap test_map = new GenericMap( null );
-		test_map.parseMap( test1_map );
-		GameLogic game = new GameLogic(test_map, 0); //number irrelevant
-		assertEquals( test1 , test_map.getMap() );
-		assertEquals( test2 , UserInput.getPrintableMap(game, false, false));
-	}
-	
-	@Test
-	public void testParseMap3(){
-		char[][] test1_map = new char[][]{{'X' , 'X' , 'X' , 'X' , 'X'},
-										  {'X' , ' ' , 'a' , ' ' , 'X'},
-										  {'X' , '*' , 'O' , 'g' , 'X'},
-										  {'X' , ' ' , 'k' , 'D' , 'X'},
-										  {'X' , 'X' , 'X' , 'X' , 'X'}};
-										  
-		char[][] test1 = new char[][]	 {{'X' , 'X' , 'X' , 'X' , 'X'},
-										  {'X' , ' ' , ' ' , ' ' , 'X'},
-										  {'X' , ' ' , ' ' , ' ' , 'X'},
-										  {'X' , ' ' , 'k' , ' ' , 'X'},
-										  {'X' , 'X' , 'X' , 'X' , 'X'}};
-		String test2 = new String("XXXXX\nX A X\nX*OgX\nX kGX\nXXXXX\n");
-										  
-		GenericMap test_map = new GenericMap( null );
-		test_map.parseMap( test1_map );
-		GameLogic game = new GameLogic(test_map, 0); //number irrelevant
-		assertEquals( test1 , test_map.getMap() );
-		assertEquals( test2 , UserInput.getPrintableMap(game, false, false));
-	}
-	
-	@Test
-	public void testParseMap4(){
-		char[][] test1_map = new char[][]{{'X' , 'X' , 'X' , 'X' , 'X'},
-										  {'X' , ' ' , 'H' , ' ' , 'X'},
-										  {'X' , 'O' , ' ' , 'g' , 'X'},
-										  {'X' , '*' , 'l' , 'R' , 'X'},
-										  {'X' , 'X' , 'X' , 'X' , 'X'}};
-										  
-		char[][] test1 = new char[][]	 {{'X' , 'X' , 'X' , 'X' , 'X'},
-										  {'X' , ' ' , ' ' , ' ' , 'X'},
-										  {'X' , ' ' , ' ' , ' ' , 'X'},
-										  {'X' , ' ' , 'k' , ' ' , 'X'},
-										  {'X' , 'X' , 'X' , 'X' , 'X'}};
-		String test2 = new String("XXXXX\nX H X\nXO gX\nX*kGX\nXXXXX\n");
-										  
-		GenericMap test_map = new GenericMap( null );
-		test_map.parseMap( test1_map );
-		GameLogic game = new GameLogic(test_map, 0); //number irrelevant
-		assertEquals( test1 , test_map.getMap() );
-		assertEquals( test2 , UserInput.getPrintableMap(game, false, false));
-	}
-	
-	@Test
-	public void testParseMap5(){
-		char[][] test1_map = new char[][]{{'X' , 'X' , 'X' , 'X' , 'X'},
-										  {'X' , '*' , 'i' , 'G' , 'X'},
-										  {'X' , 'O' , 'I' , 'g' , 'S'},
-										  {'X' , ' ' , 'l' , ' ' , 'X'},
-										  {'X' , 'X' , 'X' , 'X' , 'X'}};
-										  
-		char[][] test1 = new char[][]	 {{'X' , 'X' , 'X' , 'X' , 'X'},
-										  {'X' , ' ' , 'I' , ' ' , 'X'},
-										  {'X' , ' ' , 'I' , ' ' , 'S'},
-										  {'X' , ' ' , 'k' , ' ' , 'X'},
-										  {'X' , 'X' , 'X' , 'X' , 'X'}};
-		String test2 = new String("XXXXX\nX*IGX\nXOIgS\nX k X\nXXXXX\n");
-										  
-		GenericMap test_map = new GenericMap( null );
-		test_map.parseMap( test1_map );
-		GameLogic game = new GameLogic(test_map, 0); //number irrelevant
-		assertEquals( test1 , test_map.getMap() );
-		assertEquals( test2 , UserInput.getPrintableMap(game, false, false));
-	}
-	
-	@Test
-	public void testParseMap6(){
-		char[][] test1_map = new char[][]{{'X' , 'X' , 'X' , 'X' , 'X'},
-										  {'X' , '1' , '*' , 'S' , 'X'},
-										  {'X' , '2' , '*' , 'k' , 'X'},
-										  {'X' , 'O' , '*' , 'l' , 'X'},
-										  {'X' , 'X' , 'X' , 'X' , 'X'}};
-										  
-		char[][] test1 = new char[][]	 {{'X' , 'X' , 'X' , 'X' , 'X'},
-										  {'X' , ' ' , ' ' , 'S' , 'X'},
-										  {'X' , ' ' , ' ' , 'k' , 'X'},
-										  {'X' , ' ' , ' ' , 'k' , 'X'},
-										  {'X' , 'X' , 'X' , 'X' , 'X'}};
-		String test2 = new String("XXXXX\nX8*SX\nX8*kX\nXO*kX\nXXXXX\n");
-										  
-		GenericMap test_map = new GenericMap( null );
-		test_map.parseMap( test1_map );
-		GameLogic game = new GameLogic(test_map, 0); //number irrelevant
-		assertEquals( test1 , test_map.getMap() );
-		assertEquals( test2 , UserInput.getPrintableMap(game, false, false));
-	}
-	
-	@Test
-	public void testParseMap7(){
-		char[][] test1_map = new char[][]{{'X' , 'X' , 'X' , 'X' , 'X'},
-										  {'X' , '*' , '1' , 'G' , 'X'},
-										  {'X' , '*' , '2' , 'D' , 'X'},
-										  {'X' , '*' , 'O' , 'R' , 'X'},
-										  {'X' , 'X' , 'X' , 'X' , 'X'}};
-										  
-		char[][] test1 = new char[][]	 {{'X' , 'X' , 'X' , 'X' , 'X'},
-										  {'X' , ' ' , ' ' , ' ' , 'X'},
-										  {'X' , ' ' , ' ' , ' ' , 'X'},
-										  {'X' , ' ' , ' ' , ' ' , 'X'},
-										  {'X' , 'X' , 'X' , 'X' , 'X'}};
-		String test2 = new String("XXXXX\nX*8GX\nX*8GX\nX*OGX\nXXXXX\n");
-										  
-		GenericMap test_map = new GenericMap( null );
-		test_map.parseMap( test1_map );
-		GameLogic game = new GameLogic(test_map, 0); //number irrelevant
-		assertEquals( test1 , test_map.getMap() );
-		assertEquals( test2 , UserInput.getPrintableMap(game, false, false));
-	}
-	
-	
 
+
+	private void save(GameLogic game){
+		try {
+	         FileOutputStream fileOut =
+	         new FileOutputStream(System.getProperty("user.dir")+"/save.ser");
+	         ObjectOutputStream out = new ObjectOutputStream(fileOut);
+	         out.writeObject(game);
+	         out.close();
+	         fileOut.close();
+	         System.out.printf("Serialized data is saved in "+System.getProperty("user.dir")+"/save.ser");
+	      }catch(IOException i) {
+	         i.printStackTrace();
+	      }
+	}
+	
+	private GameLogic load(){
+		GameLogic e;
+		try {
+	         FileInputStream fileIn = new FileInputStream(System.getProperty("user.dir")+"/save.ser");
+	         ObjectInputStream in = new ObjectInputStream(fileIn);
+	         e = (GameLogic) in.readObject();
+	         in.close();
+	         fileIn.close();
+	      }catch(IOException i) {
+	         i.printStackTrace();
+	         return null;
+	      }catch(ClassNotFoundException c) {
+	         System.out.println("Employee class not found");
+	         c.printStackTrace();
+	         return null;
+	      }
+		
+		return e;
+	}
 }

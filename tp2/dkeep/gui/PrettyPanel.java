@@ -119,7 +119,7 @@ public class PrettyPanel extends JPanel {
 				cont++;
 		
 		System.out.print("HEIGHT = "+cont);
-		return (cont*this.IMG_HEIGHT+37);  //Gnome specific, it has a tilebar of 37 pixels
+		return (cont*this.IMG_HEIGHT);
 		//TODO check if there is a multiplatform way of making the window perfect size
 	}
 	
@@ -130,8 +130,8 @@ public class PrettyPanel extends JPanel {
 
 	public void paint(Graphics g){
 		super.paint(g);
-		System.out.println("Trying to paint Panel!");
 		int x = 0, y = 0;
+		System.out.println(this.current_map);
 		for(int i = 0 ; i < this.current_map.length() ; i++){
 			if(this.current_map.charAt(i) == '\n'){
 				y+=50;

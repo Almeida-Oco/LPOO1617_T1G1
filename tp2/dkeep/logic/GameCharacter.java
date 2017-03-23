@@ -8,7 +8,7 @@ import java.util.ArrayList;
  * @var representation The String representation of the Character
  * @details Possible to have multi tiles characters
  */
-public abstract class GameCharacter {
+public abstract class GameCharacter implements java.io.Serializable{
 	protected ArrayList< Pair<Integer,Integer> > position;
 	protected String representation;
 	
@@ -98,4 +98,13 @@ public abstract class GameCharacter {
 	 * @return Array with Game Over Positions, if Hero is in that tile or adjacent then he loses
 	 */
 	public abstract ArrayList<Pair<Integer, Integer>> getGameOverPos();
+
+//	public abstract static GameCharacter parseCharacter(String line);
+//	
+//	private abstract static GameCharacter matchType( Pair<Integer,Integer> pos , char chr);
+//	
+	//TODO check errors function?
+//	private boolean lineErrorFree(String line){
+//		
+//	}
 }

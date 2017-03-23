@@ -10,7 +10,9 @@ import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.FlowLayout;
 import java.awt.SystemColor;
 
 public class PrettyPanel extends JPanel {
@@ -32,11 +34,14 @@ public class PrettyPanel extends JPanel {
 	private BufferedImage stair_image;
 	private BufferedImage lever_image;
 	private String current_map;
+	private int map_width;
+	private int map_height;
 	
 	/**
 	 * Create the panel.
 	 */
 	public PrettyPanel(){
+		
 		setBackground(Color.WHITE);
 		addKeyListener(new KeyAdapter() {
 			@Override
@@ -95,52 +100,45 @@ public class PrettyPanel extends JPanel {
 	public PrettyPanel(String map) {
 		this();
 		this.current_map = map;
-		this.setBounds(0, 0, this.calculateWidth(), this.calculateHeight() );
+		this.setBounds(0, 0,200, 200);
 	}
 
-	public int calculateWidth(){
-		int max = -1, cont = 0;
-		for (int i = 0 ; i < this.current_map.length() ; i++){
-			if ( this.current_map.charAt(i) != '\n')
-				cont++;
-			else{
-				max = (max > cont) ? max : cont;
-				cont = 0;
-			}
-		}
-		System.out.print("WIDTH = "+max);
-		return max*this.IMG_WIDTH;
-	}
-	
-	public int calculateHeight(){
-		int cont = 0;
-		for (int i = 0 ; i < this.current_map.length() ; i++)
-			if ( this.current_map.charAt(i) == '\n')
-				cont++;
-		
-		System.out.print("HEIGHT = "+cont);
-		return (cont*this.IMG_HEIGHT+37);  //Gnome specific, it has a tilebar of 37 pixels
-		//TODO check if there is a multiplatform way of making the window perfect size
-	}
+
 	
 	public void updateCurrentMap(String map){
 		this.current_map = map;
 	}
 	
+	public void mapsize(){
+		map_width=0;
+		map_height=0;
+		Boolean first_line=false;
+		for (int i=0; i< current_map.length();i++){
+			if(current_map.charAt(i)=='\n'){
+				map_height++;
+				first_line=true;
+			}
+			else if(!first_line)
+				map_width++;
+			
+		}
+	}
+	
 
 	public void paint(Graphics g){
 		super.paint(g);
+		mapsize();
 		System.out.println("Trying to paint Panel!");
 		int x = 0, y = 0;
 		for(int i = 0 ; i < this.current_map.length() ; i++){
 			if(this.current_map.charAt(i) == '\n'){
-				y+=50;
+				y+=(getHeight()/map_height);
 				x=0;
 				continue;
 			}
 			
-			g.drawImage( this.char_to_img.get( this.current_map.charAt(i) ) , x , y ,null);
-			x+=50;
+			g.drawImage( this.char_to_img.get( this.current_map.charAt(i) ) , x , y ,(getWidth()/map_width),(getHeight()/map_height),null);
+			x+=(getWidth()/map_width);
 		}
 	}
 }

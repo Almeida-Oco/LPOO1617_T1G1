@@ -197,11 +197,12 @@ public void chooseOgre(){
 		
 		
 		//Save current Frame and clear it to show only map
+this.frame.setLayout(new BorderLayout());
 		this.imgs_panel = new PrettyPanel( this.input.getPrintableMap(this.game, false , false));
 		initializeImgPanelListeners();
 		this.temp = this.frame.getContentPane();
 		this.frame.getContentPane().removeAll();
-		this.frame.setBounds(100, 100, this.imgs_panel.calculateWidth() , this.imgs_panel.calculateHeight());
+		this.frame.setBounds(100, 100, 500 , 500);
 		this.frame.getContentPane().add(this.imgs_panel);
 		this.frame.repaint();
 		this.imgs_panel.requestFocus();

@@ -6,6 +6,9 @@ import pair.Pair;
 
 public class GenericMap extends Map {
 	
+
+	private static final long serialVersionUID = 1L;
+
 	public GenericMap(char[][] map){
 		super(-1,-1,map);
 	}

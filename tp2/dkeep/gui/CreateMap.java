@@ -9,32 +9,50 @@ import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 
 import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
+import dkeep.cli.UserInput;
+import dkeep.logic.GameCharacter;
+import dkeep.logic.GameLogic;
+import dkeep.logic.GenericMap;
+import dkeep.logic.Hero;
+import dkeep.logic.Ogre;
+import pair.Pair;
+
+
 //import maze.gui.CreateOptions;
 
-public class CreateMap extends JPanel implements MouseListener {
+public class CreateMap extends JPanel implements MouseListener{
 	
 	
 
 	private static final long serialVersionUID = 1L;
-	private static char[][] map;
+	private char[][] map;
 	private static int height;
 	private static int width;
 	private HashMap<Character,BufferedImage> char_to_img = new HashMap<Character,BufferedImage>();
-	private static JPanel panel;
+	private static CreateMap panel;
 	private static JFrame f;
+	private int ogres_number;
+	private Hero hero;
+	private ArrayList <GameCharacter> ogres;
+	Pair<Integer,Integer> key;
+	Pair< Pair<Integer,Integer> ,String> door;
 	
 
 	CreateMap(int height, int width){
+		ogres = new ArrayList<GameCharacter>();
 		this.addMouseListener(this);
 		CreateMap.height=height;
 		CreateMap.width=width;
-		CreateMap.map = new char[height][width];
+		ogres_number=0;
+		map = new char[height][width];
 
 		for (int linha = 0; linha < height; linha++) {
 			for (int coluna = 0; coluna < width; coluna++) {
@@ -101,6 +119,35 @@ public class CreateMap extends JPanel implements MouseListener {
 		}
 	
 	
+	static public CreateMap getpanel(){
+		return panel;
+		}
+	
+	
+	Hero getHero(){
+		return this.hero;
+	}
+	
+	ArrayList <GameCharacter> getOgres(){
+		return ogres;
+	}
+	
+	Pair<Integer,Integer> getKey(){
+		return key;
+	}
+	
+	Pair< Pair<Integer,Integer> ,String> getDoor(){
+		return door;
+	}
+	
+	char[][] getMap(){
+		return map;
+	}
+	
+
+	
+	
+	
 		
 	
 	public static void Construct(int height,int wheight){
@@ -124,18 +171,114 @@ public class CreateMap extends JPanel implements MouseListener {
 		return f;
 	}
 	
+	Boolean contaisComp(char c){
+		for (int i = 0; i < height; i++) {
+			for(int j=0; j< width;j++){
+				if (map[i][j]==c)
+					return true;
+			}
+			}
+		return false;
+	}
+	
+	void removesComp(char c){
+		for (int i = 0; i < height; i++) {
+			for(int j=0; j< width;j++){
+				if (map[i][j]==c)
+					map[i][j]=' ';
+			}
+			}
+	}
+	
+	void removeOgre(int i, int j){
+		for(int h=0; h <ogres.size();h++){
+			if(ogres.get(h).getX()==i && ogres.get(h).getY()==j ){
+				ogres.remove(h);
+			}
+		}
+	}
+	
+	
+	
+
+	
 	
 	
 	@Override
 	public void mouseClicked(MouseEvent arg0) {
-		int i_map = arg0.getX()/(getWidth()/width);
-		int j_map = arg0.getY()/(getHeight()/height);
+		int j_map = arg0.getX()/(getWidth()/width);
+		int i_map = arg0.getY()/(getHeight()/height);
 		System.out.println(i_map + "  " + j_map);
+		System.out.println(CreateOptions.getSelecionado());
 		
 		
+		if(CreateOptions.getSelecionado()=="Hero"){
+			if(map[i_map][j_map]!='H'){
+			if(contaisComp('H'))
+				removesComp('H');
+				map[i_map][j_map]='H';
+				hero= new Hero(new Pair<Integer,Integer>(i_map,j_map) , new Pair<Integer,Integer>(height,width) );
+			}
+			else
+				map[i_map][j_map]=' ';
+			repaint();
+		}
+		
+		else if(CreateOptions.getSelecionado()=="Ogre"){
+			if(map[i_map][j_map]!='O'){
+			if(ogres_number<5){
+				map[i_map][j_map]='O';
+			ogres_number++;
+			Ogre o=new Ogre(new Pair<Integer,Integer>(i_map,j_map) ,new Pair<Integer,Integer>(height,width));
+			ogres.add(o);
+			}
+			}
+			else{
+				map[i_map][j_map]=' ';
+				ogres_number--;
+				removeOgre(i_map,j_map);
+			}
+			repaint();
+		}
+		
+		else if(CreateOptions.getSelecionado()=="Wall"){
+			if(map[i_map][j_map]!='X'){
+				map[i_map][j_map]='X';
+			}
+			else
+				map[i_map][j_map]=' ';
+			repaint();
+		}
+		
+		else if(CreateOptions.getSelecionado()=="Exit"){
+			if(map[i_map][j_map]!='I'){
+			if(contaisComp('I'))
+				removesComp('I');
+				map[i_map][j_map]='I';
+				door=new Pair< Pair<Integer,Integer> ,String>( new Pair<Integer,Integer>( new Integer(2) ,new Integer(0)) , "I");
+			}
+			else
+				map[i_map][j_map]=' ';
+			repaint();
+		}
+		else if(CreateOptions.getSelecionado()=="Key"){
+			if(map[i_map][j_map]!='k'){
+			if(contaisComp('k'))
+				removesComp('k');
+				map[i_map][j_map]='k';
+				key=new Pair<Integer,Integer>(i_map,j_map);
+			}
+			else
+				map[i_map][j_map]=' ';
+			repaint();
+		}
 		
 		
-	}
+		}
+	
+	
+ 
+	
 
 	@Override
 	public void mouseEntered(MouseEvent arg0) {

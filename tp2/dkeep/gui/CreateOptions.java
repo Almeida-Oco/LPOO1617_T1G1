@@ -3,12 +3,20 @@ package dkeep.gui;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.util.ArrayList;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JFileChooser;
+import javax.swing.JFrame;
 import javax.swing.JPanel;
+
+import dkeep.cli.UserInput;
+import dkeep.logic.GameCharacter;
+import dkeep.logic.GameLogic;
+import dkeep.logic.GenericMap;
+import pair.Pair;
 
 
 public class CreateOptions extends JPanel{
@@ -19,11 +27,33 @@ public class CreateOptions extends JPanel{
 	 * Cria as opcoes do menu de criacao de um labirinto
 	 */
 	CreateOptions(){
-		JButton salvar = new JButton("Salvar");
-		/*salvar.addActionListener(new ActionListener()
+		JButton salvar = new JButton("PlayGame");
+		salvar.addActionListener(new ActionListener()
 	    {
+
+			
+			public void actionPerformed(ActionEvent arg0) {
+				CreateMap cm= CreateMap.getpanel();
+				cm.setVisible(false);
+				GenericMap gm=new GenericMap(cm.getMap());
+				
+				ArrayList <GameCharacter> characters=cm.getOgres();
+				characters.add(cm.getHero());
+				 gm.setCharacters(characters);
+				 gm.setKey(cm.getKey(), false);
+				 ArrayList<Pair<Pair<Integer,Integer> , String > > doors = new ArrayList<Pair<Pair<Integer,Integer> , String> >();
+				 doors.add(cm.getDoor());
+				 gm.setDoors(doors);
+				 GameLogic game = new GameLogic(gm,0);
+				 //String mp=UserInput.getPrintableMap(game, false , false);
+				GameWindow n= new GameWindow();
+				n.createNewGame(game);
+			
+				
+				
+			}
 	      
-	    });*/
+	    });
 		
 		
 		
@@ -45,7 +75,8 @@ public class CreateOptions extends JPanel{
 		lista.addItem("Wall");
 		lista.addItem("Hero");
 		lista.addItem("Ogre");
-		lista.addItem("Guard");
+		lista.addItem("Key");
+		
 		this.add(salvar);
 		this.add(voltar);
 		this.add(lista);

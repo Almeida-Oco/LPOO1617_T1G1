@@ -162,7 +162,21 @@ public void chooseOgre(){
 			return;
 	}
 }
-	
+	public void createNewGame(GameLogic game){
+		this.frame.setLayout(new BorderLayout());
+		enableButtons();
+		
+		this.imgs_panel = new PrettyPanel( UserInput.getPrintableMap(game, false , false));
+		initializeImgPanelListeners();
+		this.temp = this.frame.getContentPane();
+		this.frame.setVisible(true);
+		this.frame.getContentPane().removeAll();
+		this.frame.setBounds(100, 100, 500 , 500);
+		this.frame.getContentPane().add(this.imgs_panel);
+		this.frame.repaint();
+		this.imgs_panel.requestFocus();
+		System.out.println("FINISHED SETTING UP!");
+	}
 	
 	public void newGame(){
 		this.status_label.setOpaque(false);
@@ -174,22 +188,14 @@ public void chooseOgre(){
 		enableButtons();
 		if(this.ogres != 0)
 			status_label.setText("You can play now.");
+		createNewGame(game);
 		
 		//console_area.setText(input.getPrintableMap(game,false,true));
 		//console_area.requestFocus();
 		
 		
 		//Save current Frame and clear it to show only map
-this.frame.setLayout(new BorderLayout());
-		this.imgs_panel = new PrettyPanel( this.input.getPrintableMap(this.game, false , false));
-		initializeImgPanelListeners();
-		this.temp = this.frame.getContentPane();
-		this.frame.getContentPane().removeAll();
-		this.frame.setBounds(100, 100, 500 , 500);
-		this.frame.getContentPane().add(this.imgs_panel);
-		this.frame.repaint();
-		this.imgs_panel.requestFocus();
-		System.out.println("FINISHED SETTING UP!");
+
 		//this.frame.requestFocus();
 		 
 		
@@ -205,6 +211,8 @@ this.frame.setLayout(new BorderLayout());
 	public void proccessButton(char pressed){
 		proccessKey(pressed);
 	}
+	
+	
 	
 	private void initializeImgPanelListeners(){
 		this.imgs_panel.addKeyListener(new KeyAdapter(){

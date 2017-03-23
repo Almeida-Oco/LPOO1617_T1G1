@@ -24,17 +24,7 @@ public class Ogre extends GameCharacter {
 
 		if( 0 == this.stun && 0 == change){ //If he is not stunned and is supposed to change all positions
 			Random rand = new Random();
-			int dir = rand.nextInt(4);
-
-			if		(dir == 0)// move up
-				temp.add(new Pair<Integer,Integer>( this.position.get(0).getFirst().intValue()-1 , this.position.get(0).getSecond().intValue()) );
-			else if (dir == 1) //move down
-				temp.add(new Pair<Integer,Integer>( this.position.get(0).getFirst().intValue()+1 , this.position.get(0).getSecond().intValue()));
-			else if (dir == 2) //move left
-				temp.add(new Pair<Integer,Integer>( this.position.get(0).getFirst().intValue() , this.position.get(0).getSecond().intValue()-1));
-			else if (dir == 3) //move right
-				temp.add(new Pair<Integer,Integer>( this.position.get(0).getFirst().intValue() , this.position.get(0).getSecond().intValue()+1));
-
+			temp.add( changePos(this.position.get(0) ,rand.nextInt(4) ) );
 		}else if (this.stun > 0) //if he is stunned only move club, maintain current ogre position
 			temp = (ArrayList<Pair<Integer,Integer> >)this.position.clone();
 
@@ -124,5 +114,18 @@ public class Ogre extends GameCharacter {
 			this.stun --;
 			representation= (this.stun==0) ? "O" : "8";
 		}
+	}
+
+	private Pair<Integer,Integer> changePos(Pair<Integer,Integer> pos , int dir){
+		if		(dir == 0)// move up
+			return new Pair<Integer,Integer>( pos.getFirst().intValue()-1 , pos.getSecond().intValue()) ;
+		else if (dir == 1) //move down
+			return new Pair<Integer,Integer>( pos.getFirst().intValue()+1 , pos.getSecond().intValue());
+		else if (dir == 2) //move left
+			return new Pair<Integer,Integer>( pos.getFirst().intValue() , pos.getSecond().intValue()-1);
+		else if (dir == 3) //move right
+			return new Pair<Integer,Integer>( pos.getFirst().intValue() , pos.getSecond().intValue()+1);
+		
+		return null;
 	}
 }

@@ -25,11 +25,9 @@ public class UserInput{
 		for(GameCharacter ch : gm.getAllCharacters())
 			for( Pair< Pair<Integer,Integer> ,String> p : ch.getPrintable(false) )
 				temp_map[p.getFirst().getFirst().intValue()][p.getFirst().getSecond().intValue()] = p.getSecond().charAt(0);
-
 		for ( int i = 0 ; i < gm.getMap().getMap().length ; i++ ) {
-			for ( int j = 0 ; j < gm.getMap().getMap()[i].length ; j++ ) {
+			for ( int j = 0 ; j < gm.getMap().getMap()[i].length ; j++ ) 
 				result.append(temp_map[i][j] + ((spaced) ? " " : ""));
-			}
 			result.append("\n");
 		}
 		return result.toString();
@@ -66,9 +64,6 @@ public class UserInput{
 			this.game.moveAllVillains();			
 		}while (!this.game.wonGame() && !this.game.isGameOver());
 		System.out.println(getPrintableMap(this.game,true,true));
-		if (this.game.wonGame())
-			System.out.print("   YOU WIN!   \n");
-		else
-			System.out.print("   GAME OVER!  \n");
+		System.out.print( (this.game.wonGame()) ? "   YOU WIN!   \n" : "   GAME OVER!  \n");
 	}
 }

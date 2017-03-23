@@ -43,9 +43,7 @@ public abstract class Map implements java.io.Serializable{
 		int i = 0;
 		for (Pair<Integer,Integer> p : l){
 			if (p.getFirst() > 0 && p.getFirst() < this.height && p.getSecond() > 0 && p.getSecond() < this.width ){
-				if (this.map[p.getFirst().intValue()][p.getSecond().intValue()] == ' ' || 
-						this.map[p.getFirst().intValue()][p.getSecond().intValue()] == 'S' || 
-						this.map[p.getFirst().intValue()][p.getSecond().intValue()] == 'k' )
+				if (this.map[p.getFirst().intValue()][p.getSecond().intValue()] == ' ' || this.map[p.getFirst().intValue()][p.getSecond().intValue()] == 'S' || this.map[p.getFirst().intValue()][p.getSecond().intValue()] == 'k' )
 					i++;
 				else
 					return i;

@@ -26,6 +26,8 @@ public class CreateOptions extends JPanel{
 			public void actionPerformed(ActionEvent arg0) {
 				CreateMap cm= CreateMap.getpanel();
 				cm.setVisible(false);
+				cm.putLimits();
+				cm.getframe().setVisible(false);
 				GenericMap gm=new GenericMap(cm.getMap());
 				
 				ArrayList <GameCharacter> characters=cm.getOgres();
@@ -38,6 +40,7 @@ public class CreateOptions extends JPanel{
 				 GameLogic game = new GameLogic(gm,0);
 				 //String mp=UserInput.getPrintableMap(game, false , false);
 				GameWindow n= new GameWindow();
+				
 				n.createNewGame(game);
 			
 				

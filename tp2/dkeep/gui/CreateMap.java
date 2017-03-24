@@ -128,6 +128,22 @@ public class CreateMap extends JPanel implements MouseListener{
 		return panel;
 		}
 	
+	public JFrame getframe(){
+		return f;
+	}
+	
+	public void putLimits(){
+		for (int i = 0; i < height; i++) {
+			for(int j=0; j< width;j++){
+				if(i==0 || j==0 || j==width-1|| i==height-1){
+					if(definitive_map[i][j]==' ')
+					definitive_map[i][j]  = 'X';
+				}
+				
+			}
+		}
+	}
+	
 	
 	Hero getHero(){
 		return this.hero;

@@ -18,13 +18,19 @@ public class PrettyPanel extends JPanel {
 	private static final long serialVersionUID = 1L;
 	private HashMap<Character,BufferedImage> char_to_img = new HashMap<Character,BufferedImage>();
 	private String current_map;
+	private BufferedImage lost_game;
 	private int map_width;
 	private int map_height;
+	private Boolean lost;
+	private Boolean won;
+	
 	
 	/**
 	 * Create the panel.
 	 */
 	public PrettyPanel(){
+		lost=false;
+		won=false;
 		setBackground(Color.WHITE);
 		addKeyListener(new KeyAdapter() {
 			@Override
@@ -44,6 +50,7 @@ public class PrettyPanel extends JPanel {
 		loadOgre_stunedImage();
 		loadGuard_stunImage();
 		loadFire();
+		loadLostImage();
 	}
 	
 	public PrettyPanel(String map) {
@@ -71,13 +78,17 @@ public class PrettyPanel extends JPanel {
 		}
 	}
 	
-
+	void  gameOver(boolean b){
+		this.lost=b;
+	}
+	
 	public void paint(Graphics g){
 		super.paint(g);
 
 		mapsize();
 		System.out.println("Trying to paint Panel!");
 		int x = 0, y = 0;
+			
 		//System.out.println(this.current_map);
 		for(int i = 0 ; i < this.current_map.length() ; i++){
 			if(this.current_map.charAt(i) == '\n'){
@@ -88,6 +99,10 @@ public class PrettyPanel extends JPanel {
 			
 			g.drawImage( this.char_to_img.get( this.current_map.charAt(i) ) , x , y ,(getWidth()/map_width),(getHeight()/map_height),null);
 			x+=(getWidth()/map_width);
+		}
+		if(lost){
+			g.drawImage(lost_game,0, 0, 100, 200,null);
+			System.out.println("Lost");
 		}
 	}
 
@@ -100,11 +115,19 @@ public class PrettyPanel extends JPanel {
 		}
 	}
 	
+	private void loadLostImage(){
+		try {                
+			lost_game=ImageIO.read(new File(System.getProperty("user.dir")+"/imgs/lost.png"));
+		} catch (IOException ex) {
+			System.out.println("Error reading lost image!");
+		}
+	}
+	
 	private void loadGuard_stunImage(){
 		try {                
 			this.char_to_img.put(new Character('g') ,ImageIO.read(new File(System.getProperty("user.dir")+"/imgs/Guard_Stun.png")));
 		} catch (IOException ex) {
-			System.out.println("Error reading guard image!");
+			System.out.println("Error reading guard_Stun image!");
 		}
 	}
 	

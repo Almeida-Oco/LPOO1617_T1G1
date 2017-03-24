@@ -86,10 +86,11 @@ public class GameWindow {
 			boolean changed_lvl = this.game.moveHero(ch);
 			if(changed_lvl && !this.game.wonGame())
 				this.game = this.game.getNextLevel(this.ogres);
-				
-			this.game.moveAllVillains();
+			if (!this.game.isGameOver())
+				this.game.moveAllVillains();
 			if (game.wonGame() || game.isGameOver()){
 				disableButtons();
+				this.imgs_panel.gameOver(game.isGameOver());
 				this.status_label.setOpaque(true);
 				this.status_label.setText( (game.wonGame()) ? "YOU WIN!" : "YOU LOSE!" );
 				this.status_label.setBackground(( (game.wonGame()) ? Color.GREEN : Color.RED ));
@@ -183,6 +184,9 @@ public class GameWindow {
 		this.imgs_panel.requestFocus();
 		System.out.println("FINISHED SETTING UP!");
 	}
+	
+	
+
 
 	public void newGame(){
 		this.status_label.setOpaque(false);

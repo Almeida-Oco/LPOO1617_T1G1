@@ -36,10 +36,14 @@ public class PrettyPanel extends JPanel {
 		loadHeroImage();
 		loadOgreImage();
 		loadWallImage();
-		loadClubImage();
 		loadFloorImage();
 		loadStairImage();
 		loadLeverImage();
+		loadDoorImage();
+		loadHero_armedImage();
+		loadOgre_stunedImage();
+		loadGuard_stunImage();
+		loadFire();
 	}
 	
 	public PrettyPanel(String map) {
@@ -96,6 +100,15 @@ public class PrettyPanel extends JPanel {
 		}
 	}
 	
+	private void loadGuard_stunImage(){
+		try {                
+			this.char_to_img.put(new Character('g') ,ImageIO.read(new File(System.getProperty("user.dir")+"/imgs/Guard_Stun.png")));
+		} catch (IOException ex) {
+			System.out.println("Error reading guard image!");
+		}
+	}
+	
+	
 	private void loadHeroImage(){
 		try {                
 			this.char_to_img.put(new Character('H') ,ImageIO.read(new File(System.getProperty("user.dir")+"/imgs/Hero.png")));
@@ -104,9 +117,32 @@ public class PrettyPanel extends JPanel {
 		}
 	}
 	
+	private void loadHero_armedImage(){
+		try {                
+			this.char_to_img.put(new Character('A') ,ImageIO.read(new File(System.getProperty("user.dir")+"/imgs/Hero_armed.png")));
+		} catch (IOException ex) {
+			System.out.println("Error reading hero image!");
+		}
+	}
+	
+	private void loadFire(){
+		try {                
+			this.char_to_img.put(new Character('*') ,ImageIO.read(new File(System.getProperty("user.dir")+"/imgs/Fire.png")));
+		} catch (IOException ex) {
+			System.out.println("Error reading hero image!");
+		}
+	}
+	
 	private void loadOgreImage(){
 		try {                
 			this.char_to_img.put(new Character('O') ,ImageIO.read(new File(System.getProperty("user.dir")+"/imgs/Ogre.png")));
+		} catch (IOException ex) {
+			System.out.println("Error reading ogre image!");
+		}
+	}
+	private void loadOgre_stunedImage(){
+		try {                
+			this.char_to_img.put(new Character('8') ,ImageIO.read(new File(System.getProperty("user.dir")+"/imgs/Ogre_stuned.png")));
 		} catch (IOException ex) {
 			System.out.println("Error reading ogre image!");
 		}
@@ -120,13 +156,6 @@ public class PrettyPanel extends JPanel {
 		}
 	}
 	
-	private void loadClubImage(){
-		try {                
-			this.char_to_img.put(new Character('*') ,ImageIO.read(new File(System.getProperty("user.dir")+"/imgs/Club.png")));
-		} catch (IOException ex) {
-			System.out.println("Error reading club image!");
-		}
-	}
 
 	private void loadFloorImage(){
 		try {                
@@ -146,7 +175,7 @@ public class PrettyPanel extends JPanel {
 	
 	private void loadStairImage(){
 		try {                
-			this.char_to_img.put(new Character('S') ,ImageIO.read(new File(System.getProperty("user.dir")+"/imgs/Stair.png")));
+			this.char_to_img.put(new Character('S') ,ImageIO.read(new File(System.getProperty("user.dir")+"/imgs/Floor.png")));
 		} catch (IOException ex) {
 			System.out.println("Error reading stair image!");
 		}

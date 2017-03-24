@@ -37,6 +37,12 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.JTextArea;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import javax.swing.JPanel;
+import javax.swing.border.TitledBorder;
+import javax.swing.border.BevelBorder;
+import javax.swing.border.LineBorder;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class GameWindow {
 	
@@ -58,7 +64,9 @@ public class GameWindow {
 			public void run() {
 				try {
 					GameWindow window = new GameWindow();
+					//PrettyWindow window2 = new PrettyWindow();
 					window.frame.setVisible(true);
+					//window.frame2.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -93,97 +101,112 @@ public class GameWindow {
 	
 	private char translateKey(KeyEvent e){
 		return 	   ( ( (e.getKeyCode() == KeyEvent.VK_W) || (e.getKeyCode() == KeyEvent.VK_UP) ) ? 'w' : 
-		       	   ( ( (e.getKeyCode() == KeyEvent.VK_A) || (e.getKeyCode() == KeyEvent.VK_LEFT) ) ? 'a' : 
-		       	   ( ( (e.getKeyCode() == KeyEvent.VK_S) || (e.getKeyCode() == KeyEvent.VK_DOWN) ) ? 's' : 
-		           ( ( (e.getKeyCode() == KeyEvent.VK_D) || (e.getKeyCode() == KeyEvent.VK_RIGHT) ) ? 'd' : '\n'))));
+			( ( (e.getKeyCode() == KeyEvent.VK_A) || (e.getKeyCode() == KeyEvent.VK_LEFT) ) ? 'a' : 
+				( ( (e.getKeyCode() == KeyEvent.VK_S) || (e.getKeyCode() == KeyEvent.VK_DOWN) ) ? 's' : 
+					( ( (e.getKeyCode() == KeyEvent.VK_D) || (e.getKeyCode() == KeyEvent.VK_RIGHT) ) ? 'd' : '\n'))));
 	}
-	
+
 	public void disableButtons(){
 		this.down_b.setEnabled(false);
 		this.up_b.setEnabled(false);
 		this.left_b.setEnabled(false);
 		this.right_b.setEnabled(false);
 	}
-	
-public void chooseGuard(){
-		
+
+	public void chooseGuard(){
+
 		Object[] possibilities = {"Novice", "Drunk", "Suspicious"};
 		String s = (String)JOptionPane.showInputDialog(
-		                    frame,
-		                    "Choose the type of Guard: \n",
-		                    "Game Options",
-		                    JOptionPane.PLAIN_MESSAGE,
-		                    null,
-		                    possibilities,
-		                    "Guard");
+				frame,
+				"Choose the type of Guard: \n",
+				"Game Options",
+				JOptionPane.PLAIN_MESSAGE,
+				null,
+				possibilities,
+				"Guard");
 		if(s=="Novice")
 			this.guard=0;
 		else if(s== "Drunk")
 			this.guard=1;
 		else if(s=="Suspicious")
-		this.guard=2;
+			this.guard=2;
 	}
 
-public void chooseOgre(){
-	JTextField field1 = new JTextField();
-	Object[] message = {  "Number of Ogres (1-5):", field1, };
-	while(true){
+	public void chooseOgre(){
+		JTextField field1 = new JTextField();
 		Boolean exit=true;
-		JOptionPane.showConfirmDialog(frame, message, "Ogre Options", JOptionPane.PLAIN_MESSAGE);
-		String value1 = field1.getText();
-		try{ 
-			this.ogres=Integer.parseInt(value1);
-		}
-		catch (NumberFormatException n){
-			status_label.setText("Number of ogres will be random!");
-			if(value1.length() == 0)
-				this.ogres = 0;
-			else{
-				JOptionPane.showMessageDialog(frame, "It's supoesed to be 1-5 ogres");
-				disableButtons();
+		Object[] message = {
+				"Number of Ogres (1-5):", field1,
+		};
+		while(true){
+			exit=true;
+			JOptionPane.showConfirmDialog(frame, message, "Ogre Options", JOptionPane.PLAIN_MESSAGE);
+			String value1 = field1.getText();
+			try{ 
+				this.ogres=Integer.parseInt(value1);
 			}
-		}
-		if( ogres<0 ||ogres>5 ){
-			JOptionPane.showMessageDialog(frame, "It's supoesed to be 1-5 ogres");
-			exit=false;
-		}
+			catch (NumberFormatException n){
+				status_label.setText("Number of ogres will be random!");
+				exit=false;
+				if(value1.length() == 0)
+					this.ogres = 0;
+				else{
+					JOptionPane.showMessageDialog(frame, "It's supoesed to be 1-5 ogres");
+					disableButtons();
+					//return;
 
-		if(exit)
-			return;
+				}
+
+			}
+			if(ogres<0 ||ogres>5){
+				JOptionPane.showMessageDialog(frame, "It's supoesed to be 1-5 ogres");
+				exit=false;
+			}
+
+			if(exit)
+				return;
+		}
 	}
-}
 	
-	
+	public void createNewGame(GameLogic game){
+		this.frame.getContentPane().setLayout(new BorderLayout());
+		enableButtons();
+		this.game=game;
+		this.imgs_panel = new PrettyPanel( UserInput.getPrintableMap(game, false , false) );
+		initializeImgPanelListeners();
+		this.temp = this.frame.getContentPane();
+		this.frame.setVisible(true);
+		this.frame.getContentPane().removeAll();
+		this.frame.setBounds(100, 100, 500 , 500);
+		this.frame.getContentPane().add(this.imgs_panel);
+		this.frame.repaint();
+		this.imgs_panel.requestFocus();
+		System.out.println("FINISHED SETTING UP!");
+	}
+
 	public void newGame(){
 		this.status_label.setOpaque(false);
 		chooseGuard();
 		chooseOgre();
 		this.input = new UserInput(ogres+1,guard+1);
 		this.game = new GameLogic(null,guard+1);
-		
+
 		enableButtons();
 		if(this.ogres != 0)
 			status_label.setText("You can play now.");
-		
+		createNewGame(game);
+
 		//console_area.setText(input.getPrintableMap(game,false,true));
 		//console_area.requestFocus();
-		
-		
+
+
 		//Save current Frame and clear it to show only map
-		this.imgs_panel = new PrettyPanel( this.input.getPrintableMap(this.game, false , false));
-		initializeImgPanelListeners();
-		this.temp = this.frame.getContentPane();
-		this.frame.getContentPane().removeAll();
-		this.frame.setBounds(100, 100, this.imgs_panel.calculateWidth() , this.imgs_panel.calculateHeight());
-		this.frame.getContentPane().add(this.imgs_panel);
-		this.frame.repaint();
-		this.imgs_panel.requestFocus();
-		System.out.println("FINISHED SETTING UP!");
+
 		//this.frame.requestFocus();
-		 
-		
+
+
 	}
-	
+
 	public void enableButtons(){
 		this.down_b.setEnabled(true);
 		this.up_b.setEnabled(true);
@@ -194,6 +217,8 @@ public void chooseOgre(){
 	public void proccessButton(char pressed){
 		proccessKey(pressed);
 	}
+	
+	
 	
 	private void initializeImgPanelListeners(){
 		this.imgs_panel.addKeyListener(new KeyAdapter(){
@@ -268,7 +293,7 @@ public void chooseOgre(){
 		
 		
 		JButton new_game = new JButton("New Game");
-		new_game.setBounds(296, 204, 193, 70);
+		new_game.setBounds(565, 375, 142, 46);
 		new_game.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {	
 				newGame();
@@ -301,35 +326,44 @@ public void chooseOgre(){
 						"Choose the grid height:", field1,
 						"Choose the grid width:", field2,
 				};
-				int option =JOptionPane.showConfirmDialog(frame, message, "Choose the dimensions", JOptionPane.OK_CANCEL_OPTION);
-				if (option != JOptionPane.OK_OPTION)
-					return;
-				int height,width;
 
-				try{ 
-					height=Integer.parseInt(field1.getText());
-				}
-				catch (NumberFormatException n){
-					JOptionPane.showMessageDialog(frame, "It's supposed to be a number");
-					return;
+			int option =JOptionPane.showConfirmDialog(frame, message, "Choose the dimensions", JOptionPane.OK_CANCEL_OPTION);
+			if (option != JOptionPane.OK_OPTION)
+				return;
+				    String value1 = field1.getText();
+				    String value2 = field2.getText();
+				    int height=0;
+				    int width=0;
+				    
+				    
+				    
+				    try{ 
+						height=Integer.parseInt(value1);
+					}
+					catch (NumberFormatException n){
+							JOptionPane.showMessageDialog(frame, "It's supoesed to be a number");
+							return;
+						
+						}
+				    
+				    
+				    try{ 
+						width=Integer.parseInt(value2);
+					}
+					catch (NumberFormatException n){
+							JOptionPane.showMessageDialog(frame, "It's supoesed to be a number");
+							return;
+						
+						}
+				    
+				   
+				    //CreationFrame cf= new CreationFrame(height,width);
+				    frame.setVisible(false);
+				    CreateMap.Construct(width,height);
+					}
 
-				}
-
-				try{ 
-					width=Integer.parseInt(field2.getText());
-				}
-				catch (NumberFormatException n){
-					JOptionPane.showMessageDialog(frame, "It's supposed to be a number");
-					return;
-
-				}
-
-
-				CreateMap cmap= new CreateMap(height);
-				frame = cmap.getframe();
-			}
 		});
-		btnMapCreation.setBounds(565, 92, 118, 26);
+		btnMapCreation.setBounds(565, 89, 142, 29);
 		frame.getContentPane().add(btnMapCreation);
 
 		this.frame.repaint();

@@ -48,7 +48,6 @@ public class GameWindow {
 	
 	private JFrame frame;
 	private PrettyPanel imgs_panel;
-	private JLabel status_label;
 	private JButton up_b,down_b,left_b,right_b;
 	private UserInput input;
 	private Container temp;
@@ -91,9 +90,6 @@ public class GameWindow {
 			if (game.wonGame() || game.isGameOver()){
 				disableButtons();
 				this.imgs_panel.gameOver(game.isGameOver());
-				this.status_label.setOpaque(true);
-				this.status_label.setText( (game.wonGame()) ? "YOU WIN!" : "YOU LOSE!" );
-				this.status_label.setBackground(( (game.wonGame()) ? Color.GREEN : Color.RED ));
 			}	
 			this.imgs_panel.updateCurrentMap( this.input.getPrintableMap(this.game , false , false));
 			this.frame.repaint();
@@ -147,7 +143,6 @@ public class GameWindow {
 				this.ogres=Integer.parseInt(value1);
 			}
 			catch (NumberFormatException n){
-				status_label.setText("Number of ogres will be random!");
 				exit=false;
 				if(value1.length() == 0)
 					this.ogres = 0;
@@ -189,7 +184,6 @@ public class GameWindow {
 
 
 	public void newGame(){
-		this.status_label.setOpaque(false);
 		chooseGuard();
 		chooseOgre();
 		this.input = new UserInput(ogres+1,guard+1);
@@ -197,7 +191,6 @@ public class GameWindow {
 
 		enableButtons();
 		if(this.ogres != 0)
-			status_label.setText("You can play now.");
 		createNewGame(game);
 
 		//console_area.setText(input.getPrintableMap(game,false,true));
@@ -249,9 +242,6 @@ public class GameWindow {
 			}
 		});
 		
-		this.status_label = new JLabel("You can start a New Game!",SwingConstants.CENTER);
-		status_label.setBounds(37, 467, 473, 46);
-		
 		
 		//---- BEGIN BUTTONS ----
 		this.up_b = new JButton("Up");
@@ -297,29 +287,16 @@ public class GameWindow {
 		
 		
 		JButton new_game = new JButton("New Game");
-		new_game.setBounds(565, 375, 142, 46);
+		new_game.setBounds(245, 484, 142, 46);
 		new_game.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {	
 				newGame();
 			}
 		});
 		
-		JButton exit_b = new JButton("Exit");
-		exit_b.setBounds(596, 452, 69, 25);
-		exit_b.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				System.exit(0);
-			}
-		});
-		
-		this.frame.getContentPane().setLayout(null);
-		this.frame.getContentPane().add(new_game);
-		this.frame.getContentPane().add(this.status_label);
-		this.frame.getContentPane().add(this.left_b);
-		this.frame.getContentPane().add(this.right_b);
-		this.frame.getContentPane().add(this.up_b);
-		this.frame.getContentPane().add(exit_b);
-		this.frame.getContentPane().add(this.down_b);
+		this.frame.getContentPane().setLayout(new BorderLayout());
+		this.frame.getContentPane().add(new_game,BorderLayout.EAST);
+		//this.frame.getContentPane().add(this.down_b);
 
 		JButton btnMapCreation = new JButton("Map Creation");
 		btnMapCreation.addActionListener(new ActionListener() {
@@ -367,8 +344,22 @@ public class GameWindow {
 					}
 
 		});
-		btnMapCreation.setBounds(565, 89, 142, 29);
-		frame.getContentPane().add(btnMapCreation);
+		btnMapCreation.setBounds(66, 501, 142, 29);
+		frame.getContentPane().add(btnMapCreation,BorderLayout.SOUTH);
+		
+		Initial_Backgorund initial_Backgorund = new Initial_Backgorund();
+		initial_Backgorund.setBounds(36, 54, 524, 328);
+		frame.getContentPane().add(initial_Backgorund);
+		
+		JButton exit_b = new JButton("Exit");
+		initial_Backgorund.add(exit_b);
+		exit_b.setBounds(596, 452, 69, 25);
+		exit_b.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				System.exit(0);
+			}
+		});
+		//initial_Backgorund.setLayout(new BorderLayout(0, 0));
 
 		this.frame.repaint();
 	}

@@ -9,6 +9,11 @@ import java.util.ArrayList;
 public class GenericMap extends Map {
 	
 	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	/**
 	 * Constructor of a default map, no enemies generated
 	 * @param map Map to be used
 	 */

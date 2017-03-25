@@ -1,13 +1,16 @@
 package dkeep.logic;
 
-import java.util.ArrayList;
-
 /**
  * Map of the 2nd level
  * @author Joao Almeida , Jose Pedro Machado
  */
 public class ArenaMap extends Map{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	/**
 	 * Generate an ArenaMap
 	 * @param ogres How many ogres to generate (see Map constructor)

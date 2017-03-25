@@ -6,8 +6,6 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import java.awt.BorderLayout;
-import java.awt.Component;
-
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
@@ -34,7 +32,7 @@ public class GameWindow {
 	private static JFrame frame2;
 	private static JFrame frame3;	
 	private static PrettyPanel imgs_panel;
-	private JButton btnMapCreation,new_game,exit_b;
+	private JButton btnMapCreation,new_game;
 	private Initial_Backgorund init_back;
 	private static UserInput input;
 	private JButton load_game;

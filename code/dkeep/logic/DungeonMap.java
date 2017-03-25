@@ -9,6 +9,11 @@ import java.util.Random;
 public class DungeonMap extends Map{
 	
 	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	/**
 	 * Generate an ArenaMap
 	 * @param guards What Guard to generate (see Map constructor)
 	 * 		Hero default position (1,1) , doors ([5,0] , [6,0] ) , key (8,7)

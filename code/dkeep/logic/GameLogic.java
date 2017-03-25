@@ -1,6 +1,4 @@
 package dkeep.logic;
-import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
@@ -10,6 +8,10 @@ import java.util.Random;
  * @author Joao Almeida , Jose Pedro Machado
  */
 public class GameLogic implements java.io.Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	/**
 	 * Translates between wasd and correspondent int code
 	 */

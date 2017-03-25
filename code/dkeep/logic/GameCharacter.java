@@ -7,6 +7,10 @@ import java.util.ArrayList;
  */
 public abstract class GameCharacter implements java.io.Serializable{
 	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	/**
 	 * Position of the character, capable os storing multi-tiled characters
 	 */
 	protected ArrayList< Pair<Integer,Integer> > position;

@@ -154,7 +154,7 @@ public class GameWindow {
 		}
 	}
 	
-	public void createNewGame(GameLogic game){
+	public void createNewGame(){
 		frame.getContentPane().setLayout(new BorderLayout());
 		GameWindow.game=game;
 		imgs_panel = new PrettyPanel( UserInput.getPrintableMap( this.game.getMap().getMap() , this.game.getAllCharacters(), false , false) );
@@ -183,7 +183,7 @@ public static void focus(){
 		this.game = new GameLogic(null,guard+1);
 
 		if(this.ogres != 0)
-		createNewGame(game);
+		createNewGame();
 	}
 	
 	public void proccessButton(char pressed){
@@ -244,7 +244,8 @@ public static void focus(){
 		load_game.setBounds(245, 484, 142, 46);
 		load_game.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {	
-				
+				game=load();
+				createNewGame();
 			}
 		});
 	}
@@ -337,12 +338,12 @@ public static void focus(){
 		GameLogic game = new GameLogic(gm,0);
 		GameWindow n= new GameWindow();
 		frame2.setVisible(false);
-		n.createNewGame(game);
+		n.createNewGame();
 	}
 
 	
 
-	private void save(GameLogic game){
+	public static void save(){
 		try {
 	         FileOutputStream fileOut =
 	         new FileOutputStream(System.getProperty("user.dir")+"/save.ser");

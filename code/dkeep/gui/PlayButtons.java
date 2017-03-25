@@ -58,12 +58,23 @@ public class PlayButtons extends JPanel {
 	      }
 	    });
 		
+		JButton save = new JButton("Save Game");
+		save.addActionListener(new ActionListener()
+	    {
+	      public void actionPerformed(ActionEvent e)
+	      {
+	    	GameWindow.save();
+	      }
+	    });
+		
 		
 		
 		this.add(Up);
 		this.add(Left);
 		this.add(Down);
 		this.add(Right);
+		this.add(save);
 		this.add(voltar);
+		
 	}
 }

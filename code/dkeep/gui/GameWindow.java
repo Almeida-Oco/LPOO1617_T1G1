@@ -98,8 +98,9 @@ public class GameWindow {
 			if (!game.isGameOver())
 				game.moveAllVillains();
 			if (game.wonGame() || game.isGameOver()){
-				disableButtons();
+				//disableButtons(); desabilitar os botões do jogo
 				imgs_panel.gameOver(game.isGameOver());
+				imgs_panel.gameWon(game.wonGame());
 			}	
 			imgs_panel.updateCurrentMap( input.getPrintableMap(game.getMap().getMap() , game.getAllCharacters() , false , false));
 			frame.repaint();
@@ -113,9 +114,7 @@ public class GameWindow {
 					( ( (e.getKeyCode() == KeyEvent.VK_D) || (e.getKeyCode() == KeyEvent.VK_RIGHT) ) ? 'd' : '\n'))));
 	}
 
-	public static void disableButtons(){
-		
-	}
+
 
 	public void chooseGuard(){
 		Object[] possibilities = {"Novice", "Drunk", "Suspicious"};

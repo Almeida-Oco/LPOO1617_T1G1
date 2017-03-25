@@ -19,6 +19,7 @@ public class PrettyPanel extends JPanel {
 	private HashMap<Character,BufferedImage> char_to_img = new HashMap<Character,BufferedImage>();
 	private String current_map;
 	private BufferedImage lost_game;
+	private BufferedImage won_game;
 	private int map_width;
 	private int map_height;
 	private Boolean lost;
@@ -51,6 +52,7 @@ public class PrettyPanel extends JPanel {
 		loadGuard_stunImage();
 		loadFire();
 		loadLostImage();
+		loadWinImage();
 	}
 	
 	public PrettyPanel(String map) {
@@ -82,6 +84,10 @@ public class PrettyPanel extends JPanel {
 		this.lost=b;
 	}
 	
+	void  gameWon(boolean b){
+		this.won=b;
+	}
+	
 	public void paint(Graphics g){
 		super.paint(g);
 
@@ -101,8 +107,12 @@ public class PrettyPanel extends JPanel {
 			x+=(getWidth()/map_width);
 		}
 		if(lost){
-			g.drawImage(lost_game,0, 0, 100, 200,null);
+			g.drawImage(lost_game,(int)(getWidth()*0.25),(int)(getHeight()*0.25), (int)(getWidth()*0.5), (int)(getHeight()*0.5),null);
 			System.out.println("Lost");
+		}
+		if(won){
+			g.drawImage(won_game,(int)(getWidth()*0.25),(int)(getHeight()*0.25), (int)(getWidth()*0.5), (int)(getHeight()*0.5),null);
+			System.out.println("Won");
 		}
 	}
 
@@ -117,11 +127,20 @@ public class PrettyPanel extends JPanel {
 	
 	private void loadLostImage(){
 		try {                
-			lost_game=ImageIO.read(new File(System.getProperty("user.dir")+"/imgs/lost.png"));
+			lost_game=ImageIO.read(new File(System.getProperty("user.dir")+"/imgs/lost_message.png"));
 		} catch (IOException ex) {
 			System.out.println("Error reading lost image!");
 		}
 	}
+	
+	private void loadWinImage(){
+		try {                
+			won_game=ImageIO.read(new File(System.getProperty("user.dir")+"/imgs/won_message.png"));
+		} catch (IOException ex) {
+			System.out.println("Error reading lost image!");
+		}
+	}
+	
 	
 	private void loadGuard_stunImage(){
 		try {                

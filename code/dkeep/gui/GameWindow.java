@@ -54,16 +54,16 @@ import java.util.ArrayList;
 
 public class GameWindow {
 	
-	private JFrame frame;
+	private static JFrame frame;
 	private static JFrame frame2;
-	private PrettyPanel imgs_panel;
+	private static PrettyPanel imgs_panel;
 	private JButton up_b,down_b,left_b,right_b,btnMapCreation,new_game,exit_b;
 	private Initial_Backgorund init_back;
-	private UserInput input;
+	private static UserInput input;
 	private Container temp;
-	protected GameLogic game;
-	private int ogres;
-	private int guard;
+	protected static GameLogic game;
+	private static int ogres;
+	private static int guard;
 	private static CreateMap create_panel;
 
 	/**
@@ -89,19 +89,19 @@ public class GameWindow {
 		initialize();
 	}
 	
-	public void proccessKey(char ch){
-		if (ch != '\n' && !game.isGameOver() && !this.game.wonGame()){	
-			boolean changed_lvl = this.game.moveHero(ch);
-			if(changed_lvl && !this.game.wonGame())
-				this.game = this.game.getNextLevel(this.ogres);
-			if (!this.game.isGameOver())
-				this.game.moveAllVillains();
+	public static void proccessKey(char ch){
+		if (ch != '\n' && !game.isGameOver() && !game.wonGame()){	
+			boolean changed_lvl =game.moveHero(ch);
+			if(changed_lvl && !game.wonGame())
+				game = game.getNextLevel(ogres);
+			if (!game.isGameOver())
+				game.moveAllVillains();
 			if (game.wonGame() || game.isGameOver()){
 				disableButtons();
-				this.imgs_panel.gameOver(game.isGameOver());
+				imgs_panel.gameOver(game.isGameOver());
 			}	
-			this.imgs_panel.updateCurrentMap( this.input.getPrintableMap(this.game.getMap().getMap() , this.game.getAllCharacters() , false , false));
-			this.frame.repaint();
+			imgs_panel.updateCurrentMap( input.getPrintableMap(game.getMap().getMap() , game.getAllCharacters() , false , false));
+			frame.repaint();
 		}
 	}
 	
@@ -112,11 +112,8 @@ public class GameWindow {
 					( ( (e.getKeyCode() == KeyEvent.VK_D) || (e.getKeyCode() == KeyEvent.VK_RIGHT) ) ? 'd' : '\n'))));
 	}
 
-	public void disableButtons(){
-		this.down_b.setEnabled(false);
-		this.up_b.setEnabled(false);
-		this.left_b.setEnabled(false);
-		this.right_b.setEnabled(false);
+	public static void disableButtons(){
+		
 	}
 
 	public void chooseGuard(){
@@ -125,11 +122,11 @@ public class GameWindow {
 				"Game Options",JOptionPane.PLAIN_MESSAGE,null,possibilities,"Guard");
 		
 		if(s=="Novice")
-			this.guard=0;
+			guard=0;
 		else if(s== "Drunk")
-			this.guard=1;
+			guard=1;
 		else if(s=="Suspicious")
-			this.guard=2;
+			guard=2;
 	}
 
 	public void chooseOgre(){
@@ -141,12 +138,12 @@ public class GameWindow {
 			JOptionPane.showConfirmDialog(frame, message, "Ogre Options", JOptionPane.PLAIN_MESSAGE);
 			String value1 = field1.getText();
 			try{ 
-				this.ogres=Integer.parseInt(value1);
+				ogres=Integer.parseInt(value1);
 			}
 			catch (NumberFormatException n){
 				exit=false;
 				if(value1.length() == 0)
-					this.ogres = 0;
+					ogres = 0;
 				else
 					JOptionPane.showMessageDialog(frame, "It's supoesed to be 1-5 ogres");
 			}
@@ -158,23 +155,27 @@ public class GameWindow {
 	}
 	
 	public void createNewGame(GameLogic game){
-		this.frame.getContentPane().setLayout(new BorderLayout());
+		frame.getContentPane().setLayout(new BorderLayout());
 		enableButtons();
-		this.game=game;
-		this.imgs_panel = new PrettyPanel( UserInput.getPrintableMap( this.game.getMap().getMap() , this.game.getAllCharacters(), false , false) );
+		GameWindow.game=game;
+		imgs_panel = new PrettyPanel( UserInput.getPrintableMap( this.game.getMap().getMap() , this.game.getAllCharacters(), false , false) );
 		initializeImgPanelListeners();
 		this.temp = this.frame.getContentPane();
-		this.frame.setVisible(true);
-		this.frame.getContentPane().removeAll();
-		this.frame.setBounds(100, 100, 500 , 500);
-		this.frame.getContentPane().add(this.imgs_panel);
-		this.frame.repaint();
-		this.imgs_panel.requestFocus();
+		frame.setVisible(true);
+		frame.getContentPane().removeAll();
+		frame.setBounds(100, 100, 500 , 500);
+		frame.getContentPane().add(imgs_panel,BorderLayout.CENTER);
+		PlayButtons pb= new PlayButtons();
+		frame.getContentPane().add(pb,BorderLayout.SOUTH);
+		frame.repaint();
+		imgs_panel.requestFocus();
 		System.out.println("FINISHED SETTING UP!");
 	}
 	
 	
-
+public static void focus(){
+	imgs_panel.requestFocus();
+}
 
 	public void newGame(){
 		chooseGuard();

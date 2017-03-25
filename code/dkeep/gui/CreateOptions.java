@@ -2,16 +2,10 @@ package dkeep.gui;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JPanel;
-
-import dkeep.logic.GameCharacter;
-import dkeep.logic.GameLogic;
-import dkeep.logic.GenericMap;
-import dkeep.logic.Pair;
 
 public class CreateOptions extends JPanel{
 	private static final long serialVersionUID = 6930814056136819156L;
@@ -36,11 +30,7 @@ public class CreateOptions extends JPanel{
 	    {
 	      public void actionPerformed(ActionEvent e)
 	      {
-	    	 /*JPanel myPanel = InGameGUI.getInstance().getPanel();
-	     	 CreateOptions.this.setVisible(false);
-	     	 myPanel.setFocusable(true);
-	     	 myPanel.requestFocus();
-	     	 CreateMaze.getFrame().dispose();*/
+	    	// GameWindow.backtoMenu();
 	      }
 	    });
 		

@@ -331,7 +331,6 @@ public static void focus(){
 	         fileOut.close();
 	         System.out.printf("Serialized data is saved in "+System.getProperty("user.dir")+"/save.ser");
 	      }catch(IOException i) {
-	         i.printStackTrace();
 	      }
 	}
 	
@@ -344,12 +343,10 @@ public static void focus(){
 	         in.close();
 	         fileIn.close();
 	      }catch(IOException i) {
-	         i.printStackTrace();
 	         JOptionPane.showMessageDialog(frame, "There is no save yet");
 	         return null;
 	      }catch(ClassNotFoundException c) {
 	         System.out.println("Employee class not found");
-	         c.printStackTrace();
 	         
 	         return null;
 	      }

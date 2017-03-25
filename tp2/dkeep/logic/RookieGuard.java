@@ -2,6 +2,8 @@ package dkeep.logic;
 import java.util.ArrayList;
 
 public class RookieGuard extends Guard{
+	private static final long serialVersionUID = 1944373727124139128L;
+
 	public RookieGuard(Pair<Integer,Integer> pos , Pair<Integer,Integer> map_size){
 		super( pos , map_size);
 	}
@@ -12,13 +14,5 @@ public class RookieGuard extends Guard{
 	
 	public void setPos(ArrayList<Pair<Integer,Integer> > vp){
 		super.setPos(vp);
-	}
-	
-	public ArrayList<Pair<Pair<Integer,Integer> , String > > getPrintable(boolean to_file){
-		if (to_file)
-			this.representation = "R";
-		ArrayList<Pair<Pair<Integer,Integer> , String > > temp = super.getPrintable(to_file);
-		this.representation = "G";
-		return temp;
 	}
 }

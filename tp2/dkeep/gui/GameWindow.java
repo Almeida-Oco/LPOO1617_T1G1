@@ -173,7 +173,7 @@ public class GameWindow {
 		this.frame.getContentPane().setLayout(new BorderLayout());
 		enableButtons();
 		this.game=game;
-		this.imgs_panel = new PrettyPanel( UserInput.getPrintableMap(game, false , false) );
+		this.imgs_panel = new PrettyPanel( UserInput.getPrintableMap( game , false , false) );
 		initializeImgPanelListeners();
 		this.temp = this.frame.getContentPane();
 		this.frame.setVisible(true);

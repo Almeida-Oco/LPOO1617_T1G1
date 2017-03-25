@@ -61,36 +61,16 @@ public abstract class GameCharacter implements java.io.Serializable{
 		return (ArrayList<Pair<Integer,Integer> >)this.position.clone();
 	}
 	
-	/**
-	 * @brief Get X coordinate
-	 * @return X coordinate
-	 */
-	public int getX(){
-		return this.position.get(0).getFirst().intValue();
-	}
 	
-	/**
-	 * @brief Get Y coordinate
-	 * @return Y coordinate
-	 */
-	public int getY(){
-		return this.position.get(0).getSecond().intValue();
-	}
+	public abstract void checkKeyTriggers( Pair<Integer,Integer> pos);
 	
-	/**
-	 * @brief Sets the character representation
-	 * @param s String to set the representation (can be longet than 1 char, but the game will only use the first char)
-	 */
-	public void setRepresentation(String s ){
-		this.representation=s;
-	}
 
 	/**
 	 * @brief Gets what to print for this character 
 	 * @param to_file Whether this printable is supposed to go to a file or not
 	 * @return Array with position to paint and what String to paint there
 	 */
-	public abstract ArrayList< Pair< Pair<Integer,Integer> ,String> > getPrintable( boolean to_file);
+	public abstract ArrayList< Pair< Pair<Integer,Integer> ,String> > getPrintable();
 	
 	/**
 	 * @brief Gets the gameOver position for this character

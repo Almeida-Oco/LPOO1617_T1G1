@@ -38,7 +38,7 @@ public class Guard extends GameCharacter{
 			this.index+=this.step;
 	}
 	
-	public ArrayList< Pair<Pair<Integer,Integer> , String> > getPrintable( boolean to_file ){
+	public ArrayList< Pair<Pair<Integer,Integer> , String> > getPrintable(){
 		ArrayList< Pair< Pair<Integer,Integer> ,String> > temp = new ArrayList< Pair< Pair<Integer,Integer> ,String> >(1);
 		for (Pair<Integer,Integer> p : this.position )
 			temp.add( new Pair< Pair<Integer,Integer> ,String>(p,this.representation));
@@ -50,4 +50,7 @@ public class Guard extends GameCharacter{
 	public ArrayList<Pair<Integer, Integer>> getGameOverPos() {
 		return this.position;
 	}
+
+	@Override
+	public void checkKeyTriggers(Pair<Integer, Integer> pos) {}
 }

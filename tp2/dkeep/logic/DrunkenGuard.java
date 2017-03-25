@@ -3,12 +3,13 @@ import java.util.ArrayList;
 import java.util.Random;
 
 public class DrunkenGuard extends Guard{
+	private static final long serialVersionUID = 4866561219380999834L;
 	private boolean asleep = false;
 	
-	public DrunkenGuard(Pair<Integer,Integer> pos , Pair<Integer,Integer> map_size, boolean is_asleep){
+	public DrunkenGuard(Pair<Integer,Integer> pos , Pair<Integer,Integer> map_size){
 		super(pos,map_size);
-		this.asleep = is_asleep;
-		this.representation = (this.asleep) ? "g" : "G";
+		this.asleep = false;
+		this.representation = "G";
 	}
 
 	public DrunkenGuard(Pair<Integer,Integer> map_size){
@@ -50,14 +51,5 @@ public class DrunkenGuard extends Guard{
 	@Override
 	public ArrayList<Pair<Integer, Integer>> getGameOverPos() {
 		return (this.asleep) ? new ArrayList<Pair<Integer,Integer> >() : this.position;
-	}
-
-	public ArrayList<Pair<Pair<Integer,Integer> , String > > getPrintable(boolean to_file ){
-		String t = this.representation;
-		if (to_file)
-			this.representation = (this.asleep) ? "g" : "D";
-		ArrayList<Pair<Pair<Integer,Integer> , String > > temp = super.getPrintable(to_file);
-		this.representation = t;
-		return temp;
 	}
 }

@@ -76,17 +76,12 @@ public class Ogre extends GameCharacter {
 		return this.club;
 	}
 
-	public ArrayList<Pair<Pair<Integer, Integer>, String>> getPrintable( boolean to_file){
+	public ArrayList<Pair<Pair<Integer, Integer>, String>> getPrintable(){
 		ArrayList< Pair< Pair<Integer,Integer> ,String> > temp = new ArrayList< Pair< Pair<Integer,Integer> ,String> >(2);
 		temp.add( new Pair< Pair<Integer,Integer> ,String>(this.club,this.club_representation));
-		for(Pair<Integer,Integer> p : this.position){
-			if (to_file && this.stun > 0)
-				temp.add( new Pair< Pair<Integer,Integer> ,String>(p,Integer.toString(this.stun)));
-			else
-				temp.add( new Pair< Pair<Integer,Integer> ,String>(p,this.representation));
-		}
+		for(Pair<Integer,Integer> p : this.position)
+			temp.add( new Pair< Pair<Integer,Integer> ,String>(p,this.representation));
 			
-		
 		return temp;
 	}
 	
@@ -114,6 +109,17 @@ public class Ogre extends GameCharacter {
 			this.stun --;
 			representation= (this.stun==0) ? "O" : "8";
 		}
+	}
+
+	
+	@Override
+	public void checkKeyTriggers(Pair<Integer, Integer> pos) {
+		boolean same_pos = false;
+		for (Pair<Integer,Integer> p : this.position )
+			same_pos = ( same_pos || pos.equals(p) );
+		
+		this.club_representation = (this.club.equals(pos) ) ? "$" : "*";
+		this.representation = (same_pos) ? "$" : ( (this.stun > 0) ? "8" : "O") ;		
 	}
 
 }

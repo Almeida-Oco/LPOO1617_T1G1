@@ -3,6 +3,8 @@ import java.util.ArrayList;
 import java.util.Random;
 
 public class SuspiciousGuard extends Guard{
+	private static final long serialVersionUID = -6907531162593534566L;
+
 	public SuspiciousGuard(Pair<Integer,Integer> pos , Pair<Integer,Integer> map_size){
 		super( pos , map_size );
 	}
@@ -20,11 +22,7 @@ public class SuspiciousGuard extends Guard{
 	
 	public ArrayList<Pair<Integer, Integer> > moveCharacter(ArrayList<Pair<Integer,Integer> > current,int change){
 		ArrayList<Pair<Integer,Integer> > temp = new ArrayList<Pair<Integer,Integer> >();
-		temp.add(this.movement.get(this.index));
+		temp.add(Guard.movement.get(this.index));
 		return temp;
-	}
-	
-	public ArrayList<Pair<Pair<Integer,Integer> , String > > getPrintable(boolean to_file){
-		return super.getPrintable(to_file);
 	}
 }

@@ -51,8 +51,9 @@ public class GameLogic implements java.io.Serializable{
 			int change = 0;
 			do{
  				pos = ch.moveCharacter(pos, change);
-			} while ( ( (change = this.checkOverlap(pos)) != -1) || ( (change = this.map.isFree(pos)) != -1 ) );
+			} while ( /*( (change = this.checkOverlap(pos)) != -1) ||*/ ( (change = this.map.isFree(pos)) != -1 ) );
 			ch.setPos(pos);
+			ch.checkKeyTriggers(this.key);
 			if(ch instanceof Ogre)
 				checkStuns((Ogre)ch);
 		}
@@ -69,17 +70,19 @@ public class GameLogic implements java.io.Serializable{
 			temp = this.hero.moveCharacter(temp,dir);
 		else
 			return false;
-		if (checkTriggers(temp.get(0))){//IF hero is supposed to go to next level then return true
-			this.hero.setPos(temp);
-			return true;
-		}
+		
 		if (this.map.isFree(temp) == -1) {
 			for (GameCharacter ch : getVillains() )
-				if ( temp.equals(ch.getPos()) ) //If hero tried to jump on top of something just ignore it
+				if ( temp.equals(ch.getPos()) ) //If hero tried to jump on top of g just ignore it
 					return false;
 			this.hero.setPos(temp);
 		}
-		return false;
+		
+//		if (checkHeroTriggers(temp.get(0))){//IF hero is supposed to go to next level then return true
+//			this.hero.setPos(temp);
+//			return true;
+//		}
+		return checkHeroTriggers(temp.get(0));
 	}
 
 	/**
@@ -125,28 +128,27 @@ public class GameLogic implements java.io.Serializable{
 				(p1.getFirst() == p2.getFirst() && p1.getSecond() == p2.getSecond()));
 	}
 
-	//TODO check if p_ch.equals(p_l) is truly needed
 	/**
-	 * @brief Checks if positions passed overlap with another character
-	 * @param l Array of Positions to check overlap
-	 * @return Position of array with overlap or -1 if no position overlaps
-	 */
-	private int checkOverlap( ArrayList< Pair<Integer,Integer> > l){
-		int i = 0;
-		boolean found_same = false;
-		for ( Pair<Integer,Integer> p_l : l){
-			for (GameCharacter ch : this.villains ){
-				for (Pair<Integer,Integer> p_ch : ch.getPos() )
-					if (p_ch.equals(p_l))
-						if (!found_same)
-							found_same = true;
-						else
-							return i;			
-			}
-			i++;
-		}
-		return -1;
-	}
+//	 * @brief Checks if positions passed overlap with another character
+//	 * @param l Array of Positions to check overlap
+//	 * @return Position of array with overlap or -1 if no position overlaps
+//	 */
+//	private int checkOverlap( ArrayList< Pair<Integer,Integer> > l){
+//		int i = 0;
+//		boolean found_same = false;
+//		for ( Pair<Integer,Integer> p_l : l){
+//			for (GameCharacter ch : this.villains ){
+//				for (Pair<Integer,Integer> p_ch : ch.getPos() )
+//					if (p_ch.equals(p_l))
+//						if (!found_same)
+//							found_same = true;
+//						else
+//							return i;			
+//			}
+//			i++;
+//		}
+//		return -1;
+//	}
 	
 	/**
 	 * @brief Checks if hero triggered something
@@ -154,23 +156,22 @@ public class GameLogic implements java.io.Serializable{
 	 * @return True if he triggered next level, false otherwise
 	 */
 	//TODO instead of opening all doors at once open only the door which the hero is trying to open (ArenaMap)
-	private boolean checkTriggers( Pair<Integer,Integer> p) { 
+	private boolean checkHeroTriggers( Pair<Integer,Integer> p) { 
 		if (p.equals(this.key)){
 			boolean b = this.map.pickUpKey();
 			this.map.openDoors( b );
 			this.hero.setKey( b );
-			this.hero.setRepresentation("K");
-			return false;
 		}
 		else if (this.map.getTile(p) == 'S') //Next Level
 			return true;
-		else if ( this.map.getDoors().contains( p ) && this.hero.hasKey()) {
-			p.setSecond(p.getSecond().intValue()+1); // stop hero from going inside stairs at first attempt
+		else if ( this.map.getDoors().contains( p ) && this.hero.hasKey()) 
 			this.map.openDoors( false );
-		}
-		this.hero.updateRepresentation(false);
+		
+		this.hero.checkKeyTriggers(this.key);
 		return false;
 	}
+	
+	
 	
 	/**
 	 * @brief Checks if the hero stunned an Ogre
@@ -180,6 +181,13 @@ public class GameLogic implements java.io.Serializable{
 			ch.stunOgre( Ogre.STUN_ROUNDS );
 		else
 			ch.roundPassed();
+	}
+	
+	
+	private boolean checkTrapped(ArrayList<Pair<Integer,Integer> > char_pos , boolean is_ogre){
+		
+		
+		return false;
 	}
 	
 	/**
@@ -201,15 +209,6 @@ public class GameLogic implements java.io.Serializable{
 		return (ArrayList<GameCharacter>)this.villains.clone();
 	}
 	
-	
-	public ArrayList<Pair<Pair<Integer,Integer> , String > > getOutputToFile(  ){
-		ArrayList<Pair<Pair<Integer,Integer> , String > > temp = new ArrayList<Pair<Pair<Integer,Integer>,String> >();
-		for ( GameCharacter chr : this.getAllCharacters() )
-			for (Pair<Pair<Integer,Integer> , String> p : chr.getPrintable(true) )
-				temp.add( p );
-		
-		return temp;
-	}
 	
 	/**
 	 * @brief Gets all Characters in a single container

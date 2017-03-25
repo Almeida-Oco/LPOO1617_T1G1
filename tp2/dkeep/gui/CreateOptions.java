@@ -29,26 +29,23 @@ public class CreateOptions extends JPanel{
 				cm.putLimits();
 				cm.getframe().setVisible(false);
 				GenericMap gm=new GenericMap(cm.getMap());
-				
+
 				ArrayList <GameCharacter> characters=cm.getOgres();
 				characters.add(cm.getHero());
-				 gm.setCharacters(characters);
-				 gm.setKey(cm.getKey(), false);
-				 ArrayList<Pair<Pair<Integer,Integer> , String > > doors = new ArrayList<Pair<Pair<Integer,Integer> , String> >();
-				 doors.add(cm.getDoor());
-				 gm.setDoors(doors);
-				 GameLogic game = new GameLogic(gm,0);
-				 //String mp=UserInput.getPrintableMap(game, false , false);
+				gm.setCharacters(characters);
+				gm.setKey(cm.getKey(), false);
+				ArrayList<Pair<Pair<Integer,Integer> , String > > doors = new ArrayList<Pair<Pair<Integer,Integer> , String> >();
+				doors.add(cm.getDoor());
+				gm.setDoors(doors);
+				GameLogic game = new GameLogic(gm,0);
+				//String mp=UserInput.getPrintableMap(game, false , false);
 				GameWindow n= new GameWindow();
-				
+
 				n.createNewGame(game);
-			
-				
-				
 			}
-	      
-	    });
-		
+
+		});
+
 		
 		
 		JButton voltar = new JButton("Voltar");

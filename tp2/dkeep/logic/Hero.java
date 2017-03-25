@@ -2,6 +2,7 @@ package dkeep.logic;
 import java.util.ArrayList;
 
 public class Hero extends GameCharacter {
+	private static final long serialVersionUID = -8094004902611530978L;
 	private boolean has_key = false;
 	private boolean is_armed=false;
 	
@@ -32,12 +33,9 @@ public class Hero extends GameCharacter {
 		return this.has_key;
 	}
 	
-	public ArrayList< Pair< Pair<Integer,Integer> ,String> > getPrintable( boolean to_file){
-		String temp_rep = this.representation;
+	public ArrayList< Pair< Pair<Integer,Integer> ,String> > getPrintable(  ){
 		ArrayList< Pair< Pair<Integer,Integer> ,String> > temp = new ArrayList< Pair< Pair<Integer,Integer> ,String> >(1);
-		updateRepresentation(to_file);
 		temp.add( new Pair< Pair<Integer,Integer > ,String>( this.position.get(0) ,this.representation));
-		this.representation = temp_rep;
 		return temp;
 	}
 
@@ -53,11 +51,12 @@ public class Hero extends GameCharacter {
 	@Override
 	public ArrayList<Pair<Integer, Integer>> getGameOverPos() {return null;}
 
-	public void updateRepresentation(boolean to_file){
-		if (to_file)
-			this.representation = ( ( this.is_armed && this.has_key ) ? "a" : ( ( !this.is_armed && !this.has_key)? "H" :  ( ( this.is_armed ) ? "A" : "K" )));
-		else
-			this.representation = ( ( !this.is_armed && !this.has_key)? "H" :  ( ( this.has_key) ? "K" : "A" ) );
-
+	@Override
+	public void checkKeyTriggers(Pair<Integer, Integer> pos) {
+		boolean same_pos = false;
+		for (Pair<Integer,Integer> p : this.position )
+			same_pos = (same_pos || pos.equals(p));
+		
+		this.representation = (same_pos || this.has_key) ? "K" : ( (!this.is_armed && !this.has_key) ? "H" : "A" );
 	}
 }

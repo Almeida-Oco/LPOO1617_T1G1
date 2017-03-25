@@ -219,7 +219,7 @@ public class CreateMap extends JPanel implements MouseListener{
 	
 	void removeOgre(int i, int j){
 		for(int h=0; h <ogres.size();h++){
-			if(ogres.get(h).getX()==i && ogres.get(h).getY()==j ){
+			if(ogres.get(h).getPos().get(0).getFirst() ==i && ogres.get(h).getPos().get(0).getSecond()==j ){
 				ogres.remove(h);
 			}
 		}

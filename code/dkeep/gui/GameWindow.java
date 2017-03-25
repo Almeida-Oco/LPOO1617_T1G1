@@ -158,7 +158,7 @@ public class GameWindow {
 		frame.getContentPane().setLayout(new BorderLayout());
 		imgs_panel = new PrettyPanel( UserInput.getPrintableMap( game.getMap().getMap() , game.getAllCharacters(), false , false) );
 		initializeImgPanelListeners();
-		this.temp = this.frame.getContentPane();
+		this.temp = frame.getContentPane();
 		frame.setVisible(true);
 		frame.getContentPane().removeAll();
 		frame.setBounds(100, 100, 500 , 500);
@@ -178,10 +178,10 @@ public static void focus(){
 	public void newGame(){
 		chooseGuard();
 		chooseOgre();
-		this.input = new UserInput();
-		this.game = new GameLogic(null,guard+1);
+		input = new UserInput();
+		game = new GameLogic(null,guard+1);
 
-		if(this.ogres != 0)
+		if(ogres != 0)
 		createNewGame();
 	}
 	
@@ -192,7 +192,7 @@ public static void focus(){
 	
 	
 	private void initializeImgPanelListeners(){
-		this.imgs_panel.addKeyListener(new KeyAdapter(){
+		imgs_panel.addKeyListener(new KeyAdapter(){
 			@Override
 			public void keyPressed(KeyEvent e){
 				System.out.println("KEY PRESSED!");

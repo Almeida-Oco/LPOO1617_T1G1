@@ -53,6 +53,8 @@ public class PrettyPanel extends JPanel {
 		loadFire();
 		loadLostImage();
 		loadWinImage();
+		loadlLeverFire();
+		loadHero_key();
 	}
 	
 	public PrettyPanel(String map) {
@@ -158,6 +160,13 @@ public class PrettyPanel extends JPanel {
 			System.out.println("Error reading hero image!");
 		}
 	}
+	private void loadHero_key(){
+		try {                
+			this.char_to_img.put(new Character('K') ,ImageIO.read(new File(System.getProperty("user.dir")+"/imgs/Hero_with_key.png")));
+		} catch (IOException ex) {
+			System.out.println("Error reading hero_with_key image!");
+		}
+	}
 	
 	private void loadHero_armedImage(){
 		try {                
@@ -172,6 +181,14 @@ public class PrettyPanel extends JPanel {
 			this.char_to_img.put(new Character('*') ,ImageIO.read(new File(System.getProperty("user.dir")+"/imgs/Fire.png")));
 		} catch (IOException ex) {
 			System.out.println("Error reading hero image!");
+		}
+	}
+	
+	private void loadlLeverFire(){
+		try {                
+			this.char_to_img.put(new Character('$') ,ImageIO.read(new File(System.getProperty("user.dir")+"/imgs/Lever_fire.png")));
+		} catch (IOException ex) {
+			System.out.println("Error reading Lever_fire image!");
 		}
 	}
 	

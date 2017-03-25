@@ -4,47 +4,22 @@ package dkeep.gui;
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-
 import java.awt.BorderLayout;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
-import java.awt.Color;
-import java.awt.Component;
 import java.awt.Container;
 import java.awt.Dimension;
-import java.awt.Font;
-import java.awt.LayoutManager;
-import java.awt.TextArea;
-
-import javax.swing.GroupLayout;
-import javax.swing.GroupLayout.Alignment;
 import javax.swing.JTextField;
-import javax.swing.LayoutStyle.ComponentPlacement;
-import javax.swing.SwingConstants;
-import javax.swing.text.BadLocationException;
-import javax.swing.text.SimpleAttributeSet;
-import javax.swing.text.StyleConstants;
-
 import dkeep.cli.UserInput;
 import dkeep.logic.GameLogic;
 import dkeep.logic.GenericMap;
 import dkeep.logic.Pair;
 import dkeep.logic.GameCharacter;
-
-import javax.swing.JComboBox;
-import javax.swing.DefaultComboBoxModel;
-import javax.swing.JTextArea;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import javax.swing.JPanel;
-import javax.swing.border.TitledBorder;
-import javax.swing.border.BevelBorder;
-import javax.swing.border.LineBorder;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -56,11 +31,11 @@ public class GameWindow {
 	
 	private static JFrame frame;
 	private static JFrame frame2;
+	private static JFrame frame3;	
 	private static PrettyPanel imgs_panel;
 	private JButton btnMapCreation,new_game,exit_b;
 	private Initial_Backgorund init_back;
 	private static UserInput input;
-	private Container temp;
 	private JButton load_game;
 	protected static GameLogic game;
 	private static int ogres;
@@ -103,7 +78,7 @@ public class GameWindow {
 				imgs_panel.gameWon(game.wonGame());
 			}	
 			imgs_panel.updateCurrentMap( input.getPrintableMap(game.getMap().getMap() , game.getAllCharacters() , false , false));
-			frame.repaint();
+			frame3.repaint();
 		}
 	}
 	
@@ -118,7 +93,7 @@ public class GameWindow {
 
 	public void chooseGuard(){
 		Object[] possibilities = {"Novice", "Drunk", "Suspicious"};
-		String s = (String)JOptionPane.showInputDialog( this.frame, "Choose the type of Guard: \n",
+		String s = (String)JOptionPane.showInputDialog( frame, "Choose the type of Guard: \n",
 				"Game Options",JOptionPane.PLAIN_MESSAGE,null,possibilities,"Guard");
 		
 		if(s=="Novice")
@@ -155,17 +130,18 @@ public class GameWindow {
 	}
 	
 	public void createNewGame(){
-		frame.getContentPane().setLayout(new BorderLayout());
+		frame.setVisible(false);
+		frame2.setVisible(false);
+		frame3.getContentPane().setLayout(new BorderLayout());
 		imgs_panel = new PrettyPanel( UserInput.getPrintableMap( game.getMap().getMap() , game.getAllCharacters(), false , false) );
 		initializeImgPanelListeners();
-		this.temp = frame.getContentPane();
-		frame.setVisible(true);
-		frame.getContentPane().removeAll();
-		frame.setBounds(100, 100, 500 , 500);
-		frame.getContentPane().add(imgs_panel,BorderLayout.CENTER);
+		//temp = frame.getContentPane();
+		frame3.setVisible(true);
+		frame3.setBounds(100, 100, 500 , 500);
+		frame3.getContentPane().add(imgs_panel,BorderLayout.CENTER);
 		PlayButtons pb= new PlayButtons();
-		frame.getContentPane().add(pb,BorderLayout.SOUTH);
-		frame.repaint();
+		frame3.getContentPane().add(pb,BorderLayout.SOUTH);
+		frame3.repaint();
 		imgs_panel.requestFocus();
 		System.out.println("FINISHED SETTING UP!");
 	}
@@ -206,6 +182,8 @@ public static void focus(){
 	 */
 	private void initialize() {
 		frame = new JFrame();
+		frame2 = new JFrame();
+		frame3 = new JFrame();
 		this.initializeFrame();
 		this.initializeNewGameButton();
 		this.initializeCreateMapButton();
@@ -217,7 +195,7 @@ public static void focus(){
 	private void initializeFrame(){
 		frame.setBounds(100, 100, 755, 581);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.addKeyListener(new KeyAdapter() {
+		frame3.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyPressed(KeyEvent e) {
 				proccessKey(translateKey(e));
@@ -326,6 +304,7 @@ public static void focus(){
 	}
 	
 	public static void initializeCreatedMap(){
+		frame2.setVisible(false);
 		GenericMap gm=new GenericMap(create_panel.getMap());
 		ArrayList <GameCharacter> characters=create_panel.getOgres();
 		characters.add(create_panel.getHero());
@@ -374,6 +353,12 @@ public static void focus(){
 	      }
 		
 		return e;
+	}
+
+	public static void backtoMenu() {
+		frame2.setVisible(false);
+		frame3.setVisible(false);
+		frame.setVisible(true);
 	}
 
 }

@@ -30,7 +30,7 @@ public class CreateOptions extends JPanel{
 	    {
 	      public void actionPerformed(ActionEvent e)
 	      {
-	    	// GameWindow.backtoMenu();
+	    	GameWindow.backtoMenu();
 	      }
 	    });
 		

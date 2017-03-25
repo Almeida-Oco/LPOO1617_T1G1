@@ -6,6 +6,10 @@ package dkeep.logic;
  */
 public class Pair<L,R> implements java.io.Serializable{
 	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	/**
 	 * First value of pair
 	 */
 	private L first;

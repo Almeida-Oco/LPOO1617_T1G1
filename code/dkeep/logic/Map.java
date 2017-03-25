@@ -10,6 +10,10 @@ import java.util.Random;
  */
 public abstract class Map implements java.io.Serializable{
 	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	/**
 	 * Width of the map
 	 */
 	protected int width;

@@ -9,6 +9,10 @@ import java.util.Random;
  */
 public class Ogre extends GameCharacter {
 	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	/**
 	 * Default number of stunned rounds
 	 */
 	public static final int STUN_ROUNDS = 2;

@@ -54,7 +54,7 @@ public class PlayButtons extends JPanel {
 	    {
 	      public void actionPerformed(ActionEvent e)
 	      {
-	    	// GameWindow.backtoMenu();
+	    	GameWindow.backtoMenu();
 	      }
 	    });
 		

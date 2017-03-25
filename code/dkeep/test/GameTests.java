@@ -2,12 +2,7 @@ package dkeep.test;
 
 import static org.junit.Assert.*;
 
-import dkeep.cli.UserInput;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 

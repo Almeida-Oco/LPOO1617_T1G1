@@ -8,6 +8,10 @@ import java.util.Arrays;
  */
 public class Guard extends GameCharacter{
 	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	/**
 	 * Positions of movement of a guard
 	 */
 	protected static ArrayList< Pair<Integer,Integer> > movement = new ArrayList< Pair<Integer,Integer> >( 
@@ -50,10 +54,10 @@ public class Guard extends GameCharacter{
 	 * Increments the guard movement index
 	 */
 	protected void incIndex(){
-		if (this.index+this.step == this.movement.size())
+		if (this.index+this.step == movement.size())
 			this.index = 0;
 		else if (this.index+this.step < 0)
-			this.index = (this.movement.size()-1);
+			this.index = (movement.size()-1);
 		else
 			this.index+=this.step;
 	}

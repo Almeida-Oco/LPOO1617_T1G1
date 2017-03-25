@@ -32,8 +32,6 @@ public class CreateMap extends JPanel implements MouseListener{
 	private static int height;
 	private static int width;
 	private HashMap<Character,BufferedImage> char_to_img = new HashMap<Character,BufferedImage>();
-	private static CreateMap panel;
-	private static JFrame f;
 	private int ogres_number;
 	private Hero hero;
 	private ArrayList <GameCharacter> ogres;
@@ -56,14 +54,7 @@ public class CreateMap extends JPanel implements MouseListener{
 		this.loadAllImages();
 		}
 	
-	static public CreateMap getpanel(){
-		return panel;
-		}
-	
-	public JFrame getframe(){
-		return f;
-	}
-	
+
 	public void putLimits(){
 		for (int i = 0; i < height; i++) {
 			for(int j=0; j< width;j++){
@@ -98,26 +89,6 @@ public class CreateMap extends JPanel implements MouseListener{
 	}
 	
 	
-	public static void Construct(int height, int width){
-		f = new JFrame("Build your map");
-		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		f.setPreferredSize(new Dimension(width*50+width/2,height*50+65)); 
-		f.getContentPane().setLayout(new BorderLayout());
-		JPanel panel2 = new CreateOptions();
-		panel = new CreateMap(height,width);
-		f.getContentPane().add(panel , BorderLayout.CENTER);
-		f.getContentPane().add(panel2, BorderLayout.SOUTH);
-		f.pack();
-		f.setResizable(false);
-		f.setLocationRelativeTo(null);
-		f.setVisible(true);
-		f.setFocusable(true);
-		f.requestFocus();
-	}
-	
-	JFrame getFrame(){
-		return f;
-	}
 	
 	boolean contaisComp(char c){
 		for (int i = 0; i < height; i++) 

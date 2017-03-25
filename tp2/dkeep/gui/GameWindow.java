@@ -30,6 +30,8 @@ import javax.swing.text.StyleConstants;
 
 import dkeep.cli.UserInput;
 import dkeep.logic.GameLogic;
+import dkeep.logic.GenericMap;
+import dkeep.logic.Pair;
 import dkeep.logic.GameCharacter;
 
 import javax.swing.JComboBox;
@@ -43,10 +45,12 @@ import javax.swing.border.BevelBorder;
 import javax.swing.border.LineBorder;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
 
 public class GameWindow {
 	
 	private JFrame frame;
+	private static JFrame frame2;
 	private PrettyPanel imgs_panel;
 	private JButton up_b,down_b,left_b,right_b,btnMapCreation,new_game,exit_b;
 	private Initial_Backgorund init_back;
@@ -55,6 +59,7 @@ public class GameWindow {
 	protected GameLogic game;
 	private int ogres;
 	private int guard;
+	private static CreateMap create_panel;
 
 	/**
 	 * Launch the application.
@@ -323,7 +328,22 @@ public class GameWindow {
 						
 						}
 				    frame.setVisible(false);
-				    CreateMap.Construct(width,height);
+				    //CreateMap.Construct(height,width);
+				    frame2 = new JFrame("Build your map");
+					frame2.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+					frame2.setPreferredSize(new Dimension(width*50+width/2,height*50+65)); 
+					frame2.getContentPane().setLayout(new BorderLayout());
+					JPanel panel2 = new CreateOptions();
+					CreateMap panel = new CreateMap(height,width);
+					frame2.getContentPane().add(panel , BorderLayout.CENTER);
+					frame2.getContentPane().add(panel2, BorderLayout.SOUTH);
+					frame2.pack();
+					frame2.setResizable(false);
+					frame2.setLocationRelativeTo(null);
+					frame2.setVisible(true);
+					frame2.setFocusable(true);
+					frame2.requestFocus();
+					create_panel=panel;
 					}
 
 		});
@@ -344,4 +364,20 @@ public class GameWindow {
 		});
 		frame.getContentPane().add(init_back);
 	}
+	
+	public static void initializeCreatedMap(){
+		GenericMap gm=new GenericMap(create_panel.getMap());
+		ArrayList <GameCharacter> characters=create_panel.getOgres();
+		characters.add(create_panel.getHero());
+		gm.setCharacters(characters);
+		gm.setKey(create_panel.getKey(), false);
+		ArrayList<Pair<Pair<Integer,Integer> , String > > doors = new ArrayList<Pair<Pair<Integer,Integer> , String> >();
+		doors.add(create_panel.getDoor());
+		gm.setDoors(doors);
+		GameLogic game = new GameLogic(gm,0);
+		GameWindow n= new GameWindow();
+		frame2.setVisible(false);
+		n.createNewGame(game);
+	}
+	
 }

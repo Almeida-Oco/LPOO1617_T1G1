@@ -19,6 +19,7 @@ public class Ogre extends GameCharacter {
 		
 	}
 	
+	@Override
 	public ArrayList< Pair<Integer,Integer> > moveCharacter(ArrayList<Pair<Integer,Integer> > current,int change){		
 		ArrayList<Pair<Integer,Integer> > temp = new ArrayList<Pair<Integer,Integer> >(current.subList(0, change));
 
@@ -66,16 +67,24 @@ public class Ogre extends GameCharacter {
 			else 
 				setClub(p);
 	}
-
+	
+	/**
+	 * Sets the club position (no verification)
+	 * @param p Position of club
+	 */
 	public void setClub(Pair<Integer,Integer> p){
 		if( p != null)
 			this.club = p;
 	}	
-
+	
+	/**
+	 * @return Position of vclub
+	 */
 	public Pair<Integer,Integer> getClub(){
 		return this.club;
 	}
-
+	
+	@Override
 	public ArrayList<Pair<Pair<Integer, Integer>, String>> getPrintable(){
 		ArrayList< Pair< Pair<Integer,Integer> ,String> > temp = new ArrayList< Pair< Pair<Integer,Integer> ,String> >(2);
 		temp.add( new Pair< Pair<Integer,Integer> ,String>(this.club,this.club_representation));
@@ -85,7 +94,7 @@ public class Ogre extends GameCharacter {
 		return temp;
 	}
 	
-	@Override	
+	@Override
 	public ArrayList<Pair<Integer, Integer>> getGameOverPos(){
 		ArrayList< Pair<Integer,Integer> > temp = new ArrayList< Pair<Integer,Integer> >();
 		temp.add(this.club);
@@ -94,16 +103,27 @@ public class Ogre extends GameCharacter {
 		return temp;
 	}
 	
+	/**
+	 * Sets the clubRepresentation
+	 * @param s Representation
+	 */
 	public void setClubRepresentation(String s){
 		this.club_representation=s;
 	}
 	
+	/**
+	 * Stuns the ogre
+	 * @param rounds How many rounds to stun
+	 */
 	public void stunOgre( int rounds ){
 		this.stun=rounds;
 		if(rounds > 0)
 			representation="8";
 	}
 	
+	/**
+	 * Decrements the stun rounds
+	 */
 	public void roundPassed(){
 		if(stun > 0){
 			this.stun --;

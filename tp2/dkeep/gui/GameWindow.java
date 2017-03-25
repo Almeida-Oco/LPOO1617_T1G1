@@ -91,7 +91,7 @@ public class GameWindow {
 				disableButtons();
 				this.imgs_panel.gameOver(game.isGameOver());
 			}	
-			this.imgs_panel.updateCurrentMap( this.input.getPrintableMap(this.game , false , false));
+			this.imgs_panel.updateCurrentMap( this.input.getPrintableMap(this.game.getMap().getMap() , this.game.getAllCharacters() , false , false));
 			this.frame.repaint();
 		}
 	}
@@ -168,7 +168,7 @@ public class GameWindow {
 		this.frame.getContentPane().setLayout(new BorderLayout());
 		enableButtons();
 		this.game=game;
-		this.imgs_panel = new PrettyPanel( UserInput.getPrintableMap( game , false , false) );
+		this.imgs_panel = new PrettyPanel( UserInput.getPrintableMap( this.game.getMap().getMap() , this.game.getAllCharacters(), false , false) );
 		initializeImgPanelListeners();
 		this.temp = this.frame.getContentPane();
 		this.frame.setVisible(true);
@@ -186,7 +186,7 @@ public class GameWindow {
 	public void newGame(){
 		chooseGuard();
 		chooseOgre();
-		this.input = new UserInput(ogres+1,guard+1);
+		this.input = new UserInput();
 		this.game = new GameLogic(null,guard+1);
 
 		enableButtons();

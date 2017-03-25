@@ -4,7 +4,12 @@ import java.util.Random;
 
 public class DungeonMap extends Map{
 	
-	public DungeonMap(int guards , int ogres){
+	/**
+	 * Generate an ArenaMap
+	 * @param guards What Guard to generate (see Map constructor)
+	 * 		Hero default position (1,1) , doors ([5,0] , [6,0] ) , key (8,7)
+	 */
+	public DungeonMap(int guards){
 		super(guards,-1, new char[][]{{'X','X','X','X','X','X','X','X','X','X'} ,
 			  						  {'X',' ',' ',' ','I',' ','X',' ',' ','X'} ,
 			  						  {'X','X','X',' ','X','X','X',' ',' ','X'} ,
@@ -23,7 +28,7 @@ public class DungeonMap extends Map{
 	
 	public Map nextMap(int enemies){
 		Random rand = new Random();
-		return new ArenaMap(-1 , (enemies == 0) ? rand.nextInt(3)+1 : enemies);
+		return new ArenaMap((enemies == 0) ? rand.nextInt(3)+1 : enemies);
 	}
 	
 	public boolean pickUpKey(){

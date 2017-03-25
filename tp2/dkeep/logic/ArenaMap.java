@@ -4,7 +4,12 @@ import java.util.ArrayList;
 
 public class ArenaMap extends Map{
 	
-	public ArenaMap(int guards , int ogres){
+	/**
+	 * Generate an ArenaMap
+	 * @param ogres How many ogres to generate (see Map constructor)
+	 * 		Hero default position (8,1) , door (1,0) , key (1,8)
+	 */
+	public ArenaMap(int ogres){
 		super(-1,ogres,new char[][]{{'X','X','X','X','X','X','X','X','X','X'} ,
 									{'I',' ',' ',' ',' ',' ',' ',' ','k','X'} ,
 									{'X',' ',' ',' ',' ',' ',' ',' ',' ','X'} ,
@@ -24,7 +29,7 @@ public class ArenaMap extends Map{
 	public Map nextMap(int enemies){
 		return null;
 	}
-
+	
 	public boolean pickUpKey(){
 		this.map[ this.key.getFirst().intValue() ][ this.key.getSecond().intValue() ] = ' ';
 		return true;

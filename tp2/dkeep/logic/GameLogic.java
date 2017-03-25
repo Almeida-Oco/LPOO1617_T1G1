@@ -22,15 +22,14 @@ public class GameLogic implements java.io.Serializable{
 
 	
 	/**
-	 * @brief Constructor
+	 * Constructor
 	 * @param level Current Level
-	 * @param ogre How many ogres to generate (see Map constructor for specifics)
-	 * @param guard Which guard to generate (see Map constructor for specifics)
-	 * @details If game_map is null default first level will be used, if game_map is not null then it will use its map
+	 * @param guard Which guard to generate (see Map constructor)
+	 * 			If game_map is null default first level will be used, if game_map is not null then it will use its map
 	 * 			and its characters, making guard variable irrelevant
 	 */
 	public GameLogic(Map game_map, int guard) { 
-		this.map = (game_map == null) ? new DungeonMap(guard,-1) : game_map; //if null assume New Game
+		this.map = (game_map == null) ? new DungeonMap(guard) : game_map; //if null assume New Game
 		for (GameCharacter ch : this.map.getCharacters() ) //get all characters from the map
 			if (ch instanceof Hero)
 				this.hero = (Hero)ch;
@@ -41,8 +40,8 @@ public class GameLogic implements java.io.Serializable{
 	}
 
 	/**
-	 * @brief Moves all villains
-	 * @detail Before moving the villains it checks overlap and if the map is free in that spot.
+	 * Moves all villains
+	 *  	   Before moving the villains it checks overlap and if the map is free in that spot.
 	 * 		   if one of those conditions fail, it will recalculate the position that failed to meet that criteria
 	 */
 	public void moveAllVillains() {
@@ -60,7 +59,7 @@ public class GameLogic implements java.io.Serializable{
 	}
 	
 	/**
-	 * @brief Moves hero in given direction
+	 * Moves hero in given direction
 	 * @param direction Direction to move hero
 	 * @return True if its supposed to go to next level, false otherwise
 	 */
@@ -77,16 +76,11 @@ public class GameLogic implements java.io.Serializable{
 					return false;
 			this.hero.setPos(temp);
 		}
-		
-//		if (checkHeroTriggers(temp.get(0))){//IF hero is supposed to go to next level then return true
-//			this.hero.setPos(temp);
-//			return true;
-//		}
 		return checkHeroTriggers(temp.get(0));
 	}
 
 	/**
-	 * @brief Checks if hero got to the final stairs
+	 *Checks if hero got to the final stairs
 	 * @return true if hero is in final stairs
 	 */
 	public boolean wonGame() {
@@ -98,9 +92,9 @@ public class GameLogic implements java.io.Serializable{
 	}
 
 	/**
-	 * @brief Checks if its game over
+	 * Checks if its game over
 	 * @return True if it is game over, false otherwise
-	 * @detail First gathers all villains game over positions then checks to see if it is in an adjacent square of any
+	 *  	   First gathers all villains game over positions then checks to see if it is in an adjacent square of any
 	 * 		   If a villain is an Ogre then only check the first position(its the club), if the hero is armed
 	 */
 	public boolean isGameOver(){
@@ -116,7 +110,7 @@ public class GameLogic implements java.io.Serializable{
 	
 	
 	/**	
-	 * @brief Checks if p1 is in adjacent square of p2
+	 * Checks if p1 is in adjacent square of p2
 	 * @param p Square to check
 	 * @return True if hero is in adjacent, false if not
 	 */
@@ -128,34 +122,12 @@ public class GameLogic implements java.io.Serializable{
 				(p1.getFirst() == p2.getFirst() && p1.getSecond() == p2.getSecond()));
 	}
 
-	/**
-//	 * @brief Checks if positions passed overlap with another character
-//	 * @param l Array of Positions to check overlap
-//	 * @return Position of array with overlap or -1 if no position overlaps
-//	 */
-//	private int checkOverlap( ArrayList< Pair<Integer,Integer> > l){
-//		int i = 0;
-//		boolean found_same = false;
-//		for ( Pair<Integer,Integer> p_l : l){
-//			for (GameCharacter ch : this.villains ){
-//				for (Pair<Integer,Integer> p_ch : ch.getPos() )
-//					if (p_ch.equals(p_l))
-//						if (!found_same)
-//							found_same = true;
-//						else
-//							return i;			
-//			}
-//			i++;
-//		}
-//		return -1;
-//	}
 	
 	/**
-	 * @brief Checks if hero triggered something
+	 * Checks if hero triggered something
 	 * @param p Position of hero
 	 * @return True if he triggered next level, false otherwise
 	 */
-	//TODO instead of opening all doors at once open only the door which the hero is trying to open (ArenaMap)
 	private boolean checkHeroTriggers( Pair<Integer,Integer> p) { 
 		if (p.equals(this.key)){
 			boolean b = this.map.pickUpKey();
@@ -183,15 +155,8 @@ public class GameLogic implements java.io.Serializable{
 			ch.roundPassed();
 	}
 	
-	
-	private boolean checkTrapped(ArrayList<Pair<Integer,Integer> > char_pos , boolean is_ogre){
-		
-		
-		return false;
-	}
-	
 	/**
-	 * @brief Returns the next level to go	
+	 * Returns the next level to go	
 	 * @param enemies How many enemies of the next level to generate
 	 * @return If current game map is DungeonMap it returns an object of ArenaMap, if current is ArenaMap it returns 
 	 * 		   an object of DungeonMap (because of GameLogic(Map,int) specifics), !DO NOT USE TO CHECK GAME OVER!
@@ -202,7 +167,7 @@ public class GameLogic implements java.io.Serializable{
 	}
 	
 	/**
-	 * @brief Gets all Villains in a single container
+	 * Gets all Villains in a single container
 	 * @return Array with all villains
 	 */
 	public ArrayList<GameCharacter> getVillains(){
@@ -211,7 +176,7 @@ public class GameLogic implements java.io.Serializable{
 	
 	
 	/**
-	 * @brief Gets all Characters in a single container
+	 * Gets all Characters in a single container
 	 * @return Array with all Characters
 	 */
 	public ArrayList<GameCharacter> getAllCharacters() {
@@ -222,7 +187,7 @@ public class GameLogic implements java.io.Serializable{
 	}
 	
 	/**
-	 * @brief Gets current game Map
+	 * Gets current game Map
 	 * @return Current Game Map
 	 */
 	public Map getMap() {
@@ -230,7 +195,7 @@ public class GameLogic implements java.io.Serializable{
 	}
 	
 	/**
-	 * @brief Gets Hero
+	 * Gets Hero
 	 * @return Hero
 	 */
 	public Hero getHero() {

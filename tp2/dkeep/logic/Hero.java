@@ -11,13 +11,15 @@ public class Hero extends GameCharacter {
 		representation="H";
 	}
 	
+	@Override
 	public String toString(){
 		if (has_key)
 			return "K";
 		else
 			return this.representation;
 	}
-
+	
+	@Override
 	public ArrayList< Pair<Integer,Integer> > moveCharacter(ArrayList<Pair<Integer,Integer> > current,int dir){
 		ArrayList< Pair<Integer,Integer> > temp = new ArrayList<Pair<Integer,Integer> >();
 		temp.add( changePos(this.position.get(0) , dir) );
@@ -25,27 +27,42 @@ public class Hero extends GameCharacter {
 		return temp;
 	}	
 	
+	/**
+	 * Sets whether hero has key or not
+	 * @param val boolean to represent if hero has key
+	 */
 	public void setKey(boolean val){
 		this.has_key = val;
 	}
-
+	
+	/**
+	 * Sets whether hero is armed or not
+	 * @param armed boolean to represent if hero is armed
+	 */
+	public void setArmed(boolean armed){
+		this.is_armed=armed;
+		this.representation = (armed) ? "A" : "H";
+	}
+	
+	/**
+	 * @return true if hero has key, false otherwise
+	 */
 	public boolean hasKey(){
 		return this.has_key;
 	}
 	
-	public ArrayList< Pair< Pair<Integer,Integer> ,String> > getPrintable(  ){
-		ArrayList< Pair< Pair<Integer,Integer> ,String> > temp = new ArrayList< Pair< Pair<Integer,Integer> ,String> >(1);
-		temp.add( new Pair< Pair<Integer,Integer > ,String>( this.position.get(0) ,this.representation));
-		return temp;
-	}
-
+	/**
+	 * @return true if hero is armed, false otherwise
+	 */
 	public boolean isArmed(){
 		return this.is_armed;
 	}
 	
-	public void setArmed(boolean armed){
-		this.is_armed=armed;
-		this.representation = (armed) ? "A" : "H";
+	@Override
+	public ArrayList< Pair< Pair<Integer,Integer> ,String> > getPrintable(  ){
+		ArrayList< Pair< Pair<Integer,Integer> ,String> > temp = new ArrayList< Pair< Pair<Integer,Integer> ,String> >(1);
+		temp.add( new Pair< Pair<Integer,Integer > ,String>( this.position.get(0) ,this.representation));
+		return temp;
 	}
 
 	@Override

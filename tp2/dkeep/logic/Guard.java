@@ -2,6 +2,11 @@ package dkeep.logic;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+/**
+ * 
+ * @author Joao Almeida, Jose Pedro Machado
+ *
+ */
 public class Guard extends GameCharacter{
 	protected static ArrayList< Pair<Integer,Integer> > movement = new ArrayList< Pair<Integer,Integer> >( 
    Arrays.asList(new Pair<Integer,Integer>(1,7),new Pair<Integer,Integer>(2,7),new Pair<Integer,Integer>(3,7),new Pair<Integer,Integer>(4,7),
@@ -14,11 +19,19 @@ public class Guard extends GameCharacter{
 	protected int index = 0;
 	protected int step = 1;
 	
+	/**
+	 * Constructor of Guard
+	 * @param pos Initial position
+	 * @param map_size Size of the map
+	 */
 	public Guard(Pair<Integer,Integer> pos, Pair<Integer,Integer> map_size){
 		super(pos,map_size);
 		this.representation = "G";
 	}
-
+	
+	/**
+	 * Default moveCharacter of Guard, gets next pos from movement array
+	 */
 	public ArrayList< Pair<Integer,Integer> > moveCharacter(ArrayList<Pair<Integer,Integer> > current,int change){
 		ArrayList<Pair<Integer,Integer> > temp = new ArrayList<Pair<Integer,Integer> >();
 		temp.add((Pair<Integer,Integer>)this.movement.get(this.index).clone());
@@ -27,7 +40,7 @@ public class Guard extends GameCharacter{
 	}
 	
 	/**
-	 * @brief Increments the guard movement index
+	 * Increments the guard movement index
 	 */
 	protected void incIndex(){
 		if (this.index+this.step == this.movement.size())

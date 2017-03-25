@@ -3,7 +3,12 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Random;
-	
+
+/**
+ * Base class of a game map, if a new map is to be added it must inherit from this class
+ * @author João Almeida , José Pedro Machado
+ *
+ */
 public abstract class Map implements java.io.Serializable{
 	protected int width;
 	protected int height;
@@ -14,9 +19,9 @@ public abstract class Map implements java.io.Serializable{
 	protected Pair<Integer,Integer> key;
 	
 	/**
-	 * @brief Constructor
-	 * @param guards (-1, No guards to generate) , (0, Randomly select guard) , (1 , generate RookieGuard) , (2, generate DrunkenGuard) , (3, generate SuspiciousGuard) 
-	 * @param ogres (-1, No ogre to generate) , (0, Randomly generate number of ogres) , (x , generate x ogres)
+	 * Constructor
+	 * @param guards -1->No Guards , 0->RandomGuard , 1->RookieGuard , 2->DrunkenGuard , 3->SuspiciousGuard 
+	 * @param ogres  -1->No Ogres , 0->Generate [1,5] Ogres , 1->Generate 1 Ogre, 2->Generate 2 Ogres ...
 	 * @param map Map to use for the specified level
 	 */
 	public Map(int guards , int ogres, char[][] map){ // 1-Rookie, 2 - Drunken, 3-Suspicious 
@@ -33,10 +38,10 @@ public abstract class Map implements java.io.Serializable{
 	}
 
 	/**
-	 * @brief Checks if the positions passed are free
+	 * Checks if the positions passed are free
 	 * @param l Array of positions to check 
 	 * @return -1 if all positions are free, else number that is the position of the array which has the not free pposition
-	 * @details Before it checks if the tile is free it checks if the coordinates are valid.
+	 * 			Before it checks if the tile is free it checks if the coordinates are valid.
 	 * 		 	A tile is considered free if it is either a ' ', 'S' or a 'k'. Anything else is considered occupied.
 	 */
 	public int isFree( ArrayList< Pair<Integer,Integer> > l){
@@ -55,13 +60,12 @@ public abstract class Map implements java.io.Serializable{
 	}
 	
 	/**
-	 * @brief Opens the doors of the map
+	 * Opens the doors of the map
 	 * @param keep_closed Whether to keep the doors closed or not
-	 * @details If the map has a lever keep_closed should be false, if the map has a key which the hero picks up then
+	 * 			If the map has a lever keep_closed should be false, if the map has a key which the hero picks up then
 	 * 			keep_closed should be true
 	 */
 	public void openDoors( boolean keep_closed){
-		//TODO add an argument that says which door of the array to open (key can work for multiple doors)
 		if( !keep_closed){
 			for (Pair< Pair<Integer,Integer> , String> pos : this.doors)
 				this.map[ pos.getFirst().getFirst().intValue() ][ pos.getFirst().getSecond().intValue() ] = pos.getSecond().charAt(0);
@@ -70,14 +74,14 @@ public abstract class Map implements java.io.Serializable{
 	
 	
 	/**
-	 * @brief Returns next map
+	 * Returns next map
 	 * @param enemies How many enemies to generate
-	 * @return Object of the next map class
+	 * @return Object of the next map class, null if last level
 	 */
 	public abstract Map nextMap(int enemies);
 	
 	/**
-	 * @brief Picks up key from map, to be implemented by child classes
+	 * Picks up key from map, to be implemented by child classes
 	 * @return true if hero is supposed to keep the key, or false if it aint (AKA if its a lever)
 	 */
 	public boolean pickUpKey() {
@@ -85,7 +89,10 @@ public abstract class Map implements java.io.Serializable{
 		return !this.lever;
 	}
 	
-	
+	/**
+	 * Gets the map doors (only those openable)
+	 * @return Array with position of openable doors
+	 */
 	public ArrayList<Pair<Integer,Integer> > getDoors(){
 		ArrayList<Pair<Integer,Integer> > temp = new ArrayList<Pair<Integer,Integer> >();
 		for (Pair<Pair<Integer,Integer> , String > p : this.doors )
@@ -96,7 +103,7 @@ public abstract class Map implements java.io.Serializable{
 	
 	
 	/**
-	 * @brief Gets the map
+	 * Gets the map
 	 * @return map
 	 */
 	public char[][] getMap(){
@@ -109,13 +116,16 @@ public abstract class Map implements java.io.Serializable{
 		return temp;
 	}
 	
-	
+	/**
+	 * Gets parameter lever
+	 * @return lever
+	 */
 	public boolean getLever(){
 		return this.lever;
 	}
 	
 	/**
-	 * @brief Gets the key
+	 * Gets the key 
 	 * @return The position of the key
 	 */
 	public Pair<Integer,Integer> getKey(){
@@ -124,7 +134,7 @@ public abstract class Map implements java.io.Serializable{
 	
 
 	/**
-	 * @brief Gets the heigth of this map
+	 * Gets the heigth of this map
 	 * @return Heigth of the map
 	 */
 	public int getHeight(){
@@ -133,7 +143,7 @@ public abstract class Map implements java.io.Serializable{
 	
 	
 	/**
-	 * @brief Gets the width of this map
+	 * Gets the width of this map
 	 * @return Width of the map
 	 */
 	public int getWidth(){
@@ -141,17 +151,16 @@ public abstract class Map implements java.io.Serializable{
 	}
 	
 	/**
-	 * @brief Size of the map
+	 * Size of the map
 	 * @return Pair with (width,height) of the current map
 	 */
-
 	public Pair<Integer,Integer> getSize(){
 		return new Pair<Integer,Integer>(this.width,this.height);
 	}
 	
 	
 	/**
-	 * @brief Gets all characters of the map
+	 * Gets all characters of the map
 	 * @return Array with all map characters(including hero)
 	 */
 	public ArrayList<GameCharacter> getCharacters(){
@@ -160,21 +169,33 @@ public abstract class Map implements java.io.Serializable{
 	
 	
 	/**
-	 * @brief Gets a specific tile of the map
+	 * Gets a specific tile of the map
 	 * @param p Tile to get
 	 * @return What is in the specified tile
 	 */
 	public char getTile(Pair<Integer,Integer> p){
 		return this.map[p.getFirst().intValue()][p.getSecond().intValue()];
 	}
-
+	
+	/**
+	 * Generate specified Guard 
+	 * @param typeof Type of Guard (see Map constructor)
+	 * @param map_size Size of the map
+	 * @return Guard generated
+	 */
 	private GameCharacter generateGuard( int typeof , Pair<Integer,Integer> map_size ){
 		Random rand = new Random();
 		if (typeof == 0) //IF GUARD IS 0 THEN RANDOMLY SELECT GUARD
 			typeof = rand.nextInt(3)+1;
 		return ( (1 == typeof) ? new RookieGuard(map_size) : ( (2 == typeof) ? new DrunkenGuard(map_size) : new SuspiciousGuard(map_size)));
 	}
-
+	
+	/**
+	 * Generates specified Ogres
+	 * @param how_many How many ogres to generate (see Map constructor)
+	 * @param map_size Size of the map
+	 * @return Array with all Ogres generated
+	 */
 	private ArrayList<GameCharacter> generateNOgres( int how_many , Pair<Integer,Integer> map_size){
 		Random rand = new Random();
 		ArrayList<GameCharacter> temp = new ArrayList<GameCharacter>();

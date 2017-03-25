@@ -213,7 +213,7 @@ public class GameTests {
 	
 	@Test
 	public void testMoveAndClub(){
-		ArenaMap map = new ArenaMap(-1,1); //generate only 1 ogre
+		ArenaMap map = new ArenaMap(1); //generate only 1 ogre
 		GameLogic game = new GameLogic(map,0); //Number is irrelevant
 		game.getHero().setPos(new ArrayList<Pair<Integer,Integer>>(Arrays.asList(new Pair<Integer,Integer>(0,0))) );
 		
@@ -341,7 +341,7 @@ public class GameTests {
 	@Test
 	public void testCreateDungeonMap(){
 		for(int i = -1 ; i <= 3 ; i++){
-			DungeonMap map = new DungeonMap(i, -1);
+			DungeonMap map = new DungeonMap(i);
 			GameLogic game = new GameLogic(map,0); //number is irrelevant
 			char[][] test_map = new char[][]{{'X','X','X','X','X','X','X','X','X','X'} ,
 											 {'X',' ',' ',' ','I',' ','X',' ',' ','X'} ,
@@ -376,7 +376,7 @@ public class GameTests {
 	@Test
 	public void testCreateArenaMap(){
 		for(int i = -1 ; i <= 5 ; i++){
-			ArenaMap map = new ArenaMap(-1,i);
+			ArenaMap map = new ArenaMap(i);
 			GameLogic game = new GameLogic(map,0); //number is irrelevant
 			char[][] test_map = new char[][]{{'X','X','X','X','X','X','X','X','X','X'} ,
 											 {'I',' ',' ',' ',' ',' ',' ',' ','k','X'} ,
@@ -406,7 +406,7 @@ public class GameTests {
 	public void testMoveGuards(){
 		
 		for(int i = 1 ; i < 4 ; i++){ //generate all three guards
-			DungeonMap map = new DungeonMap(i,-1);
+			DungeonMap map = new DungeonMap(i);
 			GameLogic game = new GameLogic(map,0); //number is irrelevant
 			for(int j = 0 ; j < 50 ; j++){			
 				game.moveAllVillains();
@@ -430,7 +430,7 @@ public class GameTests {
 		ArrayList<Pair<Integer,Integer> > test1 = new ArrayList<Pair<Integer,Integer> >(), test2 = new ArrayList<Pair<Integer,Integer> >(),
 				  						  test3 = new ArrayList<Pair<Integer,Integer> >(), test4 = new ArrayList<Pair<Integer,Integer> >();
 		for (int i = 0 ; i < 3 ; i++){
-			map = (i == 0) ? new DungeonMap(-1,-1) : ( (i == 1) ? new ArenaMap(-1,-1) : new GenericMap(this.map));
+			map = (i == 0) ? new DungeonMap(-1) : ( (i == 1) ? new ArenaMap(-1) : new GenericMap(this.map));
 			test1.add( new Pair<Integer,Integer>( map.getHeight()+1 , 1 ));
 			test2.add( new Pair<Integer,Integer>( 1 , map.getWidth()+1 ));
 			test3.add( new Pair<Integer,Integer>(-1, 1) );
@@ -446,7 +446,7 @@ public class GameTests {
 	@Test
 	public void testGuardsGameOverPos(){
 		for(int i = 1 ; i < 4 ; i++){ //generate all three guards
-			DungeonMap map = new DungeonMap(i,-1);
+			DungeonMap map = new DungeonMap(i);
 			GameLogic game = new GameLogic(map,0); //number is irrelevant
 			for(int j = 0 ; j < 50 ; j++){
 				game.moveAllVillains();
@@ -462,7 +462,7 @@ public class GameTests {
 	
 	@Test
 	public void testPickUpKeyArenaMap(){
-		ArenaMap map = new ArenaMap(-1,-1); //generate no enemies
+		ArenaMap map = new ArenaMap(-1); //generate no enemies
 		GameLogic game = new GameLogic(map,0); //number is irrelevant
 		Pair<Integer,Integer> test1 = new Pair<Integer,Integer>(1,1), test2 = new Pair<Integer,Integer>(1,8);
 		

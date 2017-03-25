@@ -4,4 +4,4 @@
 ![alt text](https://github.com/Almeida-Oco/LPOO1617_T1G1/blob/master/test_imgs/ECLemma.png "ECLemma Tests")
 ![alt text](https://github.com/Almeida-Oco/LPOO1617_T1G1/blob/master/test_imgs/PITMutation.png "Mutation Tests")
 
-
+Joao Francisco Barreiros de Almeida(up201505866) , up201505866@fe.up.pt

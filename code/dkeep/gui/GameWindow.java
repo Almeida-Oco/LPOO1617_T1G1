@@ -156,8 +156,7 @@ public class GameWindow {
 	
 	public void createNewGame(){
 		frame.getContentPane().setLayout(new BorderLayout());
-		GameWindow.game=game;
-		imgs_panel = new PrettyPanel( UserInput.getPrintableMap( this.game.getMap().getMap() , this.game.getAllCharacters(), false , false) );
+		imgs_panel = new PrettyPanel( UserInput.getPrintableMap( game.getMap().getMap() , game.getAllCharacters(), false , false) );
 		initializeImgPanelListeners();
 		this.temp = this.frame.getContentPane();
 		frame.setVisible(true);
@@ -335,7 +334,7 @@ public static void focus(){
 		ArrayList<Pair<Pair<Integer,Integer> , String > > doors = new ArrayList<Pair<Pair<Integer,Integer> , String> >();
 		doors.add(create_panel.getDoor());
 		gm.setDoors(doors);
-		GameLogic game = new GameLogic(gm,0);
+		game = new GameLogic(gm,0);
 		GameWindow n= new GameWindow();
 		frame2.setVisible(false);
 		n.createNewGame();

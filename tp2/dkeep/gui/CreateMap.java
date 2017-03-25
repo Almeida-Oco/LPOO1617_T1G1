@@ -179,7 +179,7 @@ public class CreateMap extends JPanel implements MouseListener{
 				removesComp('A');
 				map[x][y]='A';
 				definitive_map[x][y]=' ';
-				hero= new Hero(new Pair<Integer,Integer>(x,y) , new Pair<Integer,Integer>(height,width) );
+				hero= new Hero(new Pair<Integer,Integer>(x,y) , new Pair<Integer,Integer>(width,height) );
 				hero.setArmed(true);
 			}
 			else
@@ -193,7 +193,7 @@ public class CreateMap extends JPanel implements MouseListener{
 				map[x][y]='O';
 				definitive_map[x][y]=' ';
 			ogres_number++;
-			Ogre o=new Ogre(new Pair<Integer,Integer>(x,y) ,new Pair<Integer,Integer>(height,width));
+			Ogre o=new Ogre(new Pair<Integer,Integer>(x,y) ,new Pair<Integer,Integer>(width,height));
 			ogres.add(o);
 			}
 			}

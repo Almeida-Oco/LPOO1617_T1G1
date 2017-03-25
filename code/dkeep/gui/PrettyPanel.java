@@ -8,8 +8,6 @@ import java.util.HashMap;
 
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
 import java.awt.Color;
 
 public class PrettyPanel extends JPanel {
@@ -33,12 +31,6 @@ public class PrettyPanel extends JPanel {
 		lost=false;
 		won=false;
 		setBackground(Color.WHITE);
-		addKeyListener(new KeyAdapter() {
-			@Override
-			public void keyPressed(KeyEvent e) {
-				System.out.println("KEY PRESSED!");
-			}
-		});
 		loadGuardImage();
 		loadHeroImage();
 		loadOgreImage();

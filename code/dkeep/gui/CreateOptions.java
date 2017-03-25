@@ -5,6 +5,7 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 public class CreateOptions extends JPanel{
@@ -18,7 +19,12 @@ public class CreateOptions extends JPanel{
 		JButton salvar = new JButton("PlayGame");
 		salvar.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent arg0) {
+				if(CreateMap.canStart())
 				GameWindow.initializeCreatedMap();	
+				else
+				{
+					GameWindow.showError();
+				}
 			}
 
 		});

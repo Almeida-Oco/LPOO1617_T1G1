@@ -6,10 +6,11 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import java.awt.BorderLayout;
+import java.awt.Component;
+
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
-import java.awt.Container;
 import java.awt.Dimension;
 import javax.swing.JTextField;
 import dkeep.cli.UserInput;
@@ -130,12 +131,12 @@ public class GameWindow {
 	}
 	
 	public void createNewGame(){
+		frame3.requestFocus();
 		frame.setVisible(false);
 		frame2.setVisible(false);
 		frame3.getContentPane().setLayout(new BorderLayout());
 		imgs_panel = new PrettyPanel( UserInput.getPrintableMap( game.getMap().getMap() , game.getAllCharacters(), false , false) );
 		initializeImgPanelListeners();
-		//temp = frame.getContentPane();
 		frame3.setVisible(true);
 		frame3.setBounds(100, 100, 500 , 500);
 		frame3.getContentPane().add(imgs_panel,BorderLayout.CENTER);
@@ -222,6 +223,7 @@ public static void focus(){
 		load_game.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {	
 				game=load();
+				if (game!=null)
 				createNewGame();
 			}
 		});
@@ -315,7 +317,6 @@ public static void focus(){
 		gm.setDoors(doors);
 		game = new GameLogic(gm,0);
 		GameWindow n= new GameWindow();
-		frame2.setVisible(false);
 		n.createNewGame();
 	}
 
@@ -345,10 +346,12 @@ public static void focus(){
 	         fileIn.close();
 	      }catch(IOException i) {
 	         i.printStackTrace();
+	         JOptionPane.showMessageDialog(frame, "There is no save yet");
 	         return null;
 	      }catch(ClassNotFoundException c) {
 	         System.out.println("Employee class not found");
 	         c.printStackTrace();
+	         
 	         return null;
 	      }
 		
@@ -357,8 +360,13 @@ public static void focus(){
 
 	public static void backtoMenu() {
 		frame2.setVisible(false);
+		frame3.getContentPane().removeAll();
 		frame3.setVisible(false);
 		frame.setVisible(true);
+	}
+
+	public static void showError() {
+		JOptionPane.showMessageDialog(frame2, "It must be at least a hero, a key and a exit");
 	}
 
 }

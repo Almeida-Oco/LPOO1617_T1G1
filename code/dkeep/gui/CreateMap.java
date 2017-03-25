@@ -31,11 +31,17 @@ public class CreateMap extends JPanel implements MouseListener{
 	private int ogres_number;
 	private Hero hero;
 	private ArrayList <GameCharacter> ogres;
+	private static Boolean key_b;
+	private static Boolean door_b;
+	private static Boolean hero_b;
 	Pair<Integer,Integer> key;
 	Pair< Pair<Integer,Integer> ,String> door;
 	
 
 	CreateMap(int height, int width){
+		key_b=false;
+		door_b=false;
+		hero_b=false;
 		ogres = new ArrayList<GameCharacter>();
 		this.addMouseListener(this);
 		CreateMap.height=height; CreateMap.width=width;
@@ -146,11 +152,14 @@ public class CreateMap extends JPanel implements MouseListener{
 				removesComp('A');
 				map[x][y]='A';
 				definitive_map[x][y]=' ';
+				hero_b=true;
 				hero= new Hero(new Pair<Integer,Integer>(x,y) , new Pair<Integer,Integer>(width,height) );
 				hero.setArmed(true);
 			}
-			else
+			else{
 				map[x][y]=' ';
+				hero_b=false;
+			}
 			repaint();
 	}
 	
@@ -190,11 +199,13 @@ public class CreateMap extends JPanel implements MouseListener{
 				removesComp('I');
 				map[x][y]='I';
 				definitive_map[x][y]='I';
+				door_b=true;
 				door=new Pair< Pair<Integer,Integer> ,String>( new Pair<Integer,Integer>( new Integer(x) ,new Integer(y)) , "S");
 			}
 			else{
 				map[x][y]=' ';
 				definitive_map[x][y]=' ';
+				door_b=false;
 			}
 			repaint();
 	}
@@ -205,13 +216,19 @@ public class CreateMap extends JPanel implements MouseListener{
 				removesComp('k');
 				map[x][y]='k';
 				definitive_map[x][y]='k';
+				key_b=true;
 				key=new Pair<Integer,Integer>(x,y);
 			}
 			else{
 				map[x][y]=' ';
 				definitive_map[x][y]=' ';
+				key_b=false;
 			}
 			repaint();
+	}
+	
+	public static Boolean canStart(){
+		return (key_b &&hero_b && door_b);
 	}
 	
 	public void paint(Graphics g){

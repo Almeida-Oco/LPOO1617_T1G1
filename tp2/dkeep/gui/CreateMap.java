@@ -86,7 +86,7 @@ public class CreateMap extends JPanel implements MouseListener{
 			System.out.println("Error reading hero image!");
 		}
 		try {                
-			this.char_to_img.put(new Character('A') ,ImageIO.read(new File(System.getProperty("user.dir")+"/imgs/Hero.png")));
+			this.char_to_img.put(new Character('A') ,ImageIO.read(new File(System.getProperty("user.dir")+"/imgs/Hero_armed.png")));
 		} catch (IOException ex) {
 			System.out.println("Error reading hero image!");
 		}
@@ -239,12 +239,13 @@ public class CreateMap extends JPanel implements MouseListener{
 		
 		
 		if(CreateOptions.getSelecionado()=="Hero"){
-			if(map[i_map][j_map]!='H'){
-			if(contaisComp('H'))
-				removesComp('H');
-				map[i_map][j_map]='H';
+			if(map[i_map][j_map]!='A'){
+			if(contaisComp('A'))
+				removesComp('A');
+				map[i_map][j_map]='A';
 				definitive_map[i_map][j_map]=' ';
 				hero= new Hero(new Pair<Integer,Integer>(i_map,j_map) , new Pair<Integer,Integer>(height,width) );
+				hero.setArmed(true);
 			}
 			else
 				map[i_map][j_map]=' ';

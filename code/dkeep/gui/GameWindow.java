@@ -140,6 +140,7 @@ public class GameWindow {
 		frame3.getContentPane().add(imgs_panel,BorderLayout.CENTER);
 		PlayButtons pb= new PlayButtons();
 		frame3.getContentPane().add(pb,BorderLayout.SOUTH);
+		frame3.revalidate();
 		frame3.repaint();
 		imgs_panel.requestFocus();
 		System.out.println("FINISHED SETTING UP!");

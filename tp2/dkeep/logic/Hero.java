@@ -20,7 +20,7 @@ public class Hero extends GameCharacter {
 	}
 	
 	@Override
-	public ArrayList< Pair<Integer,Integer> > moveCharacter(ArrayList<Pair<Integer,Integer> > current,int dir){
+	public ArrayList< Pair<Integer,Integer> > moveCharacter(ArrayList<Pair<Integer,Integer> > current, int dir){
 		ArrayList< Pair<Integer,Integer> > temp = new ArrayList<Pair<Integer,Integer> >();
 		temp.add( changePos(this.position.get(0) , dir) );
 		

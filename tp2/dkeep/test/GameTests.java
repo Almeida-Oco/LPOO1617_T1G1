@@ -106,6 +106,9 @@ public class GameTests {
 		assertEquals( test5 , game.getHero().getPos().get(0));
 		game.moveHero('s');
 		assertEquals( test5 , game.getHero().getPos().get(0));
+		game.getHero().moveCharacter(game.getHero().getPos(),-1);
+		assertEquals( test5 , game.getHero().getPos().get(0));
+		
 		
 	}
 

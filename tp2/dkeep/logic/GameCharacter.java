@@ -92,6 +92,6 @@ public abstract class GameCharacter implements java.io.Serializable{
 		else if (dir == 3) //move right
 			return new Pair<Integer,Integer>( pos.getFirst() , pos.getSecond()+1);
 		
-		return null;
+		return pos;
 	}
 }

@@ -44,83 +44,17 @@ public class CreateMap extends JPanel implements MouseListener{
 	CreateMap(int height, int width){
 		ogres = new ArrayList<GameCharacter>();
 		this.addMouseListener(this);
-		CreateMap.height=height;
-		CreateMap.width=width;
+		CreateMap.height=height; CreateMap.width=width;
 		ogres_number=0;
 		map = new char[height][width];
 		definitive_map = new char[height][width];
 
-		for (int linha = 0; linha < height; linha++) {
-			for (int coluna = 0; coluna < width; coluna++) {
-				map[linha][coluna] = ' ';
-				definitive_map[linha][coluna] = ' ';
-			}
+		for (int linha = 0; linha < height; linha++)
+			for (int coluna = 0; coluna < width; coluna++) 
+				definitive_map[linha][coluna] = (map[linha][coluna] = (linha == 0 || coluna == 0 || 
+																linha == height-1 || coluna == width-1) ? 'X' : ' ');
+		this.loadAllImages();
 		}
-				
-
-		for (int i = 0; i < height; i++) {
-			for(int j=0; j< width;j++){
-				if(i==0 || j==0 || j==width-1|| i==height-1){
-					map[i][j] = 'X';
-					definitive_map[i][j]  = 'X';
-				}
-				
-			}
-		}
-		
-		try {                
-			this.char_to_img.put(new Character('G') ,ImageIO.read(new File(System.getProperty("user.dir")+"/imgs/Guard.png")));
-		} catch (IOException ex) {
-			System.out.println("Error reading guard image!");
-		}
-		try {                
-			this.char_to_img.put(new Character('O') ,ImageIO.read(new File(System.getProperty("user.dir")+"/imgs/Ogre.png")));
-		} catch (IOException ex) {
-			System.out.println("Error reading ogre image!");
-		}
-		try {                
-			this.char_to_img.put(new Character('H') ,ImageIO.read(new File(System.getProperty("user.dir")+"/imgs/Hero.png")));
-		} catch (IOException ex) {
-			System.out.println("Error reading hero image!");
-		}
-		try {                
-			this.char_to_img.put(new Character('A') ,ImageIO.read(new File(System.getProperty("user.dir")+"/imgs/Hero_armed.png")));
-		} catch (IOException ex) {
-			System.out.println("Error reading hero image!");
-		}
-		try {                
-			this.char_to_img.put(new Character('X') ,ImageIO.read(new File(System.getProperty("user.dir")+"/imgs/Wall.png")));
-		} catch (IOException ex) {
-			System.out.println("Error reading wall image!");
-		}
-		try {                
-			this.char_to_img.put(new Character('*') ,ImageIO.read(new File(System.getProperty("user.dir")+"/imgs/Club.png")));
-		} catch (IOException ex) {
-			System.out.println("Error reading club image!");
-		}
-		try {                
-			this.char_to_img.put(new Character(' ') ,ImageIO.read(new File(System.getProperty("user.dir")+"/imgs/Floor.png")));
-		} catch (IOException ex) {
-			System.out.println("Error reading floor image!");
-		}
-		try {                
-			this.char_to_img.put(new Character('I') ,ImageIO.read(new File(System.getProperty("user.dir")+"/imgs/Door.png")));
-		} catch (IOException ex) {
-			System.out.println("Error reading door image!");
-		}
-		try {                
-			this.char_to_img.put(new Character('S') ,ImageIO.read(new File(System.getProperty("user.dir")+"/imgs/Stair.png")));
-		} catch (IOException ex) {
-			System.out.println("Error reading stair image!");
-		}
-		try {                
-			this.char_to_img.put(new Character('k') ,ImageIO.read(new File(System.getProperty("user.dir")+"/imgs/Lever.png")));
-		} catch (IOException ex) {
-			System.out.println("Error reading lever image!");
-		}
-
-		}
-	
 	
 	static public CreateMap getpanel(){
 		return panel;
@@ -163,14 +97,9 @@ public class CreateMap extends JPanel implements MouseListener{
 		return definitive_map;
 	}
 	
-
-	
-	
-	
-		
 	
 	public static void Construct(int height, int width){
-		f = new JFrame("Constroi o teu labirinto");
+		f = new JFrame("Build your map");
 		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		f.setPreferredSize(new Dimension(width*50+width/2,height*50+65)); 
 		f.getContentPane().setLayout(new BorderLayout());
@@ -186,130 +115,49 @@ public class CreateMap extends JPanel implements MouseListener{
 		f.requestFocus();
 	}
 	
-	
-	
-	
-	
 	JFrame getFrame(){
 		return f;
 	}
 	
-	Boolean contaisComp(char c){
-		for (int i = 0; i < height; i++) {
-			for(int j=0; j< width;j++){
+	boolean contaisComp(char c){
+		for (int i = 0; i < height; i++) 
+			for(int j=0; j< width;j++)
 				if (map[i][j]==c)
 					return true;
-			}
-			}
+		
 		return false;
 	}
 	
 	void removesComp(char c){
-		for (int i = 0; i < height; i++) {
-			for(int j=0; j< width;j++){
+		for (int i = 0; i < height; i++) 
+			for(int j=0; j< width;j++)
 				if (map[i][j]==c){
 					map[i][j]=' ';
 					definitive_map[i][j]=' ';
 				}
-			}
-			}
 	}
 	
 	void removeOgre(int i, int j){
-		for(int h=0; h <ogres.size();h++){
-			if(ogres.get(h).getPos().get(0).getFirst() ==i && ogres.get(h).getPos().get(0).getSecond()==j ){
+		for(int h=0; h <ogres.size();h++)
+			if(ogres.get(h).getPos().get(0).getFirst() ==i && ogres.get(h).getPos().get(0).getSecond()==j )
 				ogres.remove(h);
-			}
-		}
 	}
-	
-	
-	
-
-	
 	
 	@Override
 	public void mouseClicked(MouseEvent arg0) {
-		int j_map = arg0.getX()/50;  
-		int i_map = arg0.getY()/50; 
+		int j_map = arg0.getX()/50 , i_map = arg0.getY()/50; 
 		System.out.println(i_map + "  " + j_map);
 		System.out.println(CreateOptions.getSelecionado());
-		
-		
-		if(CreateOptions.getSelecionado()=="Hero"){
-			if(map[i_map][j_map]!='A'){
-			if(contaisComp('A'))
-				removesComp('A');
-				map[i_map][j_map]='A';
-				definitive_map[i_map][j_map]=' ';
-				hero= new Hero(new Pair<Integer,Integer>(i_map,j_map) , new Pair<Integer,Integer>(height,width) );
-				hero.setArmed(true);
-			}
-			else
-				map[i_map][j_map]=' ';
-			repaint();
-		}
-		
-		else if(CreateOptions.getSelecionado()=="Ogre"){
-			if(map[i_map][j_map]!='O'){
-			if(ogres_number<5){
-				map[i_map][j_map]='O';
-				definitive_map[i_map][j_map]=' ';
-			ogres_number++;
-			Ogre o=new Ogre(new Pair<Integer,Integer>(i_map,j_map) ,new Pair<Integer,Integer>(height,width));
-			ogres.add(o);
-			}
-			}
-			else{
-				map[i_map][j_map]=' ';
-				ogres_number--;
-				removeOgre(i_map,j_map);
-			}
-			repaint();
-		}
-		
-		else if(CreateOptions.getSelecionado()=="Wall"){
-			if(map[i_map][j_map]!='X'){
-				map[i_map][j_map]='X';
-				definitive_map[i_map][j_map]='X';
-			}
-			else{
-				map[i_map][j_map]=' ';
-				definitive_map[i_map][j_map]=' ';
-			}
-			repaint();
-		}
-		
-		else if(CreateOptions.getSelecionado()=="Exit"){
-			if(map[i_map][j_map]!='I'){
-			if(contaisComp('I'))
-				removesComp('I');
-				map[i_map][j_map]='I';
-				definitive_map[i_map][j_map]='I';
-				door=new Pair< Pair<Integer,Integer> ,String>( new Pair<Integer,Integer>( new Integer(i_map) ,new Integer(j_map)) , "S");
-			}
-			else{
-				map[i_map][j_map]=' ';
-				definitive_map[i_map][j_map]=' ';
-			}
-			repaint();
-		}
-		else if(CreateOptions.getSelecionado()=="Key"){
-			if(map[i_map][j_map]!='k'){
-			if(contaisComp('k'))
-				removesComp('k');
-				map[i_map][j_map]='k';
-				definitive_map[i_map][j_map]='k';
-				key=new Pair<Integer,Integer>(i_map,j_map);
-			}
-			else{
-				map[i_map][j_map]=' ';
-				definitive_map[i_map][j_map]=' ';
-			}
-			repaint();
-		}
-		
-		
+		if(CreateOptions.getSelecionado()=="Hero")
+			this.insertHero(i_map, j_map);
+		else if(CreateOptions.getSelecionado()=="Ogre")
+			this.insertOgre(i_map, j_map);
+		else if(CreateOptions.getSelecionado()=="Wall")
+			this.insertWall(i_map, j_map);
+		else if(CreateOptions.getSelecionado()=="Exit")
+			this.insertExit(i_map, j_map);
+		else if(CreateOptions.getSelecionado()=="Key")
+			this.insertKey(i_map, j_map);
 		}
 	
 
@@ -325,9 +173,80 @@ public class CreateMap extends JPanel implements MouseListener{
 	@Override
 	public void mouseReleased(MouseEvent arg0) {}
 	
+	private void insertHero( int x , int y){
+		if(map[x][y]!='A'){
+			if(contaisComp('A'))
+				removesComp('A');
+				map[x][y]='A';
+				definitive_map[x][y]=' ';
+				hero= new Hero(new Pair<Integer,Integer>(x,y) , new Pair<Integer,Integer>(height,width) );
+				hero.setArmed(true);
+			}
+			else
+				map[x][y]=' ';
+			repaint();
+	}
 	
+	private void insertOgre( int x , int y){
+		if(map[x][y]!='O'){
+			if(ogres_number<5){
+				map[x][y]='O';
+				definitive_map[x][y]=' ';
+			ogres_number++;
+			Ogre o=new Ogre(new Pair<Integer,Integer>(x,y) ,new Pair<Integer,Integer>(height,width));
+			ogres.add(o);
+			}
+			}
+			else{
+				map[x][y]=' ';
+				ogres_number--;
+				removeOgre(x,y);
+			}
+			repaint();
+	}
 	
-
+	private void insertWall( int x , int y){
+		if(map[x][y]!='X'){
+			map[x][y]='X';
+			definitive_map[x][y]='X';
+		}
+		else{
+			map[x][y]=' ';
+			definitive_map[x][y]=' ';
+		}
+		repaint();
+	}
+	
+	private void insertExit( int x , int y){
+		if(map[x][y]!='I'){
+			if(contaisComp('I'))
+				removesComp('I');
+				map[x][y]='I';
+				definitive_map[x][y]='I';
+				door=new Pair< Pair<Integer,Integer> ,String>( new Pair<Integer,Integer>( new Integer(x) ,new Integer(y)) , "S");
+			}
+			else{
+				map[x][y]=' ';
+				definitive_map[x][y]=' ';
+			}
+			repaint();
+	}
+	
+	private void insertKey( int x , int y){
+		if(map[x][y]!='k'){
+			if(contaisComp('k'))
+				removesComp('k');
+				map[x][y]='k';
+				definitive_map[x][y]='k';
+				key=new Pair<Integer,Integer>(x,y);
+			}
+			else{
+				map[x][y]=' ';
+				definitive_map[x][y]=' ';
+			}
+			repaint();
+	}
+	
 	public void paint(Graphics g){
 		super.paint(g);
 
@@ -344,5 +263,79 @@ public class CreateMap extends JPanel implements MouseListener{
 			continue;
 	}
 	}
-
+	
+	private void loadAllImages(){
+		this.loadGuardImage();
+		this.loadOgreImage();
+		this.loadHeroImage();
+		this.loadWallImage();
+		this.loadClubImage();
+		this.loadFloorImage();
+		this.loadDoorImage();
+		this.loadStairImage();
+		this.loadLeverImag();
+	}
+	private void loadGuardImage(){
+		try {                
+			this.char_to_img.put(new Character('G') ,ImageIO.read(new File(System.getProperty("user.dir")+"/imgs/Guard.png")));
+		} catch (IOException ex) {
+			System.out.println("Error reading guard image!");
+		}
+	}
+	private void loadOgreImage(){
+		try {                
+			this.char_to_img.put(new Character('O') ,ImageIO.read(new File(System.getProperty("user.dir")+"/imgs/Ogre.png")));
+		} catch (IOException ex) {
+			System.out.println("Error reading ogre image!");
+		}
+	}
+	private void loadHeroImage(){
+		try {                
+			this.char_to_img.put(new Character('A') ,ImageIO.read(new File(System.getProperty("user.dir")+"/imgs/Hero_armed.png")));
+		} catch (IOException ex) {
+			System.out.println("Error reading hero image!");
+		}
+	}
+	private void loadWallImage(){
+		try {                
+			this.char_to_img.put(new Character('X') ,ImageIO.read(new File(System.getProperty("user.dir")+"/imgs/Wall.png")));
+		} catch (IOException ex) {
+			System.out.println("Error reading wall image!");
+		}
+	}
+	private void loadClubImage(){
+		try {                
+			this.char_to_img.put(new Character('*') ,ImageIO.read(new File(System.getProperty("user.dir")+"/imgs/Club.png")));
+		} catch (IOException ex) {
+			System.out.println("Error reading club image!");
+		}
+	}
+	private void loadFloorImage(){
+		try {                
+			this.char_to_img.put(new Character(' ') ,ImageIO.read(new File(System.getProperty("user.dir")+"/imgs/Floor.png")));
+		} catch (IOException ex) {
+			System.out.println("Error reading floor image!");
+		}
+	}
+	private void loadDoorImage(){
+		try {                
+			this.char_to_img.put(new Character('I') ,ImageIO.read(new File(System.getProperty("user.dir")+"/imgs/Door.png")));
+		} catch (IOException ex) {
+			System.out.println("Error reading door image!");
+		}
+	}
+	private void loadStairImage(){
+		try {                
+			this.char_to_img.put(new Character('S') ,ImageIO.read(new File(System.getProperty("user.dir")+"/imgs/Stair.png")));
+		} catch (IOException ex) {
+			System.out.println("Error reading stair image!");
+		}
+	}
+	private void loadLeverImag(){
+		try {                
+			this.char_to_img.put(new Character('k') ,ImageIO.read(new File(System.getProperty("user.dir")+"/imgs/Lever.png")));
+		} catch (IOException ex) {
+			System.out.println("Error reading lever image!");
+		}
+	}
 }

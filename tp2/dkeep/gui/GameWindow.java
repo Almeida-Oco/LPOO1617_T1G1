@@ -48,7 +48,8 @@ public class GameWindow {
 	
 	private JFrame frame;
 	private PrettyPanel imgs_panel;
-	private JButton up_b,down_b,left_b,right_b;
+	private JButton up_b,down_b,left_b,right_b,btnMapCreation,new_game,exit_b;
+	private Initial_Backgorund init_back;
 	private UserInput input;
 	private Container temp;
 	protected GameLogic game;
@@ -109,16 +110,10 @@ public class GameWindow {
 	}
 
 	public void chooseGuard(){
-
 		Object[] possibilities = {"Novice", "Drunk", "Suspicious"};
-		String s = (String)JOptionPane.showInputDialog(
-				frame,
-				"Choose the type of Guard: \n",
-				"Game Options",
-				JOptionPane.PLAIN_MESSAGE,
-				null,
-				possibilities,
-				"Guard");
+		String s = (String)JOptionPane.showInputDialog( this.frame, "Choose the type of Guard: \n",
+				"Game Options",JOptionPane.PLAIN_MESSAGE,null,possibilities,"Guard");
+		
 		if(s=="Novice")
 			this.guard=0;
 		else if(s== "Drunk")
@@ -129,11 +124,9 @@ public class GameWindow {
 
 	public void chooseOgre(){
 		JTextField field1 = new JTextField();
-		Boolean exit=true;
-		Object[] message = {
-				"Number of Ogres (1-5):", field1,
-		};
-		while(true){
+		Boolean exit=false;
+		Object[] message = { "Number of Ogres (1-5):", field1, };
+		while(!exit){
 			exit=true;
 			JOptionPane.showConfirmDialog(frame, message, "Ogre Options", JOptionPane.PLAIN_MESSAGE);
 			String value1 = field1.getText();
@@ -144,19 +137,13 @@ public class GameWindow {
 				exit=false;
 				if(value1.length() == 0)
 					this.ogres = 0;
-				else{
+				else
 					JOptionPane.showMessageDialog(frame, "It's supoesed to be 1-5 ogres");
-					disableButtons();
-				}
-
 			}
 			if(ogres<0 ||ogres>5){
 				JOptionPane.showMessageDialog(frame, "It's supoesed to be 1-5 ogres");
 				exit=false;
 			}
-
-			if(exit)
-				return;
 		}
 	}
 	
@@ -188,16 +175,6 @@ public class GameWindow {
 		enableButtons();
 		if(this.ogres != 0)
 		createNewGame(game);
-
-		//console_area.setText(input.getPrintableMap(game,false,true));
-		//console_area.requestFocus();
-
-
-		//Save current Frame and clear it to show only map
-
-		//this.frame.requestFocus();
-
-
 	}
 
 	public void enableButtons(){
@@ -228,16 +205,19 @@ public class GameWindow {
 	 */
 	private void initialize() {
 		this.frame = new JFrame();
-		frame.setBounds(100, 100, 755, 581);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.addKeyListener(new KeyAdapter() {
-			@Override
-			public void keyPressed(KeyEvent e) {
-				proccessKey(translateKey(e));
-			
-			}
-		});
+		this.initializeFrame();
+		this.initializeUpButton();
+		this.initializeDownButton();
+		this.initializeLeftButton();
+		this.initializeRightButton();
+		this.initializeNewGameButton();
+		this.initializeCreateMapButton();
 		
+		this.initializeInitBack();
+		this.frame.repaint();
+	}
+	
+	private void initializeUpButton(){
 		this.up_b = new JButton("Up");
 		up_b.setBounds(596, 225, 69, 29);
 		up_b.addActionListener(new ActionListener() {
@@ -247,28 +227,9 @@ public class GameWindow {
 		});
 		up_b.setEnabled(false);
 		up_b.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		
-		this.left_b = new JButton("Left");
-		left_b.setBounds(528, 265, 69, 29);
-		left_b.setEnabled(false);
-		left_b.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				proccessButton('a');
-			}
-		});
-		left_b.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		
-		this.right_b = new JButton("Right");
-		right_b.setBounds(674, 265, 69, 29);
-		right_b.setEnabled(false);
-		right_b.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				proccessButton('d');
-			}
-		});
-		right_b.setFont(new Font("Tahoma", Font.PLAIN, 12));
-	
-		
+	}
+
+	private void initializeDownButton(){
 		this.down_b = new JButton("Down");
 		down_b.setBounds(596, 305, 69, 29);
 		down_b.addActionListener(new ActionListener() {
@@ -278,20 +239,58 @@ public class GameWindow {
 		});
 		down_b.setEnabled(false);
 		down_b.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		
-		
-		JButton new_game = new JButton("New Game");
+	}
+
+	private void initializeLeftButton(){
+		this.left_b = new JButton("Left");
+		left_b.setBounds(528, 265, 69, 29);
+		left_b.setEnabled(false);
+		left_b.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				proccessButton('a');
+			}
+		});
+		left_b.setFont(new Font("Tahoma", Font.PLAIN, 12));
+	}
+
+	private void initializeRightButton(){
+		this.right_b = new JButton("Right");
+		right_b.setBounds(674, 265, 69, 29);
+		right_b.setEnabled(false);
+		right_b.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				proccessButton('d');
+			}
+		});
+		right_b.setFont(new Font("Tahoma", Font.PLAIN, 12));
+	}
+
+	private void initializeFrame(){
+		frame.setBounds(100, 100, 755, 581);
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyPressed(KeyEvent e) {
+				proccessKey(translateKey(e));
+			
+			}
+		});
+		this.frame.getContentPane().setLayout(new BorderLayout());
+	}
+
+	private void initializeNewGameButton(){
+		new_game = new JButton("New Game");
 		new_game.setBounds(245, 484, 142, 46);
 		new_game.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {	
 				newGame();
 			}
 		});
-		
-		this.frame.getContentPane().setLayout(new BorderLayout());
 		this.frame.getContentPane().add(new_game,BorderLayout.EAST);
+	}
 
-		JButton btnMapCreation = new JButton("Map Creation");
+	private void initializeCreateMapButton(){
+		btnMapCreation = new JButton("Map Creation");
 		btnMapCreation.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				JTextField field1 = new JTextField();
@@ -308,19 +307,13 @@ public class GameWindow {
 				    String value2 = field2.getText();
 				    int height=0;
 				    int width=0;
-				    
-				    
-				    
 				    try{ 
 						height=Integer.parseInt(value1);
 					}
 					catch (NumberFormatException n){
 							JOptionPane.showMessageDialog(frame, "It's supoesed to be a number");
 							return;
-						
-						}
-				    
-				    
+					}
 				    try{ 
 						width=Integer.parseInt(value2);
 					}
@@ -336,19 +329,19 @@ public class GameWindow {
 		});
 		btnMapCreation.setBounds(66, 501, 142, 29);
 		frame.getContentPane().add(btnMapCreation,BorderLayout.SOUTH);
-		
-		Initial_Backgorund initial_Backgorund = new Initial_Backgorund();
-		initial_Backgorund.setBounds(36, 54, 524, 328);
-		frame.getContentPane().add(initial_Backgorund);
-		
+	}
+
+	private void initializeInitBack(){
+		init_back = new Initial_Backgorund();
+		init_back.setBounds(36, 54, 524, 328);
 		JButton exit_b = new JButton("Exit");
-		initial_Backgorund.add(exit_b);
+		init_back.add(exit_b);
 		exit_b.setBounds(596, 452, 69, 25);
 		exit_b.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				System.exit(0);
 			}
 		});
-		this.frame.repaint();
+		frame.getContentPane().add(init_back);
 	}
 }

@@ -57,10 +57,11 @@ public class GameWindow {
 	private static JFrame frame;
 	private static JFrame frame2;
 	private static PrettyPanel imgs_panel;
-	private JButton up_b,down_b,left_b,right_b,btnMapCreation,new_game,exit_b;
+	private JButton btnMapCreation,new_game,exit_b;
 	private Initial_Backgorund init_back;
 	private static UserInput input;
 	private Container temp;
+	private JButton load_game;
 	protected static GameLogic game;
 	private static int ogres;
 	private static int guard;
@@ -156,7 +157,6 @@ public class GameWindow {
 	
 	public void createNewGame(GameLogic game){
 		frame.getContentPane().setLayout(new BorderLayout());
-		enableButtons();
 		GameWindow.game=game;
 		imgs_panel = new PrettyPanel( UserInput.getPrintableMap( this.game.getMap().getMap() , this.game.getAllCharacters(), false , false) );
 		initializeImgPanelListeners();
@@ -183,16 +183,8 @@ public static void focus(){
 		this.input = new UserInput();
 		this.game = new GameLogic(null,guard+1);
 
-		enableButtons();
 		if(this.ogres != 0)
 		createNewGame(game);
-	}
-
-	public void enableButtons(){
-		this.down_b.setEnabled(true);
-		this.up_b.setEnabled(true);
-		this.left_b.setEnabled(true);
-		this.right_b.setEnabled(true);
 	}
 	
 	public void proccessButton(char pressed){
@@ -215,65 +207,13 @@ public static void focus(){
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
-		this.frame = new JFrame();
+		frame = new JFrame();
 		this.initializeFrame();
-		this.initializeUpButton();
-		this.initializeDownButton();
-		this.initializeLeftButton();
-		this.initializeRightButton();
 		this.initializeNewGameButton();
 		this.initializeCreateMapButton();
-		
+		this.initializeLoadGameButton();
 		this.initializeInitBack();
-		this.frame.repaint();
-	}
-	
-	private void initializeUpButton(){
-		this.up_b = new JButton("Up");
-		up_b.setBounds(596, 225, 69, 29);
-		up_b.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				proccessButton('w');
-			}
-		});
-		up_b.setEnabled(false);
-		up_b.setFont(new Font("Tahoma", Font.PLAIN, 12));
-	}
-
-	private void initializeDownButton(){
-		this.down_b = new JButton("Down");
-		down_b.setBounds(596, 305, 69, 29);
-		down_b.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				proccessButton('s');
-			}
-		});
-		down_b.setEnabled(false);
-		down_b.setFont(new Font("Tahoma", Font.PLAIN, 12));
-	}
-
-	private void initializeLeftButton(){
-		this.left_b = new JButton("Left");
-		left_b.setBounds(528, 265, 69, 29);
-		left_b.setEnabled(false);
-		left_b.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				proccessButton('a');
-			}
-		});
-		left_b.setFont(new Font("Tahoma", Font.PLAIN, 12));
-	}
-
-	private void initializeRightButton(){
-		this.right_b = new JButton("Right");
-		right_b.setBounds(674, 265, 69, 29);
-		right_b.setEnabled(false);
-		right_b.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				proccessButton('d');
-			}
-		});
-		right_b.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		frame.repaint();
 	}
 
 	private void initializeFrame(){
@@ -286,7 +226,7 @@ public static void focus(){
 			
 			}
 		});
-		this.frame.getContentPane().setLayout(new BorderLayout());
+		frame.getContentPane().setLayout(new BorderLayout());
 	}
 
 	private void initializeNewGameButton(){
@@ -297,8 +237,19 @@ public static void focus(){
 				newGame();
 			}
 		});
-		this.frame.getContentPane().add(new_game,BorderLayout.EAST);
 	}
+	
+	
+	private void initializeLoadGameButton(){
+		load_game= new JButton("Load Game");
+		load_game.setBounds(245, 484, 142, 46);
+		load_game.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {	
+				
+			}
+		});
+	}
+	
 
 	private void initializeCreateMapButton(){
 		btnMapCreation = new JButton("Map Creation");
@@ -334,7 +285,6 @@ public static void focus(){
 						
 						}
 				    frame.setVisible(false);
-				    //CreateMap.Construct(height,width);
 				    frame2 = new JFrame("Build your map");
 					frame2.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 					frame2.setPreferredSize(new Dimension(width*50+width/2,height*50+65)); 
@@ -354,12 +304,17 @@ public static void focus(){
 
 		});
 		btnMapCreation.setBounds(66, 501, 142, 29);
-		frame.getContentPane().add(btnMapCreation,BorderLayout.SOUTH);
 	}
+	
+	
+	
 
 	private void initializeInitBack(){
 		init_back = new Initial_Backgorund();
 		init_back.setBounds(36, 54, 524, 328);
+		init_back.add(new_game);
+		init_back.add(load_game);
+		init_back.add(btnMapCreation);
 		JButton exit_b = new JButton("Exit");
 		init_back.add(exit_b);
 		exit_b.setBounds(596, 452, 69, 25);

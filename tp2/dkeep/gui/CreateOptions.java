@@ -24,23 +24,7 @@ public class CreateOptions extends JPanel{
 		JButton salvar = new JButton("PlayGame");
 		salvar.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent arg0) {
-				CreateMap cm= CreateMap.getpanel();
-				cm.setVisible(false);
-				cm.putLimits();
-				cm.getframe().setVisible(false);
-				GenericMap gm=new GenericMap(cm.getMap());
-
-				ArrayList <GameCharacter> characters=cm.getOgres();
-				characters.add(cm.getHero());
-				gm.setCharacters(characters);
-				gm.setKey(cm.getKey(), false);
-				ArrayList<Pair<Pair<Integer,Integer> , String > > doors = new ArrayList<Pair<Pair<Integer,Integer> , String> >();
-				doors.add(cm.getDoor());
-				gm.setDoors(doors);
-				GameLogic game = new GameLogic(gm,0);
-				GameWindow n= new GameWindow();
-
-				n.createNewGame(game);
+				GameWindow.initializeCreatedMap();	
 			}
 
 		});

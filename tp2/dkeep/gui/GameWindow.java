@@ -63,9 +63,7 @@ public class GameWindow {
 			public void run() {
 				try {
 					GameWindow window = new GameWindow();
-					//PrettyWindow window2 = new PrettyWindow();
 					window.frame.setVisible(true);
-					//window.frame2.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -149,8 +147,6 @@ public class GameWindow {
 				else{
 					JOptionPane.showMessageDialog(frame, "It's supoesed to be 1-5 ogres");
 					disableButtons();
-					//return;
-
 				}
 
 			}
@@ -242,8 +238,6 @@ public class GameWindow {
 			}
 		});
 		
-		
-		//---- BEGIN BUTTONS ----
 		this.up_b = new JButton("Up");
 		up_b.setBounds(596, 225, 69, 29);
 		up_b.addActionListener(new ActionListener() {
@@ -296,7 +290,6 @@ public class GameWindow {
 		
 		this.frame.getContentPane().setLayout(new BorderLayout());
 		this.frame.getContentPane().add(new_game,BorderLayout.EAST);
-		//this.frame.getContentPane().add(this.down_b);
 
 		JButton btnMapCreation = new JButton("Map Creation");
 		btnMapCreation.addActionListener(new ActionListener() {
@@ -336,9 +329,6 @@ public class GameWindow {
 							return;
 						
 						}
-				    
-				   
-				    //CreationFrame cf= new CreationFrame(height,width);
 				    frame.setVisible(false);
 				    CreateMap.Construct(width,height);
 					}
@@ -359,8 +349,6 @@ public class GameWindow {
 				System.exit(0);
 			}
 		});
-		//initial_Backgorund.setLayout(new BorderLayout(0, 0));
-
 		this.frame.repaint();
 	}
 }

@@ -38,7 +38,6 @@ public class CreateOptions extends JPanel{
 				doors.add(cm.getDoor());
 				gm.setDoors(doors);
 				GameLogic game = new GameLogic(gm,0);
-				//String mp=UserInput.getPrintableMap(game, false , false);
 				GameWindow n= new GameWindow();
 
 				n.createNewGame(game);

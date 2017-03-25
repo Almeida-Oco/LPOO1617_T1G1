@@ -22,8 +22,6 @@ import dkeep.logic.Ogre;
 import dkeep.logic.Pair;
 
 
-//import maze.gui.CreateOptions;
-
 public class CreateMap extends JPanel implements MouseListener{
 	
 	
@@ -174,7 +172,7 @@ public class CreateMap extends JPanel implements MouseListener{
 	public static void Construct(int height, int width){
 		f = new JFrame("Constroi o teu labirinto");
 		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		f.setPreferredSize(new Dimension(width*50+width/2,height*50+65));   //(620, 670));
+		f.setPreferredSize(new Dimension(width*50+width/2,height*50+65)); 
 		f.getContentPane().setLayout(new BorderLayout());
 		JPanel panel2 = new CreateOptions();
 		panel = new CreateMap(height,width);
@@ -232,8 +230,8 @@ public class CreateMap extends JPanel implements MouseListener{
 	
 	@Override
 	public void mouseClicked(MouseEvent arg0) {
-		int j_map = arg0.getX()/50;  ///(getWidth()/width);
-		int i_map = arg0.getY()/50;  ///(getHeight()/height);
+		int j_map = arg0.getX()/50;  
+		int i_map = arg0.getY()/50; 
 		System.out.println(i_map + "  " + j_map);
 		System.out.println(CreateOptions.getSelecionado());
 		
@@ -335,14 +333,13 @@ public class CreateMap extends JPanel implements MouseListener{
 
 		System.out.println("Trying to paint Panel!");
 		int x = 0, y = 0;
-		//System.out.println(this.current_map);
 		for (int i = 0; i < height; i++) {
 			for(int j=0; j< width;j++){
-			g.drawImage( this.char_to_img.get( map[i][j]) , x , y , 50 , 50 , null); //(getWidth()/width),(getHeight()/height),null);
+			g.drawImage( this.char_to_img.get( map[i][j]) , x , y , 50 , 50 , null);
 			g.drawRect(x, y, 50, 50);
-			x+= 50; //(getWidth()/width);
+			x+= 50;
 		}
-			y+= 50;//(getHeight()/height);
+			y+= 50;
 			x=0;
 			continue;
 	}

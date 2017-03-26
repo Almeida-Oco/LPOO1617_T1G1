@@ -61,9 +61,10 @@ public class GameLogic implements java.io.Serializable{
 		ArrayList< Pair<Integer,Integer> > pos = new ArrayList<Pair<Integer,Integer> >();
 		for (GameCharacter ch : this.villains){
 			int change = 0;
-			do{
- 				pos = ch.moveCharacter(pos, change);
-			} while ( /*( (change = this.checkOverlap(pos)) != -1) ||*/ ( (change = this.map.isFree(pos)) != -1 ) );
+			if ( !checkStuck( ch.getPos()) )
+				do{
+					pos = ch.moveCharacter(pos, change);
+				} while (( (change = this.map.isFree(pos)) != -1 ) );
 			ch.setPos(pos);
 			ch.checkKeyTriggers(this.map.getKey());
 			if(ch instanceof Ogre)
@@ -120,6 +121,36 @@ public class GameLogic implements java.io.Serializable{
 		return false;
 	}
 
+	/**
+	 * Checks whether the character can move or if it is stuck
+	 * @param positions Positions of character to check
+	 * @return True if he is stuck, false if not
+	 */
+	private boolean checkStuck(ArrayList<Pair<Integer,Integer> > positions){
+		for (Pair<Integer,Integer> p : positions){
+			if ( checkWallStuck(p) == 4 )
+				return true;
+		}
+		return false;
+	}
+	
+	/**
+	 * Checks how many walls surround given position
+	 * @param p Position to check 
+	 * @return Number of walls surrounding position
+	 */
+	private int checkWallStuck( Pair<Integer,Integer> p){
+			int how_many = 0;
+			how_many += ( this.map.getTile( new Pair<Integer,Integer>(p.getFirst()+1,p.getSecond())) == ' ' || 
+						  this.map.getTile( new Pair<Integer,Integer>(p.getFirst()+1,p.getSecond())) == 'k') ? 0 : 1;
+			how_many += ( this.map.getTile( new Pair<Integer,Integer>(p.getFirst()-1,p.getSecond())) == ' ' || 
+						  this.map.getTile( new Pair<Integer,Integer>(p.getFirst()-1,p.getSecond())) == 'k') ? 0 : 1;
+			how_many += ( this.map.getTile( new Pair<Integer,Integer>(p.getFirst(),p.getSecond()+1)) == ' ' || 
+						  this.map.getTile( new Pair<Integer,Integer>(p.getFirst(),p.getSecond()+1)) == 'k') ? 0 : 1;
+			how_many += ( this.map.getTile( new Pair<Integer,Integer>(p.getFirst(),p.getSecond()-1)) == ' ' || 
+						  this.map.getTile( new Pair<Integer,Integer>(p.getFirst(),p.getSecond()-1)) == 'k') ? 0 : 1;
+			return how_many;
+	}
 	
 	
 	/**	

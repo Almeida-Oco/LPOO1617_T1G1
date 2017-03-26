@@ -402,14 +402,16 @@ public class GameTests {
 	
 	@Test
 	public void testMoveGuards(){
-		
+		Pair<Integer,Integer> last_pos;
 		for(int i = 1 ; i < 4 ; i++){ //generate all three guards
 			DungeonMap map = new DungeonMap(i);
 			GameLogic game = new GameLogic(map,0); //number is irrelevant
-			for(int j = 0 ; j < 50 ; j++){			
+			for(int j = 0 ; j < 50 ; j++){
+				last_pos = game.getVillains().get(0).getPos().get(0);
 				game.moveAllVillains();
 				assertEquals(true, validGuardPos(game.getVillains().get(0).getPos().get(0) , i, j%movement.size()) );
-	
+				if (last_pos.equals(game.getVillains().get(0).getPos().get(0)))
+					assertEquals("g" , game.getVillains().get(0).toString());
 				if (i == 1){
 					ArrayList< Pair<Pair<Integer,Integer> , String > > temp = new ArrayList< Pair< Pair<Integer,Integer> , String> >();
 					temp.add( new Pair<Pair<Integer,Integer>,String>(movement.get(j % movement.size()) , "G") );
@@ -513,7 +515,31 @@ public class GameTests {
 		}
 		
 	}
-	}
+	
+	@Test(timeout = 1000)
+	public void testOgreStuck(){
+		char[][] map = {{'X','X','X','X','X'},
+						{'X',' ','X',' ','X'},
+						{'X','X','k','X','X'},
+						{'X',' ','X',' ','X'},
+						{'X','X','X','X','X'}};
+		GenericMap game_map = new GenericMap(map);
+		ArrayList<GameCharacter> chrs = new ArrayList<GameCharacter>();
+		chrs.add( new Ogre(new Pair<Integer,Integer>(1,1) , game_map.getSize() ) );
+		chrs.add( new Ogre(new Pair<Integer,Integer>(3,1) , game_map.getSize() ) );
+		chrs.add( new Ogre(new Pair<Integer,Integer>(1,3) , game_map.getSize() ) );
+		chrs.add( new Ogre(new Pair<Integer,Integer>(3,3) , game_map.getSize() ) );
+		chrs.add( new Hero(new Pair<Integer,Integer>(0,0) , game_map.getSize() ) );
+		game_map.setCharacters(chrs);
+		game_map.setKey(new Pair<Integer,Integer>(2,2) , false);
+		GameLogic game = new GameLogic(game_map,0); //number irrelevant
+		game.moveAllVillains();
+		assertEquals( new Pair<Integer,Integer>(1,1) , game.getVillains().get(0).getPos().get(0));
+		assertEquals( new Pair<Integer,Integer>(3,1) , game.getVillains().get(1).getPos().get(0));
+		assertEquals( new Pair<Integer,Integer>(1,3) , game.getVillains().get(2).getPos().get(0));
+		assertEquals( new Pair<Integer,Integer>(3,3) , game.getVillains().get(3).getPos().get(0));
+	}                                                                                        
+}
 
 
 

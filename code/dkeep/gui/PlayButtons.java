@@ -9,57 +9,81 @@ import javax.swing.JPanel;
 
 public class PlayButtons extends JPanel {
 	private static final long serialVersionUID = 1L;
-
+	private JButton up , left , down , right , back , save;
+	
 	PlayButtons(){
-		JButton Up = new JButton("Up");
-		Up.addActionListener(new ActionListener(){
+		this.initButtons();
+		this.add(this.up);
+		this.add(this.left);
+		this.add(this.down);
+		this.add(this.right);
+		this.add(this.save);
+		this.add(this.back);
+		
+	}
+	
+	private void initButtons(){
+		this.initUpButton();
+		this.initLeftButton();
+		this.initRightButton();
+		this.initDownButton();
+		this.initBackButton();
+		this.initSaveButton();
+	}
+	
+	private void initUpButton(){
+		this.up = new JButton("Up");
+		this.up.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent arg0) {
 				GameWindow.proccessKey('w');
 				GameWindow.focus();
 			}
 
 		});
-		
-		JButton Left = new JButton("Left");
-		Left.addActionListener(new ActionListener(){
+	}
+	private void initLeftButton(){
+		this.left = new JButton("Left");
+		this.left.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent arg0) {
 				GameWindow.proccessKey('a');
 				GameWindow.focus();
 			}
 
 		});
-		
-		JButton Down = new JButton("Down");
-		Down.addActionListener(new ActionListener(){
-			public void actionPerformed(ActionEvent arg0) {
-				GameWindow.proccessKey('s');
-				GameWindow.focus();
-			}
-
-		});
-		
-		JButton Right = new JButton("Right");
-		Right.addActionListener(new ActionListener(){
+	}
+	private void initRightButton(){
+		this.right = new JButton("Right");
+		this.right.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent arg0) {
 				GameWindow.proccessKey('d');
 				GameWindow.focus();
 			}
 
 		});
+	}
+	private void initDownButton(){
+		this.down = new JButton("Down");
+		this.down.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent arg0) {
+				GameWindow.proccessKey('s');
+				GameWindow.focus();
+			}
 
-		
-		
-		JButton voltar = new JButton("Voltar");
-		voltar.addActionListener(new ActionListener()
+		});
+	}
+	private void initBackButton(){
+		this.back = new JButton("Back");
+		back.addActionListener(new ActionListener()
 	    {
 	      public void actionPerformed(ActionEvent e)
 	      {
 	    	GameWindow.backtoMenu();
 	      }
 	    });
-		
-		JButton save = new JButton("Save Game");
-		save.addActionListener(new ActionListener()
+	}
+	private void initSaveButton(){
+		this.save = new JButton("Save Game");
+		this.save.addActionListener(new ActionListener()
 	    {
 	      public void actionPerformed(ActionEvent e)
 	      {
@@ -67,15 +91,5 @@ public class PlayButtons extends JPanel {
 	    	GameWindow.focus();
 	      }
 	    });
-		
-		
-		
-		this.add(Up);
-		this.add(Left);
-		this.add(Down);
-		this.add(Right);
-		this.add(save);
-		this.add(voltar);
-		
 	}
 }

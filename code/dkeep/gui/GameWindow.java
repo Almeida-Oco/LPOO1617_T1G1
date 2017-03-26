@@ -34,7 +34,6 @@ public class GameWindow {
 	private static PrettyPanel imgs_panel;
 	private JButton btnMapCreation,new_game;
 	private Initial_Backgorund init_back;
-	private static UserInput input;
 	private JButton load_game;
 	protected static GameLogic game;
 	private static int ogres;
@@ -65,30 +64,27 @@ public class GameWindow {
 	}
 	
 	public static void proccessKey(char ch){
-		if (ch != '\n' && !game.isGameOver() && !game.wonGame()){	
-			boolean changed_lvl =game.moveHero(ch);
-			if(changed_lvl && !game.wonGame())
+		boolean gm_over = game.isGameOver() , gm_won = game.wonGame(), changed_lvl = false;
+		if (ch != '\n' && !gm_over && !gm_won){	
+			if( ( changed_lvl =game.moveHero(ch) ) && !(gm_won = game.wonGame()) )
 				game = game.getNextLevel(ogres);
-			if (!game.isGameOver())
+			if ( !(gm_over = game.isGameOver() ) )
 				game.moveAllVillains();
-			if (game.wonGame() || game.isGameOver()){
-				//disableButtons(); desabilitar os botões do jogo
-				imgs_panel.gameOver(game.isGameOver());
-				imgs_panel.gameWon(game.wonGame());
+			if (gm_won || gm_over){
+				imgs_panel.gameOver(gm_over);
+				imgs_panel.gameWon(gm_won);
 			}	
-			imgs_panel.updateCurrentMap( input.getPrintableMap(game.getMap().getMap() , game.getAllCharacters() , false , false));
+			imgs_panel.updateCurrentMap( UserInput.getPrintableMap(game.getMap().getMap() , game.getAllCharacters() , false , false));
 			frame3.repaint();
 		}
 	}
 	
 	private char translateKey(KeyEvent e){
-		return 	   ( ( (e.getKeyCode() == KeyEvent.VK_W) || (e.getKeyCode() == KeyEvent.VK_UP) ) ? 'w' : 
-			( ( (e.getKeyCode() == KeyEvent.VK_A) || (e.getKeyCode() == KeyEvent.VK_LEFT) ) ? 'a' : 
-				( ( (e.getKeyCode() == KeyEvent.VK_S) || (e.getKeyCode() == KeyEvent.VK_DOWN) ) ? 's' : 
-					( ( (e.getKeyCode() == KeyEvent.VK_D) || (e.getKeyCode() == KeyEvent.VK_RIGHT) ) ? 'd' : '\n'))));
+		return ( ( (e.getKeyCode() == KeyEvent.VK_W) || (e.getKeyCode() == KeyEvent.VK_UP) ) ? 'w' : 
+			   ( ( (e.getKeyCode() == KeyEvent.VK_A) || (e.getKeyCode() == KeyEvent.VK_LEFT) ) ? 'a' : 
+			   ( ( (e.getKeyCode() == KeyEvent.VK_S) || (e.getKeyCode() == KeyEvent.VK_DOWN) ) ? 's' : 
+			   ( ( (e.getKeyCode() == KeyEvent.VK_D) || (e.getKeyCode() == KeyEvent.VK_RIGHT) ) ? 'd' : '\n'))));
 	}
-
-
 
 	public void chooseGuard(){
 		Object[] possibilities = {"Novice", "Drunk", "Suspicious"};
@@ -119,10 +115,10 @@ public class GameWindow {
 				if(value1.length() == 0)
 					ogres = 0;
 				else
-					JOptionPane.showMessageDialog(frame, "It's supoesed to be 1-5 ogres");
+					JOptionPane.showMessageDialog(frame, "It's supposed to be 1-5 ogres");
 			}
 			if(ogres<0 ||ogres>5){
-				JOptionPane.showMessageDialog(frame, "It's supoesed to be 1-5 ogres");
+				JOptionPane.showMessageDialog(frame, "It's supposed to be 1-5 ogres");
 				exit=false;
 			}
 		}
@@ -136,25 +132,18 @@ public class GameWindow {
 		imgs_panel = new PrettyPanel( UserInput.getPrintableMap( game.getMap().getMap() , game.getAllCharacters(), false , false) );
 		initializeImgPanelListeners();
 		frame3.setVisible(true);
-		frame3.setBounds(100, 100, 500 , 500);
+		frame3.setBounds(100, 100 ,PrettyPanel.DEFAULT_IMG_SIZE*imgs_panel.getMapWidth() , PrettyPanel.DEFAULT_IMG_SIZE*imgs_panel.getMapHeight());
 		frame3.getContentPane().add(imgs_panel,BorderLayout.CENTER);
 		PlayButtons pb= new PlayButtons();
 		frame3.getContentPane().add(pb,BorderLayout.SOUTH);
 		frame3.revalidate();
 		frame3.repaint();
 		imgs_panel.requestFocus();
-		System.out.println("FINISHED SETTING UP!");
 	}
-	
-	
-public static void focus(){
-	imgs_panel.requestFocus();
-}
 
 	public void newGame(){
 		chooseGuard();
 		chooseOgre();
-		input = new UserInput();
 		game = new GameLogic(null,guard+1);
 
 		if(ogres != 0)
@@ -166,15 +155,18 @@ public static void focus(){
 	}
 	
 	
-	
 	private void initializeImgPanelListeners(){
 		imgs_panel.addKeyListener(new KeyAdapter(){
 			@Override
 			public void keyPressed(KeyEvent e){
-				System.out.println("KEY PRESSED!");
 				proccessKey(translateKey(e));
 			}
 		});
+	}
+	
+	
+	public static void focus(){
+		imgs_panel.requestFocus();
 	}
 	
 	/**
@@ -215,7 +207,6 @@ public static void focus(){
 		});
 	}
 	
-	
 	private void initializeLoadGameButton(){
 		load_game= new JButton("Load Game");
 		load_game.setBounds(245, 484, 142, 46);
@@ -228,7 +219,6 @@ public static void focus(){
 		});
 	}
 	
-
 	private void initializeCreateMapButton(){
 		btnMapCreation = new JButton("Map Creation");
 		btnMapCreation.addActionListener(new ActionListener() {
@@ -283,9 +273,6 @@ public static void focus(){
 		});
 		btnMapCreation.setBounds(66, 501, 142, 29);
 	}
-	
-	
-	
 
 	private void initializeInitBack(){
 		init_back = new Initial_Backgorund();
@@ -331,6 +318,8 @@ public static void focus(){
 	         fileOut.close();
 	         System.out.printf("Serialized data is saved in "+System.getProperty("user.dir")+"/save.ser");
 	      }catch(IOException i) {
+	    	  System.out.println("ERROR! "+i.getMessage());
+	    	  System.out.println("CAUSE : "+i.getCause());
 	      }
 	}
 	
@@ -347,10 +336,8 @@ public static void focus(){
 	         return null;
 	      }catch(ClassNotFoundException c) {
 	         System.out.println("Employee class not found");
-	         
 	         return null;
 	      }
-		
 		return e;
 	}
 

@@ -10,47 +10,50 @@ import javax.swing.JPanel;
 public class CreateOptions extends JPanel{
 	private static final long serialVersionUID = 6930814056136819156L;
 	static JComboBox<String> lista;
+	private JButton play , back;
 	
 	/**
 	 * Cria as opcoes do menu de criacao de um labirinto
 	 */
 	CreateOptions(){
-		JButton salvar = new JButton("PlayGame");
-		salvar.addActionListener(new ActionListener(){
+		this.initPlay();
+		this.initBack();
+		this.initOptions();
+		this.add(this.play);
+		this.add(this.back);
+		this.add(lista);
+	}
+	
+	private void initPlay(){
+		this.play = new JButton("PlayGame");
+		this.play.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent arg0) {
 				if(CreateMap.canStart())
-				GameWindow.initializeCreatedMap();	
+					GameWindow.initializeCreatedMap();	
 				else
-				{
 					GameWindow.showError();
-				}
 			}
 
 		});
-
-		
-		
-		JButton voltar = new JButton("Voltar");
-		voltar.addActionListener(new ActionListener()
+	}
+	private void initBack(){
+		this.back = new JButton("Back");
+		this.back.addActionListener(new ActionListener()
 	    {
 	      public void actionPerformed(ActionEvent e)
 	      {
 	    	GameWindow.backtoMenu();
 	      }
 	    });
-		
+	}
+	private void initOptions(){
 		lista = new JComboBox<String>();
 		lista.addItem("Exit");
 		lista.addItem("Wall");
 		lista.addItem("Hero");
 		lista.addItem("Ogre");
 		lista.addItem("Key");
-		
-		this.add(salvar);
-		this.add(voltar);
-		this.add(lista);
 	}
-	
 	/**
 	 * Retorna o que o utilizador selecionou da lista
 	 * @return item selecionado

@@ -65,18 +65,22 @@ public class GameWindow {
 	
 	public static void proccessKey(char ch){
 		boolean gm_over = game.isGameOver() , gm_won = game.wonGame(), changed_lvl = false;
+		
+		if (gm_won || gm_over){
+			imgs_panel.gameOver(gm_over);
+			imgs_panel.gameWon(gm_won);
+			frame3.repaint();
+		}	
 		if (ch != '\n' && !gm_over && !gm_won){	
 			if( ( changed_lvl =game.moveHero(ch) ) && !(gm_won = game.wonGame()) )
 				game = game.getNextLevel(ogres);
 			if ( !(gm_over = game.isGameOver() ) )
 				game.moveAllVillains();
-			if (gm_won || gm_over){
-				imgs_panel.gameOver(gm_over);
-				imgs_panel.gameWon(gm_won);
-			}	
+					
 			imgs_panel.updateCurrentMap( UserInput.getPrintableMap(game.getMap().getMap() , game.getAllCharacters() , false , false));
 			frame3.repaint();
 		}
+		
 	}
 	
 	private char translateKey(KeyEvent e){

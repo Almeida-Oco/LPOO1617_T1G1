@@ -246,7 +246,7 @@ public class CreateMap extends JPanel implements MouseListener{
 	}
 	private void loadClubImage(){
 		try {                
-			this.char_to_img.put(new Character('*') ,ImageIO.read(new File(System.getProperty("user.dir")+"/imgs/Club.png")));
+			this.char_to_img.put(new Character('*') ,ImageIO.read(new File(System.getProperty("user.dir")+"/imgs/Fire.png")));
 		} catch (IOException ex) {
 			System.out.println("Error reading club image!");
 		}

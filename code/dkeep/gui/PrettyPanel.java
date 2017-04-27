@@ -101,11 +101,9 @@ public class PrettyPanel extends JPanel {
 
 	private void lostMessage(Graphics g){
 		g.drawImage(lost_game, (getWidth()/4),(getHeight()/4), (getWidth()/2), (getHeight()/2),null);
-		System.out.println("Lost");
 	}
 	private void winMessage(Graphics g){
 		g.drawImage(won_game, (getWidth()/4),(getHeight()/4), (getWidth()/2), (getHeight()/2),null);
-		System.out.println("Won");
 	}
 	
 

@@ -1,7 +1,6 @@
 package dkeep.logic;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Random;
 
 /**
  * Brain of the game, all Logic is here
@@ -208,7 +207,6 @@ public class GameLogic implements java.io.Serializable{
 	 * 		   an object of DungeonMap (because of GameLogic(Map,int) specifics), !DO NOT USE TO CHECK GAME OVER!
 	 */
 	public GameLogic getNextLevel(int enemies){
-		Random rand = new Random();
 		return new GameLogic(this.map.nextMap(enemies) , 0); //number is irrelevant
 	}
 	

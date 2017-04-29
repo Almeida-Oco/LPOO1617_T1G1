@@ -4,6 +4,10 @@
 ## Architecture Design
 <br />
 
+![UML Diagram](https://github.com/Almeida-Oco/LPOO1617_T1G1/blob/finalproject/UML.png "UML Diagram")
+
+
+
 ### **Packages**
 ### Controller
 <dl>
@@ -77,6 +81,8 @@
 ## GUI Design
 
 The GUI will be very simple with the Main Menu and Multiplayer Menu:
+
+[Mockup Diagram](https://github.com/Almeida-Oco/LPOO1617_T1G1/blob/finalproject/Mockup.jpg "GUI Mockup")
 
 ### Main Menu
 -  **Single Player**

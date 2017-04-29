@@ -2,8 +2,9 @@
 
 ---
 ## Architecture Design
-### **Packages**
+<br />
 
+### **Packages**
 ### Controller
 <dl>
    <dt>Logic</dt>
@@ -35,7 +36,7 @@
    <dt>Equip</dt>
       <dd>Represents a PowerUp that Mario can get which might represent either a Hammer or a different PowerUp</dd>
 </dl>
-### Menus
+### Menu
 <dl>
    <dt>Menu</dt>
       <dd>Responsible for the Menus present in the game, namely Main Menu and Network Menu.</dd>
@@ -55,7 +56,9 @@
       <dd>Tests of the Model package</dd>
 </dl>
 
-### Design Patterns
+<br />
+
+### **Design Patterns**
 <dl>
    <dt>FLYWEIGHT</dt>
       <dd>Barrels share the same sprites between them</dd>
@@ -66,6 +69,9 @@
    <dt>STATE</dt>
       <dd>Mario PowerUps are a State themselves</dd>
 </dl>
+
+
+<br />
 
 ----
 ## GUI Design

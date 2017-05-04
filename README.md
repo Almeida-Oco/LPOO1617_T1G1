@@ -60,6 +60,12 @@
       <dd>Tests of the Model package</dd>
 </dl>
 
+### View
+<dl>
+   <dt>GameView</dt>
+      <dd>Responsible for drawing all the elements on the screen</dd>
+</dl>
+
 <br />
 
 ### **Design Patterns**

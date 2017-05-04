@@ -4,7 +4,5 @@ package Model;
  * Created by asus on 04/05/2017.
  */
 
-public class Mario extends Entity {
-
-
+public class Floor {
 }

@@ -5,4 +5,5 @@ package Model;
  */
 
 public class Fire extends Entity {
+    private Strategy strategy;
 }

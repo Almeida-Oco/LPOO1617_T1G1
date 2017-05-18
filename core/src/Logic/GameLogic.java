@@ -1,6 +1,7 @@
 package Logic;
 import java.util.ArrayList;
 import Model.Entity;
+import Model.Map;
 
 public class GameLogic {
     private GameLogic instance;

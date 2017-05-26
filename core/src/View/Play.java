@@ -21,9 +21,10 @@ public class Play implements Screen {
 
     @Override
     public void show() {
-
-        map=new TmxMapLoader().load("android/assets/maps/DKMap.tmx");
-        renderer= new OrthogonalTiledMapRenderer(map);
+        this.map = (new TmxMapLoader()).load(Gdx.files.internal("maps/DKMap.tmx").path());
+        this.renderer = new OrthogonalTiledMapRenderer(map);
+        this.camera = new OrthographicCamera();
+        this.camera.setToOrtho(false,Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
     }
 
     @Override
@@ -31,8 +32,8 @@ public class Play implements Screen {
         Gdx.gl.glClearColor(0,0,0,1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        renderer.setView(camera);
-        Gdx.gl.glClearColor(0,0,0,1);
+        this.renderer.setView(this.camera);
+        this.renderer.render();
 
     }
 
@@ -55,12 +56,12 @@ public class Play implements Screen {
 
     @Override
     public void hide() {
-dispose();
+        dispose();
     }
 
     @Override
     public void dispose() {
-    map.dispose();
+        map.dispose();
         renderer.dispose();
     }
 }

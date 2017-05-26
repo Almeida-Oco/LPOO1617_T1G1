@@ -22,7 +22,7 @@ public class Play implements Screen {
     @Override
     public void show() {
         this.map = (new TmxMapLoader()).load(Gdx.files.internal("maps/DKMap.tmx").path());
-        this.renderer = new OrthogonalTiledMapRenderer(map);
+        this.renderer = new OrthogonalTiledMapRenderer(map, 2.4f);
         this.camera = new OrthographicCamera();
         this.camera.setToOrtho(false,Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
     }

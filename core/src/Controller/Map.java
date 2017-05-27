@@ -42,11 +42,12 @@ public class Map {
         return false;
     }
 
+    //TODO why do we need that -1 5 lines below here
     public int collidesBottom(Pair<Integer,Integer> pos, Pair<Integer,Integer> rep_size) {
         for(float step = 0; step < rep_size.getFirst(); step += this.collision_layer.getTileWidth()/2 ){
             float x = (float)pos.getFirst()/this.scale + step, y = (pos.getSecond()-rep_size.getSecond())/this.scale;
             if( isCellBlocked(x,y) )
-                return (int)(this.getTopTile(x,y) * this.collision_layer.getTileHeight() * this.scale + rep_size.getSecond());
+                return (int)(this.getTopTile(x,y) * this.collision_layer.getTileHeight() * this.scale + rep_size.getSecond()-1);
         }
 
         return -1;
@@ -80,13 +81,13 @@ public class Map {
         this.scale = scale;
     }
 
-
+    //TODO why the fuck do we need layer_y - 6 ???
     private int getTopTile(float x , float y){
         int layer_x = (int)(x/this.collision_layer.getTileWidth()), layer_y = (int)(y/this.collision_layer.getTileHeight());
         while ( this.collision_layer.getCell(layer_x,layer_y) != null)
             layer_y++;
 
         System.out.println("    ELEMENT = "+layer_y);
-        return layer_y-1;
+        return layer_y-6;
     }
 }

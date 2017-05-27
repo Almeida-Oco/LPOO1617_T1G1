@@ -38,6 +38,7 @@ public abstract class EntityView {
         }
 
         if(collisionX) {
+            System.out.println("adeus");
             this.representation.setX(oldX);
         }
 
@@ -55,6 +56,7 @@ public abstract class EntityView {
         }
         //reacts to collision on y
         if(collisionY) {
+            System.out.println("ola");
             this.representation.setY(oldY);
         }
 

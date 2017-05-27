@@ -70,7 +70,7 @@ public class Play extends ScreenAdapter {
     private void drawEntities(){
         for (Entity ent : GameLogic.getInstance().getCharacters() ){
             EntityView ent_view = ViewFactory.makeView(this.assets,ent);
-            ent.setRepSize( (int)ent_view.getSprite().getWidth() , (int)ent_view.getSprite().getHeight() );
+            ent.setRepSize( (int)(ent_view.getSprite().getWidth()*ent_view.getImgScale()) , (int)(ent_view.getSprite().getHeight()*ent_view.getImgScale()) );
             ent_view.updatePos(ent.getX(),ent.getY());
             ent_view.draw(this.batch);
         }

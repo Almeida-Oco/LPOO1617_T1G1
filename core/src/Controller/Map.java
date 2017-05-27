@@ -46,8 +46,8 @@ public class Map {
     }
 
     public boolean collidesBottom(Pair<Integer,Integer> pos, Pair<Integer,Integer> rep_size) {
-        for(float step = 0; step < rep_size.getFirst(); step += (this.collision_layer.getTileWidth()*this.scale) )
-            if( isCellBlocked( (float)pos.getFirst()/this.scale + step, (float)pos.getSecond()/this.scale ) )
+        for(float step = 0; step < rep_size.getFirst(); step += this.collision_layer.getTileWidth()/2 )
+                if( isCellBlocked( (float)pos.getFirst()/this.scale + step, (float)((pos.getSecond()-rep_size.getSecond())/this.scale )) )
                 return true;
         return false;
     }

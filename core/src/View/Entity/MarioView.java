@@ -19,7 +19,8 @@ public class MarioView extends EntityView {
         this.canJump = true;
         Texture text = assets.get(MARIO_IMG);
         this.representation = new Sprite(text,text.getWidth(),text.getHeight());
-        this.representation.scale(3);
+        this.img_scale = 3;
+        this.representation.scale(this.img_scale);
     }
 
 

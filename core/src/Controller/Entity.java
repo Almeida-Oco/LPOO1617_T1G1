@@ -8,7 +8,6 @@ import com.badlogic.gdx.Gdx;
 
 public abstract class Entity {
     public enum type {MARIO, DONKEYKONG, BARREL, FIRE};
-
     // [width, height]
     protected Pair<Integer,Integer> rep_size = new Pair<Integer, Integer>(0,0);
     // [x,y]

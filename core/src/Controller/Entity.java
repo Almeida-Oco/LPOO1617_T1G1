@@ -1,4 +1,4 @@
-package Model;
+package Controller;
 
 import com.badlogic.gdx.Gdx;
 
@@ -6,9 +6,11 @@ import com.badlogic.gdx.Gdx;
  * Created by asus on 04/05/2017.
  */
 
-public class Entity {
+public abstract class Entity {
+    public enum type {MARIO, DONKEYKONG, BARREL, FIRE};
+
     // [width, height]
-    protected Pair<Integer,Integer> rep_size;
+    protected Pair<Integer,Integer> rep_size = new Pair<Integer, Integer>(0,0);
     // [x,y]
     protected Pair<Integer,Integer> position;
 
@@ -37,4 +39,19 @@ public class Entity {
         else
             this.position.setSecond( this.position.getSecond() + y);
     }
+
+    public int getX(){
+        return this.position.getFirst();
+    }
+
+    public int getY(){
+        return this.position.getSecond();
+    }
+
+    public void setRepSize(int width, int height){
+        this.rep_size.setFirst(width);
+        this.rep_size.setSecond(height);
+    }
+
+    public abstract type getType();
 }

@@ -1,4 +1,4 @@
-package Model;
+package Controller;
 
 /**
  * Created by asus on 04/05/2017.
@@ -6,7 +6,14 @@ package Model;
 
 public class DonkeyKong extends Entity {
     private DonkeyKong instance = null;
-    private DonkeyKong(){};
+    private DonkeyKong(){}
+
+    @Override
+    public type getType() {
+        return type.DONKEYKONG;
+    }
+
+    ;
 
 
     public DonkeyKong getInstance(){

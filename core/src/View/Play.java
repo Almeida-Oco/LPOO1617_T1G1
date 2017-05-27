@@ -1,67 +1,80 @@
 package View;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
-import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.ScreenAdapter;
+import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.maps.tiled.TiledMap;
-import com.badlogic.gdx.maps.tiled.TmxMapLoader;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 
-public class Play implements Screen {
+import Controller.GameLogic;
+import Controller.Entity;
+import Controller.Map;
+import View.Entity.EntityView;
+import View.Entity.MarioView;
+import View.Entity.ViewFactory;
 
-    private TiledMap map;
+public class Play extends ScreenAdapter {
+    private SpriteBatch batch;
+    private Map map;
     private OrthogonalTiledMapRenderer renderer;
     private OrthographicCamera camera;
+    private AssetManager assets;
 
 
     private final float JUMP_MIN_VAL = 6f;
-    private final int MOVE_MIN_VAL = 2;
+    private final float MOVE_MIN_VAL = 1.5f;
 
-    @Override
     public void show() {
-        this.map = (new TmxMapLoader()).load(Gdx.files.internal("maps/DKMap.tmx").path());
-        //TODO make scaling based on monitor size
-
-        this.renderer = new OrthogonalTiledMapRenderer(map, 2.4f);
+        this.batch = new SpriteBatch();
+        this.map = GameLogic.getInstance().getMap();
+        //TODO scaling based on monitor size
+        this.renderer = new OrthogonalTiledMapRenderer(this.map.getMap(), 2.4f);
         this.camera = new OrthographicCamera();
         this.camera.setToOrtho(false,Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
+        this.renderer.setView(this.camera);
+        this.assets = new AssetManager();
+        this.loadAssets();
+//      this.mario= new MarioView( new Sprite( new Texture("mario_left.png")) , (TiledMapTileLayer)map.getLayers().get("Floor") );
+//      mario.setPosition(4*mario.getCollisionLayer().getTileWidth(),10*mario.getCollisionLayer().getHeight());
     }
+
+
+    private void loadAssets(){
+        this.assets.load( MarioView.MARIO_IMG, Texture.class );
+        this.assets.finishLoading();
+    }
+
+
 
     @Override
     public void render(float delta) {
-        Gdx.gl.glClearColor(0,0,0,1);
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-
-        this.renderer.setView(this.camera);
-        this.renderer.render();
-
-
-
-        super.render();
-
+        super.render(delta);
         Gdx.gl.glClearColor(0/255f, 0/255f, 0/255f, 1);
         Gdx.gl.glClear( GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT );
 
-        this.view.render(0);
+        this.renderer.render();
 
-        if ( Gdx.input.isPeripheralAvailable(Input.Peripheral.Accelerometer) ){
-            game.render();
-            this.batch.begin();
-            this.Mario.draw(this.batch);
-            this.batch.end();
-        }
-        if (this.enoughToJump())
-            this.Mario.moveY(30);
 
-        int move_x = -(int)Gdx.input.getAccelerometerX() , move_y = -(int)Gdx.input.getAccelerometerY();
-        if (Math.abs(move_x) > MOVE_MIN_VAL)
-            this.Mario.moveX( move_x );
-        if (Math.abs(move_y) > MOVE_MIN_VAL)
-            this.Mario.moveY( move_y );
+        this.batch.begin();
+            this.drawEntities();
+        this.batch.end();
 
+        this.handleInput();
     }
+
+
+    private void drawEntities(){
+        for (Entity ent : GameLogic.getInstance().getCharacters() ){
+            EntityView entview = ViewFactory.makeView(this.assets,ent);
+            ent.setRepSize( (int)entview.getSprite().getWidth() , (int)entview.getSprite().getHeight() );
+            entview.update(ent.getX(),ent.getY());
+            entview.draw(this.batch);
+        }
+    }
+
 
     @Override
     public void resize(int width, int height) {
@@ -82,14 +95,28 @@ public class Play implements Screen {
 
     @Override
     public void hide() {
-        dispose();
+        this.dispose();
     }
 
     @Override
     public void dispose() {
-        map.dispose();
-        renderer.dispose();
+        this.map.dispose();
+        this.renderer.dispose();
+        this.batch.dispose();
     }
+
+
+    private void handleInput(){
+        if (this.enoughToJump())
+            GameLogic.getInstance().marioJump();
+
+        float move_x = -Gdx.input.getAccelerometerX() , move_y = -Gdx.input.getAccelerometerY();
+        if (Math.abs(move_x) > MOVE_MIN_VAL)
+            GameLogic.getInstance().marioMoveX((int)move_x);
+        if (Math.abs(move_y) > MOVE_MIN_VAL)
+            GameLogic.getInstance().marioMoveY((int)move_y);
+    }
+
 
     private boolean enoughToJump(){
         float x = Gdx.input.getAccelerometerX(), y = Gdx.input.getAccelerometerY(), z = Gdx.input.getAccelerometerZ();

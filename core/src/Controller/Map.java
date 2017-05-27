@@ -43,6 +43,7 @@ public class Map {
     }
 
     //TODO why do we need that -1 5 lines below here
+    //TODO Near the edge Mario falls before he is supposed to
     public int collidesBottom(Pair<Integer,Integer> pos, Pair<Integer,Integer> rep_size) {
         for(float step = 0; step < rep_size.getFirst(); step += this.collision_layer.getTileWidth()/2 ){
             float x = (float)pos.getFirst()/this.scale + step, y = (pos.getSecond()-rep_size.getSecond())/this.scale;
@@ -59,6 +60,15 @@ public class Map {
 
         return cell != null && cell.getTile() != null && cell.getTile().getProperties().containsKey("blocked");
 
+    }
+
+    public boolean nearLadder(Pair<Integer,Integer> pos, Pair<Integer,Integer> rep_size){
+        int     x = (int)( (pos.getFirst()+rep_size.getFirst()/2)/(this.scale*this.collision_layer.getTileWidth())),
+                y = (int)( (pos.getSecond()-rep_size.getSecond())/(this.scale*this.collision_layer.getTileHeight()));
+
+        TiledMapTileLayer.Cell tile = ((TiledMapTileLayer)this.map.getLayers().get("Stairs")).getCell( x , y );
+
+        return (tile != null && tile.getTile() != null);
     }
 
     public int getMapTileWidth() {
@@ -87,7 +97,9 @@ public class Map {
         while ( this.collision_layer.getCell(layer_x,layer_y) != null)
             layer_y++;
 
-        System.out.println("    ELEMENT = "+layer_y);
         return layer_y-6;
     }
+
+
+
 }

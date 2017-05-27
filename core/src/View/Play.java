@@ -24,7 +24,6 @@ public class Play extends ScreenAdapter {
     private OrthographicCamera camera;
     private AssetManager assets;
 
-
     private final float JUMP_MIN_VAL = 6f;
     private final float MOVE_MIN_VAL = 1.5f;
 
@@ -58,8 +57,6 @@ public class Play extends ScreenAdapter {
 
         this.renderer.render();
 
-        System.out.println("RENDERING!");
-
         this.batch.begin();
             this.drawEntities();
         this.batch.end();
@@ -80,15 +77,19 @@ public class Play extends ScreenAdapter {
 
     //TODO when mario is jumping x_velocity is constant
     private void handleInput(){
+        GameLogic game = GameLogic.getInstance();
         if (this.enoughToJump())
-            GameLogic.getInstance().marioJump();
+            game.marioJump();
 
-        float move_x = -Gdx.input.getAccelerometerX();
+        float move_x = -Gdx.input.getAccelerometerX(), move_y = Gdx.input.getAccelerometerY();
         if (Math.abs(move_x) > MOVE_MIN_VAL)
-            GameLogic.getInstance().moveMario( (int)(move_x/Math.abs(move_x)) );
+            game.moveMario( (int)(move_x/Math.abs(move_x)) ); // we only want either 1 or -1
         else
-            GameLogic.getInstance().moveMario( 0 );
+            game.moveMario( 0 );
 
+        if ( move_y < 0 ){ //Trying to climb ladder
+            game.marioClimb();
+        }
     }
 
     private boolean enoughToJump(){

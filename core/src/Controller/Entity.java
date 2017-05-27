@@ -16,6 +16,10 @@ public abstract class Entity {
     Pair<Float,Float> velocity = new Pair<Float,Float>(3.0f,-3f);
 
     private float gravity = 0.8f;
+    private boolean mid_air = false;
+
+    private final float MAX_Y_VELOCITY = 4;
+
 
     public Entity(){
         this.position = new Pair<Integer, Integer>(0,0);
@@ -54,6 +58,14 @@ public abstract class Entity {
         return this.velocity.getSecond();
     }
 
+    public boolean isMidAir(){
+        return this.mid_air;
+    }
+
+
+    public void setMidAir(boolean b){
+        this.mid_air = b;
+    }
 
     public void setPos(Pair<Integer,Integer> pos){
         this.position = pos;
@@ -65,7 +77,11 @@ public abstract class Entity {
     }
 
     public void setYVelocity( float vel ){
-        this.velocity.setSecond(vel);
+        if (this.velocity.getSecond()+vel < MAX_Y_VELOCITY)
+            this.velocity.setSecond(vel);
+        else
+            this.velocity.setSecond(MAX_Y_VELOCITY);
+        this.mid_air = true;
     }
 
     public abstract type getType();

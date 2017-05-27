@@ -31,8 +31,18 @@ public class GameLogic {
     }
 
     public void marioJump(){
-        this.chars.getFirst().setYVelocity(4);
+        if ( !this.chars.getFirst().isMidAir() )
+            this.chars.getFirst().setYVelocity(4);
     }
+
+    public void marioClimb(){
+        Entity mario = this.chars.getFirst();
+        if ( this.map.nearLadder(mario.getPos(),mario.getRepSize()) ){
+            System.out.println("    !!NEAR LADDER!!");
+        }
+
+    }
+
 
     /**
      * @brief Moves Mario in the horizontal direction given and updates y coordinates
@@ -42,10 +52,13 @@ public class GameLogic {
         Entity mario = this.chars.getFirst();
         Pair<Integer,Integer> curr_pos = mario.getPos();
         Pair<Integer,Integer> rep_size = mario.getRepSize();
+
         Pair<Integer,Integer> new_pos = this.moveSingleEntity(curr_pos,rep_size, new Pair<Integer,Integer>( direction*mario.getXSpeed() , (int)mario.getYSpeed() ));
 
-        if( curr_pos.equals(new_pos) ) //collision y_velocity = 0
+        if( curr_pos.equals(new_pos) ) { //collision y_velocity = 0
             this.chars.getFirst().setYVelocity(0);
+            this.chars.getFirst().setMidAir(false);
+        }
         else //no collision
             this.chars.getFirst().setPos(new_pos);
 
@@ -71,8 +84,9 @@ public class GameLogic {
         return collision_y;
     }
 
-    //TODO only check for collisions below mario
+
     public Pair<Integer,Integer> moveSingleEntity(Pair<Integer,Integer> old_pos, Pair<Integer,Integer> rep_size, Pair<Integer,Integer> move){
+
         Pair<Integer,Integer> new_pos = new Pair<Integer, Integer>( old_pos.getFirst()+move.getFirst() , old_pos.getSecond()+move.getSecond());
 
         new_pos.setFirst( checkOutOfScreeWidth( new_pos.getFirst() , rep_size.getFirst() ) );
@@ -86,6 +100,7 @@ public class GameLogic {
 
         return new_pos;
     }
+
 
     /**
      * @brief Checks if given number is out of screen height bounds

@@ -15,8 +15,7 @@ public abstract class EntityView {
 
 
     public void updatePos(int x , int y){
-        this.representation.setX(x);
-        this.representation.setY(y);
+        this.representation.setPosition(x,y);
     }
 
     public Sprite getSprite(){

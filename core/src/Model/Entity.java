@@ -1,15 +1,15 @@
 package Model;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 /**
  * Created by asus on 04/05/2017.
  */
 
 public class Entity {
-    protected Texture representation;
+    // [width, height]
+    protected Pair<Integer,Integer> rep_size;
+    // [x,y]
     protected Pair<Integer,Integer> position;
 
     public Entity(){
@@ -23,8 +23,8 @@ public class Entity {
     public void moveX(int x){
         if (this.position.getFirst() + x <= 0)
             this.position.setFirst(0);
-        else if (this.position.getFirst() + x >= (Gdx.graphics.getWidth()-this.representation.getWidth()) )
-            this.position.setFirst(Gdx.graphics.getWidth()-this.representation.getWidth());
+        else if (this.position.getFirst() + x >= (Gdx.graphics.getWidth()-this.rep_size.getFirst() ) )
+            this.position.setFirst(Gdx.graphics.getWidth()-this.rep_size.getFirst());
         else
             this.position.setFirst( this.position.getFirst() + x );
     }
@@ -32,13 +32,9 @@ public class Entity {
     public void moveY(int y){
         if (this.position.getSecond() + y <= 0)
             this.position.setSecond(0);
-        else if (this.position.getSecond() + y >= (Gdx.graphics.getHeight()-this.representation.getHeight()) )
-            this.position.setSecond(Gdx.graphics.getHeight()-this.representation.getHeight());
+        else if (this.position.getSecond() + y >= (Gdx.graphics.getHeight()-this.rep_size.getSecond()) )
+            this.position.setSecond(Gdx.graphics.getHeight()-this.rep_size.getSecond());
         else
             this.position.setSecond( this.position.getSecond() + y);
-    }
-
-    public void draw(SpriteBatch batch){
-        batch.draw(this.representation , this.position.getFirst(), this.position.getSecond() );
     }
 }

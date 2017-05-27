@@ -63,8 +63,8 @@ public class GameLogic {
         return collision_x;
     }
 
-    public boolean collisionOnY(Pair<Integer,Integer> old_pos, Pair<Integer,Integer> rep_size, int new_y){
-        boolean collision_y = false;
+    public int collisionOnY(Pair<Integer,Integer> old_pos, Pair<Integer,Integer> rep_size, int new_y){
+        int collision_y = -1;
         if( new_y < old_pos.getSecond() ) //moving down
             collision_y = this.map.collidesBottom(old_pos,rep_size);
 
@@ -79,10 +79,10 @@ public class GameLogic {
             System.out.println("adeus");
             new_pos.setFirst( old_pos.getFirst() );
         }
-
-        if ( collisionOnY( old_pos, rep_size, new_pos.getSecond() ) || new_pos.getSecond() < 0 || new_pos.getSecond() > (Gdx.graphics.getHeight()-rep_size.getSecond())) {
+        int new_y = old_pos.getSecond();
+        if (new_pos.getSecond() < 0 || new_pos.getSecond() > (Gdx.graphics.getHeight()-rep_size.getSecond()) || (new_y = collisionOnY( old_pos, rep_size, new_pos.getSecond() ) ) != -1) {
             System.out.println("ola");
-            new_pos.setSecond( old_pos.getSecond() );
+            new_pos.setSecond( new_y );
         }
         return new_pos;
     }

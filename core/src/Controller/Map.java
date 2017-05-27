@@ -37,19 +37,15 @@ public class Map {
         return false;
     }
 
-    public boolean collidesTop(Pair<Integer,Integer> pos, Pair<Integer,Integer> rep_size) {
-        for(float step = 0; step < rep_size.getFirst(); step += this.collision_layer.getTileWidth() / 2)
-            if(isCellBlocked( (float)pos.getFirst() + step , (float)pos.getSecond() + rep_size.getSecond()) )
-                return true;
-        return false;
 
-    }
+    public int collidesBottom(Pair<Integer,Integer> pos, Pair<Integer,Integer> rep_size) {
+        for(float step = 0; step < rep_size.getFirst(); step += this.collision_layer.getTileWidth()/2 ){
+            float x = (float)pos.getFirst()/this.scale + step, y = (pos.getSecond()-rep_size.getSecond())/this.scale;
+            if( isCellBlocked(x,y) )
+                return (int)( (int)(y/this.collision_layer.getTileHeight()) * this.collision_layer.getTileHeight() * this.scale + rep_size.getSecond());
+        }
 
-    public boolean collidesBottom(Pair<Integer,Integer> pos, Pair<Integer,Integer> rep_size) {
-        for(float step = 0; step < rep_size.getFirst(); step += this.collision_layer.getTileWidth()/2 )
-                if( isCellBlocked( (float)pos.getFirst()/this.scale + step, (float)((pos.getSecond()-rep_size.getSecond())/this.scale )) )
-                return true;
-        return false;
+        return -1;
     }
 
     private boolean isCellBlocked(float x, float y) {

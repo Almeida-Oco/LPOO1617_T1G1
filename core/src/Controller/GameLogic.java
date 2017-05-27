@@ -11,7 +11,7 @@ public class GameLogic {
 
     private GameLogic(){
         this.map = new Map();
-        this.chars.add( new Mario( 2*this.map.getMapTileWidth(), 80 ) );
+        this.chars.add( new Mario( 20 , 65 ) );
     };
 
 
@@ -31,7 +31,7 @@ public class GameLogic {
     }
 
     public void marioJump(){
-        this.chars.getFirst().setYVelocity(10);
+        this.chars.getFirst().setYVelocity(4);
     }
 
     /**
@@ -46,10 +46,10 @@ public class GameLogic {
 
         if( curr_pos.equals(new_pos) ) //collision y_velocity = 0
             this.chars.getFirst().setYVelocity(0);
-        else{ //no collision
+        else //no collision
             this.chars.getFirst().setPos(new_pos);
-            this.chars.getFirst().updateYVelocity();
-        }
+
+        this.chars.getFirst().updateYVelocity();
     }
 
 
@@ -75,15 +75,45 @@ public class GameLogic {
     public Pair<Integer,Integer> moveSingleEntity(Pair<Integer,Integer> old_pos, Pair<Integer,Integer> rep_size, Pair<Integer,Integer> move){
         Pair<Integer,Integer> new_pos = new Pair<Integer, Integer>( old_pos.getFirst()+move.getFirst() , old_pos.getSecond()+move.getSecond());
 
-        if(new_pos.getFirst() < 0 || new_pos.getFirst() > (Gdx.graphics.getWidth()-rep_size.getFirst()) ) {
-            System.out.println("adeus");
-            new_pos.setFirst( old_pos.getFirst() );
-        }
+        new_pos.setFirst( checkOutOfScreeWidth( new_pos.getFirst() , rep_size.getFirst() ) );
+        if (collisionOnX(old_pos,rep_size,new_pos.getFirst()))
+            new_pos.setSecond(new_pos.getSecond()+3);
+
         int new_y = old_pos.getSecond();
-        if (new_pos.getSecond() < 0 || new_pos.getSecond() > (Gdx.graphics.getHeight()-rep_size.getSecond()) || (new_y = collisionOnY( old_pos, rep_size, new_pos.getSecond() ) ) != -1) {
-            System.out.println("ola");
+        new_pos.setSecond( checkOutOfScreenHeight( new_pos.getSecond(), rep_size.getSecond() ));
+        if ( (new_y = collisionOnY( old_pos, rep_size, new_pos.getSecond() ) ) != -1)
             new_pos.setSecond( new_y );
-        }
+
         return new_pos;
+    }
+
+    /**
+     * @brief Checks if given number is out of screen height bounds
+     * @param pos Number to check, represents Y coordinate of object
+     * @param img_height Height of the image representing the object
+     * @return If image is out of bounds then the closest coordinate possible to that bound, otherwise param pos
+     */
+    private int checkOutOfScreenHeight( int pos , int img_height){
+        if (pos < 0)
+            return 0;
+        else if (pos > (Gdx.graphics.getHeight()-img_height) )
+            return (Gdx.graphics.getHeight()-img_height);
+        else
+            return pos;
+    }
+
+    /**
+     * @brief Checks if given number is out of screen width bounds
+     * @param pos Number to check, represents X coordinate of object
+     * @param img_width Height of the image representing the object
+     * @return If image is out of bounds then the closest coordinate possible to that bound, otherwise param pos
+     */
+    private int checkOutOfScreeWidth( int pos, int img_width) {
+        if (pos < 0)
+            return 0;
+        else if (pos > Gdx.graphics.getWidth() - img_width)
+            return Gdx.graphics.getWidth() - img_width;
+        else
+            return pos;
     }
 }

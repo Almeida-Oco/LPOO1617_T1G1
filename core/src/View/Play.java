@@ -58,6 +58,7 @@ public class Play extends ScreenAdapter {
 
         this.renderer.render();
 
+        System.out.println("RENDERING!");
 
         this.batch.begin();
             this.drawEntities();
@@ -82,9 +83,9 @@ public class Play extends ScreenAdapter {
         if (this.enoughToJump())
             GameLogic.getInstance().marioJump();
 
-        float move_x = -Gdx.input.getAccelerometerX() , move_y = -Gdx.input.getAccelerometerY();
+        float move_x = -Gdx.input.getAccelerometerX();
         if (Math.abs(move_x) > MOVE_MIN_VAL)
-            GameLogic.getInstance().moveMario( (int)(move_x/ Math.abs(move_x)) );
+            GameLogic.getInstance().moveMario( (int)(move_x/Math.abs(move_x)) );
         else
             GameLogic.getInstance().moveMario( 0 );
 

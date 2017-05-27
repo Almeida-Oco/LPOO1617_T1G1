@@ -24,25 +24,29 @@ public class Map {
     }
 
     public boolean collidesRight(Pair<Integer,Integer> pos, Pair<Integer,Integer> rep_size) {
-        for(float step = 0; step < rep_size.getSecond(); step += this.collision_layer.getTileHeight() / 2)
-            if(isCellBlocked( (float)pos.getFirst() + rep_size.getFirst(), (float)pos.getSecond() + step))
+        for(float step = 0; step < rep_size.getSecond(); step += this.collision_layer.getTileHeight() / 2){
+            float x = (float)pos.getFirst()/this.scale + rep_size.getFirst() , y = (pos.getSecond()-this.collision_layer.getTileHeight() + step);
+            if(isCellBlocked( x , y ) )
                 return true;
+        }
+
         return false;
     }
 
     public boolean collidesLeft(Pair<Integer,Integer> pos, Pair<Integer,Integer> rep_size) {
-        for(float step = 0; step < rep_size.getSecond(); step += this.collision_layer.getTileHeight() / 2)
-            if(isCellBlocked( (float)pos.getFirst() , (float)pos.getSecond() + step))
+        for(float step = 0; step < rep_size.getSecond(); step += this.collision_layer.getTileHeight() / 2){
+            float x  = (float)pos.getFirst()/this.scale, y = (pos.getSecond()-this.collision_layer.getTileHeight() + step);
+            if ( isCellBlocked( x , y ) )
                 return true;
+        }
         return false;
     }
-
 
     public int collidesBottom(Pair<Integer,Integer> pos, Pair<Integer,Integer> rep_size) {
         for(float step = 0; step < rep_size.getFirst(); step += this.collision_layer.getTileWidth()/2 ){
             float x = (float)pos.getFirst()/this.scale + step, y = (pos.getSecond()-rep_size.getSecond())/this.scale;
             if( isCellBlocked(x,y) )
-                return (int)( (int)(y/this.collision_layer.getTileHeight()) * this.collision_layer.getTileHeight() * this.scale + rep_size.getSecond());
+                return (int)(this.getTopTile(x,y) * this.collision_layer.getTileHeight() * this.scale + rep_size.getSecond());
         }
 
         return -1;
@@ -74,5 +78,15 @@ public class Map {
 
     public void setScale( float scale ){
         this.scale = scale;
+    }
+
+
+    private int getTopTile(float x , float y){
+        int layer_x = (int)(x/this.collision_layer.getTileWidth()), layer_y = (int)(y/this.collision_layer.getTileHeight());
+        while ( this.collision_layer.getCell(layer_x,layer_y) != null)
+            layer_y++;
+
+        System.out.println("    ELEMENT = "+layer_y);
+        return layer_y-1;
     }
 }

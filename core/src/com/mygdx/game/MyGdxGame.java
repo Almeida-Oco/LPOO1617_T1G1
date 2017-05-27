@@ -16,6 +16,7 @@ public class MyGdxGame extends Game {
 	private SpriteBatch batch;
 	private Entity Mario;
 	private Play view;
+	private Mario mario2;
 
 	private final float JUMP_MIN_VAL = 6f;
 	private final int MOVE_MIN_VAL = 2;

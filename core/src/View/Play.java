@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.maps.tiled.TiledMap;
+import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 
 import Controller.GameLogic;
@@ -18,7 +19,7 @@ import View.Entity.ViewFactory;
 
 public class Play extends ScreenAdapter {
     private SpriteBatch batch;
-    private static TiledMap map;
+    private TiledMap map;
     private OrthogonalTiledMapRenderer renderer;
     private OrthographicCamera camera;
     private AssetManager assets;
@@ -31,14 +32,14 @@ public class Play extends ScreenAdapter {
         this.batch = new SpriteBatch();
         this.map = GameLogic.getInstance().getMap().getMap();
         //TODO scaling based on monitor size
-        this.renderer = new OrthogonalTiledMapRenderer(this.map, 2.4f);
+        float scale = this.mapScaling();
+        this.renderer = new OrthogonalTiledMapRenderer(this.map, scale );
+        GameLogic.getInstance().getMap().setScale(scale);
         this.camera = new OrthographicCamera();
         this.camera.setToOrtho(false,Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
         this.renderer.setView(this.camera);
         this.assets = new AssetManager();
         this.loadAssets();
-//      this.mario= new MarioView( new Sprite( new Texture("mario_left.png")) , (TiledMapTileLayer)map.getLayers().get("Floor") );
-//      mario.setPosition(4*mario.getCollisionLayer().getTileWidth(),10*mario.getCollisionLayer().getHeight());
     }
 
 
@@ -122,5 +123,9 @@ public class Play extends ScreenAdapter {
         this.renderer.dispose();
         this.batch.dispose();
         this.assets.dispose();
+    }
+
+    private float mapScaling(){
+        return Gdx.graphics.getWidth() / (((TiledMapTileLayer)this.map.getLayers().get("Floor")).getWidth()*((TiledMapTileLayer)this.map.getLayers().get("Floor")).getTileWidth());
     }
 }

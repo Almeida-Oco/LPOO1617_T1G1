@@ -11,7 +11,7 @@ public class GameLogic {
 
     private GameLogic(){
         this.map = new Map();
-        this.chars.add( new Mario( 2*this.map.getMapTileWidth(), 70 ) );
+        this.chars.add( new Mario( 2*this.map.getMapTileWidth(), 80 ) );
     };
 
 
@@ -42,7 +42,7 @@ public class GameLogic {
         Entity mario = this.chars.getFirst();
         Pair<Integer,Integer> curr_pos = mario.getPos();
         Pair<Integer,Integer> rep_size = mario.getRepSize();
-        Pair<Integer,Integer> new_pos = this.moveSingleEntity(curr_pos,rep_size, new Pair<Integer,Integer>( direction*mario.getXSpeed()+(int)mario.getXSpeed() , (int)mario.getYSpeed() ));
+        Pair<Integer,Integer> new_pos = this.moveSingleEntity(curr_pos,rep_size, new Pair<Integer,Integer>( direction*mario.getXSpeed() , (int)mario.getYSpeed() ));
 
         if( curr_pos.equals(new_pos) ) //collision y_velocity = 0
             this.chars.getFirst().setYVelocity(0);
@@ -75,7 +75,7 @@ public class GameLogic {
     public Pair<Integer,Integer> moveSingleEntity(Pair<Integer,Integer> old_pos, Pair<Integer,Integer> rep_size, Pair<Integer,Integer> move){
         Pair<Integer,Integer> new_pos = new Pair<Integer, Integer>( old_pos.getFirst()+move.getFirst() , old_pos.getSecond()+move.getSecond());
 
-        if( collisionOnX( old_pos, rep_size, new_pos.getFirst()) || new_pos.getFirst() < 0 || new_pos.getFirst() > (Gdx.graphics.getWidth()-rep_size.getFirst()) ) {
+        if(new_pos.getFirst() < 0 || new_pos.getFirst() > (Gdx.graphics.getWidth()-rep_size.getFirst()) ) {
             System.out.println("adeus");
             new_pos.setFirst( old_pos.getFirst() );
         }

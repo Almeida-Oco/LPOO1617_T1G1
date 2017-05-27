@@ -14,7 +14,7 @@ public abstract class Entity {
     // [x,y]
     protected Pair<Integer,Integer> position;
     // [x,y]
-    Pair<Float,Float> velocity = new Pair<Float,Float>(3.0f,0f);
+    Pair<Float,Float> velocity = new Pair<Float,Float>(3.0f,-3f);
 
     private float gravity = 1.5f;
 

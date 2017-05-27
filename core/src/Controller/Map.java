@@ -5,17 +5,10 @@ import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 
-import java.util.ArrayList;
-
-import View.Play;
-
-/**
- * Created by asus on 04/05/2017.
- */
-
 public class Map {
     private TiledMap map;
     private TiledMapTileLayer collision_layer;
+    private float scale = 1f;
 
     public Map(){
         this.map = (new TmxMapLoader()).load(Gdx.files.internal("maps/DKMap.tmx").path());
@@ -53,8 +46,8 @@ public class Map {
     }
 
     public boolean collidesBottom(Pair<Integer,Integer> pos, Pair<Integer,Integer> rep_size) {
-        for(float step = 0; step < rep_size.getFirst(); step += this.collision_layer.getTileWidth() / 2)
-            if( isCellBlocked( (float)pos.getFirst() + step, (float)pos.getSecond() ) )
+        for(float step = 0; step < rep_size.getFirst(); step += (this.collision_layer.getTileWidth()*this.scale) )
+            if( isCellBlocked( (float)pos.getFirst()/this.scale + step, (float)pos.getSecond()/this.scale ) )
                 return true;
         return false;
     }
@@ -76,10 +69,14 @@ public class Map {
     }
 
     public int getMapHeight(){
-        return this.collision_layer.getHeight();
+        return (int)(this.collision_layer.getHeight()*this.collision_layer.getTileHeight());
     }
 
     public int getMapWidth(){
-        return this.collision_layer.getWidth();
+        return (int)(this.collision_layer.getWidth()*this.collision_layer.getTileWidth());
+    }
+
+    public void setScale( float scale ){
+        this.scale = scale;
     }
 }

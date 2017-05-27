@@ -19,7 +19,7 @@ import View.Entity.ViewFactory;
 
 public class Play extends ScreenAdapter {
     private SpriteBatch batch;
-    private Map map;
+    private static Map map;
     private OrthogonalTiledMapRenderer renderer;
     private OrthographicCamera camera;
     private AssetManager assets;
@@ -72,7 +72,7 @@ public class Play extends ScreenAdapter {
             EntityView entview = ViewFactory.makeView(this.assets,ent);
             ent.setRepSize( (int)entview.getSprite().getWidth() , (int)entview.getSprite().getHeight() );
             entview.update(ent.getX(),ent.getY());
-            entview.draw(this.batch,(TiledMapTileLayer) map.getMap().getLayers().get("FLoor"));
+            entview.draw(this.batch);
         }
     }
 
@@ -122,5 +122,8 @@ public class Play extends ScreenAdapter {
     private boolean enoughToJump(){
         float x = Gdx.input.getAccelerometerX(), y = Gdx.input.getAccelerometerY(), z = Gdx.input.getAccelerometerZ();
         return Math.sqrt( Math.pow(x,2)+Math.pow(y,2)+Math.pow(z,2) ) <= JUMP_MIN_VAL;
+    }
+    public static Map getMap(){
+        return map;
     }
 }

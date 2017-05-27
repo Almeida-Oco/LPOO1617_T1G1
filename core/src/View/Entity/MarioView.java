@@ -15,7 +15,8 @@ public class MarioView extends EntityView {
 
     public static final String MARIO_IMG = "mario_left.png";
 
-    public MarioView(AssetManager assets){
+    public MarioView(AssetManager assets, TiledMapTileLayer collisionLayer){
+        this.collisionLayer=collisionLayer;
         this.canJump = true;
         Texture text = assets.get(MARIO_IMG);
         this.representation = new Sprite(text,text.getWidth(),text.getHeight());
@@ -24,7 +25,7 @@ public class MarioView extends EntityView {
 
 
     public void draw(SpriteBatch spriteBatch) {
-        super.draw(spriteBatch,collisionLayer);
+        super.draw(spriteBatch);
     }
 
 }

@@ -15,8 +15,8 @@ public abstract class EntityView {
     protected float speed = 60 * 2, gravity = 60 * 1.8f;
     protected boolean canJump;
 
-    public void draw(SpriteBatch batch, TiledMapTileLayer collisionLayer){
-        this.collisionLayer=collisionLayer;
+    public void draw(SpriteBatch batch){
+
         this.representation.draw(batch);
     }
 
@@ -114,6 +114,7 @@ public abstract class EntityView {
     private boolean isCellBlocked(float x, float y) {
         TiledMapTileLayer.Cell cell = collisionLayer.getCell((int) (x / collisionLayer.getTileWidth()), (int) (y / collisionLayer.getTileHeight()));
         return cell != null && cell.getTile() != null && cell.getTile().getProperties().containsKey("blocked");
+
     }
 
     public boolean collidesRight() {

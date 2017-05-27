@@ -3,6 +3,7 @@ package View.Entity;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.maps.tiled.TiledMapImageLayer;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.math.Vector2;
 
@@ -12,14 +13,50 @@ public abstract class EntityView {
     protected TiledMapTileLayer collisionLayer;
     protected Vector2 velocity = new Vector2();
     protected float speed = 60 * 2, gravity = 60 * 1.8f;
+    protected boolean canJump;
 
-    public void draw(SpriteBatch batch){
+    public void draw(SpriteBatch batch, TiledMapTileLayer collisionLayer){
+        this.collisionLayer=collisionLayer;
         this.representation.draw(batch);
     }
 
     public void update(int x , int y){
         this.representation.setCenter(x,y);
 
+        float oldX = this.representation.getX(), oldY = this.representation.getY();
+        boolean collisionX = false, collisionY = false;
+
+        //moving on x axis
+        this.representation.setX( this.representation.getX() + x);
+        //moving left
+        if(this.representation.getX()<oldX){
+            collisionX = collidesLeft();
+        }
+            //moving right
+        if(this.representation.getX()>oldX){
+            collisionX = collidesRight();
+        }
+
+        if(collisionX) {
+            this.representation.setX(oldX);
+        }
+
+        //moving on y axis
+
+        this.representation.setY( this.representation.getY() + y);
+
+        //moving down
+        if(this.representation.getY()<oldY){
+            collisionY = collidesBottom();
+        }
+        //moving up
+        if(this.representation.getY()>oldY){
+            collisionY = collidesTop();
+        }
+        //reacts to collision on y
+        if(collisionY) {
+            this.representation.setY(oldY);
+        }
 
     }
 

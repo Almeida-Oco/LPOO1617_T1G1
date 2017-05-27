@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 
 import Controller.GameLogic;
@@ -71,7 +72,7 @@ public class Play extends ScreenAdapter {
             EntityView entview = ViewFactory.makeView(this.assets,ent);
             ent.setRepSize( (int)entview.getSprite().getWidth() , (int)entview.getSprite().getHeight() );
             entview.update(ent.getX(),ent.getY());
-            entview.draw(this.batch);
+            entview.draw(this.batch,(TiledMapTileLayer) map.getMap().getLayers().get("FLoor"));
         }
     }
 

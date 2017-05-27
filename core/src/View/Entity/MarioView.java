@@ -12,15 +12,14 @@ import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
  */
 
 public class MarioView extends EntityView {
-
     public static final String MARIO_IMG = "mario_left.png";
 
-    public MarioView(AssetManager assets, TiledMapTileLayer collisionLayer){
-        this.collisionLayer=collisionLayer;
+
+    public MarioView(AssetManager assets){
         this.canJump = true;
         Texture text = assets.get(MARIO_IMG);
         this.representation = new Sprite(text,text.getWidth(),text.getHeight());
-        this.representation.scale(5);
+        this.representation.scale(3);
     }
 
 

@@ -39,4 +39,41 @@ public class GameLogic {
     public void marioMoveY(int y){
         this.chars.getFirst().moveY(y);
     }
+
+
+    public boolean collisionOnX(Pair<Integer,Integer> old_pos, Pair<Integer,Integer> rep_size, int new_x){
+        boolean collision_x = false;
+        if(new_x < old_pos.getFirst()) //moving left
+            collision_x = this.map.collidesLeft(old_pos,rep_size);
+        if(new_x > old_pos.getFirst()) //moving right
+            collision_x = this.map.collidesRight(old_pos,rep_size);
+
+        return collision_x;
+    }
+
+    public boolean collisionOnY(Pair<Integer,Integer> old_pos, Pair<Integer,Integer> rep_size, int new_y){
+        boolean collision_y = false;
+        if( new_y < old_pos.getSecond() ) //moving down
+            collision_y = this.map.collidesBottom(old_pos,rep_size);
+
+        if( new_y > old_pos.getSecond() ) //moving up
+            collision_y = this.map.collidesTop(old_pos,rep_size);
+
+        return collision_y;
+    }
+
+    public Pair<Integer,Integer> moveSingleEntity(Pair<Integer,Integer> old_pos, Pair<Integer,Integer> rep_size, Pair<Integer,Integer> move){
+        Pair<Integer,Integer> new_pos = new Pair<Integer, Integer>( old_pos.getFirst()+move.getFirst() , old_pos.getSecond()+move.getSecond());
+
+        if( collisionOnX( old_pos, rep_size, move.getFirst()) ) {
+            System.out.println("adeus");
+            new_pos.setFirst( old_pos.getFirst() );
+        }
+
+        if ( collisionOnY( old_pos, rep_size, move.getSecond() ) ) {
+            System.out.println("ola");
+            new_pos.setSecond( old_pos.getSecond() );
+        }
+        return new_pos;
+    }
 }

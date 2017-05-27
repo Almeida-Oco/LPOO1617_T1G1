@@ -7,19 +7,18 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
+import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 
 import Controller.GameLogic;
 import Controller.Entity;
-import Controller.Map;
 import View.Entity.EntityView;
 import View.Entity.MarioView;
 import View.Entity.ViewFactory;
 
 public class Play extends ScreenAdapter {
     private SpriteBatch batch;
-    private static Map map;
+    private static TiledMap map;
     private OrthogonalTiledMapRenderer renderer;
     private OrthographicCamera camera;
     private AssetManager assets;
@@ -30,9 +29,9 @@ public class Play extends ScreenAdapter {
 
     public void show() {
         this.batch = new SpriteBatch();
-        this.map = GameLogic.getInstance().getMap();
+        this.map = GameLogic.getInstance().getMap().getMap();
         //TODO scaling based on monitor size
-        this.renderer = new OrthogonalTiledMapRenderer(this.map.getMap(), 2.4f);
+        this.renderer = new OrthogonalTiledMapRenderer(this.map, 2.4f);
         this.camera = new OrthographicCamera();
         this.camera.setToOrtho(false,Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
         this.renderer.setView(this.camera);
@@ -69,13 +68,30 @@ public class Play extends ScreenAdapter {
 
     private void drawEntities(){
         for (Entity ent : GameLogic.getInstance().getCharacters() ){
-            EntityView entview = ViewFactory.makeView(this.assets,ent);
-            ent.setRepSize( (int)entview.getSprite().getWidth() , (int)entview.getSprite().getHeight() );
-            entview.update(ent.getX(),ent.getY());
-            entview.draw(this.batch);
+            EntityView ent_view = ViewFactory.makeView(this.assets,ent);
+            ent.setRepSize( (int)ent_view.getSprite().getWidth() , (int)ent_view.getSprite().getHeight() );
+            ent_view.updatePos(ent.getX(),ent.getY());
+            ent_view.draw(this.batch);
         }
     }
 
+
+
+    private void handleInput(){
+        if (this.enoughToJump())
+            GameLogic.getInstance().marioJump();
+
+        float move_x = -Gdx.input.getAccelerometerX() , move_y = -Gdx.input.getAccelerometerY();
+        if (Math.abs(move_x) > MOVE_MIN_VAL)
+            GameLogic.getInstance().marioMoveX((int)move_x);
+        if (Math.abs(move_y) > MOVE_MIN_VAL)
+            GameLogic.getInstance().marioMoveY((int)move_y);
+    }
+
+    private boolean enoughToJump(){
+        float x = Gdx.input.getAccelerometerX(), y = Gdx.input.getAccelerometerY(), z = Gdx.input.getAccelerometerZ();
+        return Math.sqrt( Math.pow(x,2)+Math.pow(y,2)+Math.pow(z,2) ) <= JUMP_MIN_VAL;
+    }
 
     @Override
     public void resize(int width, int height) {
@@ -104,26 +120,6 @@ public class Play extends ScreenAdapter {
         this.map.dispose();
         this.renderer.dispose();
         this.batch.dispose();
-    }
-
-
-    private void handleInput(){
-        if (this.enoughToJump())
-            GameLogic.getInstance().marioJump();
-
-        float move_x = -Gdx.input.getAccelerometerX() , move_y = -Gdx.input.getAccelerometerY();
-        if (Math.abs(move_x) > MOVE_MIN_VAL)
-            GameLogic.getInstance().marioMoveX((int)move_x);
-        if (Math.abs(move_y) > MOVE_MIN_VAL)
-            GameLogic.getInstance().marioMoveY((int)move_y);
-    }
-
-
-    private boolean enoughToJump(){
-        float x = Gdx.input.getAccelerometerX(), y = Gdx.input.getAccelerometerY(), z = Gdx.input.getAccelerometerZ();
-        return Math.sqrt( Math.pow(x,2)+Math.pow(y,2)+Math.pow(z,2) ) <= JUMP_MIN_VAL;
-    }
-    public static Map getMap(){
-        return map;
+        this.assets.dispose();
     }
 }

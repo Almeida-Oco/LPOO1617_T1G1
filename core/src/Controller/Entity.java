@@ -13,6 +13,10 @@ public abstract class Entity {
     protected Pair<Integer,Integer> rep_size = new Pair<Integer, Integer>(0,0);
     // [x,y]
     protected Pair<Integer,Integer> position;
+    // [x,y]
+    Pair<Float,Float> velocity = new Pair<Float,Float>(3.0f,0f);
+
+    private float gravity = 1.5f;
 
     public Entity(){
         this.position = new Pair<Integer, Integer>(0,0);
@@ -22,22 +26,9 @@ public abstract class Entity {
         this.position = new Pair<Integer,Integer>(x,y);
     }
 
-    public void moveX(int x){
-        if (this.position.getFirst() + x <= 0)
-            this.position.setFirst(0);
-        else if (this.position.getFirst() + x >= (Gdx.graphics.getWidth()-this.rep_size.getFirst() ) )
-            this.position.setFirst(Gdx.graphics.getWidth()-this.rep_size.getFirst());
-        else
-            this.position.setFirst( this.position.getFirst() + x );
-    }
 
-    public void moveY(int y){
-        if (this.position.getSecond() + y <= 0)
-            this.position.setSecond(0);
-        else if (this.position.getSecond() + y >= (Gdx.graphics.getHeight()-this.rep_size.getSecond()) )
-            this.position.setSecond(Gdx.graphics.getHeight()-this.rep_size.getSecond());
-        else
-            this.position.setSecond( this.position.getSecond() + y);
+    public void updateYVelocity(){
+        this.velocity.setSecond( this.velocity.getSecond() - this.gravity );
     }
 
     public int getX(){
@@ -48,9 +39,34 @@ public abstract class Entity {
         return this.position.getSecond();
     }
 
+    public Pair<Integer,Integer> getPos(){
+        return this.position;
+    }
+
+    public Pair<Integer,Integer> getRepSize(){
+        return this.rep_size;
+    }
+
+    public int getXSpeed(){
+        return (int)this.velocity.getFirst().floatValue();
+    }
+
+    public float getYSpeed(){
+        return this.velocity.getSecond();
+    }
+
+
+    public void setPos(Pair<Integer,Integer> pos){
+        this.position = pos;
+    }
+
     public void setRepSize(int width, int height){
         this.rep_size.setFirst(width);
         this.rep_size.setSecond(height);
+    }
+
+    public void setYVelocity( float vel ){
+        this.velocity.setSecond(vel);
     }
 
     public abstract type getType();

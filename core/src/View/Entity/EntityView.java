@@ -14,37 +14,11 @@ public abstract class EntityView {
 
 
     public void updatePos(int x , int y){
-        this.representation.setCenter(x,y);
+        this.representation.setX(x);
+        this.representation.setY(y);
     }
 
     public Sprite getSprite(){
         return this.representation;
     }
-
-
-    /*
-    public Vector2 getVelocity() {
-        return velocity;
-    }
-
-    public void setVelocity(Vector2 velocity) {
-        this.velocity = velocity;
-    }
-
-    public float getSpeed() {
-        return speed;
-    }
-
-    public void setSpeed(float speed) {
-        this.speed = speed;
-    }
-
-    public float getGravity() {
-        return gravity;
-    }
-
-    public void setGravity(float gravity) {
-        this.gravity = gravity;
-    }
-    */
 }

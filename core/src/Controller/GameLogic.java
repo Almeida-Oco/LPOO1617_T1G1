@@ -1,5 +1,7 @@
 package Controller;
 
+import com.badlogic.gdx.Gdx;
+
 import java.util.LinkedList;
 
 public class GameLogic {
@@ -8,8 +10,8 @@ public class GameLogic {
     private Map map;
 
     private GameLogic(){
-        this.chars.add( new Mario(50, 50) );
         this.map = new Map();
+        this.chars.add( new Mario( 2*this.map.getMapTileWidth(), 70 ) );
     };
 
 
@@ -29,15 +31,25 @@ public class GameLogic {
     }
 
     public void marioJump(){
-        this.chars.getFirst().moveY(30);
+        this.chars.getFirst().setYVelocity(10);
     }
 
-    public void marioMoveX(int x){
-        this.chars.getFirst().moveX(x);
-    }
+    /**
+     * @brief Moves Mario in the horizontal direction given and updates y coordinates
+     * @param direction Direction to move Mario 1-> right , -1 -> left
+     */
+    public void moveMario(int direction){
+        Entity mario = this.chars.getFirst();
+        Pair<Integer,Integer> curr_pos = mario.getPos();
+        Pair<Integer,Integer> rep_size = mario.getRepSize();
+        Pair<Integer,Integer> new_pos = this.moveSingleEntity(curr_pos,rep_size, new Pair<Integer,Integer>( direction*mario.getXSpeed()+(int)mario.getXSpeed() , (int)mario.getYSpeed() ));
 
-    public void marioMoveY(int y){
-        this.chars.getFirst().moveY(y);
+        if( curr_pos.equals(new_pos) ) //collision y_velocity = 0
+            this.chars.getFirst().setYVelocity(0);
+        else{ //no collision
+            this.chars.getFirst().setPos(new_pos);
+            this.chars.getFirst().updateYVelocity();
+        }
     }
 
 
@@ -62,18 +74,19 @@ public class GameLogic {
         return collision_y;
     }
 
+    //TODO only check for collisions below mario
     public Pair<Integer,Integer> moveSingleEntity(Pair<Integer,Integer> old_pos, Pair<Integer,Integer> rep_size, Pair<Integer,Integer> move){
         Pair<Integer,Integer> new_pos = new Pair<Integer, Integer>( old_pos.getFirst()+move.getFirst() , old_pos.getSecond()+move.getSecond());
-
-        if( collisionOnX( old_pos, rep_size, move.getFirst()) ) {
+    
+        if( collisionOnX( old_pos, rep_size, new_pos.getFirst()) || new_pos.getFirst() < 0 || new_pos.getFirst() > (Gdx.graphics.getWidth()-rep_size.getFirst()) ) {
             System.out.println("adeus");
             new_pos.setFirst( old_pos.getFirst() );
         }
 
-        if ( collisionOnY( old_pos, rep_size, move.getSecond() ) ) {
-            System.out.println("ola");
-            new_pos.setSecond( old_pos.getSecond() );
-        }
+//        if ( collisionOnY( old_pos, rep_size, new_pos.getSecond() ) || new_pos.getSecond() < 0 || new_pos.getSecond() > (Gdx.graphics.getHeight()-rep_size.getSecond())) {
+//            System.out.println("ola");
+//            new_pos.setSecond( old_pos.getSecond() );
+//        }
         return new_pos;
     }
 }

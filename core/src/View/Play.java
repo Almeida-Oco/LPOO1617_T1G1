@@ -76,16 +76,17 @@ public class Play extends ScreenAdapter {
     }
 
 
-
+    //TODO when mario is jumping x_velocity is constant
     private void handleInput(){
         if (this.enoughToJump())
             GameLogic.getInstance().marioJump();
 
         float move_x = -Gdx.input.getAccelerometerX() , move_y = -Gdx.input.getAccelerometerY();
         if (Math.abs(move_x) > MOVE_MIN_VAL)
-            GameLogic.getInstance().marioMoveX((int)move_x);
-        if (Math.abs(move_y) > MOVE_MIN_VAL)
-            GameLogic.getInstance().marioMoveY((int)move_y);
+            GameLogic.getInstance().moveMario( (int)(move_x/ Math.abs(move_x)) );
+        else
+            GameLogic.getInstance().moveMario( 0 );
+
     }
 
     private boolean enoughToJump(){

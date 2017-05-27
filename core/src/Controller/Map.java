@@ -67,4 +67,19 @@ public class Map {
 
     }
 
+    public int getMapTileWidth() {
+        return (int)this.collision_layer.getTileWidth();
+    }
+
+    public int getMapTileHeight(){
+        return (int)this.collision_layer.getTileHeight();
+    }
+
+    public int getMapHeight(){
+        return this.collision_layer.getHeight();
+    }
+
+    public int getMapWidth(){
+        return this.collision_layer.getWidth();
+    }
 }

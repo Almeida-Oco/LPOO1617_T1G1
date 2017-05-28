@@ -20,12 +20,12 @@ public class Map {
         return this.map;
     }
 
-    public int getMapTileWidth(){
-        return (int)(this.collision_layer.getTileWidth() * this.scale);
+    public float getMapTileWidth(){
+        return (this.collision_layer.getTileWidth() * this.scale);
     }
 
-    public int getMapTileHeight(){
-        return (int)(this.collision_layer.getTileHeight() * this.scale);
+    public float getMapTileHeight(){
+        return (this.collision_layer.getTileHeight() * this.scale);
     }
 
     public float getMapScale(){
@@ -73,7 +73,7 @@ public class Map {
 
         TiledMapTileLayer.Cell tile = ((TiledMapTileLayer)this.map.getLayers().get("Stairs")).getCell( x , y );
         if (tile != null && tile.getTile() != null)
-            return (x*this.getMapTileWidth() + this.getMapTileWidth()/2);
+            return (int)(x*this.getMapTileWidth() + this.getMapTileWidth()/2);
         else
             return -1;
     }
@@ -82,7 +82,13 @@ public class Map {
         this.scale = scale;
     }
 
+    public TiledMapTileLayer.Cell getStairCell(int x , int y){
+        return ((TiledMapTileLayer)this.map.getLayers().get("Stairs")).getCell( this.XConverter(x) , this.YConverter(y) );
+    }
 
+    public TiledMapTileLayer.Cell getFloorCell(int x , int y){
+        return ((TiledMapTileLayer)this.map.getLayers().get("Floor")).getCell( this.XConverter(x) , this.YConverter(y) );
+    }
 
     //TODO why the fuck do we need layer_y - 6 ???
     private int getTopTile(float x , float y){

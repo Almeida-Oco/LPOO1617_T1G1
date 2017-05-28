@@ -10,6 +10,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
+import com.sun.org.apache.regexp.internal.RE;
 
 import Controller.GameLogic;
 import Controller.Entity;
@@ -23,9 +24,10 @@ public class Play extends ScreenAdapter {
     private OrthographicCamera camera;
     private AssetManager assets;
 
-    private final float JUMP_MIN_VAL = 6f;
+    private final float JUMP_MIN_VAL = 5f;
     private final float MOVE_MIN_VAL = 1.5f;
     private final float CLIMB_MIN_VAL = 1.5f;
+    private final float REAL_GRAVITY = 9.8f;
 
     public void show() {
         this.batch = new SpriteBatch();
@@ -96,7 +98,7 @@ public class Play extends ScreenAdapter {
 
     private boolean enoughToJump(){
         float x = Gdx.input.getAccelerometerX(), y = Gdx.input.getAccelerometerY(), z = Gdx.input.getAccelerometerZ();
-        return Math.sqrt( Math.pow(x,2)+Math.pow(y,2)+Math.pow(z,2) ) <= JUMP_MIN_VAL;
+        return (Math.sqrt( Math.pow(x,2)+Math.pow(y,2)+Math.pow(z,2) ) <= JUMP_MIN_VAL && x < REAL_GRAVITY && y < REAL_GRAVITY && z < REAL_GRAVITY);
     }
 
     @Override

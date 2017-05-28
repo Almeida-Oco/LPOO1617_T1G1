@@ -13,7 +13,8 @@ public abstract class Entity {
     private float gravity = 1f;
     private boolean mid_air = false;
 
-    private final float MAX_Y_VELOCITY = 4;
+    private final float MAX_FALL_VELOCITY = 4;
+    private float MAX_X_VELOCITY = 3.0f;
 
     protected type current_type;
 
@@ -24,11 +25,6 @@ public abstract class Entity {
 
     public Entity(int x , int y){
         this.position = new Pair<Integer,Integer>(x,y);
-    }
-
-
-    public void updateYVelocity(){
-        this.velocity.setSecond( this.velocity.getSecond() - this.gravity );
     }
 
     public int getX(){
@@ -55,10 +51,6 @@ public abstract class Entity {
         return this.velocity.getSecond();
     }
 
-    public float getMaxSpeed(){
-        return this.MAX_Y_VELOCITY;
-    }
-
     public boolean isMidAir(){
         return this.mid_air;
     }
@@ -78,13 +70,25 @@ public abstract class Entity {
     }
 
     public void setYVelocity( float vel ){
-        if (vel < MAX_Y_VELOCITY)
+        if ( vel > 0 )
             this.velocity.setSecond(vel);
-        else
-            this.velocity.setSecond(MAX_Y_VELOCITY);
     }
 
+    public void updateYVelocity(){
+        if (this.velocity.getSecond() - this.gravity > -MAX_FALL_VELOCITY)
+            this.velocity.setSecond( this.velocity.getSecond() - this.gravity );
+        else
+            this.velocity.setSecond(-MAX_FALL_VELOCITY);
+
+    }
+
+    public void updateXVelocity( int direction ){
+        if ( !this.mid_air )
+            this.velocity.setFirst( direction*MAX_X_VELOCITY );
+    }
     public abstract void setType(type t);
 
     public abstract type getType();
+
+
 }

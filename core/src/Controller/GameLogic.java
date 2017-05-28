@@ -1,6 +1,7 @@
 package Controller;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 
 import java.util.LinkedList;
 
@@ -31,14 +32,18 @@ public class GameLogic {
     }
 
     public void marioJump(){
-        if ( !Mario.getInstance().isMidAir() )
-            Mario.getInstance().setYVelocity(4);
+        Mario mario = Mario.getInstance();
+        if ( !mario.isMidAir() && !mario.isOnStair()){
+            mario.setYVelocity(12);
+            mario.setMidAir(true);
+        }
+
     }
 
     public boolean marioClimb( int direction ){ //1 up , -1 down
         Mario mario = Mario.getInstance();
         int new_x;
-        if ( (new_x = this.map.nearLadder(mario.getPos(),mario.getRepSize())) != -1 || direction == -1) {
+        if ( !mario.isMidAir() && ((new_x = this.map.nearLadder(mario.getPos(),mario.getRepSize())) != -1 || direction == -1)) {
             if (1 == direction)
                 marioClimbUp(mario,new_x);
             else
@@ -56,20 +61,17 @@ public class GameLogic {
         Mario mario = Mario.getInstance();
         if ( !mario.isOnStair() ){
             updateMarioState(mario,direction);
-            Pair<Integer,Integer>   velocity = new Pair<Integer,Integer>((mario.isMidAir()) ? 0 : direction*mario.getXSpeed() , (int)mario.getYSpeed() ),
+            Pair<Integer,Integer>   velocity = new Pair<Integer,Integer>( mario.getXSpeed() , (int)mario.getYSpeed() ),
                                     curr_pos = mario.getPos(),
-                                    new_pos = this.moveSingleEntity(curr_pos,mario.getRepSize(), velocity);
+                                    new_pos = this.moveSingleEntity(mario, curr_pos,mario.getRepSize(), velocity);
 
-            if( curr_pos.equals(new_pos) ) //collision y_velocity = 0
-                mario.setMidAir(false);
-            else  //no collision
-                mario.setPos(new_pos);
-
+            mario.setPos(new_pos);
             mario.updateYVelocity();
         }
     }
 
-    public Pair<Integer,Integer> moveSingleEntity(Pair<Integer,Integer> old_pos, Pair<Integer,Integer> rep_size, Pair<Integer,Integer> move){
+
+    private Pair<Integer,Integer> moveSingleEntity(Entity ent, Pair<Integer,Integer> old_pos, Pair<Integer,Integer> rep_size, Pair<Integer,Integer> move){
         Pair<Integer,Integer> new_pos = new Pair<Integer, Integer>( old_pos.getFirst()+move.getFirst() , old_pos.getSecond()+move.getSecond());
 
         new_pos.setFirst( checkOutOfScreenWidth( new_pos.getFirst() , rep_size.getFirst() ) );
@@ -78,13 +80,14 @@ public class GameLogic {
         new_pos.setSecond( checkOutOfScreenHeight( new_pos.getSecond(), rep_size.getSecond() ));
         if ( (new_y = collisionOnY( old_pos, rep_size, new_pos.getSecond() ) ) != -1){
             new_pos.setSecond( new_y );
-            Mario.getInstance().setYVelocity(0);
+            ent.setYVelocity(0);
+            ent.setMidAir(false);
         }
 
         return new_pos;
     }
     
-    public int collisionOnY(Pair<Integer,Integer> old_pos, Pair<Integer,Integer> rep_size, int new_y){
+    private int collisionOnY(Pair<Integer,Integer> old_pos, Pair<Integer,Integer> rep_size, int new_y){
         int collision_y = -1;
         if( new_y < old_pos.getSecond() ) //moving down
             collision_y = this.map.collidesBottom(old_pos,rep_size);
@@ -92,13 +95,12 @@ public class GameLogic {
         return collision_y;
     }
 
-
     private void marioClimbUp(Mario mario, int new_x){
         Pair<Integer,Integer> new_pos = new Pair<Integer, Integer>(new_x,mario.getY());
         int y_offset = 1;
         mario.setInStair(true);
         new_pos.setSecond(new_pos.getSecond()+y_offset);
-        Pair<Integer,Integer> upper_pos = new Pair<Integer,Integer>(new_pos.getFirst(),new_pos.getSecond()+this.map.getMapTileHeight()); //force upper tile
+        Pair<Integer,Integer> upper_pos = new Pair<Integer,Integer>(new_pos.getFirst(),new_pos.getSecond()+(int)this.map.getMapTileHeight()); //force upper tile
         if ( collisionOnY(mario.getPos(),mario.getRepSize(), -1) != -1 &&  this.map.nearLadder(upper_pos, mario.getRepSize()) == -1 )
             mario.setInStair(false);
         else
@@ -108,12 +110,12 @@ public class GameLogic {
     //TODO make mario go down stairs
     private void marioClimbDown(Mario mario){
         Pair<Integer,Integer> lower_pos = mario.getPos();
-        lower_pos.setSecond( lower_pos.getSecond()-this.map.getMapTileHeight() ); //force lower tile
-        int new_x = this.map.nearLadder(lower_pos,mario.getRepSize());
-        if (new_x != -1 && collisionOnY(mario.getPos(),mario.getRepSize(),-1) == -1){ //there is still ladder below and no floor below
+        Pair<Integer,Integer> rep = mario.getRepSize();
+        lower_pos.setSecond( lower_pos.getSecond() - (int)this.map.getMapTileHeight() ); //force lower tile
+        int new_x = this.map.nearLadder(lower_pos,rep);
+        if (new_x != -1 && (collisionOnY( lower_pos ,mario.getRepSize(),-1) == -1 || this.ladderAndCrane(lower_pos,rep)) ){ //there is still ladder below and no floor below
             Pair<Integer,Integer> new_pos = new Pair<Integer, Integer>(new_x,mario.getY());
-            int y_offset = -1;
-            new_pos.setSecond(new_pos.getSecond()+y_offset);
+            new_pos.setSecond(new_pos.getSecond()-1);
             mario.setPos(new_pos);
             mario.setInStair(true);
         }
@@ -121,6 +123,13 @@ public class GameLogic {
             mario.setInStair(false);
 
     }
+
+    private boolean ladderAndCrane(Pair<Integer,Integer> pos, Pair<Integer,Integer> rep_size ){
+        TiledMapTileLayer.Cell  floor = this.map.getFloorCell( pos.getFirst() , pos.getSecond() - rep_size.getSecond()/2 ),
+                                stair = this.map.getStairCell( pos.getFirst() , pos.getSecond() - rep_size.getSecond()/2 );
+        return ( (floor != null && stair != null) || (floor == null && stair != null) );
+    }
+
 
     /**
      * @brief Checks if given number is out of screen height bounds
@@ -157,5 +166,6 @@ public class GameLogic {
             mario.setType(Entity.type.MARIO_RIGHT);
         else if (-1 == direction)
             mario.setType(Entity.type.MARIO_LEFT);
+        mario.updateXVelocity(direction);
     }
 }

@@ -11,8 +11,12 @@ import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 
+import java.util.Iterator;
+import java.util.Set;
+
 import Controller.GameLogic;
 import Controller.Entity;
+import Controller.Mario;
 import View.Entity.EntityView;
 import View.Entity.MarioView;
 import View.Entity.ViewFactory;
@@ -43,7 +47,8 @@ public class Play extends ScreenAdapter {
 
 
     private void loadAssets(){
-        this.assets.load( MarioView.MARIO_IMG, Texture.class );
+        this.assets.load( "mario_left.png", Texture.class);
+        this.assets.load("mario_right.png",Texture.class);
         this.assets.finishLoading();
     }
 

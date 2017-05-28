@@ -12,8 +12,9 @@ public class ViewFactory {
     public static EntityView makeView(AssetManager assets, Entity entity){
         Entity.type type = entity.getType();
         if ( !cache.containsKey(type) ){
-            if (type == Entity.type.MARIO)
-                cache.put( type, new MarioView(assets) );
+            if (type == Entity.type.MARIO_LEFT)
+                cache.put(type, new MarioView(assets) );
+
 
         }
 

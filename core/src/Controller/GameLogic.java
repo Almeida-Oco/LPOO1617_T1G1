@@ -52,7 +52,12 @@ public class GameLogic {
         Entity mario = this.chars.getFirst();
         Pair<Integer,Integer> curr_pos = mario.getPos();
         Pair<Integer,Integer> rep_size = mario.getRepSize();
-
+        if(direction==1){
+            mario.current_type= Entity.type.MARIO_RIGHT;
+        }
+        else{
+            mario.current_type= Entity.type.MARIO_LEFT;
+        }
         Pair<Integer,Integer> new_pos = this.moveSingleEntity(curr_pos,rep_size, new Pair<Integer,Integer>( direction*mario.getXSpeed() , (int)mario.getYSpeed() ));
 
         if( curr_pos.equals(new_pos) ) { //collision y_velocity = 0

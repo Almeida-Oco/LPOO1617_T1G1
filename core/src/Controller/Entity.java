@@ -13,7 +13,7 @@ public abstract class Entity {
     // [x,y]
     protected Pair<Integer,Integer> position;
     // [x,y]
-    Pair<Float,Float> velocity = new Pair<Float,Float>(3.0f,-3f);
+    protected Pair<Float,Float> velocity = new Pair<Float,Float>(3.0f,-3f);
 
     private float gravity = 0.8f;
     private boolean mid_air = false;
@@ -56,6 +56,10 @@ public abstract class Entity {
 
     public float getYSpeed(){
         return this.velocity.getSecond();
+    }
+
+    public float getMaxSpeed(){
+        return this.MAX_Y_VELOCITY;
     }
 
     public boolean isMidAir(){

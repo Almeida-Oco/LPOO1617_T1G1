@@ -11,7 +11,7 @@ public class GameLogic {
 
     private GameLogic(){
         this.map = new Map();
-        this.chars.add( new Mario( 20 , 65 ) );
+        this.chars.add( new Mario( 21 , 75 ) );
     };
 
 
@@ -35,12 +35,24 @@ public class GameLogic {
             this.chars.getFirst().setYVelocity(4);
     }
 
-    public void marioClimb(){
+    public boolean marioClimb( int direction ){ //1 up , -1 down
         Entity mario = this.chars.getFirst();
-        if ( this.map.nearLadder(mario.getPos(),mario.getRepSize()) ){
-            System.out.println("    !!NEAR LADDER!!");
-        }
+        int new_x;
+        if ((mario.isMidAir() || direction == 1) && (new_x = this.map.nearLadder(mario.getPos(),mario.getRepSize())) != -1 ){
+            Pair<Integer,Integer> new_pos = new Pair<Integer, Integer>(new_x,mario.getY());
+            int y, y_offset = (int)(mario.getMaxSpeed()*direction);
+            mario.setMidAir(true);
+            //if ( (y=this.collisionOnY(new_pos , mario.getRepSize(), y_offset)) == -1 )
+                new_pos.setSecond(new_pos.getSecond()+y_offset);
+//            else
+//                new_pos.setSecond(y);
 
+            mario.setPos(new_pos);
+        }
+        else
+            mario.setMidAir(false);
+
+        return mario.isMidAir();
     }
 
 
@@ -50,19 +62,36 @@ public class GameLogic {
      */
     public void moveMario(int direction){
         Entity mario = this.chars.getFirst();
-        Pair<Integer,Integer> curr_pos = mario.getPos();
-        Pair<Integer,Integer> rep_size = mario.getRepSize();
+        if ( !mario.isMidAir() ){
+            Pair<Integer,Integer> curr_pos = mario.getPos();
+            Pair<Integer,Integer> rep_size = mario.getRepSize();
+            Pair<Integer,Integer> new_pos = this.moveSingleEntity(curr_pos,rep_size, new Pair<Integer,Integer>( direction*mario.getXSpeed() , (int)mario.getYSpeed() ));
 
-        Pair<Integer,Integer> new_pos = this.moveSingleEntity(curr_pos,rep_size, new Pair<Integer,Integer>( direction*mario.getXSpeed() , (int)mario.getYSpeed() ));
+            if( curr_pos.equals(new_pos) ) { //collision y_velocity = 0
+                this.chars.getFirst().setYVelocity(0);
+                this.chars.getFirst().setMidAir(false);
+            }
+            else //no collision
+                this.chars.getFirst().setPos(new_pos);
 
-        if( curr_pos.equals(new_pos) ) { //collision y_velocity = 0
-            this.chars.getFirst().setYVelocity(0);
-            this.chars.getFirst().setMidAir(false);
+            this.chars.getFirst().updateYVelocity();
         }
-        else //no collision
-            this.chars.getFirst().setPos(new_pos);
+    }
 
-        this.chars.getFirst().updateYVelocity();
+    public Pair<Integer,Integer> moveSingleEntity(Pair<Integer,Integer> old_pos, Pair<Integer,Integer> rep_size, Pair<Integer,Integer> move){
+
+        Pair<Integer,Integer> new_pos = new Pair<Integer, Integer>( old_pos.getFirst()+move.getFirst() , old_pos.getSecond()+move.getSecond());
+
+        new_pos.setFirst( checkOutOfScreeWidth( new_pos.getFirst() , rep_size.getFirst() ) );
+        if (collisionOnX(old_pos,rep_size,new_pos.getFirst()))
+            new_pos.setSecond(new_pos.getSecond()+3);
+
+        int new_y = old_pos.getSecond();
+        new_pos.setSecond( checkOutOfScreenHeight( new_pos.getSecond(), rep_size.getSecond() ));
+        if ( (new_y = collisionOnY( old_pos, rep_size, new_pos.getSecond() ) ) != -1)
+            new_pos.setSecond( new_y );
+
+        return new_pos;
     }
 
 
@@ -83,24 +112,6 @@ public class GameLogic {
 
         return collision_y;
     }
-
-
-    public Pair<Integer,Integer> moveSingleEntity(Pair<Integer,Integer> old_pos, Pair<Integer,Integer> rep_size, Pair<Integer,Integer> move){
-
-        Pair<Integer,Integer> new_pos = new Pair<Integer, Integer>( old_pos.getFirst()+move.getFirst() , old_pos.getSecond()+move.getSecond());
-
-        new_pos.setFirst( checkOutOfScreeWidth( new_pos.getFirst() , rep_size.getFirst() ) );
-        if (collisionOnX(old_pos,rep_size,new_pos.getFirst()))
-            new_pos.setSecond(new_pos.getSecond()+3);
-
-        int new_y = old_pos.getSecond();
-        new_pos.setSecond( checkOutOfScreenHeight( new_pos.getSecond(), rep_size.getSecond() ));
-        if ( (new_y = collisionOnY( old_pos, rep_size, new_pos.getSecond() ) ) != -1)
-            new_pos.setSecond( new_y );
-
-        return new_pos;
-    }
-
 
     /**
      * @brief Checks if given number is out of screen height bounds

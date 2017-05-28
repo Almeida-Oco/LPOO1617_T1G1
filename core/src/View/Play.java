@@ -82,14 +82,15 @@ public class Play extends ScreenAdapter {
             game.marioJump();
 
         float move_x = -Gdx.input.getAccelerometerX(), move_y = Gdx.input.getAccelerometerY();
+
+        game.marioClimb( (int)(-move_y/Math.abs(move_y)) );
+
         if (Math.abs(move_x) > MOVE_MIN_VAL)
             game.moveMario( (int)(move_x/Math.abs(move_x)) ); // we only want either 1 or -1
         else
             game.moveMario( 0 );
 
-        if ( move_y < 0 ){ //Trying to climb ladder
-            game.marioClimb();
-        }
+
     }
 
     private boolean enoughToJump(){

@@ -62,29 +62,15 @@ public class Map {
 
     }
 
-    public boolean nearLadder(Pair<Integer,Integer> pos, Pair<Integer,Integer> rep_size){
+    public int nearLadder(Pair<Integer,Integer> pos, Pair<Integer,Integer> rep_size){
         int     x = (int)( (pos.getFirst()+rep_size.getFirst()/2)/(this.scale*this.collision_layer.getTileWidth())),
-                y = (int)( (pos.getSecond()-rep_size.getSecond())/(this.scale*this.collision_layer.getTileHeight()));
+                y = (int)((pos.getSecond()-rep_size.getSecond()/2 ) / (this.scale*this.collision_layer.getTileHeight()) );
 
         TiledMapTileLayer.Cell tile = ((TiledMapTileLayer)this.map.getLayers().get("Stairs")).getCell( x , y );
-
-        return (tile != null && tile.getTile() != null);
-    }
-
-    public int getMapTileWidth() {
-        return (int)this.collision_layer.getTileWidth();
-    }
-
-    public int getMapTileHeight(){
-        return (int)this.collision_layer.getTileHeight();
-    }
-
-    public int getMapHeight(){
-        return (int)(this.collision_layer.getHeight()*this.collision_layer.getTileHeight());
-    }
-
-    public int getMapWidth(){
-        return (int)(this.collision_layer.getWidth()*this.collision_layer.getTileWidth());
+        if (tile != null && tile.getTile() != null)
+            return (int)((x*this.scale*this.collision_layer.getTileWidth()) + this.collision_layer.getTileWidth());
+        else
+            return -1;
     }
 
     public void setScale( float scale ){

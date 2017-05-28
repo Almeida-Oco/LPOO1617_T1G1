@@ -1,15 +1,11 @@
 package View.Entity;
 
-import com.badlogic.gdx.Gdx;
+
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 
-/**
- * Created by oco on 5/27/17.
- */
 
 public class MarioView extends EntityView {
     public static final String MARIO_IMG = "mario_left.png";

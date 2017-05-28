@@ -35,24 +35,16 @@ public class GameLogic {
             this.chars.getFirst().setYVelocity(4);
     }
 
-    public boolean marioClimb( int direction ){ //1 up , -1 down
-        Entity mario = this.chars.getFirst();
+    public void marioClimb( int direction ){ //1 up , -1 down
+        Mario mario = (Mario)this.chars.getFirst();
         int new_x;
-        if ((mario.isMidAir() || direction == 1) && (new_x = this.map.nearLadder(mario.getPos(),mario.getRepSize())) != -1 ){
-            Pair<Integer,Integer> new_pos = new Pair<Integer, Integer>(new_x,mario.getY());
-            int y, y_offset = (int)(mario.getMaxSpeed()*direction);
-            mario.setMidAir(true);
-            //if ( (y=this.collisionOnY(new_pos , mario.getRepSize(), y_offset)) == -1 )
-                new_pos.setSecond(new_pos.getSecond()+y_offset);
-//            else
-//                new_pos.setSecond(y);
-
-            mario.setPos(new_pos);
+        if ( (new_x = this.map.nearLadder(mario.getPos(),mario.getRepSize())) != -1 || direction == -1) {
+            if (1 == direction)
+                marioClimbUp(mario,new_x);
+            else
+                marioClimbDown(mario);
         }
-        else
-            mario.setMidAir(false);
 
-        return mario.isMidAir();
     }
 
 
@@ -61,11 +53,11 @@ public class GameLogic {
      * @param direction Direction to move Mario 1-> right , -1 -> left
      */
     public void moveMario(int direction){
-        Entity mario = this.chars.getFirst();
-        if ( !mario.isMidAir() ){
+        Mario mario = (Mario)this.chars.getFirst();
+        if ( !mario.isOnStair() ){
             Pair<Integer,Integer> curr_pos = mario.getPos();
             Pair<Integer,Integer> rep_size = mario.getRepSize();
-            Pair<Integer,Integer> new_pos = this.moveSingleEntity(curr_pos,rep_size, new Pair<Integer,Integer>( direction*mario.getXSpeed() , (int)mario.getYSpeed() ));
+            Pair<Integer,Integer> new_pos = this.moveSingleEntity(curr_pos,rep_size, new Pair<Integer,Integer>( (mario.isMidAir()) ? 0 : direction*mario.getXSpeed() , (int)mario.getYSpeed() ));
 
             if( curr_pos.equals(new_pos) ) { //collision y_velocity = 0
                 this.chars.getFirst().setYVelocity(0);
@@ -82,7 +74,7 @@ public class GameLogic {
 
         Pair<Integer,Integer> new_pos = new Pair<Integer, Integer>( old_pos.getFirst()+move.getFirst() , old_pos.getSecond()+move.getSecond());
 
-        new_pos.setFirst( checkOutOfScreeWidth( new_pos.getFirst() , rep_size.getFirst() ) );
+        new_pos.setFirst( checkOutOfScreenWidth( new_pos.getFirst() , rep_size.getFirst() ) );
         if (collisionOnX(old_pos,rep_size,new_pos.getFirst()))
             new_pos.setSecond(new_pos.getSecond()+3);
 
@@ -90,6 +82,7 @@ public class GameLogic {
         new_pos.setSecond( checkOutOfScreenHeight( new_pos.getSecond(), rep_size.getSecond() ));
         if ( (new_y = collisionOnY( old_pos, rep_size, new_pos.getSecond() ) ) != -1)
             new_pos.setSecond( new_y );
+
 
         return new_pos;
     }
@@ -113,6 +106,36 @@ public class GameLogic {
         return collision_y;
     }
 
+    //TODO when climbing up reset Mario::in_stair when end of stair reached
+    private void marioClimbUp(Mario mario, int new_x){
+        Pair<Integer,Integer> new_pos = new Pair<Integer, Integer>(new_x,mario.getY());
+        int y_offset = 1;
+        mario.setInStair(true);
+        new_pos.setSecond(new_pos.getSecond()+y_offset);
+        if ( collisionOnY(new_pos,mario.getRepSize(), -1) != -1)
+            mario.setInStair(false);
+
+        mario.setPos(new_pos);
+    }
+
+    // TODO when going down mario does not go all the way down
+    // TODO 2nd ladder when going down makes mario fall
+    private void marioClimbDown(Mario mario){
+        Pair<Integer,Integer> next_pos = mario.getPos();
+        next_pos.setSecond( (int)(next_pos.getSecond()-(this.map.getMapTileHeight()*this.map.getMapScale() )) );
+        int new_x = this.map.nearLadder(next_pos,mario.getRepSize());
+        if (new_x != -1){ //there is still ladder below
+            Pair<Integer,Integer> new_pos = new Pair<Integer, Integer>(new_x,mario.getY());
+            int y_offset = -1;
+            new_pos.setSecond(new_pos.getSecond()+y_offset);
+            mario.setPos(new_pos);
+            mario.setInStair(true);
+        }
+        else
+            mario.setInStair(false);
+
+    }
+
     /**
      * @brief Checks if given number is out of screen height bounds
      * @param pos Number to check, represents Y coordinate of object
@@ -134,7 +157,7 @@ public class GameLogic {
      * @param img_width Height of the image representing the object
      * @return If image is out of bounds then the closest coordinate possible to that bound, otherwise param pos
      */
-    private int checkOutOfScreeWidth( int pos, int img_width) {
+    private int checkOutOfScreenWidth( int pos, int img_width) {
         if (pos < 0)
             return 0;
         else if (pos > Gdx.graphics.getWidth() - img_width)

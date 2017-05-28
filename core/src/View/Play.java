@@ -26,6 +26,7 @@ public class Play extends ScreenAdapter {
 
     private final float JUMP_MIN_VAL = 6f;
     private final float MOVE_MIN_VAL = 1.5f;
+    private final float CLIMB_MIN_VAL = 2f;
 
     public void show() {
         this.batch = new SpriteBatch();
@@ -83,7 +84,8 @@ public class Play extends ScreenAdapter {
 
         float move_x = -Gdx.input.getAccelerometerX(), move_y = Gdx.input.getAccelerometerY();
 
-        game.marioClimb( (int)(-move_y/Math.abs(move_y)) );
+        if (Math.abs(move_y) > CLIMB_MIN_VAL)
+            game.marioClimb( (int)(-move_y/Math.abs(move_y)) );
 
         if (Math.abs(move_x) > MOVE_MIN_VAL)
             game.moveMario( (int)(move_x/Math.abs(move_x)) ); // we only want either 1 or -1

@@ -1,6 +1,7 @@
 package Controller;
 
 public class Mario extends Entity {
+    private boolean in_stair = false;
     private static Mario instance = null;
     private Mario(){};
 
@@ -18,6 +19,14 @@ public class Mario extends Entity {
     @Override
     public type getType() {
         return type.MARIO;
+    }
+
+    public boolean isOnStair(){
+        return this.in_stair;
+    }
+
+    public void setInStair(boolean b){
+        this.in_stair = b;
     }
 
 }

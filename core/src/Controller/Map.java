@@ -5,6 +5,8 @@ import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 
+//TODO change how it handles coordinates because of Sprite coordinate system
+//TODO make function to convert from pixels to map coordinates
 public class Map {
     private TiledMap map;
     private TiledMapTileLayer collision_layer;
@@ -17,6 +19,18 @@ public class Map {
 
     public TiledMap getMap(){
         return this.map;
+    }
+
+    public int getMapTileWidth(){
+        return (int)this.collision_layer.getTileWidth();
+    }
+
+    public int getMapTileHeight(){
+        return (int)this.collision_layer.getTileHeight();
+    }
+
+    public float getMapScale(){
+        return this.scale;
     }
 
     public void dispose(){
@@ -63,7 +77,7 @@ public class Map {
     }
 
     public int nearLadder(Pair<Integer,Integer> pos, Pair<Integer,Integer> rep_size){
-        int     x = (int)( (pos.getFirst()+rep_size.getFirst()/2)/(this.scale*this.collision_layer.getTileWidth())),
+        int     x = (int)( pos.getFirst()/(this.scale*this.collision_layer.getTileWidth())),
                 y = (int)((pos.getSecond()-rep_size.getSecond()/2 ) / (this.scale*this.collision_layer.getTileHeight()) );
 
         TiledMapTileLayer.Cell tile = ((TiledMapTileLayer)this.map.getLayers().get("Stairs")).getCell( x , y );
@@ -76,6 +90,8 @@ public class Map {
     public void setScale( float scale ){
         this.scale = scale;
     }
+
+
 
     //TODO why the fuck do we need layer_y - 6 ???
     private int getTopTile(float x , float y){

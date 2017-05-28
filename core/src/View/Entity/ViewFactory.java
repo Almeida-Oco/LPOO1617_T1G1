@@ -11,6 +11,7 @@ public class ViewFactory {
 
     public static EntityView makeView(AssetManager assets, Entity entity){
         Entity.type type = entity.getType();
+        //TODO change only sprite instead creating other object
         if ( !cache.containsKey(type) ){
             if (type == Entity.type.MARIO_LEFT) {
                MarioView temp=new MarioView(assets);

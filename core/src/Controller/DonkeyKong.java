@@ -9,6 +9,12 @@ public class DonkeyKong extends Entity {
     private DonkeyKong(){}
 
     @Override
+    public void setType(type t) {
+        if (t == type.DONKEYKONG)
+            this.current_type = t;
+    }
+
+    @Override
     public type getType() {
         return type.DONKEYKONG;
     }

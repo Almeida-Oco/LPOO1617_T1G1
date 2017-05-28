@@ -14,7 +14,7 @@ public class ViewFactory {
         //TODO change only sprite instead creating other object
         if ( !cache.containsKey(type) ){
             if (type == Entity.type.MARIO_LEFT) {
-               MarioView temp=new MarioView(assets);
+                MarioView temp=new MarioView(assets);
                 temp.changeSprite(0);
                 cache.put(type, temp);
             }

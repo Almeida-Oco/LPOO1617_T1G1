@@ -10,7 +10,7 @@ public abstract class Entity {
     // [x,y]
     protected Pair<Float,Float> velocity = new Pair<Float,Float>(3.0f,-3f);
 
-    private float gravity = 0.8f;
+    private float gravity = 1f;
     private boolean mid_air = false;
 
     private final float MAX_Y_VELOCITY = 4;
@@ -78,12 +78,13 @@ public abstract class Entity {
     }
 
     public void setYVelocity( float vel ){
-        if (this.velocity.getSecond()+vel < MAX_Y_VELOCITY)
+        if (vel < MAX_Y_VELOCITY)
             this.velocity.setSecond(vel);
         else
             this.velocity.setSecond(MAX_Y_VELOCITY);
-        this.mid_air = true;
     }
+
+    public abstract void setType(type t);
 
     public abstract type getType();
 }

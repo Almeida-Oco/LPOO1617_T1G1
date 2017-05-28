@@ -11,14 +11,9 @@ import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 
-import java.util.Iterator;
-import java.util.Set;
-
 import Controller.GameLogic;
 import Controller.Entity;
-import Controller.Mario;
 import View.Entity.EntityView;
-import View.Entity.MarioView;
 import View.Entity.ViewFactory;
 
 public class Play extends ScreenAdapter {
@@ -30,12 +25,11 @@ public class Play extends ScreenAdapter {
 
     private final float JUMP_MIN_VAL = 6f;
     private final float MOVE_MIN_VAL = 1.5f;
-    private final float CLIMB_MIN_VAL = 2f;
+    private final float CLIMB_MIN_VAL = 1.5f;
 
     public void show() {
         this.batch = new SpriteBatch();
         this.map = GameLogic.getInstance().getMap().getMap();
-        //TODO scaling based on monitor size
         float scale = this.mapScaling();
         this.renderer = new OrthogonalTiledMapRenderer(this.map, scale );
         GameLogic.getInstance().getMap().setScale(scale);

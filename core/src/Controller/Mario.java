@@ -7,14 +7,20 @@ public class Mario extends Entity {
 
     public static Mario getInstance(){
         if (instance == null)
-            return (instance = new Mario());
+            return (instance = new Mario(21,69));
         else
             return instance;
     }
 
-    public Mario(int x , int y){
+    private Mario(int x , int y){
         super(x,y);
         this.current_type=type.MARIO_LEFT;
+    }
+
+    @Override
+    public void setType(type t) {
+        if (t == type.MARIO_LEFT || t == type.MARIO_RIGHT)
+            this.current_type = t;
     }
 
     @Override

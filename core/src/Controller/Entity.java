@@ -1,13 +1,8 @@
 package Controller;
 
-import com.badlogic.gdx.Gdx;
-
-/**
- * Created by asus on 04/05/2017.
- */
 
 public abstract class Entity {
-    public enum type {MARIO, DONKEYKONG, BARREL, FIRE};
+    public enum type {MARIO_LEFT,MARIO_RIGHT, DONKEYKONG, BARREL, FIRE};
     // [width, height]
     protected Pair<Integer,Integer> rep_size = new Pair<Integer, Integer>(0,0);
     // [x,y]
@@ -19,6 +14,8 @@ public abstract class Entity {
     private boolean mid_air = false;
 
     private final float MAX_Y_VELOCITY = 4;
+
+    protected type current_type;
 
 
     public Entity(){

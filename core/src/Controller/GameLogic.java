@@ -57,6 +57,7 @@ public class GameLogic {
         if ( !mario.isOnStair() ){
             Pair<Integer,Integer> curr_pos = mario.getPos();
             Pair<Integer,Integer> rep_size = mario.getRepSize();
+            mario.current_type = (direction == 1) ? Entity.type.MARIO_RIGHT : Entity.type.MARIO_LEFT ;
             Pair<Integer,Integer> new_pos = this.moveSingleEntity(curr_pos,rep_size, new Pair<Integer,Integer>( (mario.isMidAir()) ? 0 : direction*mario.getXSpeed() , (int)mario.getYSpeed() ));
 
             if( curr_pos.equals(new_pos) ) { //collision y_velocity = 0
@@ -71,7 +72,6 @@ public class GameLogic {
     }
 
     public Pair<Integer,Integer> moveSingleEntity(Pair<Integer,Integer> old_pos, Pair<Integer,Integer> rep_size, Pair<Integer,Integer> move){
-
         Pair<Integer,Integer> new_pos = new Pair<Integer, Integer>( old_pos.getFirst()+move.getFirst() , old_pos.getSecond()+move.getSecond());
 
         new_pos.setFirst( checkOutOfScreenWidth( new_pos.getFirst() , rep_size.getFirst() ) );

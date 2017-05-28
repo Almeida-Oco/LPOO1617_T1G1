@@ -14,11 +14,12 @@ public class Mario extends Entity {
 
     public Mario(int x , int y){
         super(x,y);
+        this.current_type=type.MARIO_LEFT;
     }
 
     @Override
     public type getType() {
-        return type.MARIO;
+        return current_type;
     }
 
     public boolean isOnStair(){

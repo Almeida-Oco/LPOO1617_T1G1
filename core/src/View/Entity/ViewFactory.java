@@ -11,9 +11,19 @@ public class ViewFactory {
 
     public static EntityView makeView(AssetManager assets, Entity entity){
         Entity.type type = entity.getType();
+        //TODO change only sprite instead creating other object
         if ( !cache.containsKey(type) ){
-            if (type == Entity.type.MARIO)
-                cache.put( type, new MarioView(assets) );
+            if (type == Entity.type.MARIO_LEFT) {
+               MarioView temp=new MarioView(assets);
+                temp.changeSprite(0);
+                cache.put(type, temp);
+            }
+            if (type == Entity.type.MARIO_RIGHT) {
+                MarioView temp=new MarioView(assets);
+                temp.changeSprite(1);
+                cache.put(type, temp);
+            }
+
 
         }
 

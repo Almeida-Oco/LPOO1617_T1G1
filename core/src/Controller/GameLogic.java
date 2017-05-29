@@ -166,19 +166,17 @@ public class GameLogic {
 
     private void updateMarioState(Mario mario, int direction){
         //TODO Change this shit
-        if (1 == direction) {
+        if (1 == direction)
             mario.setType(Entity.type.MARIO_RIGHT);
-            mario.updateXVelocity(direction);
-        }
-        else if (-1 == direction) {
+        else if (-1 == direction)
             mario.setType(Entity.type.MARIO_LEFT);
-            mario.updateXVelocity(direction);
-        }
         else if(2==direction){
             mario.setType(Entity.type.MARIO_CLIMB_LEFT);
         }
         else if(3==direction){
             mario.setType(Entity.type.MARIO_CLIMB_RIGHT);
         }
+
+        mario.updateXVelocity(direction);
     }
 }

@@ -85,7 +85,7 @@ public abstract class Entity {
     }
 
     public void updateXVelocity( int direction ){
-        if ( !this.mid_air )
+        if ( !this.mid_air && Math.abs(direction) <= 1)
             this.velocity.setFirst( direction*MAX_X_VELOCITY );
     }
 

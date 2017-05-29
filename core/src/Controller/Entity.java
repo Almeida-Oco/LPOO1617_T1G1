@@ -2,7 +2,7 @@ package Controller;
 
 
 public abstract class Entity {
-    public enum type {MARIO_LEFT,MARIO_RIGHT, DONKEYKONG, BARREL, FIRE};
+    public enum type {MARIO_LEFT,MARIO_RIGHT,MARIO_CLIMB_LEFT, MARIO_CLIMB_RIGHT, DONKEYKONG, BARREL, FIRE};
     // [width, height]
     protected Pair<Integer,Integer> rep_size = new Pair<Integer, Integer>(0,0);
     // [x,y]

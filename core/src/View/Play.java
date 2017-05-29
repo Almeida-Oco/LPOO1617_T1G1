@@ -46,6 +46,8 @@ public class Play extends ScreenAdapter {
     private void loadAssets(){
         this.assets.load( "mario_left.png", Texture.class);
         this.assets.load("mario_right.png",Texture.class);
+        this.assets.load("mario_climb_left.png",Texture.class);
+        this.assets.load("mario_climb_right.png",Texture.class);
         this.assets.finishLoading();
     }
 

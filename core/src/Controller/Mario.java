@@ -19,7 +19,7 @@ public class Mario extends Entity {
 
     @Override
     public void setType(type t) {
-        if (t == type.MARIO_LEFT || t == type.MARIO_RIGHT)
+        if (t == type.MARIO_LEFT || t == type.MARIO_RIGHT || t==type.MARIO_CLIMB_LEFT || t==type.MARIO_CLIMB_RIGHT)
             this.current_type = t;
     }
 

@@ -166,9 +166,9 @@ public class GameLogic {
 
     private void updateMarioState(Mario mario, int direction){
         //TODO Change this shit
-        if (1 == direction)
+        if (1 == direction&& !mario.isOnStair())
             mario.setType(Entity.type.MARIO_RIGHT);
-        else if (-1 == direction)
+        else if (-1 == direction && !mario.isOnStair())
             mario.setType(Entity.type.MARIO_LEFT);
         else if(2==direction){
             mario.setType(Entity.type.MARIO_CLIMB_LEFT);

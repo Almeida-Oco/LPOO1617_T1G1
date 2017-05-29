@@ -14,11 +14,11 @@ public abstract class Entity {
     // [x,y]
     protected Pair<Integer,Integer> position;
     // [x,y]
-    protected Pair<Float,Float> velocity = new Pair<Float,Float>(3.0f,-3f);
+    protected Pair<Float,Float> velocity = new Pair<Float,Float>(DEFAULT_MAX_X_VELOCITY,-3f);
 
     private float gravity = 1f;
     private boolean mid_air = false;
-    private float y_velocity = 4;
+    private float y_velocity = 0;
     private float x_velocity = 3.0f;
 
     protected type current_type;
@@ -50,11 +50,11 @@ public abstract class Entity {
     }
 
     public int getXSpeed(){
-        return (int)this.velocity.getFirst().floatValue();
+        return (int)Math.round((double)this.velocity.getFirst().floatValue());
     }
 
     public float getYSpeed(){
-        return this.velocity.getSecond();
+        return (int)Math.round((double)this.velocity.getSecond().floatValue());
     }
 
     public boolean isMidAir(){
@@ -97,6 +97,7 @@ public abstract class Entity {
     public void setScale (float scale ){
         this.gravity = this.DEFAULT_GRAVITY*scale/MyGdxGame.DEFAULT_SCALE;
         this.x_velocity = this.DEFAULT_MAX_X_VELOCITY*scale/MyGdxGame.DEFAULT_SCALE;
+        this.velocity.setFirst(this.x_velocity);
         this.y_velocity = this.DEFAULT_MAX_Y_VELOCITY*scale/MyGdxGame.DEFAULT_SCALE;
     }
 

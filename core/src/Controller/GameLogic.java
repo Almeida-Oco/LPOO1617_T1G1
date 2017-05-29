@@ -1,7 +1,6 @@
 package Controller;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 
 import java.util.LinkedList;
 
@@ -13,7 +12,7 @@ public class GameLogic {
     private GameLogic(){
         this.map = new Map();
         this.chars.add( Mario.getInstance() );
-    };
+    }
 
 
     public static GameLogic getInstance(){
@@ -81,8 +80,9 @@ public class GameLogic {
      */
     public void moveMario(int direction){
         Mario mario = Mario.getInstance();
-        if ( !mario.isOnStair() ){
+        if ( !mario.isOnStair() && !mario.isMidAir()){
             updateMarioState(mario,direction);
+            System.out.println( "X VEL = "+mario.getXSpeed()+", Y VEL = "+mario.getYSpeed() );
             Pair<Integer,Integer>   velocity = new Pair<Integer,Integer>( mario.getXSpeed() , (int)mario.getYSpeed() ),
                                     curr_pos = mario.getPos(),
                                     new_pos = this.moveSingleEntity(mario, curr_pos,mario.getRepSize(), velocity);

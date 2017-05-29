@@ -4,7 +4,7 @@ package Controller;
 import com.mygdx.game.MyGdxGame;
 
 public abstract class Entity {
-    public enum type {MARIO_LEFT,MARIO_RIGHT,MARIO_CLIMB_LEFT, MARIO_CLIMB_RIGHT, DONKEYKONG, BARREL, FIRE};
+    public enum type {MARIO_LEFT,MARIO_RIGHT,MARIO_CLIMB_LEFT, MARIO_CLIMB_RIGHT, MARIO_WALKING_RIGHT, MARIO_WALKING_LEFT, DONKEYKONG, BARREL, FIRE};
     private final float DEFAULT_GRAVITY = 1f;
     private final float DEFAULT_MAX_Y_VELOCITY = 4f;
     private final float DEFAULT_MAX_X_VELOCITY = 3f;

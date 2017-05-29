@@ -11,9 +11,11 @@ import java.util.HashMap;
 public class MarioView extends EntityView {
     private Texture texture;
     private int last_texture;
+    private static final float DEFAULT_SCALE = 3;
 
 
-    public MarioView(AssetManager assets){
+    public MarioView(AssetManager assets, float screen_scale){
+        super(DEFAULT_SCALE,screen_scale);
         this.last_texture=0;
         image_names = new HashMap<Integer, String>();
         image_names.put(0,"mario_left.png");
@@ -25,7 +27,6 @@ public class MarioView extends EntityView {
         this.canJump = true;
         this.texture = assets.get(image_names.get(0));
         this.representation = new Sprite(texture,texture.getWidth(),texture.getHeight());
-        this.img_scale = 3;
         this.representation.scale(this.img_scale);
     }
 

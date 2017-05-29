@@ -1,6 +1,8 @@
 package Controller;
 
 
+import com.mygdx.game.MyGdxGame;
+
 public abstract class Entity {
     public enum type {MARIO_LEFT,MARIO_RIGHT, DONKEYKONG, BARREL, FIRE};
     // [width, height]
@@ -12,8 +14,7 @@ public abstract class Entity {
 
     private float gravity = 1f;
     private boolean mid_air = false;
-
-    private final float MAX_FALL_VELOCITY = 4;
+    private float MAX_FALL_VELOCITY = 4;
     private float MAX_X_VELOCITY = 3.0f;
 
     protected type current_type;
@@ -26,6 +27,7 @@ public abstract class Entity {
     public Entity(int x , int y){
         this.position = new Pair<Integer,Integer>(x,y);
     }
+
 
     public int getX(){
         return this.position.getFirst();
@@ -86,6 +88,13 @@ public abstract class Entity {
         if ( !this.mid_air )
             this.velocity.setFirst( direction*MAX_X_VELOCITY );
     }
+
+    public void setScale (float scale ){
+        this.gravity = this.gravity*scale/MyGdxGame.DEFAULT_SCALE;
+        this.MAX_X_VELOCITY = this.MAX_X_VELOCITY*scale/MyGdxGame.DEFAULT_SCALE;
+        this.MAX_FALL_VELOCITY = this.MAX_FALL_VELOCITY*scale/MyGdxGame.DEFAULT_SCALE;
+    }
+
     public abstract void setType(type t);
 
     public abstract type getType();

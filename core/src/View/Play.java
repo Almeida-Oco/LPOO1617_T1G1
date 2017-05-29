@@ -23,6 +23,7 @@ public class Play extends ScreenAdapter {
     private OrthogonalTiledMapRenderer renderer;
     private OrthographicCamera camera;
     private AssetManager assets;
+    private float scale;
 
     private final float JUMP_MIN_VAL = 5f;
     private final float MOVE_MIN_VAL = 1.5f;
@@ -32,9 +33,9 @@ public class Play extends ScreenAdapter {
     public void show() {
         this.batch = new SpriteBatch();
         this.map = GameLogic.getInstance().getMap().getMap();
-        float scale = this.mapScaling();
-        this.renderer = new OrthogonalTiledMapRenderer(this.map, scale );
-        GameLogic.getInstance().getMap().setScale(scale);
+        this.scale = this.mapScaling();
+        this.renderer = new OrthogonalTiledMapRenderer(this.map, this.scale );
+        GameLogic.getInstance().getMap().setScale(this.scale);
         this.camera = new OrthographicCamera();
         this.camera.setToOrtho(false,Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
         this.renderer.setView(this.camera);
@@ -69,7 +70,7 @@ public class Play extends ScreenAdapter {
 
     private void drawEntities(){
         for (Entity ent : GameLogic.getInstance().getCharacters() ){
-            EntityView ent_view = ViewFactory.makeView(this.assets,ent);
+            EntityView ent_view = ViewFactory.makeView(this.assets,ent, this.scale);
             ent.setRepSize( (int)(ent_view.getSprite().getWidth()*ent_view.getImgScale()) , (int)(ent_view.getSprite().getHeight()*ent_view.getImgScale()) );
             ent_view.updatePos(ent.getX(),ent.getY());
             ent_view.draw(this.batch);

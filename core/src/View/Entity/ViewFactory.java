@@ -9,17 +9,17 @@ import Controller.Entity;
 public class ViewFactory {
     private static HashMap<Entity.type,EntityView> cache = new HashMap<Entity.type, EntityView>();
 
-    public static EntityView makeView(AssetManager assets, Entity entity){
+    public static EntityView makeView(AssetManager assets, Entity entity, float screen_scale){
         Entity.type type = entity.getType();
         //TODO change only sprite instead creating other object
         if ( !cache.containsKey(type) ){
             if (type == Entity.type.MARIO_LEFT) {
-                MarioView temp=new MarioView(assets);
+                MarioView temp=new MarioView(assets, screen_scale);
                 temp.changeSprite(0);
                 cache.put(type, temp);
             }
             if (type == Entity.type.MARIO_RIGHT) {
-                MarioView temp=new MarioView(assets);
+                MarioView temp=new MarioView(assets, screen_scale);
                 temp.changeSprite(1);
                 cache.put(type, temp);
             }

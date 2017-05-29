@@ -5,6 +5,10 @@ import com.mygdx.game.MyGdxGame;
 
 public abstract class Entity {
     public enum type {MARIO_LEFT,MARIO_RIGHT,MARIO_CLIMB_LEFT, MARIO_CLIMB_RIGHT, DONKEYKONG, BARREL, FIRE};
+    private final float DEFAULT_GRAVITY = 1f;
+    private final float DEFAULT_MAX_Y_VELOCITY = 4f;
+    private final float DEFAULT_MAX_X_VELOCITY = 3f;
+
     // [width, height]
     protected Pair<Integer,Integer> rep_size = new Pair<Integer, Integer>(0,0);
     // [x,y]
@@ -14,8 +18,8 @@ public abstract class Entity {
 
     private float gravity = 1f;
     private boolean mid_air = false;
-    private float MAX_FALL_VELOCITY = 4;
-    private float MAX_X_VELOCITY = 3.0f;
+    private float y_velocity = 4;
+    private float x_velocity = 3.0f;
 
     protected type current_type;
 
@@ -67,7 +71,7 @@ public abstract class Entity {
     }
 
     public void setRepSize(int width, int height, float scale){
-       // this.setScale(scale);
+        this.setScale(scale);
         this.rep_size.setFirst(width);
         this.rep_size.setSecond(height);
     }
@@ -78,22 +82,22 @@ public abstract class Entity {
     }
 
     public void updateYVelocity(){
-        if (this.velocity.getSecond() - this.gravity > -MAX_FALL_VELOCITY)
+        if (this.velocity.getSecond() - this.gravity > -this.y_velocity)
             this.velocity.setSecond( this.velocity.getSecond() - this.gravity );
         else
-            this.velocity.setSecond(-MAX_FALL_VELOCITY);
+            this.velocity.setSecond(-this.y_velocity);
 
     }
 
     public void updateXVelocity( int direction ){
         if ( !this.mid_air && Math.abs(direction) <= 1)
-            this.velocity.setFirst( direction*MAX_X_VELOCITY );
+            this.velocity.setFirst( direction*this.x_velocity );
     }
 
     public void setScale (float scale ){
-        this.gravity = this.gravity*scale/MyGdxGame.DEFAULT_SCALE;
-        this.MAX_X_VELOCITY = this.MAX_X_VELOCITY*scale/MyGdxGame.DEFAULT_SCALE;
-        this.MAX_FALL_VELOCITY = this.MAX_FALL_VELOCITY*scale/MyGdxGame.DEFAULT_SCALE;
+        this.gravity = this.DEFAULT_GRAVITY*scale/MyGdxGame.DEFAULT_SCALE;
+        this.x_velocity = this.DEFAULT_MAX_X_VELOCITY*scale/MyGdxGame.DEFAULT_SCALE;
+        this.y_velocity = this.DEFAULT_MAX_Y_VELOCITY*scale/MyGdxGame.DEFAULT_SCALE;
     }
 
     public abstract void setType(type t);

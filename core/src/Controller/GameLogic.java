@@ -50,7 +50,7 @@ public class GameLogic {
         }
         if(mario.isOnStair()){
             int climb_count= mario.getClimbing();
-            if(climb_count==8) {
+            if(climb_count==5) {
                 mario.setClimbing(0);
                 climb_count=0;
             }
@@ -65,9 +65,6 @@ public class GameLogic {
             }
             climb_count++;
             mario.setClimbing(climb_count);
-
-            System.out.println("count "+mario.getClimbing());
-
 
         }
         return mario.isOnStair();
@@ -179,10 +176,34 @@ public class GameLogic {
 
     private void updateMarioState(Mario mario, int direction){
         //TODO Change this shit
-        if (1 == direction&& !mario.isOnStair())
+        int run_count= mario.getRunning();
+        if(run_count==10) {
+            mario.setRunning(0);
+            run_count=0;
+        }
+
+        System.out.println("count "+mario.getRunning());
+
+        if(direction==0&& mario.getType()==Entity.type.MARIO_RUN_RIGHT)
             mario.setType(Entity.type.MARIO_RIGHT);
-        else if (-1 == direction && !mario.isOnStair())
+        else if(direction==0&& mario.getType()==Entity.type.MARIO_RUN_LEFT)
             mario.setType(Entity.type.MARIO_LEFT);
+        else if (1 == direction&& !mario.isOnStair()) {
+            if(run_count>=0 && run_count<=5)
+                mario.setType(Entity.type.MARIO_RIGHT);
+            else
+                mario.setType(Entity.type.MARIO_RUN_RIGHT);
+            run_count++;
+            mario.setRunning(run_count);
+        }
+        else if (-1 == direction && !mario.isOnStair()) {
+            if(run_count>=0 && run_count<=5)
+                mario.setType(Entity.type.MARIO_LEFT);
+            else
+                mario.setType(Entity.type.MARIO_RUN_LEFT);
+            run_count++;
+            mario.setRunning(run_count);
+        }
         else if(2==direction){
             mario.setType(Entity.type.MARIO_CLIMB_LEFT);
         }

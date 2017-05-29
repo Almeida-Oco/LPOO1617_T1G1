@@ -26,6 +26,10 @@ public class ViewFactory {
                 temp.changeSprite(2);
                 cache.put(type, temp);
             }
+            else if (type == Entity.type.MARIO_CLIMB_RIGHT) {
+                temp.changeSprite(3);
+                cache.put(type, temp);
+            }
 
 
 

@@ -50,7 +50,26 @@ public class GameLogic {
                 marioClimbDown(mario);
         }
         if(mario.isOnStair()){
-            updateMarioState(mario,2 );
+            int climb_count= mario.getClimbing();
+            if(climb_count==5) {
+                mario.setClimbing(0);
+                climb_count=0;
+            }
+
+            if(climb_count==0) {
+                if (mario.getType() == Entity.type.MARIO_CLIMB_LEFT)
+                    updateMarioState(mario, 3);
+                else if (mario.getType() == Entity.type.MARIO_CLIMB_RIGHT)
+                    updateMarioState(mario, 2);
+                else
+                    updateMarioState(mario, 2);
+            }
+            climb_count++;
+            mario.setClimbing(climb_count);
+
+            System.out.println("count "+mario.getClimbing());
+
+
         }
         return mario.isOnStair();
     }

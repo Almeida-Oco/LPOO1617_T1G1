@@ -3,6 +3,8 @@ package Controller;
 public class Mario extends Entity {
     private boolean in_stair = false;
     private static Mario instance = null;
+    private int climbing;
+
     private Mario(){};
 
     public static Mario getInstance(){
@@ -15,6 +17,7 @@ public class Mario extends Entity {
     private Mario(int x , int y){
         super(x,y);
         this.current_type=type.MARIO_LEFT;
+        this.climbing=0;
     }
 
     @Override
@@ -35,5 +38,9 @@ public class Mario extends Entity {
     public void setInStair(boolean b){
         this.in_stair = b;
     }
+
+    public int getClimbing(){return this.climbing;}
+
+    public void setClimbing(int climbing){this.climbing= climbing;}
 
 }

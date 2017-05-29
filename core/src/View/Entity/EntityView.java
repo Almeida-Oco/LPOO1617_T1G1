@@ -34,8 +34,12 @@ public abstract class EntityView {
         return this.representation;
     }
 
-    public float getImgScale(){
-        return this.img_scale;
+
+    public int getImgWidth(){
+        return (int)(this.representation.getWidth()*this.img_scale);
     }
 
+    public int getImgHeight(){
+        return (int)(this.representation.getHeight()*this.img_scale);
+    }
 }

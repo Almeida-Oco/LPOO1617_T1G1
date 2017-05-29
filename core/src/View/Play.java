@@ -10,7 +10,6 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
-import com.sun.org.apache.regexp.internal.RE;
 
 import Controller.GameLogic;
 import Controller.Entity;
@@ -73,7 +72,7 @@ public class Play extends ScreenAdapter {
     private void drawEntities(){
         for (Entity ent : GameLogic.getInstance().getCharacters() ){
             EntityView ent_view = ViewFactory.makeView(this.assets,ent, this.scale);
-            ent.setRepSize( (int)(ent_view.getSprite().getWidth()*ent_view.getImgScale()) , (int)(ent_view.getSprite().getHeight()*ent_view.getImgScale()) );
+            ent.setRepSize( ent_view.getImgWidth(), ent_view.getImgHeight() , this.scale);
             ent_view.updatePos(ent.getX(),ent.getY());
             ent_view.draw(this.batch);
         }

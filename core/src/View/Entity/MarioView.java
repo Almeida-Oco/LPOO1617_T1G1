@@ -45,8 +45,7 @@ public class MarioView extends EntityView {
 
     }
 
-
-    }
+}
 
 
 

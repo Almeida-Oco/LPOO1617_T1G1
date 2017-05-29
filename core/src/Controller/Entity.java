@@ -66,7 +66,8 @@ public abstract class Entity {
         this.position = pos;
     }
 
-    public void setRepSize(int width, int height){
+    public void setRepSize(int width, int height, float scale){
+        this.setScale(scale);
         this.rep_size.setFirst(width);
         this.rep_size.setSecond(height);
     }

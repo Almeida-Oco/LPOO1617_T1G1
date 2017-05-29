@@ -49,6 +49,9 @@ public class GameLogic {
             else
                 marioClimbDown(mario);
         }
+        if(mario.isOnStair()){
+            updateMarioState(mario,2 );
+        }
         return mario.isOnStair();
     }
 
@@ -162,10 +165,20 @@ public class GameLogic {
     }
 
     private void updateMarioState(Mario mario, int direction){
-        if (1 == direction)
+        //TODO Change this shit
+        if (1 == direction) {
             mario.setType(Entity.type.MARIO_RIGHT);
-        else if (-1 == direction)
+            mario.updateXVelocity(direction);
+        }
+        else if (-1 == direction) {
             mario.setType(Entity.type.MARIO_LEFT);
-        mario.updateXVelocity(direction);
+            mario.updateXVelocity(direction);
+        }
+        else if(2==direction){
+            mario.setType(Entity.type.MARIO_CLIMB_LEFT);
+        }
+        else if(3==direction){
+            mario.setType(Entity.type.MARIO_CLIMB_RIGHT);
+        }
     }
 }

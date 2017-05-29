@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 
 import java.util.LinkedList;
 
+//TODO check velocity for different screens
 public class GameLogic {
     private static GameLogic instance;
     private LinkedList<Controller.Entity> chars = new LinkedList<Controller.Entity>();

@@ -4,6 +4,7 @@ public class Mario extends Entity {
     private boolean in_stair = false;
     private static Mario instance = null;
     private int climbing;
+    private int running;
 
     private Mario(){};
 
@@ -18,6 +19,7 @@ public class Mario extends Entity {
         super(x,y);
         this.current_type=type.MARIO_LEFT;
         this.climbing=0;
+        this.running=0;
     }
 
     @Override
@@ -42,5 +44,9 @@ public class Mario extends Entity {
     public int getClimbing(){return this.climbing;}
 
     public void setClimbing(int climbing){this.climbing= climbing;}
+
+    public int getRunning(){return this.running;}
+
+    public void setRunning(int running){this.running= running;}
 
 }

@@ -22,7 +22,9 @@ public class MarioView extends EntityView {
         image_names.put(1,"mario_right.png");
         image_names.put(2,"mario_climb_left.png");
         image_names.put(3,"mario_climb_right.png");
-        image_names.put(4,"mario_morrer_cima.png");
+        image_names.put(4,"mario_run_left.png");
+        image_names.put(5,"mario_run_right.png");
+        image_names.put(6,"mario_morrer_cima.png");
         this.assets=assets;
         this.canJump = true;
         this.texture = assets.get(image_names.get(0));

@@ -12,7 +12,7 @@ public class ViewFactory {
     public static EntityView makeView(AssetManager assets, Entity entity, float screen_scale){
         Entity.type type = entity.getType();
         //TODO change only sprite instead creating other object
-        MarioView temp=new MarioView(assets);
+        MarioView temp=new MarioView(assets,screen_scale);
         if ( !cache.containsKey(type) ){
             if (type == Entity.type.MARIO_LEFT) {
                 temp.changeSprite(0);

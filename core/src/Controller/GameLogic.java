@@ -78,7 +78,7 @@ public class GameLogic {
      */
     public void moveMario(int direction){
         Mario mario = Mario.getInstance();
-        if ( !mario.isOnStair() && !mario.isMidAir()){
+        if ( !mario.isOnStair() ){
             updateMarioState(mario,direction);
             System.out.println( "X VEL = "+mario.getXSpeed()+", Y VEL = "+mario.getYSpeed() );
             Pair<Integer,Integer>   velocity = new Pair<Integer,Integer>( mario.getXSpeed() , (int)mario.getYSpeed() ),
@@ -86,8 +86,9 @@ public class GameLogic {
                                     new_pos = this.moveSingleEntity(mario, curr_pos,mario.getRepSize(), velocity);
 
             mario.setPos(new_pos);
-            mario.updateYVelocity();
+
         }
+        mario.updateYVelocity();
     }
 
 
@@ -174,7 +175,7 @@ public class GameLogic {
         else
             return pos;
     }
-
+    //TODO need to put state design patterns
     private void updateMarioState(Mario mario, int direction){
         //TODO Change this shit
         int run_count= mario.getRunning();

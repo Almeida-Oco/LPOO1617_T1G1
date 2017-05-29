@@ -79,7 +79,7 @@ public class GameLogic {
         Mario mario = Mario.getInstance();
         if ( !mario.isOnStair() && !mario.isMidAir()){
             updateMarioState(mario,direction);
-            System.out.println( "X VEL = "+mario.getXSpeed()+", Y VEL = "+mario.getYSpeed() );
+          //  System.out.println( "X VEL = "+mario.getXSpeed()+", Y VEL = "+mario.getYSpeed() );
             Pair<Integer,Integer>   velocity = new Pair<Integer,Integer>( mario.getXSpeed() , (int)mario.getYSpeed() ),
                                     curr_pos = mario.getPos(),
                                     new_pos = this.moveSingleEntity(mario, curr_pos,mario.getRepSize(), velocity);
@@ -177,19 +177,17 @@ public class GameLogic {
     private void updateMarioState(Mario mario, int direction){
         //TODO Change this shit
         int run_count= mario.getRunning();
-        if(run_count==10) {
+        if(run_count==6) {
             mario.setRunning(0);
             run_count=0;
         }
-
-        System.out.println("count "+mario.getRunning());
-
+        
         if(direction==0&& mario.getType()==Entity.type.MARIO_RUN_RIGHT)
             mario.setType(Entity.type.MARIO_RIGHT);
         else if(direction==0&& mario.getType()==Entity.type.MARIO_RUN_LEFT)
             mario.setType(Entity.type.MARIO_LEFT);
         else if (1 == direction&& !mario.isOnStair()) {
-            if(run_count>=0 && run_count<=5)
+            if(run_count>=0 && run_count<=3)
                 mario.setType(Entity.type.MARIO_RIGHT);
             else
                 mario.setType(Entity.type.MARIO_RUN_RIGHT);
@@ -197,7 +195,7 @@ public class GameLogic {
             mario.setRunning(run_count);
         }
         else if (-1 == direction && !mario.isOnStair()) {
-            if(run_count>=0 && run_count<=5)
+            if(run_count>=0 && run_count<=3)
                 mario.setType(Entity.type.MARIO_LEFT);
             else
                 mario.setType(Entity.type.MARIO_RUN_LEFT);

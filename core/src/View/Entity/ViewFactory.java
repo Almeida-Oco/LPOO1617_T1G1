@@ -30,6 +30,14 @@ public class ViewFactory {
                 temp.changeSprite(3);
                 cache.put(type, temp);
             }
+            else if (type == Entity.type.MARIO_RUN_LEFT) {
+                temp.changeSprite(4);
+                cache.put(type, temp);
+            }
+            else if (type == Entity.type.MARIO_RUN_RIGHT) {
+                temp.changeSprite(5);
+                cache.put(type, temp);
+            }
 
 
 

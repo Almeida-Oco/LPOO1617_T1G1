@@ -51,7 +51,7 @@ public class GameLogic {
         }
         if(mario.isOnStair()){
             int climb_count= mario.getClimbing();
-            if(climb_count==5) {
+            if(climb_count==8) {
                 mario.setClimbing(0);
                 climb_count=0;
             }

@@ -43,7 +43,7 @@ public class GameLogic {
     public boolean marioClimb( int direction ){ //1 up , -1 down
         Mario mario = Mario.getInstance();
         int new_x;
-        if ( !mario.isMidAir() && ((new_x = this.map.nearLadder(mario.getPos(),mario.getRepSize())) != -1 || direction == -1)) {
+        if ( !mario.isMidAir() && (((new_x = this.map.nearLadder(mario.getPos(),mario.getRepSize())) != -1) || direction == -1 )) {
             if (1 == direction)
                 marioClimbUp(mario,new_x);
             else
@@ -116,7 +116,7 @@ public class GameLogic {
         Pair<Integer,Integer> rep = mario.getRepSize();
         lower_pos.setSecond( lower_pos.getSecond() - (int)this.map.getMapTileHeight() ); //force lower tile
         int new_x = this.map.nearLadder(lower_pos,rep);
-        if (new_x != -1 && (collisionOnY( lower_pos ,mario.getRepSize(),-1) == -1 || this.ladderAndCrane(lower_pos,rep)) ){ //there is still ladder below and no floor below
+        if (new_x != -1 && /*( collisionOnY( lower_pos ,mario.getRepSize(),-1) == -1 */ ( this.map.ladderAndCraneBelow(lower_pos,rep) && mario.isOnStair() ) ){ //there is still ladder below and no floor below
             Pair<Integer,Integer> new_pos = new Pair<Integer, Integer>(new_x,mario.getY());
             new_pos.setSecond(new_pos.getSecond()-1);
             mario.setPos(new_pos);
@@ -125,12 +125,6 @@ public class GameLogic {
         else
             mario.setInStair(false);
 
-    }
-
-    private boolean ladderAndCrane(Pair<Integer,Integer> pos, Pair<Integer,Integer> rep_size ){
-        TiledMapTileLayer.Cell  floor = this.map.getFloorCell( pos.getFirst() , pos.getSecond() - rep_size.getSecond()/2 ),
-                                stair = this.map.getStairCell( pos.getFirst() , pos.getSecond() - rep_size.getSecond()/2 );
-        return ( (floor != null && stair != null) || (floor == null && stair != null) );
     }
 
 

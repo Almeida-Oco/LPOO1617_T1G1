@@ -64,7 +64,6 @@ public class Map {
         TiledMapTileLayer.Cell cell = this.collision_layer.getCell( this.XConverter(x) , this.YConverter(y) );
 
         return cell != null && cell.getTile() != null && cell.getTile().getProperties().containsKey("blocked");
-
     }
 
     public int nearLadder(Pair<Integer,Integer> pos, Pair<Integer,Integer> rep_size){
@@ -88,6 +87,13 @@ public class Map {
 
     public TiledMapTileLayer.Cell getFloorCell(int x , int y){
         return ((TiledMapTileLayer)this.map.getLayers().get("Floor")).getCell( this.XConverter(x) , this.YConverter(y) );
+    }
+
+    public boolean ladderAndCraneBelow(Pair<Integer,Integer> pos, Pair<Integer,Integer> rep_size ){
+        TiledMapTileLayer.Cell  floor = this.getFloorCell( pos.getFirst() , pos.getSecond() - rep_size.getSecond()/2 ),
+                                stair = this.getStairCell( pos.getFirst() , pos.getSecond() - rep_size.getSecond()/2 );
+
+        return (floor != null && stair != null) || (floor == null && stair != null);
     }
 
     //TODO why the fuck do we need layer_y - 6 ???

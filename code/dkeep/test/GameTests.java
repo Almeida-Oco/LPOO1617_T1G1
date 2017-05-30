@@ -46,6 +46,7 @@ public class GameTests {
 	}
 	
 	private boolean validGuardPos(Pair<Integer,Integer> p , int guard_type, int index){ //1 -> Rookie , 2 -> Suspicious/Drunken
+		int ip = ( index+1 == movement.size() ) ? 0 : index+1 , il = ( index-1 < 0) ? movement.size()-1 : index-1;
 		if( guard_type >= 2)
 			return movement.contains(p);
 		else
@@ -208,14 +209,13 @@ public class GameTests {
 		assertEquals("K",h.toString());
 	}
 	
-	@Test (timeout = 1000)
+	@Test
 	public void testMoveAndClub(){
 		ArenaMap map = new ArenaMap(1); //generate only 1 ogre
 		GameLogic game = new GameLogic(map,0); //Number is irrelevant
 		game.getHero().setPos(new ArrayList<Pair<Integer,Integer>>(Arrays.asList(new Pair<Integer,Integer>(0,0))) );
 		
 		int px = game.getVillains().get(0).getPos().get(0).getFirst() , py = game.getVillains().get(0).getPos().get(0).getSecond();
-		
 		boolean cnn= false,cns=false,cnw=false,cne=false, csn=false , css=false , csw=false , cse=false, 
 				cen=false , ces=false , cew=false , cee=false , cwn=false , cws=false , cwe=false , cww=false;
 		while ( !(cnn && cns && cnw && cne && csn && css && csw && cse && cen && ces && cew && cee && cwn && cws && cwe && cww) ){
@@ -362,11 +362,10 @@ public class GameTests {
 				assertEquals(true , game.getAllCharacters().size() == 2);
 			else if (i > 0){
 				boolean b = false;
-				assertEquals(true , game.getAllCharacters().size() == 2);
-				for (GameCharacter ch : game.getAllCharacters() ) 
+				for (GameCharacter ch : game.getAllCharacters() )
 					if ((ch instanceof RookieGuard && i == 1) || (ch instanceof DrunkenGuard && i == 2) || (ch instanceof SuspiciousGuard && i == 3))
 						b = true;
-				assertEquals(true,b); //only check last pos
+				assertEquals(true,b);
 			}
 		}
 		

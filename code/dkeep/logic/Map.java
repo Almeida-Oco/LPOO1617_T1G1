@@ -48,6 +48,7 @@ public abstract class Map implements java.io.Serializable{
 	 */
 	public Map(int guards , int ogres, char[][] map){ // 1-Rookie, 2 - Drunken, 3-Suspicious 
 		if(map != null){
+			Random rand = new Random();
 			this.map = map; this.height = map.length; this.width = map[0].length;
 			Pair<Integer,Integer> map_size = new Pair<Integer,Integer>(this.width,this.height);
 			if (guards != -1)

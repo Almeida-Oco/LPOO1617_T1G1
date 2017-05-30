@@ -48,7 +48,7 @@ public class GameWindow {
 			public void run() {
 				try {
 					GameWindow window = new GameWindow();
-					frame.setVisible(true);
+					window.frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -64,11 +64,11 @@ public class GameWindow {
 	}
 	
 	public static void proccessKey(char ch){
-		boolean gm_over = game.isGameOver() , gm_won = game.wonGame();
+		boolean gm_over = game.isGameOver() , gm_won = game.wonGame(), changed_lvl = false;
 		
 		
 		if (ch != '\n' && !gm_over && !gm_won){	
-			if( (game.moveHero(ch) ) && !(gm_won = game.wonGame()) )
+			if( ( changed_lvl =game.moveHero(ch) ) && !(gm_won = game.wonGame()) )
 				game = game.getNextLevel(ogres);
 			if ( !(gm_over = game.isGameOver() ) )
 				game.moveAllVillains();
@@ -244,14 +244,14 @@ public class GameWindow {
 				    int height=0;
 				    int width=0;
 				    try{ 
-						height=Math.abs(Integer.parseInt(value1));
+						height=Integer.parseInt(value1);
 					}
 					catch (NumberFormatException n){
 							JOptionPane.showMessageDialog(frame, "It's supoesed to be a number");
 							return;
 					}
 				    try{ 
-						width=Math.abs(Integer.parseInt(value2));	
+						width=Integer.parseInt(value2);
 					}
 					catch (NumberFormatException n){
 							JOptionPane.showMessageDialog(frame, "It's supoesed to be a number");

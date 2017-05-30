@@ -70,7 +70,6 @@ public class UserInput{
 				key = line.charAt(0);
 			else
 				key = ' ';
-		scan.close();
 		return key;
 	}
 	

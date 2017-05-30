@@ -1,13 +1,15 @@
 package Controller;
 
-/**
- * Created by oco on 5/29/17.
- */
 
 public class MarioClimb extends Mario {
     private final int ANIMATION_RATE = 10;
     private final int CLIMB_RATE = 1;
 
+    /**
+     * @brief Constructor for MarioClimb
+     * @param x X coordinate to position Mario
+     * @param y Y coordinate to position Mario
+     */
     public MarioClimb(int x, int y) {
         super(x, y);
         this.tick = 0;
@@ -15,19 +17,17 @@ public class MarioClimb extends Mario {
 
     @Override
     public Mario moveMario(Map map, int x_move, int y_move) {
+        Mario ret_val = this;
         Pair<Integer,Integer> new_pos = this.getPos();
         if ( GO_UP == y_move )
             new_pos = this.climbUp( map );
         else if (GO_DOWN == y_move )
             new_pos = this.climbDown( map );
 
-        if (this.position.equals(new_pos) && STAY_STILL != y_move) //End of stairs reached
-            return new MarioRun( new_pos.getFirst(), new_pos.getSecond() );
-        else
-            this.tickTock();
-
+        if( STAY_STILL != y_move )
+            ret_val = processResults(map,new_pos, y_move);
         this.setPos(new_pos);
-        return this;
+        return ret_val;
     }
 
     @Override
@@ -51,7 +51,7 @@ public class MarioClimb extends Mario {
         int new_x = 0;
 
         //there is still ladder above Mario
-        if ( (new_x = map.nearLadder(this.position, this.rep_size)) != -1 && map.nearLadder(upper_pos,this.rep_size) != -1){
+        if ( (new_x = map.nearLadder(this.position, this.rep_size)) != -1 && map.ladderAndCraneBelow(upper_pos,this.rep_size) ){
             new_pos.setFirst(new_x);
             return new_pos;
         }
@@ -69,14 +69,35 @@ public class MarioClimb extends Mario {
         Pair<Integer,Integer> lower_pos = new Pair<Integer,Integer>(new_pos.getFirst(), new_pos.getSecond() - (int)map.getMapTileHeight()); //force lower tile
         int new_x = 0;
 
-        //there is still ladder below Mario
-        if ( ((new_x=map.nearLadder(lower_pos,this.rep_size)) != -1) && map.ladderAndCraneBelow(lower_pos,this.rep_size) ){
+
+        if ( ((new_x=map.nearLadder(lower_pos,this.rep_size)) != -1) && map.ladderAndCraneBelow(new_pos,this.rep_size) ){
             new_pos.setFirst(new_x);
             return new_pos;
         }
 
         else
             return this.position;
+    }
+
+    /**
+     * @brief Used to process results of the climbing actions
+     * @param map Current map of the game
+     * @param new_pos New position returned by either climbUp() or climbDown()
+     * @param y_move Direction Mario is trying to go
+     * @return If end of ladder reached then a MarioRun object, this otherwise
+     */
+    private Mario processResults (Map map, Pair<Integer,Integer> new_pos, int y_move){
+        Pair<Integer,Integer> lower_pos = new Pair<Integer,Integer>(new_pos.getFirst(), new_pos.getSecond() - (int)map.getMapTileHeight()); //force lower tile
+        int new_y;
+        if (this.position.equals(new_pos) && (new_y = map.collidesBottom(lower_pos,this.rep_size)) != -1){
+            Mario ret_val = new MarioRun( new_pos.getFirst(), new_y  );
+            ret_val.setType(type.MARIO_CLIMB_OVER);
+            return ret_val;
+        }
+
+        this.tickTock();
+
+        return this;
     }
 
     /**

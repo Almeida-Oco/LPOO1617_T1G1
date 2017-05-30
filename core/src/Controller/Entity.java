@@ -4,7 +4,11 @@ package Controller;
 import com.mygdx.game.MyGdxGame;
 
 public abstract class Entity {
-    public enum type {MARIO_LEFT,MARIO_RIGHT,MARIO_CLIMB_LEFT, MARIO_CLIMB_RIGHT, MARIO_CLIMB_OVER, MARIO_RUN_LEFT,MARIO_RUN_RIGHT, DONKEYKONG, BARREL, FIRE};
+    public enum type {  MARIO_LEFT,MARIO_RIGHT,MARIO_CLIMB_LEFT, MARIO_CLIMB_RIGHT, MARIO_CLIMB_OVER, MARIO_RUN_LEFT,MARIO_RUN_RIGHT, MARIO_DYING_UP,
+                        DK_THROW_LEFT, DK_THROW_RIGHT, DK_FRONT, DK_LEFT_BARREL, DK_RIGHT_BARREL, DK_LEFT_HAND, DK_RIGHT_HAND,
+                        BARREL_FALL_BACK, BARREL_FALL_FRONT, BARREL_ROLLING, FIRE_BARREL_FALL_BACK, FIRE_BARREL_FALL_FRONT, FIRE_BARREL_ROLLING,
+                        FIRE_LEFT, FIRE_LEFT_IGNITE, FIRE_RIGHT, FIRE_RIGHT_IGNITE,
+                        BARREL_FIRE_MIN1, BARREL_FIRE_MIN2, BARREL_FIRE_MAX1, BARREL_FIRE_MAX2};
     private final float DEFAULT_GRAVITY = 1f;
     private final float DEFAULT_MAX_Y_VELOCITY = 4f;
     private final float DEFAULT_MAX_X_VELOCITY = 3f;
@@ -53,17 +57,8 @@ public abstract class Entity {
         return (int)Math.round((double)this.velocity.getFirst().floatValue());
     }
 
-    public float getYSpeed(){
+    public int getYSpeed(){
         return (int)Math.round((double)this.velocity.getSecond().floatValue());
-    }
-
-    public boolean isMidAir(){
-        return this.mid_air;
-    }
-
-
-    public void setMidAir(boolean b){
-        this.mid_air = b;
     }
 
     public void setPos(Pair<Integer,Integer> pos){
@@ -110,7 +105,9 @@ public abstract class Entity {
 
     public abstract void setType(type t);
 
-    public abstract type getType();
+    public type getType(){
+        return this.current_type;
+    };
 
 
 }

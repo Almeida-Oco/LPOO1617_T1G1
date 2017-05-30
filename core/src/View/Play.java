@@ -43,15 +43,15 @@ public class Play extends ScreenAdapter {
         this.loadAssets();
     }
 
-
+    //TODO this will start to get quite big, separate by type, MARIO, FIRE, DK, BARREL ...
     private void loadAssets(){
-        this.assets.load("mario_left.png", Texture.class);
-        this.assets.load("mario_right.png",Texture.class);
-        this.assets.load("mario_run_left.png", Texture.class);
-        this.assets.load("mario_run_right.png",Texture.class);
-        this.assets.load("mario_climb_left.png",Texture.class);
-        this.assets.load("mario_climb_right.png",Texture.class);
-        this.assets.load("mario_climb_over.png",Texture.class);
+        this.assets.load("mario/left.png", Texture.class);
+        this.assets.load("mario/right.png",Texture.class);
+        this.assets.load("mario/run_left.png", Texture.class);
+        this.assets.load("mario/run_right.png",Texture.class);
+        this.assets.load("mario/climb_left.png",Texture.class);
+        this.assets.load("mario/climb_right.png",Texture.class);
+        this.assets.load("mario/climb_over.png",Texture.class);
         this.assets.finishLoading();
     }
 

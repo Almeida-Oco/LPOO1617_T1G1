@@ -14,31 +14,31 @@ public class ViewFactory {
         if ( !cache.containsKey(type) ){
             MarioView temp=new MarioView(assets,screen_scale);
             if (type == Entity.type.MARIO_LEFT) {
-                temp.changeSprite(0);
+                temp.changeSprite(type);
                 cache.put(type, temp);
             }
             else if (type == Entity.type.MARIO_RIGHT) {
-                temp.changeSprite(1);
+                temp.changeSprite(type);
                 cache.put(type, temp);
             }
             else if (type == Entity.type.MARIO_CLIMB_LEFT) {
-                temp.changeSprite(2);
+                temp.changeSprite(type);
                 cache.put(type, temp);
             }
             else if (type == Entity.type.MARIO_CLIMB_RIGHT) {
-                temp.changeSprite(3);
+                temp.changeSprite(type);
                 cache.put(type, temp);
             }
             else if (type == Entity.type.MARIO_RUN_LEFT){
-                temp.changeSprite(4);
+                temp.changeSprite(type);
                 cache.put(type,temp);
             }
             else if (type == Entity.type.MARIO_RUN_RIGHT){
-                temp.changeSprite(5);
+                temp.changeSprite(type);
                 cache.put(type,temp);
             }
             else if (type == Entity.type.MARIO_CLIMB_OVER){
-                temp.changeSprite(7);
+                temp.changeSprite(type);
                 cache.put(type,temp);
             }
 

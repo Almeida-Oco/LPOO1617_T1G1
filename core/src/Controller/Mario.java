@@ -1,5 +1,6 @@
 package Controller;
 
+
 public abstract class Mario extends Entity {
     protected final int JUMP = 2;
     protected final int GO_UP = 1;
@@ -10,25 +11,34 @@ public abstract class Mario extends Entity {
 
     protected int tick;
 
+    /**
+     * @brief Mario constructor
+     * @param x X coordinate to position Mario
+     * @param y Y coordinate to position Mario
+     */
     protected Mario(int x , int y){
         super(x,y);
         this.current_type=type.MARIO_RIGHT;
         this.tick = 0;
     }
 
+    /**
+     * @brief Used to create the default Mario (MarioRun), on given position
+     * @param x X coordinate to position Mario
+     * @param y Y coordinate to position Mario
+     * @return MarioRun object
+     */
     public static Mario createMario(int x , int y){
         return new MarioRun(x,y);
     }
 
+    //TODO put these in array/hashMap
     @Override
     public void setType(type t) {
-        if (t == type.MARIO_LEFT || t == type.MARIO_RIGHT || t==type.MARIO_CLIMB_LEFT || t==type.MARIO_CLIMB_RIGHT)
+        if (    t == type.MARIO_LEFT || t == type.MARIO_RIGHT || t == type.MARIO_CLIMB_LEFT ||
+                t == type.MARIO_CLIMB_RIGHT || t == type.MARIO_RUN_RIGHT|| t == type.MARIO_RUN_LEFT ||
+                t == type.MARIO_CLIMB_OVER)
             this.current_type = t;
-    }
-
-    @Override
-    public type getType() {
-        return current_type;
     }
 
     /**

@@ -5,27 +5,20 @@ package Controller;
  */
 
 public class DonkeyKong extends Entity {
-    private DonkeyKong instance = null;
+    private static DonkeyKong instance = null;
     private DonkeyKong(){}
 
     @Override
     public void setType(type t) {
-        if (t == type.DONKEYKONG)
+        if (    t == type.DK_FRONT || t == type.DK_LEFT_BARREL || t == type.DK_LEFT_HAND || t == type.DK_RIGHT_BARREL ||
+                t == type.DK_RIGHT_HAND || t == type.DK_THROW_LEFT || t == type.DK_THROW_RIGHT )
             this.current_type = t;
     }
 
-    @Override
-    public type getType() {
-        return type.DONKEYKONG;
-    }
-
-    ;
-
-
-    public DonkeyKong getInstance(){
-        if (this.instance == null)
-            return (this.instance = new DonkeyKong());
+    public static DonkeyKong getInstance(){
+        if (instance == null)
+            return (instance = new DonkeyKong());
         else
-            return this.instance;
+            return instance;
     }
 }

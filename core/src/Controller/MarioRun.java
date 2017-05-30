@@ -1,14 +1,15 @@
 package Controller;
 
-/**
- * Created by oco on 5/29/17.
- */
 
-//TODO 4th state when Mario is falling
 public class MarioRun extends Mario {
     private final int ANIMATION_RATE = 5;
     private final int ANIMATION_RESET = 10;
 
+    /**
+     * @brief Constructor for MarioRun
+     * @param x X coordinate to position Mario
+     * @param y Y coordinate to position Mario
+     */
     protected MarioRun(int x, int y) {
         super(x, y);
     }
@@ -44,6 +45,11 @@ public class MarioRun extends Mario {
         return  map.nearLadder(this.position,this.rep_size) != -1;
     }
 
+    /**
+     * @brief Checks if there is a ladder below Mario
+     * @param map Current map of the game
+     * @return Whether Mario has a ladder below or not
+     */
     private boolean checkLowerLadder (Map map){
         Pair<Integer,Integer> lower_pos = new Pair<Integer, Integer>(this.position.getFirst(),this.position.getSecond() -(int)(map.getMapTileHeight()*2));
         return map.nearLadder(lower_pos,this.rep_size) != -1;
@@ -66,20 +72,26 @@ public class MarioRun extends Mario {
      * @brief Updates mario position based on direction
      * @param map Current map of the game
      * @param x_move Direction to go
+     * @return Which mario state it should move to
+     * TODO SMALLER IF NEEDED
      */
-    private void updatePosition( Map map , int x_move){
-        Pair<Integer,Integer> new_pos = new Pair<Integer, Integer>( this.position.getFirst()+x_move*(int)this.velocity.getFirst().floatValue() ,
-                                                                    this.position.getSecond()+(int)this.velocity.getSecond().floatValue());
+    private Mario updatePosition( Map map , int x_move){
+        Pair<Integer,Integer> new_pos = new Pair<Integer, Integer>(this.position.getFirst()+x_move*this.getXSpeed() , this.position.getSecond()+this.getYSpeed());
         new_pos.setFirst( map.checkOutOfScreenWidth(new_pos.getFirst(), rep_size.getFirst()));
         new_pos.setSecond(map.checkOutOfScreenHeight(new_pos.getSecond(), rep_size.getSecond()));
         int new_y;
+        Mario ret_val = this;
         if ( (new_y =  map.collidesBottom(new_pos,this.rep_size)) != -1){ //collided
             new_pos.setSecond(new_y);
             this.velocity.setSecond(0f);
+            this.setPos(new_pos);
         }
-        else
+        else{
             this.updateYVelocity();
-        this.setPos(new_pos);
+            ret_val = new MarioFall(new_pos.getFirst(), new_pos.getSecond());
+        }
+
+        return ret_val;
     }
 
     /**
@@ -120,6 +132,11 @@ public class MarioRun extends Mario {
         this.tick = 0;
     }
 
+    /**
+     * @brief Used to set correct velocities before Mario starts jumping
+     * @param x_move Direction where to jump
+     * @return The newly created MarioJump object with correct velocities
+     */
     private Mario prepareJump(int x_move){
         MarioJump ret = new MarioJump(this.position.getFirst() , this.position.getSecond() );
         if (x_move != 0)

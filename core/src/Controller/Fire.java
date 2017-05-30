@@ -9,12 +9,7 @@ public class Fire extends Entity {
 
     @Override
     public void setType(type t) {
-        if (t == type.FIRE)
+        if ( t == type.FIRE_LEFT || t == type.FIRE_LEFT_IGNITE || t == type.FIRE_RIGHT || t == type.FIRE_RIGHT_IGNITE )
             this.current_type = t;
-    }
-
-    @Override
-    public type getType() {
-        return type.FIRE;
     }
 }

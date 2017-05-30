@@ -43,7 +43,7 @@ public class Map {
      * @return The Y coordinate the object should go should it collide, -1 if it does not collide
      */
     public int collidesBottom(Pair<Integer,Integer> pos, Pair<Integer,Integer> rep_size) {
-        for(float step = 0; step < rep_size.getFirst(); step += this.collision_layer.getTileWidth()/2 ){
+        for(float step = 0; step < rep_size.getFirst(); step += this.collision_layer.getTileWidth() ){
             float   x = (pos.getFirst()-rep_size.getFirst()/2 + step),
                     y = (pos.getSecond()-rep_size.getSecond()/2);
             if( isCellBlocked(x,y) )
@@ -95,6 +95,7 @@ public class Map {
         return ((TiledMapTileLayer)this.map.getLayers().get("Floor")).getCell( this.XConverter(x) , this.YConverter(y) );
     }
 
+    //TODO change function name
     public boolean ladderAndCraneBelow(Pair<Integer,Integer> pos, Pair<Integer,Integer> rep_size ){
         TiledMapTileLayer.Cell  floor = this.getFloorCell( pos.getFirst() , pos.getSecond() - rep_size.getSecond()/2 ),
                                 stair = this.getStairCell( pos.getFirst() , pos.getSecond() - rep_size.getSecond()/2 );
@@ -133,7 +134,6 @@ public class Map {
     }
 
 
-    //TODO why the fuck do we need layer_y - 6 ???
     private int getTopTile(float x , float y){
         int layer_x = this.XConverter(x), layer_y = this.YConverter(y);
         while ( this.collision_layer.getCell(layer_x,layer_y) != null)

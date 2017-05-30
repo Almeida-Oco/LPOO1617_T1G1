@@ -11,9 +11,10 @@ public class GameLogic {
     private LinkedList<Controller.Entity> chars = new LinkedList<Controller.Entity>();
     private Map map;
 
+    //TODO find way to initialize Mario always in same relative position
     private GameLogic(){
         this.map = new Map();
-        this.chars.add( Mario.createMario(21,70) );
+        this.chars.add( Mario.createMario( 150, 70 ) );
     }
 
 
@@ -32,6 +33,7 @@ public class GameLogic {
         return this.map;
     }
 
+
     public void moveMario(int x_move, int y_move){
         this.chars.set( 0 , ((Mario)this.chars.getFirst()).moveMario(this.map,x_move,y_move) );
     }
@@ -43,5 +45,4 @@ public class GameLogic {
 
         return collision_y;
     }
-
 }

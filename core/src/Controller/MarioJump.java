@@ -8,6 +8,11 @@ public class MarioJump extends Mario {
     private int direction = -10;
     private final float JUMP_VELOCITY = 12f;
 
+    /**
+     * @brief Constructor for MarioJump
+     * @param x X coordinate to position Mario
+     * @param y Y coordinate to position Mario
+     */
     public MarioJump(int x , int y ){
         super(x,y);
         this.setYVelocity(JUMP_VELOCITY);
@@ -19,7 +24,7 @@ public class MarioJump extends Mario {
         if (this.direction == -10)
             this.direction = x_move;
 
-        ret_val = this.updatePosition(map,x_move,y_move);
+        ret_val = this.updatePosition(map);
 
         this.tickTock();
         return ret_val;
@@ -30,7 +35,12 @@ public class MarioJump extends Mario {
         this.updateYVelocity();
     }
 
-    private Mario updatePosition(Map map, int x_move, int y_move){
+    /**
+     * @brief Updates Mario position based on direction of jump
+     * @param map Current map of the game
+     * @return MarioRun object if the jump has ended, this object with updated position otherwise
+     */
+    private Mario updatePosition(Map map){
         Mario ret_val = this;
         Pair<Integer,Integer> new_pos = new Pair<Integer, Integer>( this.position.getFirst()+this.getXSpeed()*this.direction,
                                                                     this.position.getSecond()+(int)this.getYSpeed() );

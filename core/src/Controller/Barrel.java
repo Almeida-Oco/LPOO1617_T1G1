@@ -9,12 +9,9 @@ public class Barrel extends Entity {
 
     @Override
     public void setType(type t) {
-        if (t == type.BARREL)
+        if (    t == type.BARREL_FALL_BACK || t == type.BARREL_FALL_FRONT || t == type.BARREL_ROLLING ||
+                t == type.FIRE_BARREL_FALL_BACK || t == type.FIRE_BARREL_FALL_FRONT || t == type.FIRE_BARREL_ROLLING )
             this.current_type = t;
     }
 
-    @Override
-    public type getType() {
-        return type.BARREL;
-    }
 }

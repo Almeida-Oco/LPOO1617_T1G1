@@ -24,6 +24,7 @@ public class Play extends ScreenAdapter {
     private AssetManager assets;
     private float scale;
 
+    private final int JUMP = 2;
     private final float JUMP_MIN_VAL = 5f;
     private final float MOVE_MIN_VAL = 1.5f;
     private final float CLIMB_MIN_VAL = 1.5f;
@@ -50,6 +51,7 @@ public class Play extends ScreenAdapter {
         this.assets.load("mario_run_right.png",Texture.class);
         this.assets.load("mario_climb_left.png",Texture.class);
         this.assets.load("mario_climb_right.png",Texture.class);
+        this.assets.load("mario_climb_over.png",Texture.class);
         this.assets.finishLoading();
     }
 
@@ -81,23 +83,23 @@ public class Play extends ScreenAdapter {
     }
 
 
-    //TODO when mario is jumping x_velocity is constant
     private void handleInput(){
         GameLogic game = GameLogic.getInstance();
-        if (this.enoughToJump())
-            game.marioJump();
+        int x_move = 0 , y_move = 0;
+        float acc_x = -Gdx.input.getAccelerometerX(), acc_y = -Gdx.input.getAccelerometerY();
+        float jump_offset = 0f;
+        if ( this.enoughToJump() )
+            jump_offset = 0.75f;
 
-        float move_x = -Gdx.input.getAccelerometerX(), move_y = Gdx.input.getAccelerometerY();
-
-        if (Math.abs(move_y) > CLIMB_MIN_VAL)
-            game.marioClimb( (int)(-move_y/Math.abs(move_y)) );
-
-        if (Math.abs(move_x) > MOVE_MIN_VAL)
-            game.moveMario( (int)(move_x/Math.abs(move_x)) ); // we only want either 1 or -1
-        else
-            game.moveMario( 0 );
+        if (Math.abs(acc_y) > CLIMB_MIN_VAL)
+            y_move = (int)(acc_y/Math.abs(acc_y));
+        if (Math.abs(acc_x) > (MOVE_MIN_VAL-jump_offset))
+            x_move = (int)(acc_x/Math.abs(acc_x));
+        if (jump_offset != 0)
+            y_move = JUMP;
 
 
+        game.moveMario(x_move, y_move);
     }
 
     private boolean enoughToJump(){

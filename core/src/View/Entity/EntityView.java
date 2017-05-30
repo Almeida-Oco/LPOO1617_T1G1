@@ -12,11 +12,11 @@ import Controller.Entity;
 
 public abstract class EntityView {
     protected Sprite representation;
-    protected boolean canJump;
-    protected float img_scale;
-    public static  HashMap<Integer, String>image_names;
     protected AssetManager assets;
-    public static int current_image;
+    protected HashMap<Integer, String>image_names = new HashMap<Integer, String>();
+
+    protected float img_scale;
+    protected int last_texture;
 
     protected EntityView( float default_scale, float screen_scale ){
         this.img_scale = screen_scale*default_scale/ MyGdxGame.DEFAULT_SCALE ;

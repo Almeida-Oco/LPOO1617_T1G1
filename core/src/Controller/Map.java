@@ -66,6 +66,12 @@ public class Map {
         return cell != null && cell.getTile() != null && cell.getTile().getProperties().containsKey("blocked");
     }
 
+    /**
+     * @brief Checks if there is a ladder in the given position
+     * @param pos Position to check for ladder
+     * @param rep_size Size of the representation of the object wanting to know if it is near ladder
+     * @return X coordinate where the player should "teleport" to start climbing ladder, it is the middle of the ladder. -1 if no ladder is near
+     */
     public int nearLadder(Pair<Integer,Integer> pos, Pair<Integer,Integer> rep_size){
         int     x = this.XConverter(pos.getFirst()),
                 y = this.YConverter((float)pos.getSecond()-rep_size.getSecond()/2.0f + this.getMapTileHeight()/2 );
@@ -95,6 +101,37 @@ public class Map {
 
         return (floor != null && stair != null) || (floor == null && stair != null);
     }
+
+    /**
+     * @brief Checks if given number is out of screen height bounds
+     * @param pos Number to check, represents Y coordinate of object
+     * @param img_height Height of the image representing the object
+     * @return If image is out of bounds then the closest coordinate possible to that bound, otherwise param pos
+     */
+    public int checkOutOfScreenHeight( int pos , int img_height){
+        if (pos < 0)
+            return 0;
+        else if (pos > (Gdx.graphics.getHeight()-img_height) )
+            return (Gdx.graphics.getHeight()-img_height);
+        else
+            return pos;
+    }
+
+    /**
+     * @brief Checks if given number is out of screen width bounds
+     * @param pos Number to check, represents X coordinate of object
+     * @param img_width Height of the image representing the object
+     * @return If image is out of bounds then the closest coordinate possible to that bound, otherwise param pos
+     */
+    public int checkOutOfScreenWidth( int pos, int img_width) {
+        if (pos < img_width/2)
+            return img_width/2;
+        else if (pos > Gdx.graphics.getWidth() - img_width)
+            return Gdx.graphics.getWidth() - img_width;
+        else
+            return pos;
+    }
+
 
     //TODO why the fuck do we need layer_y - 6 ???
     private int getTopTile(float x , float y){

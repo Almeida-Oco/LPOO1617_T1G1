@@ -4,7 +4,7 @@ package Controller;
 import com.mygdx.game.MyGdxGame;
 
 public abstract class Entity {
-    public enum type {MARIO_LEFT,MARIO_RIGHT,MARIO_CLIMB_LEFT, MARIO_CLIMB_RIGHT, MARIO_RUN_LEFT,MARIO_RUN_RIGHT, DONKEYKONG, BARREL, FIRE};
+    public enum type {MARIO_LEFT,MARIO_RIGHT,MARIO_CLIMB_LEFT, MARIO_CLIMB_RIGHT, MARIO_CLIMB_OVER, MARIO_RUN_LEFT,MARIO_RUN_RIGHT, DONKEYKONG, BARREL, FIRE};
     private final float DEFAULT_GRAVITY = 1f;
     private final float DEFAULT_MAX_Y_VELOCITY = 4f;
     private final float DEFAULT_MAX_X_VELOCITY = 3f;
@@ -79,6 +79,13 @@ public abstract class Entity {
     public void setYVelocity( float vel ){
         if ( vel > 0 )
             this.velocity.setSecond(vel);
+    }
+
+    public void setXVelocity( int vel ){
+        if (vel == 0)
+            this.x_velocity = 0;
+        else if (vel == -1) //sets to default value
+            this.x_velocity = DEFAULT_MAX_X_VELOCITY;
     }
 
     public void updateYVelocity(){

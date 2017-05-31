@@ -1,3 +1,3 @@
 
 Starting from where we managed to get Android Studio working
-Hours = 57
+Hours = 60.5

@@ -14,7 +14,8 @@ public class GameLogic {
     //TODO find way to initialize Mario always in same relative position
     private GameLogic(){
         this.map = new Map();
-        this.chars.add( Mario.createMario( 150, 70 ) );
+        this.chars.add( Mario.createMario( 250, 70 ) );
+        this.chars.add( Barrel.createBarrel(690,92));
     }
 
 

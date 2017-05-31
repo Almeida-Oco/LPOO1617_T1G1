@@ -38,7 +38,7 @@ public class BarrelRolling extends Barrel {
         }
         else{
             this.updateYVelocity();
-           // ret_val = new MarioFall(new_pos.getFirst(), new_pos.getSecond());
+            ret_val = new BarrelFall(new_pos.getFirst(), new_pos.getSecond());
         }
 
         return ret_val;

@@ -15,7 +15,7 @@ public class GameLogic {
     private GameLogic(){
         this.map = new Map();
         this.chars.add( Mario.createMario( 250, 70 ) );
-        this.chars.add( Barrel.createBarrel(690,92));
+        this.chars.add( Barrel.createBarrel(250,1460));
     }
 
 
@@ -37,6 +37,10 @@ public class GameLogic {
 
     public void moveMario(int x_move, int y_move){
         this.chars.set( 0 , ((Mario)this.chars.getFirst()).moveMario(this.map,x_move,y_move) );
+    }
+
+    public void moveBarrel(int x_move, int y_move){
+        this.chars.set( 1 , ((Barrel)this.chars.get(1)).moveBarrel(this.map,x_move,y_move) );
     }
 
     private int collisionOnY(Pair<Integer,Integer> old_pos, Pair<Integer,Integer> rep_size, int new_y){

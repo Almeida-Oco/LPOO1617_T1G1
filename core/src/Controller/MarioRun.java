@@ -68,15 +68,28 @@ public class MarioRun extends Mario {
      * TODO SMALLER IF NEEDED
      */
     private Mario updatePosition( Map map , int x_move){
-        Pair<Integer,Integer> new_pos = new Pair<Integer, Integer>(this.position.getFirst()+x_move*this.getXSpeed() , this.position.getSecond());
-        new_pos.setFirst (map.checkOutOfScreenWidth(new_pos.getFirst(), rep_size.getFirst()));
-        new_pos.setSecond(map.checkOutOfScreenHeight(new_pos.getSecond(), rep_size.getSecond()));
-        int new_y;
+        Pair<Integer,Integer> new_pos = new Pair<Integer, Integer>( map.checkOutOfScreenWidth(this.position.getFirst()+x_move*this.getXSpeed(), rep_size.getFirst()),
+                                                     map.checkOutOfScreenHeight(this.position.getSecond(), rep_size.getSecond()) );
+
+        int new_x;
+        if ( (new_x = map.collidesLeft(new_pos,this.rep_size.getSecond())) != -1)
+            new_pos.setFirst(new_x);
+
+        Mario ret_val = this.processY(map,new_pos);
+        ret_val.setPos(new_pos);
+        return ret_val;
+    }
+
+    /**
+     * @brief Checks if there is any event to take care of in the Y coordinate
+     * @param new_pos New position of Mario
+     * @return This object or an object of MarioFall if a state change is necessary
+     */
+    private Mario processY(Map map,Pair<Integer,Integer> new_pos){
         Mario ret_val = this;
-        if ( (new_y =  map.collidesBottom(new_pos,this.rep_size.getFirst())) != -1) { //collided
+        int new_y;
+        if ( (new_y =  map.collidesBottom(new_pos,this.rep_size.getFirst())) != -1)
             new_pos.setSecond(new_y);
-            this.setPos(new_pos);
-        }
         else{
             ret_val = new MarioFall(new_pos.getFirst(), new_pos.getSecond());
             ret_val.setType(this.current_type);
@@ -147,6 +160,8 @@ public class MarioRun extends Mario {
             ret.setYVelocity( ret.getYSpeed()*x_move );
         else
             ret.setXVelocity(0);
+
+        ret.setType(this.current_type);
         return ret;
     }
 

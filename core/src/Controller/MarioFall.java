@@ -41,6 +41,7 @@ public class MarioFall extends Mario {
         else
             ret_val = new MarioRun(new_pos.getFirst() , new_y );
 
+        ret_val.setType(this.current_type);
         return ret_val;
     }
 }

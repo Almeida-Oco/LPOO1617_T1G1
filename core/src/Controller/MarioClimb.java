@@ -13,6 +13,7 @@ public class MarioClimb extends Mario {
     public MarioClimb(int x, int y) {
         super(x, y);
         this.tick = 0;
+        this.current_type = type.MARIO_CLIMB_LEFT;
     }
 
     @Override

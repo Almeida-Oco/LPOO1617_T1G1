@@ -5,9 +5,11 @@ package Controller;
  */
 
 class BarrelFall extends Barrel {
+    private final int ANIMATION_RATE = 5;
 
     public BarrelFall(int x, int y, int x_dir) {
         super(x,y,x_dir);
+        this.current_type = type.BARREL_FALL_FRONT;
     }
 
     @Override
@@ -33,6 +35,13 @@ class BarrelFall extends Barrel {
 
     @Override
     protected void tickTock() {
-
+        if (ANIMATION_RATE == this.tick){
+            if (type.BARREL_FALL_FRONT == this.current_type)
+                this.current_type = type.BARREL_FALL_BACK;
+            else
+                this.current_type = type.BARREL_FALL_FRONT;
+            this.tick=0;
+        }
+        this.tick++;
     }
 }

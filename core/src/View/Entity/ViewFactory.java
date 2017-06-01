@@ -58,10 +58,6 @@ public class ViewFactory {
                 temp_barrel.changeSprite(type);
                 cache.put(type,temp_barrel);
             }
-
-
-
-
         }
 
         return cache.get(type);

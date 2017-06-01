@@ -40,6 +40,7 @@ public class Play extends ScreenAdapter {
         this.scale = this.mapScaling();
         this.renderer = new OrthogonalTiledMapRenderer(this.map, this.scale );
         GameLogic.getInstance().getMap().setScale(this.scale);
+        GameLogic.getInstance().initializeCharacters();
         this.camera = new OrthographicCamera();
         this.camera.setToOrtho(false,Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
         this.renderer.setView(this.camera);
@@ -56,8 +57,9 @@ public class Play extends ScreenAdapter {
         this.assets.load("mario/climb_left.png",Texture.class);
         this.assets.load("mario/climb_right.png",Texture.class);
         this.assets.load("mario/climb_over.png",Texture.class);
-        this.assets.load("barrels/barrel_rolling1.png", Texture.class);
+        this.assets.load("barrels/rolling.png", Texture.class);
         this.assets.load("barrels/falling_back.png",Texture.class);
+        this.assets.load("barrels/falling_front.png",Texture.class);
         this.assets.finishLoading();
     }
 

@@ -25,7 +25,7 @@ public class MarioJump extends Mario {
             this.direction = x_move;
 
         ret_val = this.updatePosition(map);
-
+        ret_val.setType(this.current_type);
         this.tickTock();
         return ret_val;
     }

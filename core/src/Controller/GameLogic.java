@@ -10,17 +10,22 @@ public class GameLogic {
     private Map map;
 
     //TODO find way to initialize Mario always in same relative position
-    private GameLogic(){
-        this.chars.add( Mario.createMario( 150, 38 ) );
-        this.chars.add( Barrel.createBarrel(250,1460));
-    }
-
+    private GameLogic(){}
 
     public static GameLogic getInstance(){
         if (instance == null)
             return (instance = new GameLogic());
         else
             return instance;
+    }
+
+    public void initializeCharacters(){
+        Pair<Integer,Integer>   mario_pos = new Pair<Integer, Integer>(4,7),
+                                barrel_pos =new Pair<Integer, Integer>(7, 225);
+        mario_pos = this.map.mapPosToPixels(mario_pos);
+        barrel_pos= this.map.mapPosToPixels(barrel_pos);
+        this.chars.add( Mario.createMario(mario_pos.getFirst(), mario_pos.getSecond()));
+        this.chars.add( Barrel.createBarrel(barrel_pos.getFirst(),barrel_pos.getSecond()));
     }
 
     public LinkedList<Controller.Entity> getCharacters(){
@@ -42,6 +47,7 @@ public class GameLogic {
 
     public void moveBarrel(){
         //System.out.println("x: "+((Barrel)this.chars.get(1)).getX()+" "+"y: "+ ((Barrel)this.chars.get(1)).getY());
+
         this.chars.set( 1 , ((Barrel)this.chars.get(1)).moveBarrel(this.map) );
     }
 }

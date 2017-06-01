@@ -7,6 +7,9 @@ import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 
 
 public class Map {
+    private final int SEARCH_TOP = 1;
+    private final int SEARCH_RIGHT = 1;
+
     private TiledMap map;
     private TiledMapTileLayer collision_layer;
     private float scale = 1f;
@@ -75,7 +78,16 @@ public class Map {
         this.collision_layer = (TiledMapTileLayer)this.map.getLayers().get(collision_name);
     }
 
-
+    /**
+     * @brief Converts from TiledMap tile position to respective pixel position
+     * @param map_pos Position of the Tile of the Map
+     * @return Equivalent position in screen pixels
+     * It always returns the correspondent bottom left corner of the tile
+     */
+    public Pair<Integer,Integer> mapPosToPixels( Pair<Integer,Integer> map_pos){
+        return new Pair<Integer, Integer>(  (int)(map_pos.getFirst() * this.getMapTileWidth()),
+                                            (int)(map_pos.getSecond() * this.getMapTileHeight()) );
+    }
 
     /**
      * @brief Checks if the position collides with something below
@@ -90,12 +102,27 @@ public class Map {
 
         for( float step = this.getMapTileWidth() ; x < x_limit ;  x += step )
             if( isCellBlocked(x,y) ){
-                int temp_y = (int)(this.getTopTile(x,y) * this.getMapTileHeight());
+                int temp_y = (int)(this.getEdgeHorizontalTileY(x,y,SEARCH_TOP) * this.getMapTileHeight());
                 if (temp_y > max_y)
                     max_y = temp_y;
             }
 
         return max_y;
+    }
+
+    public int collidesLeft( Pair<Integer,Integer> pos, int img_height){
+        float x = pos.getFirst(), y_limit = pos.getSecond()+this.getMapTileHeight(),  y = pos.getSecond()+img_height;
+        int max_x = -1;
+
+        for (float step = this.getMapTileHeight() ; y > y_limit ; y-=step ){
+            if ( isCellBlocked(x,y) ){
+                int temp_x = (int)(this.getEdgeVerticalTileX(x,y,SEARCH_RIGHT) * this.getMapTileWidth()) + 1;
+                if (temp_x > max_x)
+                    max_x = temp_x;
+            }
+        }
+
+        return max_x;
     }
 
     /**
@@ -143,16 +170,39 @@ public class Map {
         return (floor != null && stair != null) || (floor == null && stair != null);
     }
 
+
     public void setScale( float scale ){
         this.scale = scale;
     }
 
-    private int getTopTile(float x , float y){
+    /**
+     * @brief Gets the Y coordinate of the tile  which represents the edge/limit of this set of tiles
+     * @param x X coordinate in which to search
+     * @param y Y coordinate in which to start the search
+     * @param inc Used to determine whether to search for lower edge (-1), or top edge (1)
+     * @return The Y coordinate of the desired edge
+     */
+    private int getEdgeHorizontalTileY(float x , float y, int inc){
         int map_x = this.XConverter(x), map_y = this.YConverter(y);
         while ( this.collision_layer.getCell(map_x,map_y) != null)
-            map_y++;
+            map_y+=inc;
 
         return map_y;
+    }
+
+    /**
+     * @brief Gets the X coordinate of the tile which represents the edge/limit of this set of tiles
+     * @param x X coordinate in which to start the search
+     * @param y Y coordinate in which to search
+     * @param inc Used to determine whether to search for leftmost edge (-1), or rightmost edge (1)
+     * @return The X coordinate of the desired edge
+     */
+    private int getEdgeVerticalTileX (float x , float y, int inc){
+        int map_x = this.XConverter(x), map_y = this.YConverter(y);
+        while ( this.collision_layer.getCell(map_x,map_y) != null)
+            map_x+=inc;
+
+        return map_x;
     }
 
     private int XConverter( float x ){

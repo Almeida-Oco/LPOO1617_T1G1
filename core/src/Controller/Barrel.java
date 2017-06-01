@@ -5,8 +5,6 @@ package Controller;
  */
 
 public abstract class Barrel extends Entity {
-    protected final int GO_LEFT = -1;
-    protected final int GO_RIGHT = 1;
     protected int tick;
     protected int x_direction;
 
@@ -17,7 +15,7 @@ public abstract class Barrel extends Entity {
     }
 
     public static Barrel createBarrel(int x , int y){
-        Barrel ret =  new BarrelRolling(x,y,1);
+        Barrel ret =  new BarrelRolling(x,y,-1);
         ret.setType(type.BARREL_ROLLING);
         return ret;
     }

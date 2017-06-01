@@ -43,7 +43,7 @@ public abstract class EntityView {
     protected abstract void loadImageNames();
 
     public void changeSprite(Entity.type option){
-        if(option != this.last_type) {
+        if( option != this.last_type) {
             Texture texture = assets.get(image_names.get(option));
             this.representation = new Sprite(texture,texture.getWidth(),texture.getHeight());
             this.representation.setSize(this.representation.getWidth()*this.img_scale, this.representation.getHeight()*this.img_scale);

@@ -21,12 +21,14 @@ public class GameLogic {
 
     public void initializeCharacters(){
         Pair<Integer,Integer>   mario_pos = new Pair<Integer, Integer>(4,7),
-                                barrel_pos =new Pair<Integer, Integer>(7, 222);
+                                barrel_pos =new Pair<Integer, Integer>(7, 222),
+                                DK_pos = new Pair<Integer, Integer>(3,222);
         mario_pos = this.map.mapPosToPixels(mario_pos);
         barrel_pos= this.map.mapPosToPixels(barrel_pos);
+        DK_pos= this.map.mapPosToPixels(DK_pos);
         this.chars.add( Mario.createMario(mario_pos.getFirst(), mario_pos.getSecond()));
         this.chars.add( Barrel.createBarrel(barrel_pos.getFirst(),barrel_pos.getSecond()));
-        this.chars.add(DonkeyKong.getInstance());
+        this.chars.add(DonkeyKong.getInstance(DK_pos.getFirst(),DK_pos.getSecond()));
     }
 
     public LinkedList<Controller.Entity> getCharacters(){

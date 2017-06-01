@@ -57,9 +57,10 @@ public class DonkeyKong extends Entity {
 
 
 
-    public static DonkeyKong getInstance(){
-        if (instance == null)
-            return (instance = new DonkeyKong(150,1429));
+    public static DonkeyKong getInstance(int x, int y){
+        if (instance == null) {
+            return (instance = new DonkeyKong(x, y));
+        }
         else
             return instance;
     }

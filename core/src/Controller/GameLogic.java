@@ -26,6 +26,7 @@ public class GameLogic {
         barrel_pos= this.map.mapPosToPixels(barrel_pos);
         this.chars.add( Mario.createMario(mario_pos.getFirst(), mario_pos.getSecond()));
         this.chars.add( Barrel.createBarrel(barrel_pos.getFirst(),barrel_pos.getSecond()));
+        this.chars.add(DonkeyKong.getInstance());
     }
 
     public LinkedList<Controller.Entity> getCharacters(){

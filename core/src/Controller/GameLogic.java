@@ -12,6 +12,7 @@ public class GameLogic {
     //TODO find way to initialize Mario always in same relative position
     private GameLogic(){
         this.chars.add( Mario.createMario( 150, 38 ) );
+        this.chars.add( Barrel.createBarrel(250,1460));
     }
 
 
@@ -39,4 +40,8 @@ public class GameLogic {
         this.chars.set( 0 , ((Mario)this.chars.getFirst()).moveMario(this.map,x_move,y_move) );
     }
 
+    public void moveBarrel(int x_move, int y_move){
+        //System.out.println("x: "+((Barrel)this.chars.get(1)).getX()+" "+"y: "+ ((Barrel)this.chars.get(1)).getY());
+        this.chars.set( 1 , ((Barrel)this.chars.get(1)).moveBarrel(this.map,x_move,y_move) );
+    }
 }

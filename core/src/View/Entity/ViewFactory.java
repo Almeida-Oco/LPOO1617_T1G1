@@ -13,6 +13,7 @@ public class ViewFactory {
         Entity.type type = entity.getType();
         if ( !cache.containsKey(type) ){
             MarioView temp=new MarioView(assets,screen_scale);
+            BarrelView temp_barrel=new BarrelView(assets,screen_scale);
             if (type == Entity.type.MARIO_LEFT) {
                 temp.changeSprite(type);
                 cache.put(type, temp);
@@ -40,6 +41,14 @@ public class ViewFactory {
             else if (type == Entity.type.MARIO_CLIMB_OVER){
                 temp.changeSprite(type);
                 cache.put(type,temp);
+            }
+            else if (type == Entity.type.MARIO_CLIMB_OVER){
+                temp.changeSprite(type);
+                cache.put(type,temp);
+            }
+            else if(type== Entity.type.BARREL_ROLLING){
+                temp_barrel.changeSprite(type);
+                cache.put(type,temp_barrel);
             }
 
 

@@ -19,7 +19,6 @@ public abstract class Mario extends Entity {
      */
     protected Mario(int x , int y){
         super(x,y);
-        this.current_type=type.MARIO_RIGHT;
         this.tick = 0;
     }
 

@@ -34,6 +34,7 @@ public abstract class Entity {
 
     public Entity(int x , int y){
         this.position = new Pair<Integer,Integer>(x,y);
+        System.out.println(position.getFirst()+ "  " + position.getSecond());
     }
 
     public int getX(){

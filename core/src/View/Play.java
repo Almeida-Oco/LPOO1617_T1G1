@@ -56,6 +56,7 @@ public class Play extends ScreenAdapter {
         this.assets.load("mario/climb_left.png",Texture.class);
         this.assets.load("mario/climb_right.png",Texture.class);
         this.assets.load("mario/climb_over.png",Texture.class);
+        this.assets.load("barrels/barrel_rolling1.png", Texture.class);
         this.assets.finishLoading();
     }
 
@@ -81,7 +82,11 @@ public class Play extends ScreenAdapter {
         for (Entity ent : GameLogic.getInstance().getCharacters() ){
             EntityView ent_view = ViewFactory.makeView(this.assets,ent, this.scale);
             ent.setRepSize( ent_view.getImgWidth(), ent_view.getImgHeight() , this.scale);
-            ent_view.updatePos(ent.getX(),ent.getY());
+            ent_view.updatePos(ent.getX(),ent.getY());/*
+            if(ent.getType()== Entity.type.BARREL_ROLLING){
+                System.out.println(ent.getX()+ "  " + ent.getY());
+            }*/
+          //  System.out.println(ent.getType());
             ent_view.draw(this.batch);
         }
     }
@@ -104,6 +109,7 @@ public class Play extends ScreenAdapter {
 
 
         game.moveMario(x_move, y_move);
+        game.moveBarrel(2,0);
     }
 
     private boolean enoughToJump(){

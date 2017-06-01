@@ -22,7 +22,8 @@ public class BarrelView extends EntityView {
 
     @Override
     protected void loadImageNames() {
-        this.image_names.put(Entity.type.BARREL_ROLLING,        "barrels/rolling.png");
+        this.image_names.put(Entity.type.BARREL_ROLLING,        "barrels/barrel_rolling1.png");
+
         this.image_names.put(Entity.type.BARREL_FALL_FRONT,     "barrels/falling_front.png");
         this.image_names.put(Entity.type.BARREL_FALL_BACK,      "barrels/falling_back.png");
         this.image_names.put(Entity.type.FIRE_BARREL_ROLLING,   "barrels/fire_rolling.png");

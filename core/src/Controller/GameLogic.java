@@ -1,7 +1,5 @@
 package Controller;
 
-import com.badlogic.gdx.Gdx;
-
 import java.util.LinkedList;
 
 //TODO check velocity for different screens
@@ -13,8 +11,7 @@ public class GameLogic {
 
     //TODO find way to initialize Mario always in same relative position
     private GameLogic(){
-        this.map = new Map();
-        this.chars.add( Mario.createMario( 150, 70 ) );
+        this.chars.add( Mario.createMario( 150, 38 ) );
     }
 
 
@@ -33,16 +30,13 @@ public class GameLogic {
         return this.map;
     }
 
+    public void setMap(String map_name, String collision_layer){
+        this.map = new Map();
+        this.map.loadMap(map_name, collision_layer);
+    }
 
     public void moveMario(int x_move, int y_move){
         this.chars.set( 0 , ((Mario)this.chars.getFirst()).moveMario(this.map,x_move,y_move) );
     }
 
-    private int collisionOnY(Pair<Integer,Integer> old_pos, Pair<Integer,Integer> rep_size, int new_y){
-        int collision_y = -1;
-        if( new_y < old_pos.getSecond() ) //moving down
-            collision_y = this.map.collidesBottom(old_pos,rep_size);
-
-        return collision_y;
-    }
 }

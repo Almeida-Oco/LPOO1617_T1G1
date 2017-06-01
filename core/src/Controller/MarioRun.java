@@ -12,6 +12,7 @@ public class MarioRun extends Mario {
      */
     protected MarioRun(int x, int y) {
         super(x, y);
+        this.setYVelocity(0f);
     }
 
 
@@ -22,10 +23,9 @@ public class MarioRun extends Mario {
         else if ( (GO_DOWN == y_move && checkLowerLadder(map)) || (GO_UP == y_move && checkUpperLadder(map)) )
             return new MarioClimb(this.position.getFirst(), this.position.getSecond() );
 
-        this.updatePosition(map,x_move);
         this.updateSprite(x_move);
         this.tickTock();
-        return this;
+        return this.updatePosition(map,x_move);
     }
 
     @Override
@@ -42,7 +42,10 @@ public class MarioRun extends Mario {
      * @return Whether Mario is near a ladder or not
      */
     private boolean checkUpperLadder (Map map){
-        return  map.nearLadder(this.position,this.rep_size) != -1;
+        Pair<Integer,Integer> upper_pos = new Pair<Integer, Integer>(this.position.getFirst()+this.rep_size.getFirst()/2,
+                this.position.getSecond() + (Math.round(map.getMapTileHeight())) );
+
+        return  map.nearLadder(upper_pos.getFirst(), upper_pos.getSecond()) != -1;
     }
 
     /**
@@ -51,8 +54,35 @@ public class MarioRun extends Mario {
      * @return Whether Mario has a ladder below or not
      */
     private boolean checkLowerLadder (Map map){
-        Pair<Integer,Integer> lower_pos = new Pair<Integer, Integer>(this.position.getFirst(),this.position.getSecond() -(int)(map.getMapTileHeight()*2));
-        return map.nearLadder(lower_pos,this.rep_size) != -1;
+        Pair<Integer,Integer> lower_pos = new Pair<Integer, Integer>(this.position.getFirst()+this.rep_size.getFirst()/2,
+                this.position.getSecond() - Math.round(map.getMapTileHeight()) );
+
+        return map.nearLadder(lower_pos.getFirst(), lower_pos.getSecond()) != -1;
+    }
+
+    /**
+     * @brief Updates mario position based on direction
+     * @param map Current map of the game
+     * @param x_move Direction to go
+     * @return Which mario state it should move to
+     * TODO SMALLER IF NEEDED
+     */
+    private Mario updatePosition( Map map , int x_move){
+        Pair<Integer,Integer> new_pos = new Pair<Integer, Integer>(this.position.getFirst()+x_move*this.getXSpeed() , this.position.getSecond());
+        new_pos.setFirst (map.checkOutOfScreenWidth(new_pos.getFirst(), rep_size.getFirst()));
+        new_pos.setSecond(map.checkOutOfScreenHeight(new_pos.getSecond(), rep_size.getSecond()));
+        int new_y;
+        Mario ret_val = this;
+        if ( (new_y =  map.collidesBottom(new_pos,this.rep_size.getFirst())) != -1) { //collided
+            new_pos.setSecond(new_y);
+            this.setPos(new_pos);
+        }
+        else{
+            ret_val = new MarioFall(new_pos.getFirst(), new_pos.getSecond());
+            ret_val.setType(this.current_type);
+        }
+
+        return ret_val;
     }
 
     /**
@@ -69,32 +99,6 @@ public class MarioRun extends Mario {
     }
 
     /**
-     * @brief Updates mario position based on direction
-     * @param map Current map of the game
-     * @param x_move Direction to go
-     * @return Which mario state it should move to
-     * TODO SMALLER IF NEEDED
-     */
-    private Mario updatePosition( Map map , int x_move){
-        Pair<Integer,Integer> new_pos = new Pair<Integer, Integer>(this.position.getFirst()+x_move*this.getXSpeed() , this.position.getSecond()+this.getYSpeed());
-        new_pos.setFirst( map.checkOutOfScreenWidth(new_pos.getFirst(), rep_size.getFirst()));
-        new_pos.setSecond(map.checkOutOfScreenHeight(new_pos.getSecond(), rep_size.getSecond()));
-        int new_y;
-        Mario ret_val = this;
-        if ( (new_y =  map.collidesBottom(new_pos,this.rep_size)) != -1){ //collided
-            new_pos.setSecond(new_y);
-            this.velocity.setSecond(0f);
-            this.setPos(new_pos);
-        }
-        else{
-            this.updateYVelocity();
-            ret_val = new MarioFall(new_pos.getFirst(), new_pos.getSecond());
-        }
-
-        return ret_val;
-    }
-
-    /**
      * @brief Makes Mario sprite be one where he goes right
      */
     private void movingRight(){
@@ -102,9 +106,9 @@ public class MarioRun extends Mario {
             this.tick = 0;
 
         if ( this.tick < ANIMATION_RATE )
-            this.current_type = type.MARIO_RIGHT;
+            this.setType(type.MARIO_RIGHT);
         else
-            this.current_type = type.MARIO_RUN_RIGHT;
+            this.setType(type.MARIO_RUN_RIGHT);
     }
 
     /**
@@ -114,10 +118,10 @@ public class MarioRun extends Mario {
         if ( type.MARIO_LEFT != this.current_type && type.MARIO_RUN_LEFT != this.current_type )
             this.tick = 0;
 
-        if ( this.tick < ANIMATION_RATE )
-            this.current_type = type.MARIO_LEFT;
+        if ( this.tick < ANIMATION_RATE)
+            this.setType(type.MARIO_LEFT);
         else
-            this.current_type = type.MARIO_RUN_LEFT;
+            this.setType(type.MARIO_RUN_LEFT);
     }
 
     /**
@@ -125,9 +129,9 @@ public class MarioRun extends Mario {
      */
     private void notMoving(){
         if ( type.MARIO_RUN_LEFT == this.current_type )
-            this.current_type = type.MARIO_LEFT;
+            this.setType(type.MARIO_LEFT);
         else if ( type.MARIO_RUN_RIGHT == this.current_type )
-            this.current_type = type.MARIO_RIGHT;
+            this.setType(type.MARIO_RIGHT);
 
         this.tick = 0;
     }

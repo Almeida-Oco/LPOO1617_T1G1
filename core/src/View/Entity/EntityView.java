@@ -28,24 +28,25 @@ public abstract class EntityView {
     }
 
     public void updatePos(int x , int y){
-        this.representation.setPosition(x,y);
+        this.representation.setX(x);
+        this.representation.setY(y);
     }
 
     public int getImgWidth(){
-        return (int)(this.representation.getWidth()*this.img_scale);
+        return (int)(this.representation.getWidth() );
     }
 
     public int getImgHeight(){
-        return (int)(this.representation.getHeight()*this.img_scale);
+        return (int)(this.representation.getHeight() );
     }
 
     protected abstract void loadImageNames();
 
     public void changeSprite(Entity.type option){
-        if(option!=this.last_type) {
+        if(option != this.last_type) {
             Texture texture = assets.get(image_names.get(option));
             this.representation = new Sprite(texture,texture.getWidth(),texture.getHeight());
-            this.representation.scale(this.img_scale);
+            this.representation.setSize(this.representation.getWidth()*this.img_scale, this.representation.getHeight()*this.img_scale);
             this.last_type = option;
         }
     }

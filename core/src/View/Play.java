@@ -6,6 +6,7 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
@@ -29,9 +30,12 @@ public class Play extends ScreenAdapter {
     private final float MOVE_MIN_VAL = 1.5f;
     private final float CLIMB_MIN_VAL = 1.5f;
     private final float REAL_GRAVITY = 9.8f;
+    private final String MAP_1 = "DKMap.tmx";
+    private final String COLLISION = "Floor";
 
     public void show() {
         this.batch = new SpriteBatch();
+        GameLogic.getInstance().setMap(MAP_1, COLLISION);
         this.map = GameLogic.getInstance().getMap().getMap();
         this.scale = this.mapScaling();
         this.renderer = new OrthogonalTiledMapRenderer(this.map, this.scale );

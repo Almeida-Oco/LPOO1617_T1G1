@@ -11,13 +11,12 @@ public class Map {
     private TiledMapTileLayer collision_layer;
     private float scale = 1f;
 
-    public Map(){
-        this.map = (new TmxMapLoader()).load(Gdx.files.internal("maps/DKMap.tmx").path());
-        this.collision_layer = (TiledMapTileLayer)this.map.getLayers().get("Floor");
-    }
-
     public TiledMap getMap(){
         return this.map;
+    }
+
+    public TiledMapTileLayer getCollisionLayer() {
+        return collision_layer;
     }
 
     public float getMapTileWidth(){
@@ -28,8 +27,12 @@ public class Map {
         return (this.collision_layer.getTileHeight() * this.scale);
     }
 
-    public float getMapScale(){
-        return this.scale;
+    public TiledMapTileLayer.Cell getStairCell(int x , int y){
+        return ((TiledMapTileLayer)this.map.getLayers().get("Stairs")).getCell( this.XConverter(x) , this.YConverter(y) );
+    }
+
+    public TiledMapTileLayer.Cell getFloorCell(int x , int y){
+        return this.collision_layer.getCell( this.XConverter(x) , this.YConverter(y) );
     }
 
     public void dispose(){
@@ -37,20 +40,79 @@ public class Map {
     }
 
     /**
+     * @brief Checks if given number is out of screen height bounds
+     * @param y Number to check, represents Y coordinate of object
+     * @param img_height Height of the image representing the object
+     * @return If image is out of bounds then the closest coordinate possible to that bound, otherwise param pos
+     */
+    public int checkOutOfScreenHeight( int y , int img_height){
+        if (y < 0)
+            return 0;
+        else if (y > (Gdx.graphics.getHeight()-img_height) )
+            return (Gdx.graphics.getHeight()-img_height);
+        else
+            return y;
+    }
+
+    /**
+     * @brief Checks if given number is out of screen width bounds
+     * @param x Number to check, represents X coordinate of object
+     * @param img_width Height of the image representing the object
+     * @return If image is out of bounds then the closest coordinate possible to that bound, otherwise param pos
+     */
+    public int checkOutOfScreenWidth( int x, int img_width) {
+        if (x < img_width/2)
+            return img_width/2;
+        else if (x > Gdx.graphics.getWidth() - img_width)
+            return Gdx.graphics.getWidth() - img_width;
+        else
+            return x;
+    }
+
+
+    public void loadMap( String map_name, String collision_name ){
+        this.map = (new TmxMapLoader()).load("maps/"+map_name);
+        this.collision_layer = (TiledMapTileLayer)this.map.getLayers().get(collision_name);
+    }
+
+
+
+    /**
      * @brief Checks if the position collides with something below
      * @param pos Position to check
-     * @param rep_size Size of the image representing the entity
-     * @return The Y coordinate the object should go should it collide, -1 if it does not collide
+     * @param img_width Width of the image representing the object
+     * @return The Y coordinate the object should go if it collides, -1 if it does not collide
+     * It checks every bottom position of Mario in case it is colliding with multiple objects in order to get upper y coordinate
      */
-    public int collidesBottom(Pair<Integer,Integer> pos, Pair<Integer,Integer> rep_size) {
-        for(float step = 0; step < rep_size.getFirst(); step += this.collision_layer.getTileWidth() ){
-            float   x = (pos.getFirst()-rep_size.getFirst()/2 + step),
-                    y = (pos.getSecond()-rep_size.getSecond()/2);
-            if( isCellBlocked(x,y) )
-                return (int)(this.getTopTile(x,y) * this.collision_layer.getTileHeight() * this.scale + rep_size.getSecond()/2);
-        }
+    public int collidesBottom(Pair<Integer,Integer> pos, int img_width) {
+        float x = pos.getFirst(), y = pos.getSecond(), x_limit = x+img_width;
+        int max_y = -1;
 
-        return -1;
+        for( float step = this.getMapTileWidth() ; x < x_limit ;  x += step )
+            if( isCellBlocked(x,y) ){
+                int temp_y = (int)(this.getTopTile(x,y) * this.getMapTileHeight());
+                if (temp_y > max_y)
+                    max_y = temp_y;
+            }
+
+        return max_y;
+    }
+
+    /**
+     * @brief Checks if there is a ladder in the given position
+     * @param pos Position to check for ladder
+     * @param rep_size Size of the representation of the object wanting to know if it is near ladder
+     * @return X coordinate where the player should "teleport" to start climbing ladder, it is the middle of the ladder. -1 if no ladder is near
+     */
+    public int nearLadder(int x , int y){
+        int     map_x = this.XConverter(x),
+                map_y = this.YConverter(y);
+
+        TiledMapTileLayer.Cell tile = ((TiledMapTileLayer)this.map.getLayers().get("Stairs")).getCell( map_x , map_y );
+        if (tile != null && tile.getTile() != null)
+            return (int)(map_x*this.getMapTileWidth());
+        else
+            return -1;
     }
 
     /**
@@ -61,93 +123,43 @@ public class Map {
      * X and Y will be converted to Map coordinates so there is no need to convert it beforehand
      */
     private boolean isCellBlocked(float x, float y) {
-        TiledMapTileLayer.Cell cell = this.collision_layer.getCell( this.XConverter(x) , this.YConverter(y) );
+        int     map_x = this.XConverter(x),
+                map_y = this.YConverter(y);
+        TiledMapTileLayer.Cell cell = this.collision_layer.getCell(map_x , map_y);
 
-        return cell != null && cell.getTile() != null && cell.getTile().getProperties().containsKey("blocked");
+        return (cell != null && cell.getTile() != null);
     }
 
     /**
-     * @brief Checks if there is a ladder in the given position
-     * @param pos Position to check for ladder
-     * @param rep_size Size of the representation of the object wanting to know if it is near ladder
-     * @return X coordinate where the player should "teleport" to start climbing ladder, it is the middle of the ladder. -1 if no ladder is near
+     * @brief Checks if the ladder in the given position is usable
+     * @param x X coordinate of the object
+     * @param y Y coordinate of the object
+     * @return Whether the object can use the ladder or not
      */
-    public int nearLadder(Pair<Integer,Integer> pos, Pair<Integer,Integer> rep_size){
-        int     x = this.XConverter(pos.getFirst()),
-                y = this.YConverter((float)pos.getSecond()-rep_size.getSecond()/2.0f + this.getMapTileHeight()/2 );
+    public boolean canUseLadder(int x , int y){
+        TiledMapTileLayer.Cell  floor = this.getFloorCell(x , y),
+                                stair = this.getStairCell(x , y);
 
-        TiledMapTileLayer.Cell tile = ((TiledMapTileLayer)this.map.getLayers().get("Stairs")).getCell( x , y );
-        if (tile != null && tile.getTile() != null)
-            return (int)(x*this.getMapTileWidth() + this.getMapTileWidth()/2);
-        else
-            return -1;
+        return (floor != null && stair != null) || (floor == null && stair != null);
     }
 
     public void setScale( float scale ){
         this.scale = scale;
     }
 
-    public TiledMapTileLayer.Cell getStairCell(int x , int y){
-        return ((TiledMapTileLayer)this.map.getLayers().get("Stairs")).getCell( this.XConverter(x) , this.YConverter(y) );
-    }
-
-    public TiledMapTileLayer.Cell getFloorCell(int x , int y){
-        return ((TiledMapTileLayer)this.map.getLayers().get("Floor")).getCell( this.XConverter(x) , this.YConverter(y) );
-    }
-
-    //TODO change function name
-    public boolean ladderAndCraneBelow(Pair<Integer,Integer> pos, Pair<Integer,Integer> rep_size ){
-        TiledMapTileLayer.Cell  floor = this.getFloorCell( pos.getFirst() , pos.getSecond() - rep_size.getSecond()/2 ),
-                                stair = this.getStairCell( pos.getFirst() , pos.getSecond() - rep_size.getSecond()/2 );
-
-        return (floor != null && stair != null) || (floor == null && stair != null);
-    }
-
-    /**
-     * @brief Checks if given number is out of screen height bounds
-     * @param pos Number to check, represents Y coordinate of object
-     * @param img_height Height of the image representing the object
-     * @return If image is out of bounds then the closest coordinate possible to that bound, otherwise param pos
-     */
-    public int checkOutOfScreenHeight( int pos , int img_height){
-        if (pos < 0)
-            return 0;
-        else if (pos > (Gdx.graphics.getHeight()-img_height) )
-            return (Gdx.graphics.getHeight()-img_height);
-        else
-            return pos;
-    }
-
-    /**
-     * @brief Checks if given number is out of screen width bounds
-     * @param pos Number to check, represents X coordinate of object
-     * @param img_width Height of the image representing the object
-     * @return If image is out of bounds then the closest coordinate possible to that bound, otherwise param pos
-     */
-    public int checkOutOfScreenWidth( int pos, int img_width) {
-        if (pos < img_width/2)
-            return img_width/2;
-        else if (pos > Gdx.graphics.getWidth() - img_width)
-            return Gdx.graphics.getWidth() - img_width;
-        else
-            return pos;
-    }
-
-
     private int getTopTile(float x , float y){
-        int layer_x = this.XConverter(x), layer_y = this.YConverter(y);
-        while ( this.collision_layer.getCell(layer_x,layer_y) != null)
-            layer_y++;
+        int map_x = this.XConverter(x), map_y = this.YConverter(y);
+        while ( this.collision_layer.getCell(map_x,map_y) != null)
+            map_y++;
 
-        return layer_y;
+        return map_y;
     }
 
     private int XConverter( float x ){
-        return (int)(x/(this.scale*this.collision_layer.getTileWidth()));
+        return (int)(x/this.getMapTileWidth());
     }
 
     private int YConverter( float y ){
-        return (int)(y/(this.scale*this.collision_layer.getTileHeight()));
+        return (int)(y/this.getMapTileHeight());
     }
-
 }

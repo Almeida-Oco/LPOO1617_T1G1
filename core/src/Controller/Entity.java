@@ -18,14 +18,14 @@ public abstract class Entity {
     // [x,y]
     protected Pair<Integer,Integer> position;
     // [x,y]
-    protected Pair<Float,Float> velocity = new Pair<Float,Float>(DEFAULT_MAX_X_VELOCITY,-3f);
+    protected Pair<Float,Float> velocity = new Pair<Float,Float>(DEFAULT_MAX_X_VELOCITY,-2f);
 
     private float gravity = 1f;
-    private boolean mid_air = false;
-    private float y_velocity = 0;
-    private float x_velocity = 3.0f;
+    private float max_y_velocity = 0;
+    private float max_x_velocity = 3.0f;
 
     protected type current_type;
+    protected float scale;
 
 
     public Entity(){
@@ -35,7 +35,6 @@ public abstract class Entity {
     public Entity(int x , int y){
         this.position = new Pair<Integer,Integer>(x,y);
     }
-
 
     public int getX(){
         return this.position.getFirst();
@@ -72,35 +71,28 @@ public abstract class Entity {
     }
 
     public void setYVelocity( float vel ){
-        if ( vel > 0 )
+        if ( vel >= 0 )
             this.velocity.setSecond(vel);
     }
 
     public void setXVelocity( int vel ){
-        if (vel == 0)
-            this.x_velocity = 0;
-        else if (vel == -1) //sets to default value
-            this.x_velocity = DEFAULT_MAX_X_VELOCITY;
+        this.velocity.setFirst( (vel == 0) ? 0 : max_x_velocity);
     }
 
     public void updateYVelocity(){
-        if (this.velocity.getSecond() - this.gravity > -this.y_velocity)
-            this.velocity.setSecond( this.velocity.getSecond() - this.gravity );
+        if (this.velocity.getSecond() - this.gravity > -this.max_y_velocity)
+            this.velocity.setSecond(this.velocity.getSecond() - this.gravity );
         else
-            this.velocity.setSecond(-this.y_velocity);
+            this.velocity.setSecond(-this.max_y_velocity);
 
     }
 
-    public void updateXVelocity( int direction ){
-        if ( !this.mid_air && Math.abs(direction) <= 1)
-            this.velocity.setFirst( direction*this.x_velocity );
-    }
-
-    public void setScale (float scale ){
+    public void setScale (float scale){
         this.gravity = this.DEFAULT_GRAVITY*scale/MyGdxGame.DEFAULT_SCALE;
-        this.x_velocity = this.DEFAULT_MAX_X_VELOCITY*scale/MyGdxGame.DEFAULT_SCALE;
-        this.velocity.setFirst(this.x_velocity);
-        this.y_velocity = this.DEFAULT_MAX_Y_VELOCITY*scale/MyGdxGame.DEFAULT_SCALE;
+        this.max_x_velocity = this.DEFAULT_MAX_X_VELOCITY*scale/MyGdxGame.DEFAULT_SCALE;
+        this.velocity.setFirst(this.max_x_velocity);
+        this.max_y_velocity = this.DEFAULT_MAX_Y_VELOCITY*scale/MyGdxGame.DEFAULT_SCALE;
+        this.scale = scale;
     }
 
     public abstract void setType(type t);

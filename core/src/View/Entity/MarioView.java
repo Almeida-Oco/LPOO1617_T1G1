@@ -9,7 +9,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import Controller.Entity;
 
 public class MarioView extends EntityView {
-    private static final float DEFAULT_SCALE = 3;
+    private static final float DEFAULT_SCALE = 4;
 
 
     public MarioView(AssetManager assets, float screen_scale){
@@ -19,7 +19,7 @@ public class MarioView extends EntityView {
         this.assets=assets;
         Texture texture = assets.get(image_names.get(this.last_type));
         this.representation = new Sprite(texture,texture.getWidth(),texture.getHeight());
-        this.representation.scale(this.img_scale);
+        this.representation.setSize( this.representation.getWidth()*this.img_scale, this.representation.getHeight()*this.img_scale );
     }
 
     @Override

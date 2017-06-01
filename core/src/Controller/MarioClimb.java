@@ -25,7 +25,7 @@ public class MarioClimb extends Mario {
             new_pos = this.climbDown( map );
 
         if( STAY_STILL != y_move )
-            ret_val = processResults(map,new_pos, y_move);
+            ret_val = processResults(map,new_pos);
         this.setPos(new_pos);
         return ret_val;
     }
@@ -40,6 +40,8 @@ public class MarioClimb extends Mario {
         this.tick++;
     }
 
+    //TODO climb methods can be grouped into climb method which has parameter direction
+
     /**
      * @brief Makes Mario climb up
      * @param map Current game map
@@ -51,8 +53,9 @@ public class MarioClimb extends Mario {
         int new_x = 0;
 
         //there is still ladder above Mario
-        if ( (new_x = map.nearLadder(this.position, this.rep_size)) != -1 && map.ladderAndCraneBelow(upper_pos,this.rep_size) ){
-            new_pos.setFirst(new_x);
+        if ( (new_x = map.nearLadder(upper_pos.getFirst()+this.rep_size.getFirst()/2, upper_pos.getSecond())) != -1 &&
+                      map.canUseLadder(upper_pos.getFirst()+this.rep_size.getFirst()/2, upper_pos.getSecond()) ){
+            new_pos.setFirst(new_x-this.ladder_x_offset);
             return new_pos;
         }
         else
@@ -69,12 +72,11 @@ public class MarioClimb extends Mario {
         Pair<Integer,Integer> lower_pos = new Pair<Integer,Integer>(new_pos.getFirst(), new_pos.getSecond() - (int)map.getMapTileHeight()); //force lower tile
         int new_x = 0;
 
-
-        if ( ((new_x=map.nearLadder(lower_pos,this.rep_size)) != -1) && map.ladderAndCraneBelow(new_pos,this.rep_size) ){
-            new_pos.setFirst(new_x);
+        if ( ((new_x=map.nearLadder(this.getX()+this.rep_size.getFirst()/2, this.getY())) != -1) &&
+                     map.canUseLadder(new_pos.getFirst()+this.rep_size.getFirst()/2, new_pos.getSecond()) ){
+            new_pos.setFirst(new_x-this.ladder_x_offset);
             return new_pos;
         }
-
         else
             return this.position;
     }
@@ -86,10 +88,10 @@ public class MarioClimb extends Mario {
      * @param y_move Direction Mario is trying to go
      * @return If end of ladder reached then a MarioRun object, this otherwise
      */
-    private Mario processResults (Map map, Pair<Integer,Integer> new_pos, int y_move){
-        Pair<Integer,Integer> lower_pos = new Pair<Integer,Integer>(new_pos.getFirst(), new_pos.getSecond() - (int)map.getMapTileHeight()); //force lower tile
+    private Mario processResults (Map map, Pair<Integer,Integer> new_pos){
+        Pair<Integer,Integer> lower_pos = new Pair<Integer,Integer>(new_pos.getFirst()+this.rep_size.getFirst()/2, new_pos.getSecond() - (int)map.getMapTileHeight()); //force lower tile
         int new_y;
-        if (this.position.equals(new_pos) && (new_y = map.collidesBottom(lower_pos,this.rep_size)) != -1){
+        if (this.position.equals(new_pos) && (new_y = map.collidesBottom(lower_pos, this.rep_size.getFirst())) != -1){
             Mario ret_val = new MarioRun( new_pos.getFirst(), new_y  );
             ret_val.setType(type.MARIO_CLIMB_OVER);
             return ret_val;

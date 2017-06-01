@@ -21,7 +21,7 @@ public class GameLogic {
 
     public void initializeCharacters(){
         Pair<Integer,Integer>   mario_pos = new Pair<Integer, Integer>(4,7),
-                                barrel_pos =new Pair<Integer, Integer>(7, 225);
+                                barrel_pos =new Pair<Integer, Integer>(7, 222);
         mario_pos = this.map.mapPosToPixels(mario_pos);
         barrel_pos= this.map.mapPosToPixels(barrel_pos);
         this.chars.add( Mario.createMario(mario_pos.getFirst(), mario_pos.getSecond()));

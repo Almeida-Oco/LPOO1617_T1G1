@@ -15,7 +15,7 @@ public abstract class Barrel extends Entity {
     }
 
     public static Barrel createBarrel(int x , int y){
-        Barrel ret =  new BarrelRolling(x,y,-1);
+        Barrel ret =  new BarrelRolling(x,y,1);
         ret.setType(type.BARREL_ROLLING);
         return ret;
     }

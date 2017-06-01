@@ -9,6 +9,7 @@ import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 public class Map {
     private final int SEARCH_TOP = 1;
     private final int SEARCH_RIGHT = 1;
+    private final int CRANE_HORIZONTAL_TILES = 8;
 
     private TiledMap map;
     private TiledMapTileLayer collision_layer;
@@ -171,6 +172,31 @@ public class Map {
     }
 
 
+    /**
+     * @brief Checks if there is a ladder below the given crane
+     * @param pos Position in which to check for ladder
+     * @param img_width Width of the image of the object querying about the ladder
+     * @param delta Size of the interval of X coordinates to return, corresponds to the object X velocity
+     * @return An interval of X coordinates where object should be in order to go down ladder, [-1,-1] if there is no ladder
+     */
+    public Pair<Integer,Integer> ladderInPosition(Pair<Integer,Integer> pos, int img_width, int delta){
+        int x = this.XConverter(pos.getFirst()), y = this.YConverter(pos.getSecond()) - (CRANE_HORIZONTAL_TILES + 2);
+        TiledMapTileLayer.Cell cell = ((TiledMapTileLayer)this.map.getLayers().get("Stairs")).getCell(x,y);
+        if ( cell != null && cell.getTile() != null){
+            int ret_x = (int)(x*this.getMapTileWidth()) + ((int)this.getMapTileWidth() - img_width);
+            Pair<Integer,Integer> ret;
+            if (delta % 2 == 0)
+                ret = new Pair<Integer, Integer>(ret_x-delta/2, ret_x+delta/2);
+            else
+                ret = new Pair<Integer,Integer>(ret_x - (int)Math.floor(delta/2), ret_x + (int)Math.ceil(delta/2));
+
+            return ret;
+        }
+
+        return new Pair<Integer,Integer>(-1,-1);
+    }
+
+
     public void setScale( float scale ){
         this.scale = scale;
     }
@@ -205,11 +231,11 @@ public class Map {
         return map_x;
     }
 
-    private int XConverter( float x ){
+    public int XConverter( float x ){
         return (int)(x/this.getMapTileWidth());
     }
 
-    private int YConverter( float y ){
+    public int YConverter( float y ){
         return (int)(y/this.getMapTileHeight());
     }
 }

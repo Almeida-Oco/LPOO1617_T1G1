@@ -32,6 +32,22 @@ public class Play extends ScreenAdapter {
     private final float REAL_GRAVITY = 9.8f;
     private final String MAP_1 = "DKMap.tmx";
     private final String COLLISION = "Floor";
+    private final int FPS=60;
+
+    private long diff, start = System.currentTimeMillis();
+
+    public void sleep(int fps) {
+        if(fps>0){
+            diff = System.currentTimeMillis() - start;
+            long targetDelay = 1000/fps;
+            if (diff < targetDelay) {
+                try{
+                    Thread.sleep(targetDelay - diff);
+                } catch (InterruptedException e) {}
+            }
+            start = System.currentTimeMillis();
+        }
+    }
 
     public void show() {
         this.batch = new SpriteBatch();
@@ -86,6 +102,7 @@ public class Play extends ScreenAdapter {
         this.batch.end();
 
         this.handleInput();
+        sleep(FPS);
     }
 
 

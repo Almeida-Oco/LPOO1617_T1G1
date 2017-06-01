@@ -115,6 +115,7 @@ public class Play extends ScreenAdapter {
 
         game.moveMario(x_move, y_move);
         game.moveBarrel();
+        game.animateDK();
     }
 
     private boolean enoughToJump(){

@@ -6,7 +6,7 @@ package Controller;
 
 public class DonkeyKong extends Entity {
     private final int ANIMATION_RATE = 5;
-    private final int ANIMATION_RESET = 10;
+    private final int ANIMATION_RESET = 20;
 
     protected int tick;
     private static DonkeyKong instance = null;
@@ -17,15 +17,18 @@ public class DonkeyKong extends Entity {
         this.current_type=type.DK_THROW_LEFT;
     }
 
-    private void catchThrow(){
+    public void catchThrow(){
         this.tickTock();
         this.updateSprite();
 
     }
 
     private void updateSprite() {
-        if(this.tick==2){
-            this.current_type=type.DK_LEFT_BARREL;
+        if(this.tick==15){
+            this.current_type=type.DK_RIGHT_BARREL;
+        }
+        if(this.tick==1){
+            this.current_type=type.DK_THROW_LEFT;
         }
     }
 

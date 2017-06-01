@@ -41,6 +41,9 @@ public class GameLogic {
         this.map = new Map();
         this.map.loadMap(map_name, collision_layer);
     }
+    public void animateDK(){
+        ((DonkeyKong)this.chars.get(2)).catchThrow();
+    }
 
     public void moveMario(int x_move, int y_move){
         this.chars.set( 0 , ((Mario)this.chars.getFirst()).moveMario(this.map,x_move,y_move) );

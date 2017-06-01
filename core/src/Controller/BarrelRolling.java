@@ -15,9 +15,11 @@ public class BarrelRolling extends Barrel {
 
     @Override
     public Barrel moveBarrel(Map map, int x_move, int y_move) {
-        this.updatePosition(map,x_move);
+
+        Barrel ret_val = updatePosition(map,x_move);
         this.updateSprite(x_move);
-        return this;
+        this.tickTock();
+        return ret_val;
     }
 
     private void updateSprite(int direction) {

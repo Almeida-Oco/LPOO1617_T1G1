@@ -18,24 +18,24 @@ class BarrelFall extends Barrel {
 
         Barrel ret_val = updatePosition(map);
         this.tickTock();
-
         return ret_val;
     }
 
     private Barrel updatePosition(Map map) {
+
         Pair<Integer,Integer> new_pos = new Pair<Integer, Integer>(this.position.getFirst(), this.position.getSecond() + this.getYSpeed() );
         int new_y;
         Barrel ret_val = this;
-        if ( (new_y = map.collidesBottom(new_pos,this.rep_size)) != -1 ){
+        if ( (new_y = map.collidesBottom(new_pos,this.rep_size)) == -1 ){
             this.setPos(new_pos);
             this.updateYVelocity();
         }
         else{
-            ret_val = new BarrelRolling( new_pos.getSecond() , new_y );
-            ret_val.setYVelocity(0f);
+            ret_val = new BarrelRolling( new_pos.getFirst() , new_y );
         }
-
+       // System.out.println("x: "+ ret_val.position.getFirst()+ " y:" + ret_val.position.getSecond());
         return ret_val;
+
     }
 
     @Override

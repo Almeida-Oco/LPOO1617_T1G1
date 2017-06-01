@@ -29,7 +29,9 @@ public abstract class Mario extends Entity {
      * @return MarioRun object
      */
     public static Mario createMario(int x , int y){
-        return new MarioRun(x,y);
+        Mario ret = new MarioRun(x,y);
+        ret.setType(type.MARIO_RIGHT);
+        return ret;
     }
 
     //TODO put these in array/hashMap

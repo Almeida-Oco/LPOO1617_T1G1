@@ -40,8 +40,8 @@ public class GameLogic {
         this.chars.set( 0 , ((Mario)this.chars.getFirst()).moveMario(this.map,x_move,y_move) );
     }
 
-    public void moveBarrel(int x_move, int y_move){
+    public void moveBarrel(){
         //System.out.println("x: "+((Barrel)this.chars.get(1)).getX()+" "+"y: "+ ((Barrel)this.chars.get(1)).getY());
-        this.chars.set( 1 , ((Barrel)this.chars.get(1)).moveBarrel(this.map,x_move,y_move) );
+        this.chars.set( 1 , ((Barrel)this.chars.get(1)).moveBarrel(this.map) );
     }
 }

@@ -8,11 +8,18 @@ public abstract class Barrel extends Entity {
     protected final int GO_LEFT = -1;
     protected final int GO_RIGHT = 1;
     protected int tick;
+    protected int x_direction;
 
-    protected Barrel(int x, int y) {
+    protected Barrel(int x, int y, int x_dir) {
         super(x,y);
-        this.current_type = type.BARREL_ROLLING;
         this.tick = 0;
+        this.x_direction = x_dir;
+    }
+
+    public static Barrel createBarrel(int x , int y){
+        Barrel ret =  new BarrelRolling(x,y,1);
+        ret.setType(type.BARREL_ROLLING);
+        return ret;
     }
 
     @Override
@@ -22,11 +29,7 @@ public abstract class Barrel extends Entity {
             this.current_type = t;
     }
 
-    public static Barrel createBarrel(int x , int y){
-        return new BarrelRolling(x,y);
-    }
-
-    public abstract Barrel moveBarrel( Map map, int x_move , int y_move );
+    public abstract Barrel moveBarrel( Map map );
 
     /**
      * @brief Represents the passing of time in the game, each time character moves this should be called

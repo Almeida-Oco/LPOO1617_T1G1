@@ -50,6 +50,14 @@ public class ViewFactory {
                 temp_barrel.changeSprite(type);
                 cache.put(type,temp_barrel);
             }
+            else if(type == Entity.type.BARREL_FALL_BACK) {
+                temp_barrel.changeSprite(type);
+                cache.put(type,temp_barrel);
+            }
+            else if(type == Entity.type.BARREL_FALL_FRONT) {
+                temp_barrel.changeSprite(type);
+                cache.put(type,temp_barrel);
+            }
 
 
 

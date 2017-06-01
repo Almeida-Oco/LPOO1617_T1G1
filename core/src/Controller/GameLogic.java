@@ -44,6 +44,9 @@ public class GameLogic {
     public void animateDK(){
         ((DonkeyKong)this.chars.get(2)).catchThrow();
     }
+    public void Kong(){
+        ((DonkeyKong)this.chars.get(2)).Kong();
+    }
 
     public void moveMario(int x_move, int y_move){
         this.chars.set( 0 , ((Mario)this.chars.getFirst()).moveMario(this.map,x_move,y_move) );

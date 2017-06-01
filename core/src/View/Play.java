@@ -66,6 +66,8 @@ public class Play extends ScreenAdapter {
         this.assets.load("dk/throw_right.png",Texture.class);
         this.assets.load("dk/throw_left.png",Texture.class);
         this.assets.load("dk/right_barrel.png",Texture.class);
+        this.assets.load("dk/right_hand.png",Texture.class);
+        this.assets.load("dk/left_hand.png",Texture.class);
         this.assets.finishLoading();
     }
 
@@ -115,7 +117,7 @@ public class Play extends ScreenAdapter {
 
         game.moveMario(x_move, y_move);
         game.moveBarrel();
-        game.animateDK();
+        game.Kong();
     }
 
     private boolean enoughToJump(){

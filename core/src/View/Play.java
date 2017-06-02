@@ -17,8 +17,7 @@ import Controller.Entity;
 import View.Entity.EntityView;
 import View.Entity.ViewFactory;
 
-public class Play extends ScreenAdapter {
-    private SpriteBatch batch;
+public class Play extends State {
     private TiledMap map;
     private OrthogonalTiledMapRenderer renderer;
     private OrthographicCamera camera;
@@ -91,7 +90,7 @@ public class Play extends ScreenAdapter {
 
     @Override
     public void render(float delta) {
-        super.render(delta);
+       // super.render(delta);
         Gdx.gl.glClearColor(0/255f, 0/255f, 0/255f, 1);
         Gdx.gl.glClear( GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT );
 
@@ -116,7 +115,7 @@ public class Play extends ScreenAdapter {
     }
 
 
-    private void handleInput(){
+    protected void handleInput(){
         GameLogic game = GameLogic.getInstance();
         int x_move = 0 , y_move = 0;
         float acc_x = -Gdx.input.getAccelerometerX(), acc_y = -Gdx.input.getAccelerometerY();

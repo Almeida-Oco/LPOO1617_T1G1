@@ -30,35 +30,33 @@ public class MainMenu extends State {
         private Sprite startSprite;
         private Sprite exitSprite;
 
-        private TextField name;
-        private Skin skin;
 
-        public MainMenu() {
-            background = new Texture("initial_menu.png");
+    public void show() {
+        this.batch = new SpriteBatch();
+        background = new Texture("initial_menu.png");
+        startSprite = new Sprite(new Texture("play.png"));
+        exitSprite = new Sprite(new Texture("exit.png"));
+        startButton = new Button(new SpriteDrawable(startSprite));
+        startButton.setSize(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() * 2 / 7);
+        startButton.setX(Gdx.graphics.getWidth() * 1/2 - startButton.getWidth() / 2);
+        startButton.setY(Gdx.graphics.getHeight() / 2);
 
+        exitButton = new Button(new SpriteDrawable(exitSprite));
+        exitButton.setSize(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() * 2 / 7);
+        exitButton.setX(Gdx.graphics.getWidth() * 1 / 2 - exitButton.getWidth() / 2);
+        exitButton.setY(Gdx.graphics.getHeight() / 12);
 
-            startSprite = new Sprite(new Texture("play.png"));
-            exitSprite = new Sprite(new Texture("exit.png"));
-            startButton = new Button(new SpriteDrawable(startSprite));
-            startButton.setSize(Gdx.graphics.getWidth()/2,Gdx.graphics.getHeight()*2/7);
-            startButton.setX(Gdx.graphics.getWidth()*3/4-startButton.getWidth()/2);
-            startButton.setY(Gdx.graphics.getHeight()/2);
-
-            exitButton = new Button(new SpriteDrawable(exitSprite));
-            exitButton.setSize(Gdx.graphics.getWidth()/2,Gdx.graphics.getHeight()*2/7);
-            exitButton.setX(Gdx.graphics.getWidth()*3/4-exitButton.getWidth()/2);
-            exitButton.setY(Gdx.graphics.getHeight()/12);
-
-
-
-
-        }
-
-
+    }
         public void handleInput( float delta ) {
-
+       //     System.out.println("adeus");
+            if(Gdx.input.justTouched()) {
+                current_state = new Play();
+                this.advanceState=true;
+               // System.out.println("adeus");
+            }
 
         }
+
 
 
 
@@ -68,8 +66,9 @@ public class MainMenu extends State {
             this.batch.draw(background, 0, 0, Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
             exitButton.draw(this.batch, 1);
             startButton.draw(this.batch, 1);
-            name.draw(this.batch,1);
+            //  name.draw(this.batch,1);
             this.batch.end();
+            handleInput(delta);
         }
 
         @Override

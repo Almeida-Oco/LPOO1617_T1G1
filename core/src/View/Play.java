@@ -79,9 +79,9 @@ public class Play extends State {
 
         this.renderer.render();
 
-        this.batch.begin();
-            this.drawEntities();
-        this.batch.end();
+
+        this.drawEntities();
+
 
         this.handleInput(delta);
         sleep(FPS);
@@ -92,9 +92,11 @@ public class Play extends State {
         for (Entity ent : GameLogic.getInstance().getCharacters() ){
             EntityView ent_view = ViewFactory.makeView(this.assets,ent, this.scale);
             ent.setRepSize( ent_view.getImgWidth(), ent_view.getImgHeight() , this.scale);
-            ent_view.updatePos(ent.getX(),ent.getY());
             ent_view.changeSprite(ent.getType());
+            ent_view.updatePos(ent.getX(),ent.getY());
+            this.batch.begin();
             ent_view.draw(this.batch);
+            this.batch.end();
         }
     }
 

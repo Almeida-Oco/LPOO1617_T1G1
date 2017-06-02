@@ -1,17 +1,18 @@
 package Controller;
 
 public class BarrelRolling extends Barrel {
-    private final int ANIMATION_RATE = 5;
     private final int ANIMATION_RESET = 10;
     private final boolean FREE_FALL = false;
     private final boolean LADDER_FALL = true;
+    private final int RIGHT = 1;
+    private final int LEFT = -1;
 
     private Pair<Integer,Integer> fall_delta;
     private int prev_tile_x;
 
     public BarrelRolling(int x, int y, int x_dir) {
         super(x,y,x_dir);
-        this.current_type = type.BARREL_ROLLING;
+        this.current_type = type.BARREL_ROLLING1;
         this.prev_tile_x = -1;
         this.fall_delta = new Pair<Integer, Integer>(-1,-1);
     }
@@ -25,14 +26,10 @@ public class BarrelRolling extends Barrel {
         else
             ret_val = updatePosition(map);
 
-        this.updateSprite();
         this.tickTock();
         return ret_val;
     }
 
-    private void updateSprite() {
-
-    }
 
     /**
      * @brief Used to check if there is a ladder nearby
@@ -63,6 +60,28 @@ public class BarrelRolling extends Barrel {
         return ret_val;
     }
 
+
+    private void updateSpriteRight(){
+        if (type.BARREL_ROLLING1 == this.current_type)
+            this.current_type = type.BARREL_ROLLING2;
+        else if (type.BARREL_ROLLING2 == this.current_type)
+            this.current_type = type.BARREL_ROLLING3;
+        else if (type.BARREL_ROLLING3 == this.current_type)
+            this.current_type = type.BARREL_ROLLING4;
+        else if (type.BARREL_ROLLING4 == this.current_type)
+            this.current_type = type.BARREL_ROLLING1;
+    }
+
+    private void updateSpriteLeft(){
+        if (type.BARREL_ROLLING1 == this.current_type)
+            this.current_type = type.BARREL_ROLLING4;
+        else if (type.BARREL_ROLLING2 == this.current_type)
+            this.current_type = type.BARREL_ROLLING1;
+        else if (type.BARREL_ROLLING3 == this.current_type)
+            this.current_type = type.BARREL_ROLLING2;
+        else if (type.BARREL_ROLLING4 == this.current_type)
+            this.current_type = type.BARREL_ROLLING3;
+    }
 
     /**
      * @brief Checks whether the barrel is about to free fall or if it is just a crane slope
@@ -100,6 +119,13 @@ public class BarrelRolling extends Barrel {
     protected void tickTock() {
         if ( ANIMATION_RESET == this.tick )
             this.tick = 0;
+
+        if ( this.tick == 0 ){
+            if ( this.x_direction == RIGHT)
+                this.updateSpriteRight();
+            else if ( this.x_direction == LEFT)
+                this.updateSpriteLeft();
+        }
 
         this.tick++;
 

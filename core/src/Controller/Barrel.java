@@ -12,14 +12,14 @@ public abstract class Barrel extends Entity {
 
     public static Barrel createBarrel(int x , int y){
         Barrel ret =  new BarrelRolling(x,y,1);
-        ret.setType(type.BARREL_ROLLING);
+        ret.setType(type.BARREL_ROLLING1);
         return ret;
     }
 
     @Override
     public void setType(type t) {
-        if (    t == type.BARREL_FALL_BACK || t == type.BARREL_FALL_FRONT || t == type.BARREL_ROLLING ||
-                t == type.FIRE_BARREL_FALL_BACK || t == type.FIRE_BARREL_FALL_FRONT || t == type.FIRE_BARREL_ROLLING )
+        if (    t == type.BARREL_FALL_BACK || t == type.BARREL_FALL_FRONT || t == type.BARREL_ROLLING1 || t == type.BARREL_ROLLING2 || t == type.BARREL_ROLLING3 ||
+                t == type.BARREL_ROLLING4 || t == type.FIRE_BARREL_FALL_BACK || t == type.FIRE_BARREL_FALL_FRONT || t == type.FIRE_BARREL_ROLLING )
             this.current_type = t;
     }
 

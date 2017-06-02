@@ -47,7 +47,19 @@ public class ViewFactory {
                 temp.changeSprite(type);
                 cache.put(type,temp);
             }
-            else if(type== Entity.type.BARREL_ROLLING){
+            else if(type == Entity.type.BARREL_ROLLING1){
+                temp_barrel.changeSprite(type);
+                cache.put(type,temp_barrel);
+            }
+            else if(type == Entity.type.BARREL_ROLLING2){
+                temp_barrel.changeSprite(type);
+                cache.put(type,temp_barrel);
+            }
+            else if(type == Entity.type.BARREL_ROLLING3){
+                temp_barrel.changeSprite(type);
+                cache.put(type,temp_barrel);
+            }
+            else if(type == Entity.type.BARREL_ROLLING4){
                 temp_barrel.changeSprite(type);
                 cache.put(type,temp_barrel);
             }

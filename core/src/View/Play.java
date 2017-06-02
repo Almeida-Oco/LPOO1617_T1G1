@@ -63,24 +63,9 @@ public class Play extends State {
 
     //TODO this will start to get quite big, separate by type, MARIO, FIRE, DK, BARREL ...
     private void loadAssets(){
-        this.assets.load("mario/left.png", Texture.class);
-        this.assets.load("mario/right.png",Texture.class);
-        this.assets.load("mario/run_left.png", Texture.class);
-        this.assets.load("mario/run_right.png",Texture.class);
-        this.assets.load("mario/climb_left.png",Texture.class);
-        this.assets.load("mario/climb_right.png",Texture.class);
-        this.assets.load("mario/climb_over.png",Texture.class);
-        this.assets.load("barrels/rolling.png", Texture.class);
-        this.assets.load("barrels/falling_back.png",Texture.class);
-        this.assets.load("barrels/falling_front.png",Texture.class);
-        this.assets.load("dk/front.png",Texture.class);
-        this.assets.load("dk/left_barrel.png",Texture.class);
-        this.assets.load("dk/right_hand.png",Texture.class);
-        this.assets.load("dk/throw_right.png",Texture.class);
-        this.assets.load("dk/throw_left.png",Texture.class);
-        this.assets.load("dk/right_barrel.png",Texture.class);
-        this.assets.load("dk/right_hand.png",Texture.class);
-        this.assets.load("dk/left_hand.png",Texture.class);
+        this.loadMarioAsssets();
+        this.loadBarrelsAssets();
+        this.loadDKAssets();
         this.assets.finishLoading();
     }
 
@@ -108,6 +93,7 @@ public class Play extends State {
             EntityView ent_view = ViewFactory.makeView(this.assets,ent, this.scale);
             ent.setRepSize( ent_view.getImgWidth(), ent_view.getImgHeight() , this.scale);
             ent_view.updatePos(ent.getX(),ent.getY());
+            ent_view.changeSprite(ent.getType());
             ent_view.draw(this.batch);
         }
     }
@@ -171,5 +157,36 @@ public class Play extends State {
 
     private float mapScaling(){
         return Gdx.graphics.getWidth() / (((TiledMapTileLayer)this.map.getLayers().get("Floor")).getWidth()*((TiledMapTileLayer)this.map.getLayers().get("Floor")).getTileWidth());
+    }
+
+
+    private void loadMarioAsssets(){
+        this.assets.load("mario/left.png", Texture.class);
+        this.assets.load("mario/right.png",Texture.class);
+        this.assets.load("mario/run_left.png", Texture.class);
+        this.assets.load("mario/run_right.png",Texture.class);
+        this.assets.load("mario/climb_left.png",Texture.class);
+        this.assets.load("mario/climb_right.png",Texture.class);
+        this.assets.load("mario/climb_over.png",Texture.class);
+    }
+
+    private void loadBarrelsAssets(){
+        this.assets.load("barrels/rolling1.png", Texture.class);
+        this.assets.load("barrels/rolling2.png", Texture.class);
+        this.assets.load("barrels/rolling3.png", Texture.class);
+        this.assets.load("barrels/rolling4.png", Texture.class);
+        this.assets.load("barrels/falling_back.png",Texture.class);
+        this.assets.load("barrels/falling_front.png",Texture.class);
+    }
+
+    private void loadDKAssets(){
+        this.assets.load("dk/front.png",Texture.class);
+        this.assets.load("dk/left_barrel.png",Texture.class);
+        this.assets.load("dk/right_hand.png",Texture.class);
+        this.assets.load("dk/throw_right.png",Texture.class);
+        this.assets.load("dk/throw_left.png",Texture.class);
+        this.assets.load("dk/right_barrel.png",Texture.class);
+        this.assets.load("dk/right_hand.png",Texture.class);
+        this.assets.load("dk/left_hand.png",Texture.class);
     }
 }

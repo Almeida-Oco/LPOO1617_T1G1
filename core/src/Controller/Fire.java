@@ -22,4 +22,9 @@ public class Fire extends Entity {
     public Entity moveEntity(Map map, int x_move, int y_move) {
         return null;
     }
+
+    @Override
+    public boolean toRemove(Map map) {
+        return false;
+    }
 }

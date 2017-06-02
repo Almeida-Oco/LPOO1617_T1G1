@@ -21,21 +21,6 @@ public class DonkeyKong extends Entity {
     }
 
 
-    private void updateSpriteKong() {
-        if(this.tick== ANIMATION_RATE)
-            this.current_type=type.DK_RIGHT_HAND;
-        else if(this.tick==0)
-            this.current_type=type.DK_LEFT_HAND;
-    }
-
-    private void updateSpriteThrow() {
-        if(this.tick== ANIMATION_RATE)
-            this.current_type=type.DK_RIGHT_BARREL;
-        else if(this.tick==0)
-            this.current_type=type.DK_THROW_LEFT;
-    }
-
-
     @Override
     public void setType(type t) {
         if (    t == type.DK_FRONT || t == type.DK_LEFT_BARREL || t == type.DK_LEFT_HAND || t == type.DK_RIGHT_BARREL ||
@@ -69,6 +54,38 @@ public class DonkeyKong extends Entity {
     }
 
 
+    /**
+     * @brief Updates DK status to animate it when he is not throwing a barrel
+     */
+    private void updateSpriteKong() {
+        if(this.tick== ANIMATION_RATE)
+            this.current_type=type.DK_RIGHT_HAND;
+        else if(this.tick==0)
+            this.current_type=type.DK_LEFT_HAND;
+    }
+
+    /**
+     * @brief Updates DK status to animate it when he is throwing a barrel
+     */
+    private void updateSpriteThrow() {
+        if(this.tick== ANIMATION_RATE)
+            this.current_type=type.DK_RIGHT_BARREL;
+        else if(this.tick==0)
+            this.current_type=type.DK_THROW_LEFT;
+    }
+
+    /**
+     * @brief Used to know when to animate DK
+     */
+    private void tickTock() {
+        this.tick++;
+        if ( ANIMATION_RESET == this.tick ){
+            this.tick = 0;
+            this.curr_animation = -1;
+        }
+    }
+
+
     public static DonkeyKong getInstance(){
         if (instance == null) {
             return (instance = new DonkeyKong(0,0));
@@ -77,12 +94,8 @@ public class DonkeyKong extends Entity {
             return instance;
     }
 
-
-    protected void tickTock() {
-        this.tick++;
-        if ( ANIMATION_RESET == this.tick ){
-            this.tick = 0;
-            this.curr_animation = -1;
-        }
+    @Override
+    public boolean toRemove(Map map) {
+        return false;
     }
 }

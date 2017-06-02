@@ -17,8 +17,8 @@ public class BarrelRolling extends Barrel {
         this.fall_delta = new Pair<Integer, Integer>(-1,-1);
     }
 
-    @Override //x_move and y_move irrelevant
-    public Entity moveEntity(Map map, int x_move, int y_move) {
+    @Override
+    public Entity moveEntity(Map map, int irrelevant1, int irrelevant2) {
         this.checkNewDelta(map);
         Barrel ret_val = this.checkLadderFall(map);
         if (ret_val != this)
@@ -47,6 +47,11 @@ public class BarrelRolling extends Barrel {
         }
     }
 
+    /**
+     * @brief Updates barrel position based on collisions
+     * @param map Current game map
+     * @return This object if state has not changed, BarrelFall otherwise
+     */
     private Barrel updatePosition(Map map){
         Pair<Integer,Integer> new_pos = new Pair<Integer, Integer>(this.position.getFirst()+ this.x_direction*this.getXSpeed() , this.position.getSecond());
         new_pos.setFirst( map.checkOutOfScreenWidth(new_pos.getFirst(), rep_size.getFirst()));
@@ -60,7 +65,9 @@ public class BarrelRolling extends Barrel {
         return ret_val;
     }
 
-
+    /**
+     * @brief Sequence of sprites when the barrel is rolling to the right
+     */
     private void updateSpriteRight(){
         if (type.BARREL_ROLLING1 == this.current_type)
             this.current_type = type.BARREL_ROLLING2;
@@ -72,6 +79,9 @@ public class BarrelRolling extends Barrel {
             this.current_type = type.BARREL_ROLLING1;
     }
 
+    /**
+     * @brief Sequence of sprites when the barrel is rolling to the left
+     */
     private void updateSpriteLeft(){
         if (type.BARREL_ROLLING1 == this.current_type)
             this.current_type = type.BARREL_ROLLING4;
@@ -91,7 +101,7 @@ public class BarrelRolling extends Barrel {
     private Barrel checkCraneSlope(Pair<Integer,Integer> new_pos, Map map ) {
         Pair<Integer, Integer> lower_pos = new Pair<Integer, Integer>(new_pos.getFirst(), new_pos.getSecond() - (int)((map.getMapTileHeight()*2)));
         if (map.collidesBottom(lower_pos, this.rep_size.getFirst()) == -1)
-            return new BarrelFall(new_pos.getFirst(),new_pos.getSecond(),this.x_direction, FREE_FALL );
+            return new BarrelFall(new_pos.getFirst(),new_pos.getSecond(),this.x_direction, FREE_FALL, false);
 
         new_pos.setSecond( new_pos.getSecond() - (int)map.getMapTileHeight());
         this.setPos(new_pos);
@@ -106,7 +116,7 @@ public class BarrelRolling extends Barrel {
     private Barrel checkLadderFall(Map map){
         int curr_x = this.getX(), lower_y = getY()-(int)map.getMapTileHeight();
         if ( curr_x >= this.fall_delta.getFirst() && curr_x <= this.fall_delta.getSecond() && (Math.random()*10+1) > 7)
-            return new BarrelFall(curr_x, lower_y , this.x_direction, LADDER_FALL );
+            return new BarrelFall(curr_x, lower_y , this.x_direction, LADDER_FALL, false );
         else if ( curr_x >= this.fall_delta.getFirst() && curr_x <= this.fall_delta.getSecond() ){
             this.fall_delta.setFirst(-1);
             this.fall_delta.setSecond(-1);

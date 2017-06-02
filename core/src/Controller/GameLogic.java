@@ -55,8 +55,7 @@ public class GameLogic {
 
         if ( this.time_passed > 4) {
             if (this.chars.get(1).moveEntity(map, 0, 0) == null) { //second number is irrelevant
-                Pair<Integer, Integer> barrel_pos = this.map.mapPosToPixels(this.barrels_pos);
-                this.chars.add(Barrel.createBarrel(barrel_pos.getFirst(), barrel_pos.getSecond()));
+                this.createNewBarrel();
                 this.time_passed = 0;
             }
         }
@@ -71,10 +70,22 @@ public class GameLogic {
 
     public void moveBarrels(){
         for (int i = 2 ; i < this.chars.size() ; i++){
-            if ( this.chars.get(i).collidesWith(this.chars.get(0).getPos(), this.chars.get(0).getRepSize()) )
+            if (this.chars.get(i).collidesWith(this.chars.get(0).getPos(), this.chars.get(0).getRepSize()) || this.chars.get(i).toRemove(this.map) )
                 this.chars.remove(i);
             else
                 this.chars.set(i,this.chars.get(i).moveEntity(map,0,0)); //numbers are irrelevant
         }
+    }
+
+    private void createNewBarrel(){
+        Pair<Integer,Integer> barrel_pos = (Pair<Integer,Integer>)this.barrels_pos.clone();
+        boolean free_fall = false;
+        if ( (Math.random()*10) > 7){ //free falling barrel
+            barrel_pos.setFirst(barrel_pos.getFirst() - 2);
+            free_fall = true;
+        }
+
+        barrel_pos = this.map.mapPosToPixels(barrel_pos);
+        this.chars.add( Barrel.createBarrel(barrel_pos.getFirst(), barrel_pos.getSecond(), free_fall) );
     }
 }

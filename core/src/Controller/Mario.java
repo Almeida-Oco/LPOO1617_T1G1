@@ -53,6 +53,11 @@ public abstract class Mario extends Entity {
     }
 
     @Override
+    public boolean toRemove(Map map){
+        return false;
+    }
+
+    @Override
     public void setScale (float scale){
         super.setScale(scale);
         this.JUMP_VELOCITY = DEFAULT_JUMP_VELOCITY*scale/ MyGdxGame.DEFAULT_SCALE;

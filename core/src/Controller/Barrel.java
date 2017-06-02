@@ -10,9 +10,13 @@ public abstract class Barrel extends Entity {
         this.x_direction = x_dir;
     }
 
-    public static Barrel createBarrel(int x , int y){
-        Barrel ret =  new BarrelRolling(x,y,1);
-        ret.setType(type.BARREL_ROLLING1);
+    public static Barrel createBarrel(int x , int y, boolean free_falling){
+        Barrel ret;
+        if ( free_falling )
+            ret =  new BarrelFall(x,y,1,false,true);
+        else
+            ret = new BarrelRolling(x,y,1);
+
         return ret;
     }
 
@@ -37,5 +41,9 @@ public abstract class Barrel extends Entity {
                 delta_y = sphere_y - Math.max( pos.getSecond(), Math.min( sphere_y , pos.getSecond() + rep_size.getSecond() ));
 
         return (Math.pow(delta_x,2) + Math.pow(delta_y,2)) < Math.pow(this.rep_size.getFirst()/2 , 2);
+    }
+
+    public boolean toRemove(Map map){
+        return (map.XConverter(this.getX()) < 1 && map.YConverter(this.getY()) <= 7);
     }
 }

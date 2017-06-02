@@ -76,7 +76,6 @@ public abstract class Entity {
     public abstract boolean collidesWith(Pair<Integer, Integer> pos, Pair<Integer, Integer> rep_size);
 
     public void setYVelocity( float vel ){
-        if ( vel >= 0 )
             this.velocity.setSecond(vel);
     }
 
@@ -110,6 +109,13 @@ public abstract class Entity {
      * @return Either this object if state has not changed, or a different object if state has changed
      */
     public abstract Entity moveEntity(Map map, int x_move, int y_move);
+
+    /**
+     * @brief Whether this entity should be removed or not
+     * @param map Current game map
+     * @return True is it should be removed, false otherwise
+     */
+    public abstract boolean toRemove(Map map);
 
     public type getType(){
         return this.current_type;

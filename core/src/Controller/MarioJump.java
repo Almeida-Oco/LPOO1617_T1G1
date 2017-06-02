@@ -20,7 +20,7 @@ public class MarioJump extends Mario {
     }
 
     @Override
-    public Entity moveEntity(Map map, int x_move, int y_move) {
+    public Entity moveEntity(Map map, int x_move, int irrelevant) {
         Mario ret_val;
         if (this.direction == -10)
             this.direction = x_move;

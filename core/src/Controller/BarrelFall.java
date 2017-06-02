@@ -6,6 +6,15 @@ class BarrelFall extends Barrel {
     private boolean fall_through;
     private boolean keep_falling;
 
+    /**
+     * @brief Constructor for Barrel Fall
+     * @param x X coordinate to create barrel
+     * @param y Y coordinate to create barrel
+     * @param x_dir Previous direction where the barrel was rolling
+     * @param fall_through Whether the barrel is moving to the next set of cranes or not. Also signals if barrel is of fire or not
+     * @param keep_falling Whether the barrel is supposed to keep falling until end of map
+     * If keep_falling is true, then fall_through will tell whether it is a fire_barrel or not
+     */
     public BarrelFall(int x, int y, int x_dir, boolean fall_through, boolean keep_falling) {
         super(x,y,x_dir);
         this.current_type = type.BARREL_FALL_FRONT;

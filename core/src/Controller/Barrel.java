@@ -4,12 +4,25 @@ public abstract class Barrel extends Entity {
     protected int tick;
     protected int x_direction;
 
+    /**
+     * @brief Default constructor for a barrel
+     * @param x X coordinate to create barrel
+     * @param y Y coordinate to create barrel
+     * @param x_dir Direction in which barrel is supposed to move
+     */
     protected Barrel(int x, int y, int x_dir) {
         super(x,y);
         this.tick = 0;
         this.x_direction = x_dir;
     }
 
+    /**
+     * @brief Creates a new barrel and returns it
+     * @param x X coordinate to create barrel
+     * @param y Y coordinate to create barrel
+     * @param free_falling Whether the barrel is free falling or not
+     * @return A new barrel
+     */
     public static Barrel createBarrel(int x , int y, boolean free_falling){
         Barrel ret;
         if ( free_falling )

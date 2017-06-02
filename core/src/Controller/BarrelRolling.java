@@ -10,6 +10,12 @@ public class BarrelRolling extends Barrel {
     private Pair<Integer,Integer> fall_delta;
     private int prev_tile_x;
 
+    /**
+     * @brief Constructor for rolling barrel
+     * @param x X coordinate to create barrel
+     * @param y Y coordinate to create barrel
+     * @param x_dir Direction in which barrel is supposed to move
+     */
     public BarrelRolling(int x, int y, int x_dir) {
         super(x,y,x_dir);
         this.current_type = type.BARREL_ROLLING1;

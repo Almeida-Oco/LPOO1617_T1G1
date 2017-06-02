@@ -5,6 +5,7 @@ class BarrelFall extends Barrel {
     private final int ANIMATION_RATE = 5;
     private boolean fall_through;
     private boolean keep_falling;
+    private boolean fire;
 
     /**
      * @brief Constructor for Barrel Fall
@@ -17,9 +18,13 @@ class BarrelFall extends Barrel {
      */
     public BarrelFall(int x, int y, int x_dir, boolean fall_through, boolean keep_falling) {
         super(x,y,x_dir);
-        this.current_type = type.BARREL_FALL_FRONT;
         this.fall_through = fall_through;
         this.keep_falling = keep_falling;
+        this.fire = (fall_through && keep_falling);
+        if ( this.fire )
+            this.current_type = type.FIRE_BARREL_FALL_FRONT;
+        else
+            this.current_type = type.BARREL_FALL_FRONT;
     }
 
     @Override
@@ -43,13 +48,21 @@ class BarrelFall extends Barrel {
 
     }
 
+    //TODO maybe too many branches, separate into functions
     @Override
     protected void tickTock() {
         if (ANIMATION_RATE == this.tick){
-            if (type.BARREL_FALL_FRONT == this.current_type)
-                this.current_type = type.BARREL_FALL_BACK;
+            if ( !this.fire )
+                if (type.BARREL_FALL_FRONT == this.current_type)
+                   this.current_type = type.BARREL_FALL_BACK;
+                else
+                    this.current_type = type.BARREL_FALL_FRONT;
             else
-                this.current_type = type.BARREL_FALL_FRONT;
+                if( type.FIRE_BARREL_FALL_FRONT == this.current_type)
+                    this.current_type = type.FIRE_BARREL_FALL_BACK;
+                else
+                    this.current_type = type.FIRE_BARREL_FALL_FRONT;
+
             this.tick=0;
         }
         this.tick++;
@@ -82,7 +95,7 @@ class BarrelFall extends Barrel {
         this.setPos(new_pos);
 
         if ( map.YConverter(new_pos.getSecond()) <= END_OF_MAP )
-            return new BarrelRolling(new_pos.getFirst(), new_pos.getSecond(), -1);
+            return new BarrelRolling(new_pos.getFirst(), new_pos.getSecond(), -1, this.fire );
         else
             return this;
     }
@@ -103,7 +116,7 @@ class BarrelFall extends Barrel {
             this.updateYVelocity();
         }
         else
-            ret_val = new BarrelRolling( new_pos.getFirst() , new_y , -this.x_direction);
+            ret_val = new BarrelRolling( new_pos.getFirst() , new_y , -this.x_direction, false);
 
         return ret_val;
     }

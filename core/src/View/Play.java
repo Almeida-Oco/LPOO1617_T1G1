@@ -1,10 +1,12 @@
 package View;
 
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
@@ -12,7 +14,8 @@ import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 
 import Controller.GameLogic;
 import Controller.Entity;
-import View.Entity.EntityView;
+import Controller.Pair;
+import View.Entity.ElementView;
 import View.Entity.ViewFactory;
 
 public class Play extends State {
@@ -21,6 +24,8 @@ public class Play extends State {
     private OrthographicCamera camera;
     private AssetManager assets;
     private float scale;
+    private Entity.type barrel_fire = Entity.type.BARREL_FIRE_MIN1;
+    private int tick = 0;
 
     private final int JUMP = 2;
     private final float JUMP_MIN_VAL = 5f;
@@ -30,6 +35,8 @@ public class Play extends State {
     private final String MAP_1 = "DKMap.tmx";
     private final String COLLISION = "Floor";
     private final int FPS=60;
+    private final int ANIMATION_RATE = 20;
+
 
     private long diff, start = System.currentTimeMillis();
 
@@ -61,7 +68,6 @@ public class Play extends State {
         this.loadAssets();
     }
 
-    //TODO this will start to get quite big, separate by type, MARIO, FIRE, DK, BARREL ...
     private void loadAssets(){
         this.loadMarioAsssets();
         this.loadBarrelsAssets();
@@ -79,18 +85,16 @@ public class Play extends State {
 
         this.renderer.render();
 
-
         this.drawEntities();
-
+        this.animateBackground();
 
         this.handleInput(delta);
         sleep(FPS);
     }
 
-
     private void drawEntities(){
         for (Entity ent : GameLogic.getInstance().getCharacters() ){
-            EntityView ent_view = ViewFactory.makeView(this.assets,ent, this.scale);
+            ElementView ent_view = ViewFactory.makeView(this.assets,ent.getType(), this.scale);
             ent.setRepSize( ent_view.getImgWidth(), ent_view.getImgHeight() , this.scale);
             ent_view.changeSprite(ent.getType());
             ent_view.updatePos(ent.getX(),ent.getY());
@@ -99,7 +103,6 @@ public class Play extends State {
             this.batch.end();
         }
     }
-
 
     protected void handleInput( float delta ){
         GameLogic game = GameLogic.getInstance();
@@ -125,6 +128,42 @@ public class Play extends State {
     private boolean enoughToJump(){
         float x = Gdx.input.getAccelerometerX(), y = Gdx.input.getAccelerometerY(), z = Gdx.input.getAccelerometerZ();
         return (Math.sqrt( Math.pow(x,2)+Math.pow(y,2)+Math.pow(z,2) ) <= JUMP_MIN_VAL && x < REAL_GRAVITY && y < REAL_GRAVITY && z < REAL_GRAVITY);
+    }
+
+
+    private void animateBackground(){
+        if (this.tick == ANIMATION_RATE)
+            this.tick = 0;
+
+        if ( GameLogic.getInstance().firstBarrelFalled() )
+            this.drawBarrelFire();
+
+        this.tick++;
+    }
+
+    private void drawBarrelFire(){
+        this.updateBarrelFireState();
+        ElementView el_view = ViewFactory.makeView(this.assets, this.barrel_fire, this.scale);
+        el_view.changeSprite(this.barrel_fire);
+        Pair<Integer,Integer> map_pos = new Pair<Integer, Integer>(1,24);
+        map_pos = GameLogic.getInstance().getMap().mapPosToPixels(map_pos);
+        el_view.updatePos(map_pos.getFirst(), map_pos.getSecond() );
+        this.batch.begin();
+            el_view.draw(this.batch);
+        this.batch.end();
+    }
+
+    private void updateBarrelFireState(){
+        if (this.tick == 0){
+            if (Entity.type.BARREL_FIRE_MIN1 == this.barrel_fire)
+                this.barrel_fire = Entity.type.BARREL_FIRE_MIN2;
+            else if (Entity.type.BARREL_FIRE_MIN2 == this.barrel_fire)
+                this.barrel_fire = Entity.type.BARREL_FIRE_MAX1;
+            else if (Entity.type.BARREL_FIRE_MAX1 == this.barrel_fire)
+                this.barrel_fire = Entity.type.BARREL_FIRE_MAX2;
+            else if (Entity.type.BARREL_FIRE_MAX2 == this.barrel_fire)
+                this.barrel_fire = Entity.type.BARREL_FIRE_MIN1;
+        }
     }
 
     @Override
@@ -179,6 +218,13 @@ public class Play extends State {
         this.assets.load("barrels/rolling4.png", Texture.class);
         this.assets.load("barrels/falling_back.png",Texture.class);
         this.assets.load("barrels/falling_front.png",Texture.class);
+        this.assets.load("barrels/fire_falling_back.png",Texture.class);
+        this.assets.load("barrels/fire_falling_front.png",Texture.class);
+        this.assets.load("barrels/fire_rolling.png",Texture.class);
+        this.assets.load("fire_barrel/min1.png",Texture.class);
+        this.assets.load("fire_barrel/min2.png",Texture.class);
+        this.assets.load("fire_barrel/max1.png",Texture.class);
+        this.assets.load("fire_barrel/max2.png",Texture.class);
     }
 
     private void loadDKAssets(){

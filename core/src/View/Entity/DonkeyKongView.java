@@ -10,7 +10,7 @@ import Controller.Entity;
  * Created by oco on 5/27/17.
  */
 
-public class DonkeyKongView extends EntityView {
+public class DonkeyKongView extends ElementView {
     private static final float DEFAULT_SCALE = 3;
 
     public DonkeyKongView(AssetManager assets, float screen_scale){

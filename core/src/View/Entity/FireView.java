@@ -7,7 +7,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import Controller.Entity;
 
 
-public class FireView extends EntityView {
+public class FireView extends ElementView {
     private static final float DEFAULT_SCALE = 3;
 
     public FireView(AssetManager assets, float screen_scale){

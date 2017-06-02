@@ -11,18 +11,21 @@ public class BarrelRolling extends Barrel {
 
     private Pair<Integer,Integer> fall_delta;
     private int prev_tile_x;
+    private boolean fire;
 
     /**
      * @brief Constructor for rolling barrel
      * @param x X coordinate to create barrel
      * @param y Y coordinate to create barrel
      * @param x_dir Direction in which barrel is supposed to move
+     * @param fire Whether this barrel is of fire or nor
      */
-    public BarrelRolling(int x, int y, int x_dir) {
+    public BarrelRolling(int x, int y, int x_dir, boolean fire) {
         super(x,y,x_dir);
         this.current_type = type.BARREL_ROLLING1;
         this.prev_tile_x = -1;
         this.fall_delta = new Pair<Integer, Integer>(-1,-1);
+        this.fire = fire;
     }
 
     @Override
@@ -109,14 +112,19 @@ public class BarrelRolling extends Barrel {
      * @brief Sequence of sprites when the barrel is rolling to the left
      */
     private void updateSpriteLeft(){
-        if (type.BARREL_ROLLING1 == this.current_type)
-            this.current_type = type.BARREL_ROLLING4;
-        else if (type.BARREL_ROLLING2 == this.current_type)
-            this.current_type = type.BARREL_ROLLING1;
-        else if (type.BARREL_ROLLING3 == this.current_type)
-            this.current_type = type.BARREL_ROLLING2;
-        else if (type.BARREL_ROLLING4 == this.current_type)
-            this.current_type = type.BARREL_ROLLING3;
+        if ( !this.fire ){
+            if (type.BARREL_ROLLING1 == this.current_type)
+                this.current_type = type.BARREL_ROLLING4;
+            else if (type.BARREL_ROLLING2 == this.current_type)
+                this.current_type = type.BARREL_ROLLING1;
+            else if (type.BARREL_ROLLING3 == this.current_type)
+                this.current_type = type.BARREL_ROLLING2;
+            else if (type.BARREL_ROLLING4 == this.current_type)
+                this.current_type = type.BARREL_ROLLING3;
+        }
+        else
+            this.current_type = type.FIRE_BARREL_ROLLING;
+
     }
 
     /**
@@ -153,8 +161,12 @@ public class BarrelRolling extends Barrel {
 
 
     private boolean shouldInvertDirection(Map map){
-        return (this.getX() == 0 || this.getX() == (Gdx.graphics.getWidth()-this.rep_size.getFirst()) ||
-                map.collidesLeft(this.position, this.rep_size.getSecond()) != -1 );
+        if ( (this.getX() == 0 || this.getX() == (Gdx.graphics.getWidth()-this.rep_size.getFirst()) ||
+                map.collidesLeft(this.position, this.rep_size.getSecond()) != -1) && this.inverted) {
+            this.inverted = false;
+            return true;
+        }
+        return false;
     }
 
     @Override
@@ -184,5 +196,14 @@ public class BarrelRolling extends Barrel {
     @Override
     public boolean canInvert() {
         return (this.n_times_inverted == 0);
+    }
+
+    @Override
+    public boolean toRemove(Map map){
+        int map_x = map.XConverter(this.getX()), map_y = map.YConverter(this.getY());
+        if ( !this.fire )
+            return (map_y <= 8 && this.getX() <= (map_x*map.getMapTileWidth()+map.getMapTileWidth()/4) );
+        else
+            return (map_x <= 1 && map_y <= 25);
     }
 }

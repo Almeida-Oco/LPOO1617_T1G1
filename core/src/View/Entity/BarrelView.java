@@ -7,7 +7,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import Controller.Entity;
 
 
-public class BarrelView extends EntityView {
+public class BarrelView extends ElementView {
     private static final float DEFAULT_SCALE = 4;
     private int rotation = 0;
 

@@ -4,11 +4,10 @@ package View.Entity;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 import Controller.Entity;
 
-public class MarioView extends EntityView {
+public class MarioView extends ElementView {
     private static final float DEFAULT_SCALE = 4;
 
 

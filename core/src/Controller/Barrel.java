@@ -27,12 +27,12 @@ public abstract class Barrel extends Entity {
      * @param free_falling Whether the barrel is free falling or not
      * @return A new barrel
      */
-    public static Barrel createBarrel(int x , int y, boolean free_falling){
+    public static Barrel createBarrel(int x , int y, boolean fire, boolean free_falling){
         Barrel ret;
         if ( free_falling )
-            ret =  new BarrelFall(x,y,1,false,true);
+            ret =  new BarrelFall(x,y,1,fire,true);
         else
-            ret = new BarrelRolling(x,y,1);
+            ret = new BarrelRolling(x,y,1,false);
 
         return ret;
     }
@@ -60,6 +60,7 @@ public abstract class Barrel extends Entity {
         return (Math.pow(delta_x,2) + Math.pow(delta_y,2)) < Math.pow(this.rep_size.getFirst()/2 , 2);
     }
 
+    @Override
     public boolean toRemove(Map map){
         int map_x = map.XConverter(this.getX()), map_y = map.YConverter(this.getY());
         return (map_x <= 3 && map_y <= 8 && this.getX() <= (map_x*map.getMapTileWidth()+map.getMapTileWidth()/4) );

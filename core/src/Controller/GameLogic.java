@@ -1,5 +1,7 @@
 package Controller;
 
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+
 import java.util.ArrayList;
 
 //TODO check velocity for different screens
@@ -8,8 +10,10 @@ public class GameLogic {
     private Pair<Integer,Integer> barrels_pos = new Pair<Integer, Integer>(6,222);
     private Pair<Integer,Integer> mario_pos = new Pair<Integer, Integer>(4,8);
     private static GameLogic instance;
-    private Map map;
+    private Map map = null;
     private float time_passed = -1;
+    private boolean first_barrel_falled = false;
+    private boolean first_barrel_thrown = false;
 
     //!Mario should always be first character!
     private ArrayList<Entity> chars = new ArrayList<Controller.Entity>();
@@ -70,23 +74,29 @@ public class GameLogic {
     }
 
     public void moveBarrels(){
-        for (int i = 2 ; i < this.chars.size() ; i++){
-            if (this.chars.get(i).collidesWith(this.chars.get(0).getPos(), this.chars.get(0).getRepSize()) || this.chars.get(i).toRemove(this.map) )
+        for (int i = 2 ; i < this.chars.size() ; i++) {
+            if (this.chars.get(i).collidesWith(this.chars.get(0).getPos(), this.chars.get(0).getRepSize()) || this.chars.get(i).toRemove(this.map)){
                 this.chars.remove(i);
-            else
+                this.first_barrel_falled = true;
+            }else
                 this.chars.set(i,this.chars.get(i).moveEntity(map,0,0)); //numbers are irrelevant
         }
+    }
+
+    public boolean firstBarrelFalled(){
+        return this.first_barrel_falled;
     }
 
     private void createNewBarrel(){
         Pair<Integer,Integer> barrel_pos = (Pair<Integer,Integer>)this.barrels_pos.clone();
         boolean free_fall = false;
-        if ( (Math.random()*10) > 7){ //free falling barrel
+        if ( (Math.random()*10) > 7 || !this.first_barrel_thrown ){ //free falling barrel
             barrel_pos.setFirst(barrel_pos.getFirst() - 2);
             free_fall = true;
         }
 
         barrel_pos = this.map.mapPosToPixels(barrel_pos);
-        this.chars.add( Barrel.createBarrel(barrel_pos.getFirst(), barrel_pos.getSecond(), free_fall) );
+        this.chars.add( Barrel.createBarrel(barrel_pos.getFirst(), barrel_pos.getSecond(), !this.first_barrel_thrown , free_fall) );
+        this.first_barrel_thrown = true;
     }
 }

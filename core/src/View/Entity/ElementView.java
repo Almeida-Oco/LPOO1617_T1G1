@@ -11,7 +11,7 @@ import java.util.HashMap;
 import Controller.Entity;
 
 
-public abstract class EntityView {
+public abstract class ElementView {
     protected Sprite representation;
     protected AssetManager assets;
     protected HashMap<Entity.type, String>image_names = new HashMap<Entity.type, String>();
@@ -19,7 +19,7 @@ public abstract class EntityView {
     protected float img_scale;
     protected Entity.type last_type;
 
-    protected EntityView( float default_scale, float screen_scale ){
+    protected ElementView(float default_scale, float screen_scale ){
         this.img_scale = screen_scale*default_scale/ MyGdxGame.DEFAULT_SCALE ;
     }
 

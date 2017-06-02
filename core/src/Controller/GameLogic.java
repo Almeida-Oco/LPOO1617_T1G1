@@ -24,18 +24,19 @@ public class GameLogic {
 
     public void initializeCharacters(){
         Pair<Integer,Integer>   mario_pos = new Pair<Integer, Integer>(4,7),
-                                barrel_pos =new Pair<Integer, Integer>(11, 222);
+                                barrel_pos =new Pair<Integer, Integer>(5, 222),
+                                DK_pos = new Pair<Integer, Integer>(3,222);
         mario_pos = this.map.mapPosToPixels(mario_pos);
         barrel_pos= this.map.mapPosToPixels(barrel_pos);
+        DK_pos= this.map.mapPosToPixels(DK_pos);
         this.chars.add( Mario.createMario(mario_pos.getFirst(), mario_pos.getSecond()));
-        //this.chars.add( Barrel.createBarrel(barrel_pos.getFirst(),barrel_pos.getSecond()));
-        this.chars.add( DonkeyKong.getInstance() );
+        Entity DK = DonkeyKong.getInstance();
+        DK.setPos(DK_pos);
+        this.chars.add( DK );
         this.chars.add( Barrel.createBarrel(barrel_pos.getFirst(),barrel_pos.getSecond()) );
         this.chars.add( Barrel.createBarrel(barrel_pos.getFirst(),barrel_pos.getSecond()) );
         this.chars.add( Barrel.createBarrel(barrel_pos.getFirst(),barrel_pos.getSecond()) );
         this.chars.add( Barrel.createBarrel(barrel_pos.getFirst(),barrel_pos.getSecond()) );
-
-
     }
 
     public ArrayList<Entity> getCharacters(){
@@ -52,6 +53,9 @@ public class GameLogic {
     }
     public void animateDK(){
         //((DonkeyKong)this.chars.get(2)).catchThrow();
+    }
+    public void Kong(){
+        ((DonkeyKong)this.chars.get(1)).Kong();
     }
 
     public void moveMario(int x_move, int y_move){

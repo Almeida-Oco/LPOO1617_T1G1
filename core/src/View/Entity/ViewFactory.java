@@ -83,6 +83,14 @@ public class ViewFactory {
                 temp_DK.changeSprite(type);
                 cache.put(type,temp_DK);
             }
+            else if (type==Entity.type.DK_LEFT_HAND){
+                temp_DK.changeSprite(type);
+                cache.put(type,temp_DK);
+            }
+            else if (type==Entity.type.DK_RIGHT_HAND){
+                temp_DK.changeSprite(type);
+                cache.put(type,temp_DK);
+            }
         }
 
         return cache.get(type);

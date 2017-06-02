@@ -1,5 +1,6 @@
 package View;
 
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.ScreenAdapter;
 
 /**
@@ -19,7 +20,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
 
 
-public class MainMenu extends State {
+public class MainMenu extends PlayScreen {
 
 
         private Texture background;
@@ -29,9 +30,12 @@ public class MainMenu extends State {
 
         private Sprite startSprite;
         private Sprite exitSprite;
+        private SpriteBatch batch;
+
 
 
     public void show() {
+        this.change=false;
         this.batch = new SpriteBatch();
         background = new Texture("initial_menu.png");
         startSprite = new Sprite(new Texture("play.png"));
@@ -49,11 +53,9 @@ public class MainMenu extends State {
     }
         public void handleInput( float delta ) {
        //     System.out.println("adeus");
-            if(Gdx.input.justTouched()) {
-                current_state = new Play();
-                this.advanceState=true;
-               // System.out.println("adeus");
-            }
+            if(Gdx.input.justTouched())
+                this.change=true;
+
 
         }
 
@@ -77,5 +79,14 @@ public class MainMenu extends State {
             startSprite.getTexture().dispose();
             exitSprite.getTexture().dispose();
         }
+
+    @Override
+    public ScreenAdapter renderAndUpdate(float delta) {
+        this.render(delta);
+        if(change)
+            return new Play();
+        else
+            return this;
     }
+}
 

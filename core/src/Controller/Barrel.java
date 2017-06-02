@@ -3,6 +3,8 @@ package Controller;
 public abstract class Barrel extends Entity {
     protected int tick;
     protected int x_direction;
+    protected boolean inverted;
+    protected int n_times_inverted;
 
     /**
      * @brief Default constructor for a barrel
@@ -14,6 +16,8 @@ public abstract class Barrel extends Entity {
         super(x,y);
         this.tick = 0;
         this.x_direction = x_dir;
+        this.inverted = false;
+        this.n_times_inverted = 0;
     }
 
     /**
@@ -57,6 +61,14 @@ public abstract class Barrel extends Entity {
     }
 
     public boolean toRemove(Map map){
-        return (map.XConverter(this.getX()) < 1 && map.YConverter(this.getY()) <= 7);
+        int map_x = map.XConverter(this.getX()), map_y = map.YConverter(this.getY());
+        return (map_x <= 3 && map_y <= 8 && this.getX() <= (map_x*map.getMapTileWidth()+map.getMapTileWidth()/4) );
     }
+
+    /**
+     * @brief Inverts the direction of the movement
+     */
+    public abstract void invertDirection();
+
+    public abstract boolean canInvert();
 }

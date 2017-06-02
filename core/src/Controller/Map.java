@@ -65,8 +65,8 @@ public class Map {
      * @return If image is out of bounds then the closest coordinate possible to that bound, otherwise param pos
      */
     public int checkOutOfScreenWidth( int x, int img_width) {
-        if (x < img_width/2)
-            return img_width/2;
+        if (x < 0)
+            return 0;
         else if (x > Gdx.graphics.getWidth() - img_width)
             return Gdx.graphics.getWidth() - img_width;
         else
@@ -112,7 +112,7 @@ public class Map {
     }
 
     public int collidesLeft( Pair<Integer,Integer> pos, int img_height){
-        float x = pos.getFirst(), y_limit = pos.getSecond()+this.getMapTileHeight(),  y = pos.getSecond()+img_height;
+        float x = pos.getFirst(), y_limit = pos.getSecond()+this.getMapTileHeight()*2,  y = pos.getSecond()+img_height;
         int max_x = -1;
 
         for (float step = this.getMapTileHeight() ; y > y_limit ; y-=step ){

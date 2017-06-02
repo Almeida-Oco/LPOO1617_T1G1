@@ -55,6 +55,14 @@ class BarrelFall extends Barrel {
         this.tick++;
     }
 
+    @Override
+    public void invertDirection() {}
+
+    @Override
+    public boolean canInvert() {
+        return false;
+    }
+
     /**
      * @brief Handles moving a Free Falling barrel
      * @param map Current game map

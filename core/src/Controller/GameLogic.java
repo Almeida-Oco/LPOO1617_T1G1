@@ -4,8 +4,9 @@ import java.util.ArrayList;
 
 //TODO check velocity for different screens
 public class GameLogic {
+    private final int TIME_TO_THROW = 4;
     private Pair<Integer,Integer> barrels_pos = new Pair<Integer, Integer>(6,222);
-    private Pair<Integer,Integer> mario_pos = new Pair<Integer, Integer>(4,7);
+    private Pair<Integer,Integer> mario_pos = new Pair<Integer, Integer>(4,8);
     private static GameLogic instance;
     private Map map;
     private float time_passed = -1;
@@ -50,10 +51,10 @@ public class GameLogic {
     }
 
     public void updateDK( float delta ){
-        if ( this.time_passed < 4 && delta < 4)
+        if ( this.time_passed < TIME_TO_THROW && delta < TIME_TO_THROW)
             this.time_passed+=delta;
 
-        if ( this.time_passed > 4) {
+        if ( this.time_passed > TIME_TO_THROW) {
             if (this.chars.get(1).moveEntity(map, 0, 0) == null) { //second number is irrelevant
                 this.createNewBarrel();
                 this.time_passed = 0;

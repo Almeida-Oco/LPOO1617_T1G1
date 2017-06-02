@@ -1,5 +1,7 @@
 package Controller;
 
+import com.badlogic.gdx.Gdx;
+
 public class BarrelRolling extends Barrel {
     private final int ANIMATION_RESET = 10;
     private final boolean FREE_FALL = false;
@@ -32,6 +34,9 @@ public class BarrelRolling extends Barrel {
         else
             ret_val = updatePosition(map);
 
+        if ( this.shouldInvertDirection(map) )
+            this.x_direction*=-1;
+
         this.tickTock();
         return ret_val;
     }
@@ -59,16 +64,31 @@ public class BarrelRolling extends Barrel {
      * @return This object if state has not changed, BarrelFall otherwise
      */
     private Barrel updatePosition(Map map){
-        Pair<Integer,Integer> new_pos = new Pair<Integer, Integer>(this.position.getFirst()+ this.x_direction*this.getXSpeed() , this.position.getSecond());
+        Pair<Integer,Integer> new_pos = this.getNewPos(),
+                upper_pos = new Pair<Integer, Integer>(new_pos.getFirst(), new_pos.getSecond() + (int)map.getMapTileHeight() );
         new_pos.setFirst( map.checkOutOfScreenWidth(new_pos.getFirst(), rep_size.getFirst()));
         new_pos.setSecond(map.checkOutOfScreenHeight(new_pos.getSecond(), rep_size.getSecond()));
         Barrel ret_val = this;
-        if ( map.collidesBottom(new_pos, this.rep_size.getFirst()) != -1)
+        if ( map.collidesBottom(new_pos, this.rep_size.getFirst()) != -1){
+            if ( map.collidesBottom(upper_pos, this.rep_size.getFirst()) != -1 ) //in case barrels are moving in the opposite direction
+                new_pos.setSecond( new_pos.getSecond() + (int)map.getMapTileHeight());
             this.setPos(new_pos);
+        }
         else
             ret_val = this.checkCraneSlope(new_pos,map);
 
         return ret_val;
+    }
+
+    /**
+     * @brief Gets next position of the barrel
+     * @return Next position of the barrel
+     */
+    private Pair<Integer,Integer> getNewPos(){
+        Pair<Integer,Integer> new_pos = this.getPos();
+        float x_speed = (this.inverted) ? -(this.x_direction*this.getXSpeed()) : (this.x_direction*this.getXSpeed());
+        new_pos.setFirst(new_pos.getFirst()+(int)x_speed);
+        return new_pos;
     }
 
     /**
@@ -131,6 +151,12 @@ public class BarrelRolling extends Barrel {
         return this;
     }
 
+
+    private boolean shouldInvertDirection(Map map){
+        return (this.getX() == 0 || this.getX() == (Gdx.graphics.getWidth()-this.rep_size.getFirst()) ||
+                map.collidesLeft(this.position, this.rep_size.getSecond()) != -1 );
+    }
+
     @Override
     protected void tickTock() {
         if ( ANIMATION_RESET == this.tick )
@@ -145,5 +171,18 @@ public class BarrelRolling extends Barrel {
 
         this.tick++;
 
+    }
+
+    @Override
+    public void invertDirection() {
+        if ( this.canInvert() ){
+            this.n_times_inverted++;
+            this.inverted = true;
+        }
+    }
+
+    @Override
+    public boolean canInvert() {
+        return (this.n_times_inverted == 0);
     }
 }

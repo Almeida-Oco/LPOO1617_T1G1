@@ -28,7 +28,7 @@ public class Play extends State {
     private int tick = 0;
 
     private final int JUMP = 2;
-    private final float JUMP_MIN_VAL = 5f;
+    private final float JUMP_MIN_VAL = 6f;
     private final float MOVE_MIN_VAL = 1.5f;
     private final float CLIMB_MIN_VAL = 1.5f;
     private final float REAL_GRAVITY = 9.8f;
@@ -89,7 +89,7 @@ public class Play extends State {
         this.animateBackground();
 
         this.handleInput(delta);
-        sleep(FPS);
+        this.sleep(FPS);
     }
 
     private void drawEntities(){

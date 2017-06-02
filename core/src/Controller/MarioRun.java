@@ -72,7 +72,7 @@ public class MarioRun extends Mario {
                                                      map.checkOutOfScreenHeight(this.position.getSecond(), rep_size.getSecond()) );
 
         int new_x;
-        if ( (new_x = map.collidesLeft(new_pos,this.rep_size.getSecond())) != -1)
+        if ( (new_x = map.collidesLeft(new_pos,this.rep_size.getSecond())) != -1 )
             new_pos.setFirst(new_x);
 
         Mario ret_val = this.processY(map,new_pos);
@@ -86,10 +86,13 @@ public class MarioRun extends Mario {
      * @return This object or an object of MarioFall if a state change is necessary
      */
     private Mario processY(Map map,Pair<Integer,Integer> new_pos){
+        Pair<Integer,Integer> lower_pos = new Pair<Integer, Integer>(new_pos.getFirst(), new_pos.getSecond() - (int)map.getMapTileHeight()*2 );
         Mario ret_val = this;
         int new_y;
         if ( (new_y =  map.collidesBottom(new_pos,this.rep_size.getFirst())) != -1)
             new_pos.setSecond(new_y);
+        else if ( map.collidesBottom(lower_pos,this.rep_size.getFirst()) != -1)
+            new_pos.setSecond( new_pos.getSecond()-(int)map.getMapTileHeight() );
         else{
             ret_val = new MarioFall(new_pos.getFirst(), new_pos.getSecond());
             ret_val.setType(this.current_type);
@@ -157,7 +160,7 @@ public class MarioRun extends Mario {
     private Mario prepareJump(int x_move){
         MarioJump ret = new MarioJump(this.position.getFirst() , this.position.getSecond() );
         if (x_move != 0)
-            ret.setYVelocity( ret.getYSpeed()*x_move );
+            ret.setXVelocity( ret.getXSpeed()*x_move );
         else
             ret.setXVelocity(0);
 

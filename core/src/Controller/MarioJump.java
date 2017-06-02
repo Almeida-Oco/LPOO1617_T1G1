@@ -50,7 +50,7 @@ public class MarioJump extends Mario {
             this.setYVelocity(0f);
             new_pos.setSecond(new_y);
             ret_val = new MarioRun(this.position.getFirst(), this.position.getSecond());
-            ret_val.setXVelocity(-1); //sets to default value
+            ret_val.setXVelocity( (int)(this.jump_x_vel/1.5) );
         }
         if ( (new_x = map.checkOutOfScreenWidth(new_pos.getFirst(),this.rep_size.getFirst())) != -1)
             new_pos.setFirst(new_x);

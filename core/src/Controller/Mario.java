@@ -12,7 +12,7 @@ public abstract class Mario extends Entity {
     protected final int GO_RIGHT = 1;
     protected final int STAY_STILL = 0;
     protected int ladder_x_offset = 10;
-    protected float JUMP_VELOCITY = 12f;
+    protected float JUMP_VELOCITY = 13f;
 
     protected int tick;
 

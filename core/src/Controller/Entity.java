@@ -15,11 +15,8 @@ public abstract class Entity {
     private final float DEFAULT_MAX_Y_VELOCITY = 4f;
     private final float DEFAULT_MAX_X_VELOCITY = 3f;
 
-    // [width, height]
     protected Pair<Integer,Integer> rep_size = new Pair<Integer, Integer>(0,0);
-    // [x,y]
     protected Pair<Integer,Integer> position;
-    // [x,y]
     protected Pair<Float,Float> velocity = new Pair<Float,Float>(DEFAULT_MAX_X_VELOCITY,-2f);
 
     private float gravity = 1f;
@@ -80,7 +77,7 @@ public abstract class Entity {
     }
 
     public void setXVelocity( int vel ){
-        this.velocity.setFirst( (vel == 0) ? 0 : max_x_velocity);
+        this.velocity.setFirst((float)vel);
     }
 
     public void updateYVelocity(){
@@ -92,7 +89,6 @@ public abstract class Entity {
     }
 
     public void setScale (float scale){
-        this.gravity = this.DEFAULT_GRAVITY*scale/MyGdxGame.DEFAULT_SCALE;
         this.max_x_velocity = this.DEFAULT_MAX_X_VELOCITY*scale/MyGdxGame.DEFAULT_SCALE;
         this.velocity.setFirst(this.max_x_velocity);
         this.max_y_velocity = this.DEFAULT_MAX_Y_VELOCITY*scale/MyGdxGame.DEFAULT_SCALE;

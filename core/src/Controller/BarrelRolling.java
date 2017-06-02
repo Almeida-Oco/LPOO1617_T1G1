@@ -74,7 +74,7 @@ public class BarrelRolling extends Barrel {
         Barrel ret_val = this;
         if ( map.collidesBottom(new_pos, this.rep_size.getFirst()) != -1){
             if ( map.collidesBottom(upper_pos, this.rep_size.getFirst()) != -1 ) //in case barrels are moving in the opposite direction
-                new_pos.setSecond( new_pos.getSecond() + (int)map.getMapTileHeight());
+                new_pos.setSecond( new_pos.getSecond() + (int)map.getMapTileHeight()) ;
             this.setPos(new_pos);
         }
         else

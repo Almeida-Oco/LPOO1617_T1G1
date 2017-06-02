@@ -202,7 +202,7 @@ public class BarrelRolling extends Barrel {
     public boolean toRemove(Map map){
         int map_x = map.XConverter(this.getX()), map_y = map.YConverter(this.getY());
         if ( !this.fire )
-            return (map_y <= 8 && this.getX() <= (map_x*map.getMapTileWidth()+map.getMapTileWidth()/4) );
+            return (map_y <= 8 && this.getX() <= (3*map.getMapTileWidth()+map.getMapTileWidth()/4) );
         else
             return (map_x <= 1 && map_y <= 25);
     }

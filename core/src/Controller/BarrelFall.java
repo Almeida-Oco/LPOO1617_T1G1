@@ -69,6 +69,11 @@ class BarrelFall extends Barrel {
     }
 
     @Override
+    public boolean toRemove(Map map) {
+        return false;
+    }
+
+    @Override
     public void invertDirection() {}
 
     @Override

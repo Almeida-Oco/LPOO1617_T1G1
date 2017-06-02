@@ -61,10 +61,7 @@ public abstract class Barrel extends Entity {
     }
 
     @Override
-    public boolean toRemove(Map map){
-        int map_x = map.XConverter(this.getX()), map_y = map.YConverter(this.getY());
-        return (map_x <= 3 && map_y <= 8 && this.getX() <= (map_x*map.getMapTileWidth()+map.getMapTileWidth()/4) );
-    }
+    public abstract boolean toRemove(Map map);
 
     /**
      * @brief Inverts the direction of the movement

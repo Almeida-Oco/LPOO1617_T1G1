@@ -30,7 +30,6 @@ public class MyGdxGame extends Game {
         long curr_time= System.currentTimeMillis();
         long delta=curr_time -prev_time;
         prev_time=curr_time;
-        System.out.println(delta);
         ScreenAdapter temp= ((PlayScreen)curr_state).renderAndUpdate((float)delta/1000);
         if (temp!=curr_state){
             this.curr_state=temp;

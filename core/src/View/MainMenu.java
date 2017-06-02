@@ -10,14 +10,22 @@ import com.badlogic.gdx.ScreenAdapter;
 
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Camera;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
+import com.badlogic.gdx.utils.viewport.FitViewport;
+import com.badlogic.gdx.utils.viewport.Viewport;
+
+import javax.swing.text.View;
 
 
 public class MainMenu extends PlayScreen {
@@ -31,10 +39,14 @@ public class MainMenu extends PlayScreen {
         private Sprite startSprite;
         private Sprite exitSprite;
         private SpriteBatch batch;
+        private Stage stage;
+
 
 
 
     public void show() {
+
+        stage = new Stage();
         this.change=false;
         this.batch = new SpriteBatch();
         background = new Texture("initial_menu.png");
@@ -50,11 +62,20 @@ public class MainMenu extends PlayScreen {
         exitButton.setX(Gdx.graphics.getWidth() * 1 / 2 - exitButton.getWidth() / 2);
         exitButton.setY(Gdx.graphics.getHeight() / 12);
 
+        stage = new Stage();
+        Gdx.input.setInputProcessor(stage);
+        stage.addActor(startButton);
+        stage.addActor(exitButton);
     }
         public void handleInput( float delta ) {
        //     System.out.println("adeus");
-            if(Gdx.input.justTouched())
+
+            if(startButton.isPressed())
                 this.change=true;
+
+            if(exitButton.isPressed())
+                Gdx.app.exit(); 
+
 
 
         }

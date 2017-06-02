@@ -12,7 +12,8 @@ public class MyGdxGame extends Game {
 
 	@Override
 	public void create () {
-		this.setScreen(new Play() );
+		this.setScreen(//State.getInstance()
+				new Play());
 	}
 
 	@Override
@@ -21,12 +22,12 @@ public class MyGdxGame extends Game {
 	}
 
 
-	public void render(){
+	/*public void render(){
 		System.out.println("adeus");
-		//if(State.getInstance().getAdvanceState()){
-		//	this.setScreen(State.getInstance() );
-		//	State.getInstance().setAdvanceState(false);
-		//}
-		//State.getInstance().render(delta);
-	}
+		if(State.getInstance().getAdvanceState()){
+		this.setScreen(State.getInstance() );
+			State.getInstance().setAdvanceState(false);
+		}
+		State.getInstance().render(0);
+	}*/
 }

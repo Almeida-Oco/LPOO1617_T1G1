@@ -1,7 +1,10 @@
 package Controller;
 
 
+import com.mygdx.game.MyGdxGame;
+
 public abstract class Mario extends Entity {
+    private final float DEFAULT_JUMP_VELOCITY = 12f;
     protected final int JUMP = 2;
     protected final int GO_UP = 1;
     protected final int GO_DOWN = -1;
@@ -9,6 +12,7 @@ public abstract class Mario extends Entity {
     protected final int GO_RIGHT = 1;
     protected final int STAY_STILL = 0;
     protected int ladder_x_offset = 10;
+    protected float JUMP_VELOCITY = 12f;
 
     protected int tick;
 
@@ -46,6 +50,12 @@ public abstract class Mario extends Entity {
     @Override
     public boolean collidesWith(Pair<Integer,Integer> pos, Pair<Integer,Integer> rep_size){
         return false;
+    }
+
+    @Override
+    public void setScale (float scale){
+        super.setScale(scale);
+        this.JUMP_VELOCITY = DEFAULT_JUMP_VELOCITY*scale/ MyGdxGame.DEFAULT_SCALE;
     }
 
     /**

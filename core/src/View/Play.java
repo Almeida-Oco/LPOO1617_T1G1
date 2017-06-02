@@ -1,12 +1,10 @@
 package View;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
@@ -100,7 +98,7 @@ public class Play extends State {
             this.drawEntities();
         this.batch.end();
 
-        this.handleInput();
+        this.handleInput(delta);
         sleep(FPS);
     }
 
@@ -115,7 +113,7 @@ public class Play extends State {
     }
 
 
-    protected void handleInput(){
+    protected void handleInput( float delta ){
         GameLogic game = GameLogic.getInstance();
         int x_move = 0 , y_move = 0;
         float acc_x = -Gdx.input.getAccelerometerX(), acc_y = -Gdx.input.getAccelerometerY();
@@ -132,8 +130,8 @@ public class Play extends State {
 
 
         game.moveMario(x_move, y_move);
-        game.moveBarrel();
-        game.animateDK();
+        game.moveBarrels();
+        game.updateDK( delta );
     }
 
     private boolean enoughToJump(){

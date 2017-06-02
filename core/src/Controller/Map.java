@@ -103,7 +103,7 @@ public class Map {
 
         for( float step = this.getMapTileWidth() ; x < x_limit ;  x += step )
             if( isCellBlocked(x,y) ){
-                int temp_y = (int)(this.getEdgeHorizontalTileY(x,y,SEARCH_TOP) * this.getMapTileHeight());
+                int temp_y = (int)(this.getEdgeHorizontalTileY(x,y,SEARCH_TOP) * this.getMapTileHeight() - 0.005f);
                 if (temp_y > max_y)
                     max_y = temp_y;
             }

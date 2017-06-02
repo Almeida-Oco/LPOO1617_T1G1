@@ -56,7 +56,7 @@ public class MainMenu extends State {
         }
 
 
-        public void handleInput() {
+        public void handleInput( float delta ) {
 
 
         }

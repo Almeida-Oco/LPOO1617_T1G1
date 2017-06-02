@@ -13,6 +13,6 @@ public abstract class State extends ScreenAdapter {
     protected StateManager sm;
 
     public abstract void render(float delta);
-    protected abstract void handleInput();
+    protected abstract void handleInput(float delta);
     public abstract void dispose();
 }

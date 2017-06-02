@@ -1,12 +1,9 @@
 package Controller;
 
-/**
- * Created by asus on 04/05/2017.
- */
-
 public class DonkeyKong extends Entity {
-    private final int ANIMATION_RATE = 5;
-    private final int ANIMATION_RESET = 30;
+    private final int ANIMATION_RESET = 40;
+    private final int ANIMATION_RATE = 20;
+    private int curr_animation = -1;
 
     protected int tick;
     private static DonkeyKong instance = null;
@@ -23,34 +20,19 @@ public class DonkeyKong extends Entity {
                 ((pos.getSecond()+rep_size.getSecond()) <= (this.getY()+this.rep_size.getSecond()) );
     }
 
-    public void catchThrow(){
-        this.tickTock();
-        this.updateSpriteThrow();
-
-    }
-
-    public void Kong(){
-        this.tickTock();
-        this.updateSpriteKong();
-
-    }
 
     private void updateSpriteKong() {
-        if(this.tick==20){
+        if(this.tick== ANIMATION_RATE)
             this.current_type=type.DK_RIGHT_HAND;
-        }
-        if(this.tick==1){
+        else if(this.tick==0)
             this.current_type=type.DK_LEFT_HAND;
-        }
     }
 
     private void updateSpriteThrow() {
-        if(this.tick==20){
+        if(this.tick== ANIMATION_RATE)
             this.current_type=type.DK_RIGHT_BARREL;
-        }
-        if(this.tick==1){
+        else if(this.tick==0)
             this.current_type=type.DK_THROW_LEFT;
-        }
     }
 
 
@@ -61,9 +43,29 @@ public class DonkeyKong extends Entity {
             this.current_type = t;
     }
 
+    /**
+     * @brief Since DK does not move, this is used to know which sprite to represent it
+     * @param map Current map of the game
+     * @param x_move If 1 then do hand animation, if 0 do barrel throw animation
+     * @param y_move Irrelevant
+     * @return null if DK is about to throw a barrel, this object otherwise
+     */
     @Override
     public Entity moveEntity(Map map, int x_move, int y_move) {
-        return null;
+        if (this.curr_animation == -1){
+            this.curr_animation = x_move;
+            this.tick = 0;
+        }
+        if ( this.curr_animation == 1)
+            this.updateSpriteKong();
+        else if (this.curr_animation == 0)
+            this.updateSpriteThrow();
+
+        this.tickTock();
+        if ( this.tick == ANIMATION_RATE && this.curr_animation == 0)
+            return null;
+        else
+            return this;
     }
 
 
@@ -77,9 +79,10 @@ public class DonkeyKong extends Entity {
 
 
     protected void tickTock() {
-        if ( ANIMATION_RESET == this.tick )
-            this.tick = 0;
-
         this.tick++;
+        if ( ANIMATION_RESET == this.tick ){
+            this.tick = 0;
+            this.curr_animation = -1;
+        }
     }
 }

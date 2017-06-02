@@ -1,9 +1,5 @@
 package Controller;
 
-/**
- * Created by asus on 31/05/2017.
- */
-
 class BarrelFall extends Barrel {
     private final int ANIMATION_RATE = 5;
     private boolean fall_through = false;
@@ -14,8 +10,8 @@ class BarrelFall extends Barrel {
         this.fall_through = fall_through;
     }
 
-    @Override
-    public Barrel moveBarrel(Map map) {
+    @Override //x_move and y_move irrelevant
+    public Barrel moveEntity(Map map, int x_move, int y_move) {
         Barrel ret_val = updatePosition(map);
         this.tickTock();
         return ret_val;

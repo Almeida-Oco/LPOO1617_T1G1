@@ -17,6 +17,12 @@ public class DonkeyKong extends Entity {
         this.current_type=type.DK_THROW_LEFT;
     }
 
+    @Override
+    public boolean collidesWith(Pair<Integer, Integer> pos, Pair<Integer, Integer> rep_size) {
+        return  (pos.getFirst() <= (this.getX()+this.rep_size.getFirst())) && (pos.getSecond() >=  this.getY()) &&
+                ((pos.getSecond()+rep_size.getSecond()) <= (this.getY()+this.rep_size.getSecond()) );
+    }
+
     public void catchThrow(){
         this.tickTock();
         this.updateSprite();
@@ -40,6 +46,10 @@ public class DonkeyKong extends Entity {
             this.current_type = t;
     }
 
+    @Override
+    public Entity moveEntity(Map map, int x_move, int y_move) {
+        return null;
+    }
 
 
     public static DonkeyKong getInstance(){

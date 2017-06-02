@@ -4,6 +4,7 @@ package Controller;
 import com.mygdx.game.MyGdxGame;
 
 public abstract class Entity {
+
     public enum type {  MARIO_LEFT,MARIO_RIGHT,MARIO_CLIMB_LEFT, MARIO_CLIMB_RIGHT, MARIO_CLIMB_OVER, MARIO_RUN_LEFT,MARIO_RUN_RIGHT, MARIO_DYING_UP,
                         DK_THROW_LEFT, DK_THROW_RIGHT, DK_FRONT, DK_LEFT_BARREL, DK_RIGHT_BARREL, DK_LEFT_HAND, DK_RIGHT_HAND,
                         BARREL_FALL_BACK, BARREL_FALL_FRONT, BARREL_ROLLING, FIRE_BARREL_FALL_BACK, FIRE_BARREL_FALL_FRONT, FIRE_BARREL_ROLLING,
@@ -71,6 +72,8 @@ public abstract class Entity {
         this.rep_size.setSecond(height);
     }
 
+    public abstract boolean collidesWith(Pair<Integer, Integer> pos, Pair<Integer, Integer> rep_size);
+
     public void setYVelocity( float vel ){
         if ( vel >= 0 )
             this.velocity.setSecond(vel);
@@ -98,9 +101,17 @@ public abstract class Entity {
 
     public abstract void setType(type t);
 
+    /**
+     * @brief Tries to move the Entity in the given direction
+     * @param map Current map of the game
+     * @param x_move Movement in the X direction {-1,0,1}
+     * @param y_move Movement in the Y direction {-1,0,1,2}
+     * @return Either this object if state has not changed, or a different object if state has changed
+     */
+    public abstract Entity moveEntity(Map map, int x_move, int y_move);
+
     public type getType(){
         return this.current_type;
     };
-
 
 }

@@ -16,7 +16,7 @@ public class MarioFall extends Mario {
     }
 
     @Override
-    public Mario moveMario(Map map, int x_move, int y_move) {
+    public Entity moveEntity(Map map, int x_move, int y_move) {
         Mario ret_val = updatePosition(map);
 
         return ret_val;

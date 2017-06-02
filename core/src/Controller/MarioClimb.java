@@ -17,7 +17,7 @@ public class MarioClimb extends Mario {
     }
 
     @Override
-    public Mario moveMario(Map map, int x_move, int y_move) {
+    public Entity moveEntity(Map map, int x_move, int y_move) {
         Mario ret_val = this;
         Pair<Integer,Integer> new_pos = this.getPos();
         if ( GO_UP == y_move )

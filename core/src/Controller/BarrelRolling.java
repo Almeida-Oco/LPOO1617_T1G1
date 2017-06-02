@@ -1,11 +1,5 @@
 package Controller;
 
-import com.sun.org.apache.bcel.internal.generic.LADD;
-
-/**
- * Created by asus on 31/05/2017.
- */
-
 public class BarrelRolling extends Barrel {
     private final int ANIMATION_RATE = 5;
     private final int ANIMATION_RESET = 10;
@@ -22,8 +16,8 @@ public class BarrelRolling extends Barrel {
         this.fall_delta = new Pair<Integer, Integer>(-1,-1);
     }
 
-    @Override
-    public Barrel moveBarrel(Map map) {
+    @Override //x_move and y_move irrelevant
+    public Entity moveEntity(Map map, int x_move, int y_move) {
         this.checkNewDelta(map);
         Barrel ret_val = this.checkLadderFall(map);
         if (ret_val != this)
@@ -64,7 +58,7 @@ public class BarrelRolling extends Barrel {
         if ( map.collidesBottom(new_pos, this.rep_size.getFirst()) != -1)
             this.setPos(new_pos);
         else
-            ret_val = this.checkCraneSlope(map);
+            ret_val = this.checkCraneSlope(new_pos,map);
 
         return ret_val;
     }
@@ -75,12 +69,13 @@ public class BarrelRolling extends Barrel {
      * @param map Current map of the game
      * @return This object if it is just a slope, BarrelFall object if it is a free fall
      */
-    private Barrel checkCraneSlope( Map map ) {
-        Pair<Integer, Integer> lower_pos = new Pair<Integer, Integer>(this.getX(), this.getY() - (int) map.getMapTileHeight());
+    private Barrel checkCraneSlope(Pair<Integer,Integer> new_pos, Map map ) {
+        Pair<Integer, Integer> lower_pos = new Pair<Integer, Integer>(new_pos.getFirst(), new_pos.getSecond() - (int)((map.getMapTileHeight()*2)));
         if (map.collidesBottom(lower_pos, this.rep_size.getFirst()) == -1)
-            return new BarrelFall(lower_pos.getFirst(),lower_pos.getSecond(),this.x_direction, FREE_FALL );
+            return new BarrelFall(new_pos.getFirst(),new_pos.getSecond(),this.x_direction, FREE_FALL );
 
-        this.setPos(lower_pos);
+        new_pos.setSecond( new_pos.getSecond() - (int)map.getMapTileHeight());
+        this.setPos(new_pos);
         return this;
     }
 

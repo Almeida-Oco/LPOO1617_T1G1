@@ -43,14 +43,10 @@ public abstract class Mario extends Entity {
             this.current_type = t;
     }
 
-    /**
-     * @brief Tries to move Mario in the given direction
-     * @param map Current map of the game
-     * @param x_move Movement in the X direction {-1,0,1}
-     * @param y_move Movement in the Y direction {-1,0,1,2}
-     * @return Either this object if state has not changed, or an object of MarioRun if state has changed
-     */
-    public abstract Mario moveMario( Map map, int x_move , int y_move );
+    @Override
+    public boolean collidesWith(Pair<Integer,Integer> pos, Pair<Integer,Integer> rep_size){
+        return false;
+    }
 
     /**
      * @brief Represents the passing of time in the game, each time character moves this should be called

@@ -1,12 +1,15 @@
 package Controller;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.LinkedList;
 
 //TODO check velocity for different screens
 public class GameLogic {
     private static GameLogic instance;
     //!Mario should always be first character!
-    private LinkedList<Controller.Entity> chars = new LinkedList<Controller.Entity>();
+    private ArrayList<Entity> chars = new ArrayList<Controller.Entity>();
+
     private Map map;
 
     //TODO find way to initialize Mario always in same relative position
@@ -21,15 +24,21 @@ public class GameLogic {
 
     public void initializeCharacters(){
         Pair<Integer,Integer>   mario_pos = new Pair<Integer, Integer>(4,7),
-                                barrel_pos =new Pair<Integer, Integer>(7, 222);
+                                barrel_pos =new Pair<Integer, Integer>(11, 222);
         mario_pos = this.map.mapPosToPixels(mario_pos);
         barrel_pos= this.map.mapPosToPixels(barrel_pos);
         this.chars.add( Mario.createMario(mario_pos.getFirst(), mario_pos.getSecond()));
-        this.chars.add( Barrel.createBarrel(barrel_pos.getFirst(),barrel_pos.getSecond()));
-        this.chars.add(DonkeyKong.getInstance());
+        //this.chars.add( Barrel.createBarrel(barrel_pos.getFirst(),barrel_pos.getSecond()));
+        this.chars.add( DonkeyKong.getInstance() );
+        this.chars.add( Barrel.createBarrel(barrel_pos.getFirst(),barrel_pos.getSecond()) );
+        this.chars.add( Barrel.createBarrel(barrel_pos.getFirst(),barrel_pos.getSecond()) );
+        this.chars.add( Barrel.createBarrel(barrel_pos.getFirst(),barrel_pos.getSecond()) );
+        this.chars.add( Barrel.createBarrel(barrel_pos.getFirst(),barrel_pos.getSecond()) );
+
+
     }
 
-    public LinkedList<Controller.Entity> getCharacters(){
+    public ArrayList<Entity> getCharacters(){
         return this.chars;
     }
 
@@ -42,16 +51,19 @@ public class GameLogic {
         this.map.loadMap(map_name, collision_layer);
     }
     public void animateDK(){
-        ((DonkeyKong)this.chars.get(2)).catchThrow();
+        //((DonkeyKong)this.chars.get(2)).catchThrow();
     }
 
     public void moveMario(int x_move, int y_move){
-        this.chars.set( 0 , ((Mario)this.chars.getFirst()).moveMario(this.map,x_move,y_move) );
+        this.chars.set( 0 , this.chars.get(0).moveEntity(this.map,x_move,y_move) );
     }
 
     public void moveBarrel(){
-        //System.out.println("x: "+((Barrel)this.chars.get(1)).getX()+" "+"y: "+ ((Barrel)this.chars.get(1)).getY());
-
-        this.chars.set( 1 , ((Barrel)this.chars.get(1)).moveBarrel(this.map) );
+        for (int i = 2 ; i < this.chars.size() ; i++){
+            if ( this.chars.get(i).collidesWith(this.chars.get(0).getPos(), this.chars.get(0).getRepSize()) )
+                this.chars.remove(i);
+            else
+                this.chars.set(i,this.chars.get(i).moveEntity(map,0,0)); //numbers are irrelevant
+        }
     }
 }

@@ -17,7 +17,7 @@ public class MarioRun extends Mario {
 
 
     @Override
-    public Mario moveMario(Map map, int x_move, int y_move) {
+    public Entity moveEntity(Map map, int x_move, int y_move) {
         if ( JUMP == y_move )
             return this.prepareJump(x_move);
         else if ( (GO_DOWN == y_move && checkLowerLadder(map)) || (GO_UP == y_move && checkUpperLadder(map)) )

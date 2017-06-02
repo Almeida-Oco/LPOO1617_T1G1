@@ -33,8 +33,7 @@ public class MainMenu extends State {
         private TextField name;
         private Skin skin;
 
-        public MainMenu(StateManager sm) {
-            this.sm =sm;
+        public MainMenu() {
             background = new Texture("initial_menu.png");
 
 

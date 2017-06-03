@@ -2,6 +2,7 @@ package View;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -18,7 +19,7 @@ import Controller.Pair;
 import View.Entity.ElementView;
 import View.Entity.ViewFactory;
 
-public class Play extends State {
+public class Play extends PlayScreen {
     private TiledMap map;
     private OrthogonalTiledMapRenderer renderer;
     private OrthographicCamera camera;
@@ -26,6 +27,7 @@ public class Play extends State {
     private float scale;
     private Entity.type barrel_fire = Entity.type.BARREL_FIRE_MIN1;
     private int tick = 0;
+    protected SpriteBatch batch;
 
     private final int JUMP = 2;
     private final float JUMP_MIN_VAL = 6f;
@@ -39,6 +41,7 @@ public class Play extends State {
 
 
     private long diff, start = System.currentTimeMillis();
+
 
     public void sleep(int fps) {
         if(fps>0){
@@ -236,5 +239,11 @@ public class Play extends State {
         this.assets.load("dk/right_barrel.png",Texture.class);
         this.assets.load("dk/right_hand.png",Texture.class);
         this.assets.load("dk/left_hand.png",Texture.class);
+    }
+
+    @Override
+    public ScreenAdapter renderAndUpdate(float delta) {
+        this.render(delta);
+        return this;
     }
 }

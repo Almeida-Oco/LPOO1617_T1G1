@@ -2,6 +2,8 @@ package Controller;
 
 import java.util.ArrayList;
 
+import View.ScoreTimer;
+
 //TODO check velocity for different screens
 public class GameLogic {
     private Pair<Integer,Integer> barrels_pos = new Pair<Integer, Integer>(6,222);
@@ -69,6 +71,7 @@ public class GameLogic {
 
     public void moveMario(int x_move, int y_move){
         this.chars.set( 0 , this.chars.get(0).moveEntity(this.map,x_move,y_move) );
+        Score();
     }
 
     public void moveBarrels(){
@@ -79,6 +82,16 @@ public class GameLogic {
             }else
                 this.chars.set(i,this.chars.get(i).moveEntity(map,0,0)); //numbers are irrelevant
         }
+    }
+
+
+    public void Score(){
+        int score=0;
+        for (int i = 2 ; i < this.chars.size() ; i++){
+            if(this.chars.get(0).getPos().getFirst()==this.chars.get(i).getPos().getFirst()+ (this.chars.get(i).getRepSize().getFirst()/2) &&(this.chars.get(0).getPos().getSecond()>this.chars.get(i).getPos().getFirst()+ this.chars.get(i).getRepSize().getSecond() &&this.chars.get(0).getPos().getSecond()<(this.chars.get(i).getPos().getFirst()+ this.chars.get(i).getRepSize().getSecond())*2) )
+                score+=100;
+        }
+        ScoreTimer.addScore(score);
     }
 
 

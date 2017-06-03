@@ -51,9 +51,8 @@ public class MarioClimb extends Mario {
     private Pair<Integer,Integer> climbUp( Map map ) {
         Pair<Integer, Integer> new_pos = new Pair<Integer, Integer>(this.position.getFirst(), this.position.getSecond() + CLIMB_RATE);
         Pair<Integer, Integer> upper_pos = new Pair<Integer, Integer>(new_pos.getFirst(), new_pos.getSecond() + (int)map.getMapTileHeight()); //force upper tile
-        int new_x = 0;
+        int new_x;
 
-        //there is still ladder above Mario
         if ( (new_x = map.nearLadder(upper_pos.getFirst()+this.rep_size.getFirst()/2, upper_pos.getSecond())) != -1 &&
                       map.canUseLadder(upper_pos.getFirst()+this.rep_size.getFirst()/2, upper_pos.getSecond()) ){
             new_pos.setFirst(new_x-this.ladder_x_offset);
@@ -70,9 +69,7 @@ public class MarioClimb extends Mario {
      */
     private Pair<Integer,Integer> climbDown( Map map ){
         Pair<Integer,Integer> new_pos = new Pair<Integer,Integer>( this.position.getFirst() , this.position.getSecond() - CLIMB_RATE );
-        Pair<Integer,Integer> lower_pos = new Pair<Integer,Integer>(new_pos.getFirst(), new_pos.getSecond() - (int)map.getMapTileHeight()); //force lower tile
-        int new_x = 0;
-
+        int new_x;
         if ( ((new_x=map.nearLadder(this.getX()+this.rep_size.getFirst()/2, this.getY())) != -1) &&
                      map.canUseLadder(new_pos.getFirst()+this.rep_size.getFirst()/2, new_pos.getSecond()) ){
             new_pos.setFirst(new_x-this.ladder_x_offset);
@@ -105,7 +102,6 @@ public class MarioClimb extends Mario {
 
     /**
      * @brief updates current Mario sprite/status based on current status
-     * TODO if there are more types needed in here do HashMap<type,type>
      */
     private void updateSprite(){
         if ( type.MARIO_CLIMB_LEFT == this.current_type )

@@ -38,7 +38,6 @@ public abstract class Mario extends Entity {
         return ret;
     }
 
-    //TODO put these in array/hashMap
     @Override
     public void setType(type t) {
         if (    t == type.MARIO_LEFT || t == type.MARIO_RIGHT || t == type.MARIO_CLIMB_LEFT ||

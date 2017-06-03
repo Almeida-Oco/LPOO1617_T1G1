@@ -63,12 +63,11 @@ public class MarioRun extends Mario {
     /**
      * @brief Updates mario position based on direction
      * @param map Current map of the game
-     * @param x_move Direction to go
+     * @param direction Direction to go
      * @return Which mario state it should move to
-     * TODO SMALLER IF NEEDED
      */
-    private Mario updatePosition( Map map , int x_move){
-        Pair<Integer,Integer> new_pos = new Pair<Integer, Integer>( map.checkOutOfScreenWidth(this.position.getFirst()+x_move*this.getXSpeed(), rep_size.getFirst()),
+    private Mario updatePosition( Map map , int direction){
+        Pair<Integer,Integer> new_pos = new Pair<Integer, Integer>( map.checkOutOfScreenWidth(this.position.getFirst()+direction*this.getXSpeed(), rep_size.getFirst()),
                                                      map.checkOutOfScreenHeight(this.position.getSecond(), rep_size.getSecond()) );
 
         int new_x;

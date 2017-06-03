@@ -2,7 +2,6 @@ package Controller;
 
 import java.util.ArrayList;
 
-//TODO check velocity for different screens
 public class GameLogic {
     private Pair<Integer,Integer> barrels_pos = new Pair<Integer, Integer>(6,222);
     private Pair<Integer,Integer> mario_pos = new Pair<Integer, Integer>(4,8);
@@ -17,8 +16,6 @@ public class GameLogic {
     private ArrayList<Entity> chars = new ArrayList<Controller.Entity>();
 
 
-
-    //TODO find way to initialize Mario always in same relative position
     private GameLogic(){}
 
     public static GameLogic getInstance(){

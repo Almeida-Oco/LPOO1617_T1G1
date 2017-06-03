@@ -37,8 +37,6 @@ public class ScoreTimer implements Disposable{
     private Label countdownLabel;
     private static Label scoreLabel;
     private Label timeLabel;
-    private Label levelLabel;
-    private Label worldLabel;
     private Label marioLabel;
 
     public ScoreTimer(SpriteBatch sb){
@@ -46,18 +44,10 @@ public class ScoreTimer implements Disposable{
         worldTimer = 500;
         timeCount = 0;
         score = 0;
-
-
-        //setup the HUD viewport using a new camera seperate from our gamecam
-        //define our stage using that viewport and our games spritebatch
         viewport = new FitViewport(Gdx.graphics.getWidth(),Gdx.graphics.getHeight(), new OrthographicCamera());
         stage = new Stage(viewport, sb);
-
-        //define a table used to organize our hud's labels
         Table table = new Table();
-        //Top-Align table
         table.top();
-        //make the table fill the entire stage
         table.setFillParent(true);
 
         //define our labels using the String, and a Label style consisting of a font and color
@@ -65,6 +55,11 @@ public class ScoreTimer implements Disposable{
         scoreLabel =new Label(String.format("%06d", score), new Label.LabelStyle(new BitmapFont(), Color.WHITE));
         timeLabel = new Label("TIME", new Label.LabelStyle(new BitmapFont(), Color.WHITE));
         marioLabel = new Label("MARIO", new Label.LabelStyle(new BitmapFont(), Color.WHITE));
+        marioLabel.setFontScale(4);
+        timeLabel.setFontScale(4);
+        scoreLabel.setFontScale(4);
+        countdownLabel.setFontScale(4);
+
 
         //add our labels to our table, padding the top, and giving them all equal width with expandX
         table.add(marioLabel).expandX().padTop(10);

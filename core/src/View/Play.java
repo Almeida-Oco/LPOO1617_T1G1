@@ -7,11 +7,12 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 
 import Controller.GameLogic;
 import Controller.Entity;
@@ -20,6 +21,7 @@ import View.Entity.ElementView;
 import View.Entity.ViewFactory;
 
 public class Play extends PlayScreen {
+    private ScoreTimer score;
     private TiledMap map;
     private OrthogonalTiledMapRenderer renderer;
     private OrthographicCamera camera;
@@ -28,6 +30,8 @@ public class Play extends PlayScreen {
     private Entity.type barrel_fire = Entity.type.BARREL_FIRE_MIN1;
     private int tick = 0;
     protected SpriteBatch batch;
+    protected Skin skin;
+    protected TextField name;
 
     private final int JUMP = 2;
     private final float JUMP_MIN_VAL = 6f;
@@ -58,6 +62,7 @@ public class Play extends PlayScreen {
 
     public void show() {
         this.batch = new SpriteBatch();
+        this.score=new ScoreTimer(batch);
         GameLogic.getInstance().setMap(MAP_1, COLLISION);
         this.map = GameLogic.getInstance().getMap().getMap();
         this.scale = this.mapScaling();
@@ -92,6 +97,8 @@ public class Play extends PlayScreen {
 
         this.handleInput(delta);
         this.sleep(FPS);
+        batch.setProjectionMatrix(score.stage.getCamera().combined);
+        score.stage.draw();
     }
 
     private void drawEntities(){
@@ -125,6 +132,7 @@ public class Play extends PlayScreen {
         game.moveMario(x_move, y_move);
         game.moveBarrels();
         game.updateDK( delta );
+        score.update(delta);
     }
 
     private boolean enoughToJump(){
@@ -196,6 +204,7 @@ public class Play extends PlayScreen {
         this.renderer.dispose();
         this.batch.dispose();
         this.assets.dispose();
+        this.score.dispose();
     }
 
     private float mapScaling(){

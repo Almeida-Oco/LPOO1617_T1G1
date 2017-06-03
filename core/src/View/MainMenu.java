@@ -74,7 +74,7 @@ public class MainMenu extends PlayScreen {
                 this.change=true;
 
             if(exitButton.isPressed())
-                Gdx.app.exit(); 
+                Gdx.app.exit();
 
 
 

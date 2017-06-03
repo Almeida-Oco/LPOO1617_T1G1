@@ -1,17 +1,15 @@
 package Controller;
 
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-
 import java.util.ArrayList;
 
 //TODO check velocity for different screens
 public class GameLogic {
-    private final int TIME_TO_THROW = 4;
     private Pair<Integer,Integer> barrels_pos = new Pair<Integer, Integer>(6,222);
     private Pair<Integer,Integer> mario_pos = new Pair<Integer, Integer>(4,8);
     private static GameLogic instance;
     private Map map = null;
     private float time_passed = -1;
+    private int time_to_throw = 3;
     private boolean first_barrel_falled = false;
     private boolean first_barrel_thrown = false;
 
@@ -41,32 +39,32 @@ public class GameLogic {
         this.chars.add( DK );
     }
 
-    public ArrayList<Entity> getCharacters(){
-        return this.chars;
-    }
 
-    public Controller.Map getMap(){
-        return this.map;
-    }
-
-    public void setMap(String map_name, String collision_layer){
-        this.map = new Map();
-        this.map.loadMap(map_name, collision_layer);
-    }
-
-    public void updateDK( float delta ){
-        if ( this.time_passed < TIME_TO_THROW && delta < TIME_TO_THROW)
+    public void updateDK( float delta ) {
+        if ( this.time_passed < time_to_throw && delta < time_to_throw)
             this.time_passed+=delta;
 
-        if ( this.time_passed > TIME_TO_THROW) {
-            if (this.chars.get(1).moveEntity(map, 0, 0) == null) { //second number is irrelevant
-                this.createNewBarrel();
+        if ( this.time_passed > time_to_throw) {
+            if ( this.chars.get(1).moveEntity(map, 1, (this.first_barrel_thrown) ? 0 : 1) == null ) { //second number is irrelevant
+                this.createNewBarrel((this.chars.get(1).getType() == Entity.type.DK_FRONT));
                 this.time_passed = 0;
+                this.time_to_throw = (int)(Math.random()*3)+1;
             }
         }
         else
-            this.chars.get(1).moveEntity(map,1,0);
+            this.chars.get(1).moveEntity(map,0,0);
+    }
 
+    private void createNewBarrel( boolean free_fall ){
+        Pair<Integer,Integer> barrel_pos = (Pair<Integer,Integer>)this.barrels_pos.clone();
+        if ( free_fall ){ //free falling barrel
+            barrel_pos.setFirst(barrel_pos.getFirst() - 2);
+            barrel_pos.setSecond(barrel_pos.getSecond() - 5);
+        }
+
+        barrel_pos = this.map.mapPosToPixels(barrel_pos);
+        this.chars.add( Barrel.createBarrel(barrel_pos.getFirst(), barrel_pos.getSecond(), !this.first_barrel_thrown , free_fall) );
+        this.first_barrel_thrown = true;
     }
 
     public void moveMario(int x_move, int y_move){
@@ -83,20 +81,25 @@ public class GameLogic {
         }
     }
 
+
+
+
+    public ArrayList<Entity> getCharacters(){
+        return this.chars;
+    }
+
+    public Controller.Map getMap(){
+        return this.map;
+    }
+
+    public void setMap(String map_name, String collision_layer){
+        this.map = new Map();
+        this.map.loadMap(map_name, collision_layer);
+    }
+
     public boolean firstBarrelFalled(){
         return this.first_barrel_falled;
     }
 
-    private void createNewBarrel(){
-        Pair<Integer,Integer> barrel_pos = (Pair<Integer,Integer>)this.barrels_pos.clone();
-        boolean free_fall = false;
-        if ( (Math.random()*10) > 7 || !this.first_barrel_thrown ){ //free falling barrel
-            barrel_pos.setFirst(barrel_pos.getFirst() - 2);
-            free_fall = true;
-        }
 
-        barrel_pos = this.map.mapPosToPixels(barrel_pos);
-        this.chars.add( Barrel.createBarrel(barrel_pos.getFirst(), barrel_pos.getSecond(), !this.first_barrel_thrown , free_fall) );
-        this.first_barrel_thrown = true;
-    }
 }

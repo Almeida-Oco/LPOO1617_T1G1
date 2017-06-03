@@ -20,7 +20,7 @@ public class MarioRun extends Mario {
     public Entity moveEntity(Map map, int x_move, int y_move) {
         if ( JUMP == y_move )
             return this.prepareJump(x_move);
-        else if ( (GO_DOWN == y_move && checkLowerLadder(map)) || (GO_UP == y_move && checkUpperLadder(map)) )
+        else if ( (GO_DOWN == y_move && this.checkLowerLadder(map)) || (GO_UP == y_move && this.checkUpperLadder(map)) )
             return new MarioClimb(this.position.getFirst(), this.position.getSecond() );
 
         this.updateSprite(x_move);
@@ -34,30 +34,6 @@ public class MarioRun extends Mario {
             this.tick = 0;
 
         this.tick++;
-    }
-
-    /**
-     * @brief Checks if position of Mario is near ladder
-     * @param map Current map of the game
-     * @return Whether Mario is near a ladder or not
-     */
-    private boolean checkUpperLadder (Map map){
-        Pair<Integer,Integer> upper_pos = new Pair<Integer, Integer>(this.position.getFirst()+this.rep_size.getFirst()/2,
-                this.position.getSecond() + (Math.round(map.getMapTileHeight())) );
-
-        return  map.nearLadder(upper_pos.getFirst(), upper_pos.getSecond()) != -1;
-    }
-
-    /**
-     * @brief Checks if there is a ladder below Mario
-     * @param map Current map of the game
-     * @return Whether Mario has a ladder below or not
-     */
-    private boolean checkLowerLadder (Map map){
-        Pair<Integer,Integer> lower_pos = new Pair<Integer, Integer>(this.position.getFirst()+this.rep_size.getFirst()/2,
-                this.position.getSecond() - Math.round(map.getMapTileHeight()) );
-
-        return map.nearLadder(lower_pos.getFirst(), lower_pos.getSecond()) != -1;
     }
 
     /**
@@ -167,4 +143,27 @@ public class MarioRun extends Mario {
         return ret;
     }
 
+    /**
+     * @brief Checks if position of Mario is near ladder
+     * @param map Current map of the game
+     * @return Whether Mario is near a ladder or not
+     */
+    private boolean checkUpperLadder(Map map){
+        Pair<Integer,Integer> upper_pos = new Pair<Integer, Integer>(this.position.getFirst()+this.rep_size.getFirst()/2,
+                this.position.getSecond() + (Math.round(map.getMapTileHeight())) );
+
+        return  map.nearLadder(upper_pos.getFirst(), upper_pos.getSecond()) != -1;
+    }
+
+    /**
+     * @brief Checks if there is a ladder below Mario
+     * @param map Current map of the game
+     * @return Whether Mario has a ladder below or not
+     */
+    private boolean checkLowerLadder(Map map){
+        Pair<Integer,Integer> lower_pos = new Pair<Integer, Integer>(this.position.getFirst()+this.rep_size.getFirst()/2,
+                this.position.getSecond() - Math.round(map.getMapTileHeight()) );
+
+        return map.nearLadder(lower_pos.getFirst(), lower_pos.getSecond()) != -1;
+    }
 }

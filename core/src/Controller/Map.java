@@ -128,8 +128,8 @@ public class Map {
 
     /**
      * @brief Checks if there is a ladder in the given position
-     * @param pos Position to check for ladder
-     * @param rep_size Size of the representation of the object wanting to know if it is near ladder
+     * @param x X coordinte of the object
+     * @param y Y coordinate of the object
      * @return X coordinate where the player should "teleport" to start climbing ladder, it is the middle of the ladder. -1 if no ladder is near
      */
     public int nearLadder(int x , int y){

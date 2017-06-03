@@ -41,8 +41,6 @@ public class MarioClimb extends Mario {
         this.tick++;
     }
 
-    //TODO climb methods can be grouped into climb method which has parameter direction
-
     /**
      * @brief Makes Mario climb up
      * @param map Current game map

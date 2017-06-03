@@ -16,8 +16,7 @@ public class MyGdxGame extends Game {
 	public void create () {
         prev_time =0;
         this.curr_state=new MainMenu();
-		this.setScreen(curr_state);
-				//new Play());
+		this.setScreen (curr_state);
 	}
 
 	@Override

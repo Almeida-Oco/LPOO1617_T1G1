@@ -13,7 +13,7 @@ public abstract class Entity {
                         BARREL_FIRE_MIN1, BARREL_FIRE_MIN2, BARREL_FIRE_MAX1, BARREL_FIRE_MAX2};
     private final float DEFAULT_GRAVITY = 1f;
     private final float DEFAULT_MAX_Y_VELOCITY = 4f;
-    private final float DEFAULT_MAX_X_VELOCITY = 3f;
+    protected float DEFAULT_MAX_X_VELOCITY = 3f;
 
     protected Pair<Integer,Integer> rep_size = new Pair<Integer, Integer>(0,0);
     protected Pair<Integer,Integer> position;

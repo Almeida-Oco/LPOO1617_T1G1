@@ -84,6 +84,21 @@ public class BarrelRolling extends Barrel {
     }
 
     /**
+     * @brief Checks whether the barrel is about to free fall or if it is just a crane slope
+     * @param map Current map of the game
+     * @return This object if it is just a slope, BarrelFall object if it is a free fall
+     */
+    private Barrel checkCraneSlope(Pair<Integer,Integer> new_pos, Map map ) {
+        Pair<Integer, Integer> lower_pos = new Pair<Integer, Integer>(new_pos.getFirst(), new_pos.getSecond() - (int)((map.getMapTileHeight()*2)));
+        if (map.collidesBottom(lower_pos, this.rep_size.getFirst()) == -1)
+            return new BarrelFall(new_pos.getFirst(),new_pos.getSecond(),this.x_direction, FREE_FALL, false);
+
+        new_pos.setSecond( new_pos.getSecond() - (int)map.getMapTileHeight());
+        this.setPos(new_pos);
+        return this;
+    }
+
+    /**
      * @brief Gets next position of the barrel
      * @return Next position of the barrel
      */
@@ -125,21 +140,6 @@ public class BarrelRolling extends Barrel {
         else
             this.current_type = type.FIRE_BARREL_ROLLING;
 
-    }
-
-    /**
-     * @brief Checks whether the barrel is about to free fall or if it is just a crane slope
-     * @param map Current map of the game
-     * @return This object if it is just a slope, BarrelFall object if it is a free fall
-     */
-    private Barrel checkCraneSlope(Pair<Integer,Integer> new_pos, Map map ) {
-        Pair<Integer, Integer> lower_pos = new Pair<Integer, Integer>(new_pos.getFirst(), new_pos.getSecond() - (int)((map.getMapTileHeight()*2)));
-        if (map.collidesBottom(lower_pos, this.rep_size.getFirst()) == -1)
-            return new BarrelFall(new_pos.getFirst(),new_pos.getSecond(),this.x_direction, FREE_FALL, false);
-
-        new_pos.setSecond( new_pos.getSecond() - (int)map.getMapTileHeight());
-        this.setPos(new_pos);
-        return this;
     }
 
     /**

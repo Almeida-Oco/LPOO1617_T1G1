@@ -2,6 +2,8 @@ package Controller;
 
 import java.util.ArrayList;
 
+import View.ScoreTimer;
+
 public class GameLogic {
     private Pair<Integer,Integer> barrels_pos = new Pair<Integer, Integer>(6,222);
     private Pair<Integer,Integer> mario_pos = new Pair<Integer, Integer>(4,8);
@@ -14,6 +16,7 @@ public class GameLogic {
 
     //!Mario should always be first character!
     private ArrayList<Entity> chars = new ArrayList<Controller.Entity>();
+    private ArrayList<Entity> fires = new ArrayList<Entity>();
 
 
     private GameLogic(){}
@@ -28,10 +31,11 @@ public class GameLogic {
     public void initializeCharacters(){
         Pair<Integer,Integer> DK_pos = new Pair<Integer, Integer>(3,222);
         Pair<Integer,Integer> mario_pos = this.map.mapPosToPixels(this.mario_pos);
-
+        Pair<Integer,Integer> fire_pos = this.map.mapPosToPixels(new Pair<Integer,Integer>(10,8));
         DK_pos= this.map.mapPosToPixels(DK_pos);
         this.chars.add( Mario.createMario(mario_pos.getFirst(), mario_pos.getSecond()));
         Entity DK = DonkeyKong.getInstance();
+        this.fires.add( new Fire(fire_pos.getFirst(), fire_pos.getSecond(), new SimpleMovement() ));
         DK.setPos(DK_pos);
         this.chars.add( DK );
     }
@@ -66,11 +70,12 @@ public class GameLogic {
 
     public void moveMario(int x_move, int y_move){
         this.chars.set( 0 , this.chars.get(0).moveEntity(this.map,x_move,y_move) );
+        Score();
     }
 
     public void moveBarrels(){
         for (int i = 2 ; i < this.chars.size() ; i++) {
-            if (this.chars.get(i).collidesWith(this.chars.get(0).getPos(), this.chars.get(0).getRepSize()) || this.chars.get(i).toRemove(this.map)){
+            if ( this.chars.get(i).collidesWith(this.chars.get(0).getPos(), this.chars.get(0).getRepSize()) || this.chars.get(i).toRemove(this.map)){
                 this.chars.remove(i);
                 this.first_barrel_falled = true;
             }else
@@ -78,11 +83,32 @@ public class GameLogic {
         }
     }
 
+    public void moveFires(){
+        for ( int i = 0 ; i < this.fires.size() ; i++){
+            if ( this.fires.get(i).collidesWith( this.chars.get(0).getPos(), this.chars.get(0).getRepSize()) )
+                this.fires.remove(i);
+            else
+                this.fires.get(i).moveEntity(this.map, this.chars.get(0).getX(), this.chars.get(0).getY() );
+        }
+    }
+
+    public void Score(){
+        int score=0;
+        for (int i = 2 ; i < this.chars.size() ; i++){
+            if(this.chars.get(0).getPos().getFirst()==this.chars.get(i).getPos().getFirst()+ (this.chars.get(i).getRepSize().getFirst()/2) &&(this.chars.get(0).getPos().getSecond()>this.chars.get(i).getPos().getFirst()+ this.chars.get(i).getRepSize().getSecond() &&this.chars.get(0).getPos().getSecond()<(this.chars.get(i).getPos().getFirst()+ this.chars.get(i).getRepSize().getSecond())*2) )
+                score+=100;
+        }
+        ScoreTimer.addScore(score);
+    }
+
 
 
 
     public ArrayList<Entity> getCharacters(){
-        return this.chars;
+        ArrayList<Entity> all_chars = new ArrayList<Entity>();
+        all_chars.addAll(this.chars);
+        all_chars.addAll(this.fires);
+        return all_chars;
     }
 
     public Controller.Map getMap(){

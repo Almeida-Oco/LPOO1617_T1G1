@@ -88,8 +88,18 @@ public class GameLogic {
     public void Score(){
         int score=0;
         for (int i = 2 ; i < this.chars.size() ; i++){
-            if(this.chars.get(0).getPos().getFirst()==this.chars.get(i).getPos().getFirst()+ (this.chars.get(i).getRepSize().getFirst()/2) &&(this.chars.get(0).getPos().getSecond()>this.chars.get(i).getPos().getFirst()+ this.chars.get(i).getRepSize().getSecond() &&this.chars.get(0).getPos().getSecond()<(this.chars.get(i).getPos().getFirst()+ this.chars.get(i).getRepSize().getSecond())*2) )
+           /* if(this.chars.get(0).getPos().getFirst()<= (this.chars.get(i).getPos().getFirst()+ this.chars.get(i).getRepSize().getFirst()) &&
+                    (this.chars.get(0).getPos().getFirst() + this.chars.get(0).getRepSize().getFirst())>= this.chars.get(i).getPos().getFirst() &&
+                    this.chars.get(0).getPos().getSecond()>= ( this.chars.get(i).getPos().getSecond() + this.chars.get(0).getRepSize().getSecond())
+                    && this.chars.get(0).getPos().getSecond()<= ( this.chars.get(i).getPos().getSecond() + (this.chars.get(0).getRepSize().getSecond()*2)))*/
+
+           Pair<Integer,Integer>delta_x= new Pair<Integer, Integer>(new Integer((this.chars.get(i).getPos().getFirst()+ this.chars.get(i).getRepSize().getFirst()/2)-(int)(Math.floor(this.chars.get(0).getXSpeed()/2))),
+                   new Integer((this.chars.get(i).getPos().getFirst()+ this.chars.get(i).getRepSize().getFirst()/2)+(int)(Math.ceil(this.chars.get(0).getXSpeed()/2))));
+            Pair<Integer,Integer>delta_y = new Pair<Integer, Integer>(new Integer(this.chars.get(i).getPos().getSecond()),new Integer(this.chars.get(i).getPos().getSecond()*2));
+                if(this.chars.get(0).getPos().getFirst()>=delta_x.getFirst() && this.chars.get(0).getPos().getFirst()<= delta_x.getSecond() &&
+                        this.chars.get(0).getPos().getSecond() >= delta_y.getFirst() &&  this.chars.get(0).getPos().getSecond()<=delta_y.getSecond()   )
                 score+=100;
+
         }
         ScoreTimer.addScore(score);
     }

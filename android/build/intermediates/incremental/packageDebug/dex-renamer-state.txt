@@ -1,0 +1,7 @@
+#Sun Jun 04 05:48:07 WEST 2017
+base.0=/home/oco/Documents/java/DonkeyKong/android/build/intermediates/transforms/dex/debug/folders/1000/10000/instant-run-bootstrap_b7b5547a80a7a95a77082dbe6766ccc70e69b004
+renamed.1=classes.dex
+renamed.0=classes2.dex
+file.1=/home/oco/Documents/java/DonkeyKong/android/build/intermediates/transforms/dex/debug/folders/1000/10000/instant-run_b7b5121fe084c3a02a37ef023559380db9ab90d1/classes.dex
+base.1=/home/oco/Documents/java/DonkeyKong/android/build/intermediates/transforms/dex/debug/folders/1000/10000/instant-run_b7b5121fe084c3a02a37ef023559380db9ab90d1
+file.0=/home/oco/Documents/java/DonkeyKong/android/build/intermediates/transforms/dex/debug/folders/1000/10000/instant-run-bootstrap_b7b5547a80a7a95a77082dbe6766ccc70e69b004/classes.dex

@@ -51,8 +51,7 @@ public class BarrelRolling extends Barrel {
      * If there is a ladder nearby fall_delta is set accordingly
      */
     private void checkNewDelta(Map map){
-        int x_to_check = ( this.x_direction == -1 ) ? this.getX() : this.getX()+this.rep_size.getFirst(),
-                tile_x = map.XConverter(x_to_check);
+        int x_to_check = ( this.x_direction == -1 ) ? this.getX() : this.getX()+this.rep_size.getFirst(), tile_x = map.XConverter(x_to_check);
         if ( this.prev_tile_x != tile_x ){
             Pair<Integer,Integer> temp_delta = map.ladderInPosition(new Pair<Integer, Integer>(x_to_check,this.getY()), this.rep_size.getFirst(), this.getXSpeed() );
             if (temp_delta.getFirst() != -1)
@@ -66,46 +65,33 @@ public class BarrelRolling extends Barrel {
      * @param map Current game map
      * @return This object if state has not changed, BarrelFall otherwise
      */
-    private Barrel updatePosition(Map map){
-        Pair<Integer,Integer> new_pos = this.getNewPos(),
-                upper_pos = new Pair<Integer, Integer>(new_pos.getFirst(), new_pos.getSecond() + (int)map.getMapTileHeight() );
-        new_pos.setFirst( map.checkOutOfScreenWidth(new_pos.getFirst(), rep_size.getFirst()));
-        new_pos.setSecond(map.checkOutOfScreenHeight(new_pos.getSecond(), rep_size.getSecond()));
-        Barrel ret_val = this;
-        if ( map.collidesBottom(new_pos, this.rep_size.getFirst()) != -1){
-            if ( map.collidesBottom(upper_pos, this.rep_size.getFirst()) != -1 ) //in case barrels are moving in the opposite direction
-                new_pos.setSecond( new_pos.getSecond() + (int)map.getMapTileHeight()) ;
-            this.setPos(new_pos);
-        }
-        else
-            ret_val = this.checkCraneSlope(new_pos,map);
+    private Barrel updatePosition(Map map) {
+        Pair<Integer,Integer>   new_pos = this.getNewPos(map), lower_pos = new Pair<Integer, Integer>( new_pos.getFirst(), new_pos.getSecond() - (int)map.getMapTileHeight()),
+                                even_lower_pos = new Pair<Integer, Integer>( new_pos.getFirst(), new_pos.getSecond() - (int)map.getMapTileHeight()*3);
 
-        return ret_val;
-    }
+        if ( map.collidesBottom(lower_pos, this.rep_size.getFirst()) == -1)
+            new_pos.setSecond( new_pos.getSecond() - (int)map.getMapTileHeight() );
+        else if ( map.collidesBottom(new_pos, this.rep_size.getFirst()) != -1)
+            new_pos.setSecond( new_pos.getSecond() + (int)map.getMapTileHeight() );
 
-    /**
-     *  Checks whether the barrel is about to free fall or if it is just a crane slope
-     * @param map Current map of the game
-     * @return This object if it is just a slope, BarrelFall object if it is a free fall
-     */
-    private Barrel checkCraneSlope(Pair<Integer,Integer> new_pos, Map map ) {
-        Pair<Integer, Integer> lower_pos = new Pair<Integer, Integer>(new_pos.getFirst(), new_pos.getSecond() - (int)((map.getMapTileHeight()*2)));
-        if (map.collidesBottom(lower_pos, this.rep_size.getFirst()) == -1)
+        if ( map.collidesBottom(even_lower_pos, this.rep_size.getFirst()) == -1)
             return new BarrelFall(new_pos.getFirst(),new_pos.getSecond(),this.x_direction, FREE_FALL, false);
 
-        new_pos.setSecond( new_pos.getSecond() - (int)map.getMapTileHeight());
         this.setPos(new_pos);
         return this;
     }
 
     /**
-     *  Gets next position of the barrel
+     * Gets next position of the barrel
+     * @param map Current game map
      * @return Next position of the barrel
      */
-    private Pair<Integer,Integer> getNewPos(){
+    private Pair<Integer,Integer> getNewPos(Map map){
         Pair<Integer,Integer> new_pos = this.getPos();
         float x_speed = (this.inverted) ? -(this.x_direction*this.getXSpeed()) : (this.x_direction*this.getXSpeed());
         new_pos.setFirst(new_pos.getFirst()+(int)x_speed);
+        new_pos.setFirst (map.checkOutOfScreenWidth(new_pos.getFirst(), rep_size.getFirst()));
+        new_pos.setSecond(map.checkOutOfScreenHeight(new_pos.getSecond(), rep_size.getSecond()));
         return new_pos;
     }
 
@@ -148,8 +134,8 @@ public class BarrelRolling extends Barrel {
      * @return This object if there is no ladder to fall, BarrelFall object otherwise
      */
     private Barrel checkLadderFall(Map map){
-        int curr_x = this.getX(), lower_y = getY()-(int)map.getMapTileHeight();
-        if ( curr_x >= this.fall_delta.getFirst() && curr_x <= this.fall_delta.getSecond() && (Math.random()*10+1) > 7)
+        int curr_x = this.getX(), lower_y = this.getY()-(int)map.getMapTileHeight();
+        if ( curr_x >= this.fall_delta.getFirst() && curr_x <= this.fall_delta.getSecond() && (Math.random()*10) > 6)
             return new BarrelFall(curr_x, lower_y , this.x_direction, LADDER_FALL, false );
         else if ( curr_x >= this.fall_delta.getFirst() && curr_x <= this.fall_delta.getSecond() ){
             this.fall_delta.setFirst(-1);

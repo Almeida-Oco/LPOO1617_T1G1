@@ -7,6 +7,7 @@ public abstract class MoveStrategy {
     protected final int RIGHT = 1;
     protected final int LEFT = -1;
 
+    protected boolean first_cranes = true;
     protected boolean in_ladder = false;
     protected int tick = 0;
     protected int x_speed;
@@ -32,13 +33,13 @@ public abstract class MoveStrategy {
      */
     protected void moveHorizontally(Map map, Pair<Integer,Integer> curr_pos, int direction){
         curr_pos.setFirst( map.checkOutOfScreenWidth(curr_pos.getFirst()+(direction*this.x_speed), this.rep_size.getFirst()) );
-        Pair<Integer,Integer>   lower_pos = new Pair<Integer,Integer>(curr_pos.getFirst(), curr_pos.getSecond() - (int)map.getMapTileHeight()*2 );
+        Pair<Integer,Integer>   lower_pos = new Pair<Integer,Integer>(curr_pos.getFirst(), curr_pos.getSecond() - (int)map.getMapTileHeight());
         int new_y;
 
         if ( (new_y = map.collidesBottom(curr_pos,rep_size.getFirst())) != -1 )
             curr_pos.setSecond(new_y);
-        else if ( map.collidesBottom(lower_pos, rep_size.getFirst()) != -1 )
-            curr_pos.setSecond( curr_pos.getSecond() - (int)map.getMapTileHeight() );
+        else if ( map.collidesBottom(lower_pos, rep_size.getFirst()) == -1)
+            curr_pos.setSecond( curr_pos.getSecond() - (int)map.getMapTileHeight());
     }
 
     /**
@@ -55,7 +56,10 @@ public abstract class MoveStrategy {
         else if ( DOWN == direction )
             this.moveDown(map,curr_pos);
 
-        return (prev_y != curr_pos.getSecond());
+        this.in_ladder = (prev_y != curr_pos.getSecond());
+        if ( !this.in_ladder )
+            this.first_cranes = true;
+        return this.in_ladder;
     }
 
     /**
@@ -64,15 +68,15 @@ public abstract class MoveStrategy {
      * @param pos New position to try to move into, if it is impossible to move there it is changed accordingly
      */
     private void moveDown(Map map, Pair<Integer,Integer> pos){
-        int new_x;
         pos.setSecond( pos.getSecond() - CLIMB_RATE);
-        if ((new_x = map.nearLadder(pos.getFirst() + this.rep_size.getFirst() / 2, pos.getSecond())) != -1 &&
-                map.canUseLadder(pos.getFirst() + this.rep_size.getFirst() / 2, pos.getSecond())){
-            pos.setFirst(new_x);
-        }
-        else
+        Pair<Integer,Integer>   middle_pos = new Pair<Integer,Integer>( pos.getFirst()+this.rep_size.getFirst()/2, pos.getSecond()),
+                                lower_pos =  new Pair<Integer,Integer>( middle_pos.getFirst() , pos.getSecond() - (int)map.getMapTileHeight() );
+
+        if ( map.collidesBottom(pos,this.rep_size.getFirst()) != -1 && !this.first_cranes )
             pos.setSecond( pos.getSecond() + CLIMB_RATE);
 
+        if (map.collidesBottom(lower_pos,this.rep_size.getFirst()) == -1 && map.collidesBottom(middle_pos, this.rep_size.getFirst()) == -1)
+            this.first_cranes = false;
     }
 
     /**
@@ -81,14 +85,15 @@ public abstract class MoveStrategy {
      * @param pos New position to try to move into, if it is impossible to move there it is changed accordingly
      */
     private void moveUp(Map map, Pair<Integer,Integer> pos){
-        Pair<Integer,Integer> upper_pos = new Pair<Integer,Integer>(pos.getFirst(), pos.getSecond() + (int)map.getMapTileHeight());
-        int new_x;
         pos.setSecond( pos.getSecond() + CLIMB_RATE);
-        if ( (new_x = map.nearLadder(upper_pos.getFirst()+this.rep_size.getFirst()/2 , upper_pos.getSecond())) != -1 &&
-                map.canUseLadder(pos.getFirst()+this.rep_size.getFirst()/2, pos.getSecond()) )
-            pos.setFirst(new_x);
-        else
+        Pair<Integer,Integer>   middle_pos = new Pair<Integer,Integer>( pos.getFirst()+this.rep_size.getFirst()/2, pos.getSecond()),
+                            even_upper_pos = new Pair<Integer,Integer>( middle_pos.getFirst() , pos.getSecond() + (int)(map.getMapTileHeight()*2) );
+
+        if ( map.collidesBottom(middle_pos,this.rep_size.getFirst()) == -1 && !this.first_cranes)
             pos.setSecond( pos.getSecond() - CLIMB_RATE );
+
+        if ( map.collidesBottom(middle_pos, this.rep_size.getFirst()) != -1 && map.collidesBottom(even_upper_pos, this.rep_size.getFirst()) != -1 )
+            this.first_cranes = false;
 
     }
 

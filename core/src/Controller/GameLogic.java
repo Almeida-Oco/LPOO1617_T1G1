@@ -99,12 +99,14 @@ public class GameLogic {
                     (this.chars.get(0).getPos().getFirst() + this.chars.get(0).getRepSize().getFirst())>= this.chars.get(i).getPos().getFirst() &&
                     this.chars.get(0).getPos().getSecond()>= ( this.chars.get(i).getPos().getSecond() + this.chars.get(0).getRepSize().getSecond())
                     && this.chars.get(0).getPos().getSecond()<= ( this.chars.get(i).getPos().getSecond() + (this.chars.get(0).getRepSize().getSecond()*2)))*/
+            int     mario_x = this.chars.get(0).getX(), mario_y = this.chars.get(0).getY(), barrel_x = this.chars.get(i).getX(), barrel_y = this.chars.get(i).getY(),
+                    b_img_w = this.chars.get(i).getRepSize().getFirst(), score_x = barrel_x + b_img_w/2;
+            float mario_x_speed = this.chars.get(0).getXSpeed();
 
-           Pair<Integer,Integer>delta_x= new Pair<Integer, Integer>(new Integer((this.chars.get(i).getPos().getFirst()+ this.chars.get(i).getRepSize().getFirst()/2)-(int)(Math.floor(this.chars.get(0).getXSpeed()/2))),
-                   new Integer((this.chars.get(i).getPos().getFirst()+ this.chars.get(i).getRepSize().getFirst()/2)+(int)(Math.ceil(this.chars.get(0).getXSpeed()/2))));
-            Pair<Integer,Integer>delta_y = new Pair<Integer, Integer>(new Integer(this.chars.get(i).getPos().getSecond()),new Integer(this.chars.get(i).getPos().getSecond()*2));
-                if(this.chars.get(0).getPos().getFirst()>=delta_x.getFirst() && this.chars.get(0).getPos().getFirst()<= delta_x.getSecond() &&
-                        this.chars.get(0).getPos().getSecond() >= delta_y.getFirst() &&  this.chars.get(0).getPos().getSecond()<=delta_y.getSecond()   )
+            Pair<Integer,Integer>delta_x = new Pair<Integer, Integer>( score_x - (int)(Math.floor(mario_x_speed/2)) , score_x + (int)Math.ceil(mario_x_speed/2) ),
+                                delta_y = new Pair<Integer, Integer>(barrel_y, barrel_y*2);
+
+            if(mario_x>=delta_x.getFirst() && mario_x<= delta_x.getSecond() /* && mario_y >= delta_y.getFirst() &&  mario_y<=delta_y.getSecond() */  )
                 score+=100;
 
         }

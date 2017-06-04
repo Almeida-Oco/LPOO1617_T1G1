@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
+import com.sun.org.apache.bcel.internal.generic.LADD;
 
 
 public class Map {
@@ -11,6 +12,7 @@ public class Map {
     private final int SEARCH_TOP = 1;
     private final int SEARCH_RIGHT = 1;
     private final int CRANE_HORIZONTAL_TILES = 8;
+    private final int LADDER_PIXELS = 17;
 
     private TiledMap map;
     private TiledMapTileLayer collision_layer;
@@ -139,7 +141,7 @@ public class Map {
 
         for( float step = this.getMapTileWidth() ; x < x_limit ;  x += step )
             if( isCellBlocked(x,y) ){
-                int temp_y = (int)(this.getEdgeHorizontalTileY(x,y,SEARCH_TOP) * this.getMapTileHeight() - 0.005f);
+                int temp_y = (int)( this.getEdgeHorizontalTileY(x,y,SEARCH_TOP) * this.getMapTileHeight() - 0.005f );
                 if (temp_y > max_y)
                     max_y = temp_y;
             }
@@ -311,6 +313,7 @@ public class Map {
     public int checkLevelDifference(Pair<Integer,Integer> origin, Pair<Integer,Integer> dest){
         Pair<Integer,Integer> origin_tiled = new Pair<Integer, Integer>( this.XConverter(origin.getFirst()) , this.YConverter(origin.getSecond()) ),
                                 dest_tiled = new Pair<Integer, Integer>( this.XConverter(dest.getFirst()), this.YConverter(dest.getSecond()) );
+
         int ret;
         origin_tiled.setSecond( this.closestCrane(origin_tiled.getFirst(), origin_tiled.getSecond(), SEARCH_BOTTOM) + 1);
         if ( this.sameLevel(origin_tiled, dest_tiled) )

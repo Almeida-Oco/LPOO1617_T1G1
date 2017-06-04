@@ -48,11 +48,10 @@ public class MarioClimb extends Mario {
      */
     private Pair<Integer,Integer> climbUp( Map map ) {
         Pair<Integer, Integer> new_pos = new Pair<Integer, Integer>(this.position.getFirst(), this.position.getSecond() + CLIMB_RATE);
-        Pair<Integer, Integer> upper_pos = new Pair<Integer, Integer>(new_pos.getFirst(), new_pos.getSecond() + (int)map.getMapTileHeight()); //force upper tile
+        Pair<Integer, Integer> upper_pos = new Pair<Integer, Integer>(new_pos.getFirst()+(int)(map.getMapTileWidth()/2), new_pos.getSecond() + (int)map.getMapTileHeight());
         int new_x;
 
-        if ( (new_x = map.nearLadder(upper_pos.getFirst()+this.rep_size.getFirst()/2, upper_pos.getSecond())) != -1 &&
-                      map.canUseLadder(upper_pos.getFirst()+this.rep_size.getFirst()/2, upper_pos.getSecond()) ){
+        if ( (new_x = map.nearLadder(upper_pos.getFirst(), upper_pos.getSecond())) != -1 && map.canUseLadder(upper_pos.getFirst(), upper_pos.getSecond()) ){
             new_pos.setFirst(new_x-this.ladder_x_offset);
             return new_pos;
         }
@@ -66,10 +65,11 @@ public class MarioClimb extends Mario {
      * @return Position after the climbing, if it has reached the end of stairs it returns the current position
      */
     private Pair<Integer,Integer> climbDown( Map map ){
-        Pair<Integer,Integer> new_pos = new Pair<Integer,Integer>( this.position.getFirst() , this.position.getSecond() - CLIMB_RATE );
+        Pair<Integer,Integer> new_pos = new Pair<Integer,Integer>( this.position.getFirst() , this.position.getSecond() - CLIMB_RATE ),
+                            lower_pos = new Pair<Integer, Integer>( new_pos.getFirst() + (int)(map.getMapTileWidth()/2) , new_pos.getSecond() - (int)map.getMapTileHeight() );
         int new_x;
-        if ( ((new_x=map.nearLadder(this.getX()+this.rep_size.getFirst()/2, this.getY())) != -1) &&
-                     map.canUseLadder(new_pos.getFirst()+this.rep_size.getFirst()/2, new_pos.getSecond()) ){
+        if ( ((new_x = map.nearLadder(lower_pos.getFirst(), this.getY())) != -1 || (new_x = map.nearLadder(lower_pos.getFirst(),lower_pos.getSecond())) != -1)
+                    && (map.canUseLadder(new_pos.getFirst()+(int)(map.getMapTileWidth()/2), new_pos.getSecond()) || map.canUseLadder(lower_pos.getFirst(), lower_pos.getSecond())) ){
             new_pos.setFirst(new_x-this.ladder_x_offset);
             return new_pos;
         }

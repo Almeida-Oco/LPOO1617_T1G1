@@ -111,7 +111,7 @@ class BarrelFall extends Barrel {
      * @return This object if there is no change in state, BarrelRolling otherwise
      */
     private Barrel moveFallingBarrel(Map map){
-        Pair<Integer,Integer> new_pos = new Pair<Integer, Integer>(this.position.getFirst(), this.position.getSecond() + this.getYSpeed() );
+        Pair<Integer,Integer> new_pos = new Pair<Integer, Integer>( this.position.getFirst(), this.position.getSecond() + this.getYSpeed() );
         int new_y;
         Barrel ret_val = this;
         if ( (new_y = map.collidesBottom(new_pos,this.rep_size.getFirst())) == -1 || this.fall_through ){

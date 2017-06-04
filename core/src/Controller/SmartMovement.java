@@ -39,10 +39,16 @@ public class SmartMovement extends MoveStrategy {
             this.moveVertically(map, curr_pos, UP );
         else{
             int ladder_x = (int)(map.closestUpperStair( curr_pos.getFirst(), curr_pos.getSecond() )*map.getMapTileWidth());
-            if ( (UPPER_LEVEL == diff || ABOVE_2 == diff) && Math.abs(ladder_x - curr_pos.getFirst()) > X_TOLERANCE )
-                this.moveHorizontally(map, curr_pos, (ladder_x > curr_pos.getFirst()) ? RIGHT : LEFT);
+            if (UPPER_LEVEL == diff || ABOVE_2 == diff){
+                if ( Math.abs(ladder_x - curr_pos.getFirst()) > X_TOLERANCE )
+                    this.moveHorizontally(map, curr_pos, (ladder_x > curr_pos.getFirst()) ? RIGHT : LEFT );
+                else
+                    this.moveVertically(map,curr_pos, UP);
+            }
+
             else if ( Math.abs(ladder_x - curr_pos.getFirst()) <= X_TOLERANCE || Math.abs(mario_pos.getFirst() - curr_pos.getFirst()) <= X_TOLERANCE )
                 this.moveVertically(map, curr_pos, UP );
+
             else if ( Math.abs(mario_pos.getFirst() - curr_pos.getFirst()) > X_TOLERANCE)
                 this.moveHorizontally(map, curr_pos, (mario_pos.getFirst() > curr_pos.getFirst()) ? RIGHT : LEFT);
         }
@@ -57,13 +63,16 @@ public class SmartMovement extends MoveStrategy {
      */
     private void processLowerLevel(Map map, Pair<Integer,Integer> mario_pos, Pair<Integer,Integer> curr_pos, int diff){
         if ( this.in_ladder )
-            this.moveVertically( map,curr_pos, DOWN );
+            this.moveVertically( map,curr_pos, (this.previous_dir == UP && diff != LOWER_LEVEL) ? UP : DOWN );
         else{
             int ladder_x = (int)(map.closestLowerStair( curr_pos.getFirst() , curr_pos.getSecond() )*map.getMapTileWidth());
-            if ( (LOWER_LEVEL == diff || BELOW_2 == diff) && Math.abs(ladder_x - curr_pos.getFirst()) > X_TOLERANCE )
-                this.moveHorizontally(map, curr_pos, (ladder_x > curr_pos.getFirst()) ? RIGHT : LEFT );
-
-            else if ( Math.abs(ladder_x - curr_pos.getFirst()) <= X_TOLERANCE || Math.abs(mario_pos.getFirst() - curr_pos.getFirst()) <= X_TOLERANCE )
+            if (LOWER_LEVEL == diff || BELOW_2 == diff){
+                if ( Math.abs(ladder_x - curr_pos.getFirst()) > X_TOLERANCE )
+                    this.moveHorizontally(map, curr_pos, (ladder_x > curr_pos.getFirst()) ? RIGHT : LEFT );
+                else
+                    this.moveVertically(map,curr_pos, DOWN);
+            }
+            else if ( Math.abs(mario_pos.getFirst() - curr_pos.getFirst()) <= X_TOLERANCE )
                 this.moveVertically(map, curr_pos, DOWN);
 
             else if ( Math.abs(mario_pos.getFirst() - curr_pos.getFirst()) > X_TOLERANCE)
@@ -71,11 +80,16 @@ public class SmartMovement extends MoveStrategy {
         }
     }
 
+
     private void processSameLevel( Map map, Pair<Integer,Integer> mario_pos, Pair<Integer,Integer> curr_pos ){
         if ( !this.in_ladder )
             this.moveHorizontally(map,curr_pos, (mario_pos.getFirst() > curr_pos.getFirst()) ? RIGHT : LEFT );
         else
-            this.moveVertically(map, curr_pos, DOWN );
+            if ( map.collidesBottom(curr_pos,this.rep_size.getFirst()/2) != -1 )
+                this.moveVertically(map, curr_pos, UP );
+            else
+                this.moveVertically(map, curr_pos, DOWN );
+
     }
 
     /**

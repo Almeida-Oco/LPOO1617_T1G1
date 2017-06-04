@@ -226,7 +226,7 @@ public class Map {
         int map_x = this.XConverter(x), map_y = this.getEdgeHorizontalTileY(x,y-this.getMapTileHeight(),SEARCH_BOTTOM)+1, closest_x = -1;
         closest_x = this.closestLeftLadder(map_x,map_y, SEARCH_BOTTOM );
         int temp_x = this.closestRightLadder(map_x, map_y, SEARCH_BOTTOM );
-        if ( Math.abs(map_x - closest_x) > Math.abs(map_x - temp_x) )
+        if ( Math.abs(map_x - closest_x) >= Math.abs(map_x - temp_x) )
             closest_x = temp_x;
 
         return closest_x;
@@ -264,7 +264,7 @@ public class Map {
                 else
                     y-= dir;
             }
-            if ( this.ladderIn(x, y , dir) && Math.abs(map_x - closest_x) > Math.abs(map_x - x) )
+            if ( this.ladderIn(x, y+(2*dir)) && Math.abs(map_x - closest_x) > Math.abs(map_x - x) )
                 closest_x = x;
         }
         return closest_x;
@@ -286,7 +286,7 @@ public class Map {
                 else
                     y-= dir;
             }
-            if ( this.ladderIn(x,y,dir) && Math.abs(map_x - closest_x) > Math.abs(map_x - x) )
+            if ( this.ladderIn(x,y+(2*dir)) && Math.abs(map_x - closest_x) > Math.abs(map_x - x) )
                 closest_x = x;
         }
         return closest_x;
@@ -299,8 +299,8 @@ public class Map {
      * @param dir Direction to search, 1 up -1 down
      * @return Whether there is a ladder or not
      */
-    private boolean ladderIn(int x , int y, int dir){
-        return ((TiledMapTileLayer)this.map.getLayers().get("Stairs")).getCell(x,y+dir) != null;
+    private boolean ladderIn(int x , int y){
+        return ((TiledMapTileLayer)this.map.getLayers().get("Stairs")).getCell(x,y) != null;
     }
 
 
@@ -315,7 +315,7 @@ public class Map {
                                 dest_tiled = new Pair<Integer, Integer>( this.XConverter(dest.getFirst()), this.YConverter(dest.getSecond()) );
 
         int ret;
-        origin_tiled.setSecond( this.closestCrane(origin_tiled.getFirst(), origin_tiled.getSecond(), SEARCH_BOTTOM) + 1);
+        origin_tiled.setSecond( this.floorOrCeilOrigin(origin_tiled.getFirst(), origin_tiled.getSecond()) );
         if ( this.sameLevel(origin_tiled, dest_tiled) )
             return 0;
         if ( (ret = this.searchTopAndBottomLevel(origin_tiled,dest_tiled)) != 0)
@@ -329,6 +329,12 @@ public class Map {
             return 3;
     }
 
+    private int floorOrCeilOrigin(int x, int y){
+        if ( this.collision_layer.getCell(x,y) != null )
+            return this.closestCrane(x,y,SEARCH_TOP);
+        else
+            return this.closestCrane(x,y,SEARCH_BOTTOM)+1;
+    }
 
     /**
      * Checks if destination and origin are on the same level, taking into consideration that dest might be in mid-air
@@ -360,7 +366,7 @@ public class Map {
      */
     private int searchTopAndBottomLevel( Pair<Integer,Integer> origin, Pair<Integer,Integer> dest ){
         int top_origin_y = this.closestCrane(origin.getFirst(), origin.getSecond() + 1, SEARCH_TOP) + CRANE_HORIZONTAL_TILES-1,
-                lower_origin_y=this.closestCrane(origin.getFirst(), origin.getSecond() - (int)(this.getMapTileHeight()*CRANE_HORIZONTAL_TILES), SEARCH_BOTTOM);
+                lower_origin_y=this.closestCrane(origin.getFirst(), origin.getSecond() - CRANE_HORIZONTAL_TILES - 1, SEARCH_BOTTOM)+1;
 
         if ( top_origin_y != this.collision_layer.getHeight() ){   //found a top crane
             Pair<Integer,Integer>  temp_orig_top   = new Pair<Integer, Integer>( origin.getFirst(), top_origin_y );
@@ -381,6 +387,7 @@ public class Map {
      * @param dest Destination position
      * @return 1 if on ladder connected to origin on bottom, -1 if on ladder connected to origin on top, 0 otherwise
      */
+
     private int ladderToOrigin( Pair<Integer,Integer> origin, Pair<Integer,Integer> dest ){
         int top_dest_y = this.closestCrane( dest.getFirst(), dest.getSecond(), SEARCH_TOP)  + CRANE_HORIZONTAL_TILES,
                 lower_dest_y = this.closestCrane( dest.getFirst(), dest.getSecond(), SEARCH_BOTTOM ) + 1;
@@ -406,7 +413,7 @@ public class Map {
      * @return True if on same level and at the left, false otherwise
      */
     private boolean onTheLeft( Pair<Integer,Integer> origin, Pair<Integer,Integer> destination){
-        int x = origin.getFirst(), y = origin.getSecond() - 1;
+        int x = origin.getFirst(), y = origin.getSecond();
         for ( ; x >= 0 ; x--){ //search left
             if ( x%2 != 0 ){
                 if ( this.collision_layer.getCell(x,y) != null && this.collision_layer.getCell(x,y+1) != null)
@@ -414,7 +421,7 @@ public class Map {
                 else if ( this.collision_layer.getCell(x,y) == null )
                     y--;
             }
-            if ( x == destination.getFirst() && (y+1) >= destination.getSecond() && (y+1-CRANE_HORIZONTAL_TILES) <= destination.getSecond() )
+            if ( x == destination.getFirst() && (y+2) >= destination.getSecond() && (y+1-CRANE_HORIZONTAL_TILES) <= destination.getSecond() )
                return true;
         }
         return false;
@@ -427,7 +434,7 @@ public class Map {
      * @return True if on same level and at the right, false otherwise
      */
     private boolean onTheRight( Pair<Integer,Integer> origin, Pair<Integer,Integer> destination){
-        int x = origin.getFirst(), y = origin.getSecond() - 1;
+        int x = origin.getFirst(), y = origin.getSecond();
         for ( ; x <= this.collision_layer.getWidth() ; x++ ){
             if ( x%2 == 0 ){
                 if ( this.collision_layer.getCell(x,y) != null && this.collision_layer.getCell(x,y+1) != null)
@@ -435,7 +442,7 @@ public class Map {
                 else if ( this.collision_layer.getCell(x,y) == null )
                     y--;
             }
-            if ( x == destination.getFirst() && (y+1) >= destination.getSecond() && (y+1-CRANE_HORIZONTAL_TILES) <= destination.getSecond() )
+            if ( x == destination.getFirst() && (y+2) >= destination.getSecond() && (y+1-CRANE_HORIZONTAL_TILES) <= destination.getSecond() )
                 return true;
         }
         return false;
@@ -567,6 +574,7 @@ public class Map {
      * @param y Y tile coordinate to start the search
      * @param dir Direction to search, 1 UP , 2 DOWN
      * @return Y tiled coordinate of closest horizontal tile found
+     * Ignores first cranes found in case object is currently in the middle of cranes
      */
     private int closestCrane(int x , int y, int dir){
         while( this.collision_layer.getCell(x,y) == null && y < this.collision_layer.getHeight() && y >= 0)

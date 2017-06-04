@@ -8,7 +8,7 @@ public abstract class MoveStrategy {
     protected final int LEFT = -1;
 
     private boolean first_cranes = true;
-    private int previous_dir = -10;
+    protected int previous_dir = -10;
     protected boolean in_ladder = false;
     protected int tick = 0;
     protected int x_speed;
@@ -33,8 +33,6 @@ public abstract class MoveStrategy {
      * @param direction Direction to go
      */
     protected void moveHorizontally(Map map, Pair<Integer,Integer> curr_pos, int direction){
-        if ( this.previous_dir != direction && map.collidesBottom(curr_pos,this.rep_size.getFirst()) != -1 )
-            this.first_cranes = true;
         curr_pos.setFirst( map.checkOutOfScreenWidth(curr_pos.getFirst()+(direction*this.x_speed), this.rep_size.getFirst()) );
         Pair<Integer,Integer>   lower_pos = new Pair<Integer,Integer>(curr_pos.getFirst(), curr_pos.getSecond() - (int)map.getMapTileHeight());
         int new_y;
@@ -43,6 +41,8 @@ public abstract class MoveStrategy {
             curr_pos.setSecond(new_y);
         else if ( map.collidesBottom(lower_pos, rep_size.getFirst()) == -1)
             curr_pos.setSecond( curr_pos.getSecond() - (int)map.getMapTileHeight());
+        this.first_cranes = true;
+        this.previous_dir = direction;
     }
 
     /**
@@ -53,16 +53,17 @@ public abstract class MoveStrategy {
      * @return True if there is still ladder, false if ladder ended
      */
     protected boolean moveVertically(Map map, Pair<Integer,Integer> curr_pos, int direction){
-        int prev_y = curr_pos.getSecond();
+        if ( map.collidesBottom(curr_pos, this.rep_size.getFirst()) != -1 || !this.in_ladder )
+            this.first_cranes = true;
+        this.previous_dir = direction;
+
         if ( UP == direction )
             this.moveUp(map,curr_pos);
         else if ( DOWN == direction )
             this.moveDown(map,curr_pos);
 
-        this.in_ladder = (prev_y != curr_pos.getSecond());
-        if ( !this.in_ladder )
-            this.first_cranes = true;
-        return this.in_ladder;
+
+        return this.in_ladder = ( !this.notInLadder(map,curr_pos) );
     }
 
     /**
@@ -71,14 +72,13 @@ public abstract class MoveStrategy {
      * @param pos New position to try to move into, if it is impossible to move there it is changed accordingly
      */
     private void moveDown(Map map, Pair<Integer,Integer> pos){
-        pos.setSecond( pos.getSecond() - CLIMB_RATE);
-        Pair<Integer,Integer>   middle_pos = new Pair<Integer,Integer>( pos.getFirst()+this.rep_size.getFirst()/2, pos.getSecond()),
+        int img_width = this.rep_size.getFirst(), lower_x;
+        Pair<Integer,Integer>   middle_pos = new Pair<Integer,Integer>( pos.getFirst()+img_width/4, pos.getSecond()),
                                 lower_pos =  new Pair<Integer,Integer>( middle_pos.getFirst() , pos.getSecond() - (int)map.getMapTileHeight() );
-
-        if ( map.collidesBottom(pos,this.rep_size.getFirst()) != -1 && !this.first_cranes )
+        pos.setSecond( pos.getSecond() - CLIMB_RATE);
+        if ( (lower_x = map.collidesBottom(lower_pos,img_width/2)) != -1 && !this.first_cranes )
             pos.setSecond( pos.getSecond() + CLIMB_RATE);
-
-        if (map.collidesBottom(lower_pos,this.rep_size.getFirst()) == -1 && map.collidesBottom(middle_pos, this.rep_size.getFirst()) == -1)
+        else if ( lower_x == -1 )
             this.first_cranes = false;
     }
 
@@ -88,16 +88,23 @@ public abstract class MoveStrategy {
      * @param pos New position to try to move into, if it is impossible to move there it is changed accordingly
      */
     private void moveUp(Map map, Pair<Integer,Integer> pos){
+        int img_width = this.rep_size.getFirst(), lower_x;
+        Pair<Integer,Integer>   middle_pos = new Pair<Integer,Integer>( pos.getFirst()+img_width/4, pos.getSecond()),
+                                lower_pos  = new Pair<Integer,Integer>( middle_pos.getFirst() , pos.getSecond() - (int)map.getMapTileHeight() );
         pos.setSecond( pos.getSecond() + CLIMB_RATE);
-        Pair<Integer,Integer>   middle_pos = new Pair<Integer,Integer>( pos.getFirst()+this.rep_size.getFirst()/2, pos.getSecond()),
-                            even_upper_pos = new Pair<Integer,Integer>( middle_pos.getFirst() , pos.getSecond() + (int)(map.getMapTileHeight()*2) );
-
-        if ( map.collidesBottom(middle_pos,this.rep_size.getFirst()) == -1 && !this.first_cranes)
-            pos.setSecond( pos.getSecond() - CLIMB_RATE );
-
-        if ( map.collidesBottom(middle_pos, this.rep_size.getFirst()) != -1 && map.collidesBottom(even_upper_pos, this.rep_size.getFirst()) != -1 )
+        if (  (lower_x = map.collidesBottom(lower_pos,img_width/2)) != -1 && map.collidesBottom(middle_pos,img_width/2) == -1 && !this.first_cranes )
+            pos.setSecond( pos.getSecond() - CLIMB_RATE);
+        else if ( lower_x == -1 )
             this.first_cranes = false;
 
+    }
+
+    private boolean notInLadder(Map map, Pair<Integer,Integer> pos){
+        int img_width = this.rep_size.getFirst();
+        Pair<Integer,Integer> middle_pos = new Pair<Integer, Integer>(pos.getFirst()+img_width/4, pos.getSecond()),
+                            lower_pos = new Pair<Integer, Integer>(middle_pos.getFirst(), middle_pos.getSecond() - (int)map.getMapTileHeight() );
+
+        return ( map.collidesBottom(middle_pos,img_width/2) == -1 && map.collidesBottom(lower_pos,img_width/2) != -1 );
     }
 
     /**

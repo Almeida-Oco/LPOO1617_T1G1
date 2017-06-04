@@ -1,31 +1,14 @@
 package View;
 
-import com.badlogic.gdx.Game;
-import com.badlogic.gdx.ScreenAdapter;
-
-/**
- * Created by asus on 02/06/2017.
- */
-
-
-
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Camera;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.TextField;
-import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
-import com.badlogic.gdx.utils.viewport.FitViewport;
-import com.badlogic.gdx.utils.viewport.Viewport;
+import com.badlogic.gdx.ScreenAdapter;
 
-import javax.swing.text.View;
 
 
 public class MainMenu extends PlayScreen {
@@ -53,14 +36,14 @@ public class MainMenu extends PlayScreen {
         startSprite = new Sprite(new Texture("play.png"));
         exitSprite = new Sprite(new Texture("exit.png"));
         startButton = new Button(new SpriteDrawable(startSprite));
-        startButton.setSize(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() * 2 / 7);
+        startButton.setSize(Gdx.graphics.getWidth() / 3, Gdx.graphics.getHeight() * 1 / 7);
         startButton.setX(Gdx.graphics.getWidth() * 1/2 - startButton.getWidth() / 2);
-        startButton.setY(Gdx.graphics.getHeight() / 2);
+        startButton.setY(Gdx.graphics.getHeight() *3/8);
 
         exitButton = new Button(new SpriteDrawable(exitSprite));
-        exitButton.setSize(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() * 2 / 7);
+        exitButton.setSize(Gdx.graphics.getWidth() / 3, Gdx.graphics.getHeight() * 1 / 7);
         exitButton.setX(Gdx.graphics.getWidth() * 1 / 2 - exitButton.getWidth() / 2);
-        exitButton.setY(Gdx.graphics.getHeight() / 12);
+        exitButton.setY(Gdx.graphics.getHeight() * 1/8);
 
         stage = new Stage();
         Gdx.input.setInputProcessor(stage);

@@ -7,7 +7,8 @@ public abstract class MoveStrategy {
     protected final int RIGHT = 1;
     protected final int LEFT = -1;
 
-    protected boolean first_cranes = true;
+    private boolean first_cranes = true;
+    private int previous_dir = -10;
     protected boolean in_ladder = false;
     protected int tick = 0;
     protected int x_speed;
@@ -32,6 +33,8 @@ public abstract class MoveStrategy {
      * @param direction Direction to go
      */
     protected void moveHorizontally(Map map, Pair<Integer,Integer> curr_pos, int direction){
+        if ( this.previous_dir != direction && map.collidesBottom(curr_pos,this.rep_size.getFirst()) != -1 )
+            this.first_cranes = true;
         curr_pos.setFirst( map.checkOutOfScreenWidth(curr_pos.getFirst()+(direction*this.x_speed), this.rep_size.getFirst()) );
         Pair<Integer,Integer>   lower_pos = new Pair<Integer,Integer>(curr_pos.getFirst(), curr_pos.getSecond() - (int)map.getMapTileHeight());
         int new_y;

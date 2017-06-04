@@ -17,9 +17,7 @@ public class SmartMovement extends MoveStrategy {
     @Override
     public void move(Map map, Pair<Integer, Integer> mario_pos, Pair<Integer,Integer> curr_pos) {
         int action = map.checkLevelDifference(curr_pos, mario_pos);
-        if (last_action != action && map.collidesBottom(curr_pos,this.rep_size.getFirst()) != -1)
-            this.first_cranes = true;
-        System.out.println("    ACTION = "+action);
+        System.out.println("    ACTION = "+action+", FIRE POS = "+curr_pos.toString()+", MARIO POS = "+mario_pos.toString());
         if ( SAME_LEVEL == action )
             this.processSameLevel(map, mario_pos, curr_pos);
         else if ( action >= UPPER_LADDER )
@@ -43,7 +41,7 @@ public class SmartMovement extends MoveStrategy {
             int ladder_x = (int)(map.closestUpperStair( curr_pos.getFirst(), curr_pos.getSecond() )*map.getMapTileWidth());
             if ( (UPPER_LEVEL == diff || ABOVE_2 == diff) && Math.abs(ladder_x - curr_pos.getFirst()) > X_TOLERANCE )
                 this.moveHorizontally(map, curr_pos, (ladder_x > curr_pos.getFirst()) ? RIGHT : LEFT);
-            else if ( Math.abs(ladder_x - curr_pos.getFirst()) <= X_TOLERANCE )
+            else if ( Math.abs(ladder_x - curr_pos.getFirst()) <= X_TOLERANCE || Math.abs(mario_pos.getFirst() - curr_pos.getFirst()) <= X_TOLERANCE )
                 this.moveVertically(map, curr_pos, UP );
             else if ( Math.abs(mario_pos.getFirst() - curr_pos.getFirst()) > X_TOLERANCE)
                 this.moveHorizontally(map, curr_pos, (mario_pos.getFirst() > curr_pos.getFirst()) ? RIGHT : LEFT);
@@ -65,7 +63,7 @@ public class SmartMovement extends MoveStrategy {
             if ( (LOWER_LEVEL == diff || BELOW_2 == diff) && Math.abs(ladder_x - curr_pos.getFirst()) > X_TOLERANCE )
                 this.moveHorizontally(map, curr_pos, (ladder_x > curr_pos.getFirst()) ? RIGHT : LEFT );
 
-            else if ( Math.abs(ladder_x - curr_pos.getFirst()) <= X_TOLERANCE )
+            else if ( Math.abs(ladder_x - curr_pos.getFirst()) <= X_TOLERANCE || Math.abs(mario_pos.getFirst() - curr_pos.getFirst()) <= X_TOLERANCE )
                 this.moveVertically(map, curr_pos, DOWN);
 
             else if ( Math.abs(mario_pos.getFirst() - curr_pos.getFirst()) > X_TOLERANCE)

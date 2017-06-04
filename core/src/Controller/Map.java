@@ -414,7 +414,7 @@ public class Map {
                 else if ( this.collision_layer.getCell(x,y) == null )
                     y--;
             }
-            if ( x == destination.getFirst() && (y+1) == destination.getSecond() )
+            if ( x == destination.getFirst() && (y+1) >= destination.getSecond() && (y+1-CRANE_HORIZONTAL_TILES) <= destination.getSecond() )
                return true;
         }
         return false;
@@ -435,7 +435,7 @@ public class Map {
                 else if ( this.collision_layer.getCell(x,y) == null )
                     y--;
             }
-            if ( x == destination.getFirst() && (y+1) == destination.getSecond() )
+            if ( x == destination.getFirst() && (y+1) >= destination.getSecond() && (y+1-CRANE_HORIZONTAL_TILES) <= destination.getSecond() )
                 return true;
         }
         return false;

@@ -9,7 +9,7 @@ public class MarioJump extends Mario {
     private float jump_x_vel;
 
     /**
-     * @brief Constructor for MarioJump
+     *  Constructor for MarioJump
      * @param x X coordinate to position Mario
      * @param y Y coordinate to position Mario
      */
@@ -37,7 +37,7 @@ public class MarioJump extends Mario {
     }
 
     /**
-     * @brief Updates Mario position based on direction of jump
+     *  Updates Mario position based on direction of jump
      * @param map Current map of the game
      * @return MarioRun object if the jump has ended, this object with updated position otherwise
      */

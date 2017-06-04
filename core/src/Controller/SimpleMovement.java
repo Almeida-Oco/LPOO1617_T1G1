@@ -11,7 +11,7 @@ public class SimpleMovement extends MoveStrategy {
     }
 
     @Override
-    public Pair<Integer, Integer> move(Map map, Pair<Integer, Integer> mario_pos, Pair<Integer,Integer> curr_pos) {
+    public void move(Map map, Pair<Integer, Integer> mario_pos, Pair<Integer,Integer> curr_pos) {
         this.randomMove(map,curr_pos);
 //        if ( this.tick == SURE_STEP ){
 //            this.tickTock(); //CHAMAR A FUNCAO MOVE DO SMART MOVEMENT
@@ -20,7 +20,6 @@ public class SimpleMovement extends MoveStrategy {
 //            this.randomMove(map,curr_pos);
 
         this.tickTock();
-        return null;
     }
 
 
@@ -28,7 +27,7 @@ public class SimpleMovement extends MoveStrategy {
         boolean ladder = (Math.random()*10) < 1;
         if ( this.tick >= CHANGE_DIR){
             this.dir = ((Math.random()*2) < 1) ? RIGHT : LEFT;
-            this.CHANGE_DIR = (int)(Math.random()*4)+1;
+            this.CHANGE_DIR = (int)(Math.random()*6)+3;
         }
 
         if ( (ladder && ( (this.dir == 1 && this.checkUpperLadder(map,curr_pos)) || this.dir == -1 && this.checkLowerLadder(map,curr_pos) )) || this.in_ladder ){

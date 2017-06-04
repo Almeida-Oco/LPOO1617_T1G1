@@ -6,7 +6,7 @@ public class MarioRun extends Mario {
     private final int ANIMATION_RESET = 10;
 
     /**
-     * @brief Constructor for MarioRun
+     *  Constructor for MarioRun
      * @param x X coordinate to position Mario
      * @param y Y coordinate to position Mario
      */
@@ -37,7 +37,7 @@ public class MarioRun extends Mario {
     }
 
     /**
-     * @brief Updates mario position based on direction
+     *  Updates mario position based on direction
      * @param map Current map of the game
      * @param direction Direction to go
      * @return Which mario state it should move to
@@ -56,7 +56,7 @@ public class MarioRun extends Mario {
     }
 
     /**
-     * @brief Checks if there is any event to take care of in the Y coordinate
+     *  Checks if there is any event to take care of in the Y coordinate
      * @param new_pos New position of Mario
      * @return This object or an object of MarioFall if a state change is necessary
      */
@@ -77,7 +77,7 @@ public class MarioRun extends Mario {
     }
 
     /**
-     * @brief Updates current sprite based on current status and sprite
+     *  Updates current sprite based on current status and sprite
      * @param direction Which direction Mario went
      */
     private void updateSprite(int direction) {
@@ -90,7 +90,7 @@ public class MarioRun extends Mario {
     }
 
     /**
-     * @brief Makes Mario sprite be one where he goes right
+     *  Makes Mario sprite be one where he goes right
      */
     private void movingRight(){
         if ( type.MARIO_RIGHT != this.current_type && type.MARIO_RUN_RIGHT != this.current_type )
@@ -103,7 +103,7 @@ public class MarioRun extends Mario {
     }
 
     /**
-     * @brief Makes Mario sprite be one where he goes left
+     *  Makes Mario sprite be one where he goes left
      */
     private void movingLeft(){
         if ( type.MARIO_LEFT != this.current_type && type.MARIO_RUN_LEFT != this.current_type )
@@ -116,7 +116,7 @@ public class MarioRun extends Mario {
     }
 
     /**
-     * @brief Makes Mario sprite be one where he is standing still
+     *  Makes Mario sprite be one where he is standing still
      */
     private void notMoving(){
         if ( type.MARIO_RUN_LEFT == this.current_type )
@@ -128,7 +128,7 @@ public class MarioRun extends Mario {
     }
 
     /**
-     * @brief Used to set correct velocities before Mario starts jumping
+     *  Used to set correct velocities before Mario starts jumping
      * @param x_move Direction where to jump
      * @return The newly created MarioJump object with correct velocities
      */
@@ -144,7 +144,7 @@ public class MarioRun extends Mario {
     }
 
     /**
-     * @brief Checks if position of Mario is near ladder
+     *  Checks if position of Mario is near ladder
      * @param map Current map of the game
      * @return Whether Mario is near a ladder or not
      */
@@ -156,7 +156,7 @@ public class MarioRun extends Mario {
     }
 
     /**
-     * @brief Checks if there is a ladder below Mario
+     *  Checks if there is a ladder below Mario
      * @param map Current map of the game
      * @return Whether Mario has a ladder below or not
      */

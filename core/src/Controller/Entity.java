@@ -98,7 +98,7 @@ public abstract class Entity {
     public abstract void setType(type t);
 
     /**
-     * @brief Tries to move the Entity in the given direction
+     *  Tries to move the Entity in the given direction
      * @param map Current map of the game
      * @param x_move Movement in the X direction {-1,0,1}
      * @param y_move Movement in the Y direction {-1,0,1,2}
@@ -107,7 +107,7 @@ public abstract class Entity {
     public abstract Entity moveEntity(Map map, int x_move, int y_move);
 
     /**
-     * @brief Whether this entity should be removed or not
+     *  Whether this entity should be removed or not
      * @param map Current game map
      * @return True is it should be removed, false otherwise
      */

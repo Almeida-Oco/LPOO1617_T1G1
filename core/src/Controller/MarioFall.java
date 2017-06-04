@@ -7,7 +7,7 @@ package Controller;
 public class MarioFall extends Mario {
 
     /**
-     * @brief Constructor for MarioFall
+     *  Constructor for MarioFall
      * @param x X coordinate to position Mario
      * @param y Y coordinate to position Mario
      */
@@ -26,7 +26,7 @@ public class MarioFall extends Mario {
     protected void tickTock() {}
 
     /**
-     * @brief Updates Mario position based on collisions and current velocity
+     *  Updates Mario position based on collisions and current velocity
      * @param map Current map of the game
      * @return A MarioRun object if the fall has ended or this object with updated positions
      */

@@ -32,7 +32,7 @@ public class DonkeyKong extends Entity {
     }
 
     /**
-     * @brief Since DK does not move, this is used to know which sprite to represent it
+     *  Since DK does not move, this is used to know which sprite to represent it
      * @param map Current map of the game
      * @param throw_or_hand If 1 then do barrel throw animation, if 0 do hand motion
      * @param first_barrel If 1 then it is the first barrel thrown so it forces the free_fall animation, 0 otherwise
@@ -59,7 +59,7 @@ public class DonkeyKong extends Entity {
 
 
     /**
-     * @brief Updates DK status to animate it when he is not throwing a barrel
+     *  Updates DK status to animate it when he is not throwing a barrel
      */
     private void updateSpriteKong() {
         if(this.tick >= ANIMATION_RATE)
@@ -69,7 +69,7 @@ public class DonkeyKong extends Entity {
     }
 
     /**
-     * @brief Updates DK status to animate it when he is throwing a barrel
+     *  Updates DK status to animate it when he is throwing a barrel
      */
     private void updateSpriteThrow() {
         if(this.tick >= ANIMATION_RATE)
@@ -79,7 +79,7 @@ public class DonkeyKong extends Entity {
     }
 
     /**
-     * @brief Used to know when to animate DK
+     *  Used to know when to animate DK
      */
     private void tickTock() {
         this.tick++;

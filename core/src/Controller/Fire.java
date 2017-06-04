@@ -11,7 +11,7 @@ public class Fire extends Entity {
         super(x,y);
         this.prev_x = x;
         this.current_type = type.FIRE_RIGHT;
-        this.move_strategy = new SimpleMovement();
+        this.move_strategy = new SmartMovement();
         this.DEFAULT_MAX_X_VELOCITY = 2;
         this.tick = 0;
     }
@@ -33,7 +33,7 @@ public class Fire extends Entity {
     }
 
     /**
-     * @brief Used to move fire
+     *  Used to move fire
      * @param map Current map of the game
      * @param mario_x X coordinate of Mario
      * @param mario_y Y coordinate of Mario

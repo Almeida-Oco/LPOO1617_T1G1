@@ -28,14 +28,14 @@ public class GameLogic {
             return instance;
     }
 
-    public void initializeCharacters(){
+    public void initializeCharacters() {
         Pair<Integer,Integer> DK_pos = new Pair<Integer, Integer>(3,222);
         Pair<Integer,Integer> mario_pos = this.map.mapPosToPixels(this.mario_pos);
-        Pair<Integer,Integer> fire_pos = this.map.mapPosToPixels(new Pair<Integer,Integer>(10,8));
+        Pair<Integer,Integer> fire_pos = this.map.mapPosToPixels(new Pair<Integer,Integer>(15,51));
         DK_pos= this.map.mapPosToPixels(DK_pos);
         this.chars.add( Mario.createMario(mario_pos.getFirst(), mario_pos.getSecond()));
         Entity DK = DonkeyKong.getInstance();
-        this.fires.add( new Fire(fire_pos.getFirst(), fire_pos.getSecond(), new SimpleMovement() ));
+        this.fires.add( new Fire(fire_pos.getFirst(), fire_pos.getSecond(), new SmartMovement() ));
         DK.setPos(DK_pos);
         this.chars.add( DK );
     }

@@ -6,7 +6,7 @@ public class MarioClimb extends Mario {
     private final int CLIMB_RATE = 1;
 
     /**
-     * @brief Constructor for MarioClimb
+     *  Constructor for MarioClimb
      * @param x X coordinate to position Mario
      * @param y Y coordinate to position Mario
      */
@@ -42,7 +42,7 @@ public class MarioClimb extends Mario {
     }
 
     /**
-     * @brief Makes Mario climb up
+     *  Makes Mario climb up
      * @param map Current game map
      * @return Position after the climbing, if it has reached the end of stairs it returns the current position
      */
@@ -61,7 +61,7 @@ public class MarioClimb extends Mario {
     }
 
     /**
-     * @brief Makes Mario climb down
+     *  Makes Mario climb down
      * @param map Current game map
      * @return Position after the climbing, if it has reached the end of stairs it returns the current position
      */
@@ -78,7 +78,7 @@ public class MarioClimb extends Mario {
     }
 
     /**
-     * @brief Used to process results of the climbing actions
+     *  Used to process results of the climbing actions
      * @param map Current map of the game
      * @param new_pos New position returned by either climbUp() or climbDown()
      * @param y_move Direction Mario is trying to go
@@ -99,7 +99,7 @@ public class MarioClimb extends Mario {
     }
 
     /**
-     * @brief updates current Mario sprite/status based on current status
+     *  updates current Mario sprite/status based on current status
      */
     private void updateSprite(){
         if ( type.MARIO_CLIMB_LEFT == this.current_type )

@@ -14,7 +14,7 @@ public class BarrelRolling extends Barrel {
     private boolean fire;
 
     /**
-     * @brief Constructor for rolling barrel
+     *  Constructor for rolling barrel
      * @param x X coordinate to create barrel
      * @param y Y coordinate to create barrel
      * @param x_dir Direction in which barrel is supposed to move
@@ -46,7 +46,7 @@ public class BarrelRolling extends Barrel {
 
 
     /**
-     * @brief Used to check if there is a ladder nearby
+     *  Used to check if there is a ladder nearby
      * @param map Current map of the game
      * If there is a ladder nearby fall_delta is set accordingly
      */
@@ -62,7 +62,7 @@ public class BarrelRolling extends Barrel {
     }
 
     /**
-     * @brief Updates barrel position based on collisions
+     *  Updates barrel position based on collisions
      * @param map Current game map
      * @return This object if state has not changed, BarrelFall otherwise
      */
@@ -84,7 +84,7 @@ public class BarrelRolling extends Barrel {
     }
 
     /**
-     * @brief Checks whether the barrel is about to free fall or if it is just a crane slope
+     *  Checks whether the barrel is about to free fall or if it is just a crane slope
      * @param map Current map of the game
      * @return This object if it is just a slope, BarrelFall object if it is a free fall
      */
@@ -99,7 +99,7 @@ public class BarrelRolling extends Barrel {
     }
 
     /**
-     * @brief Gets next position of the barrel
+     *  Gets next position of the barrel
      * @return Next position of the barrel
      */
     private Pair<Integer,Integer> getNewPos(){
@@ -110,7 +110,7 @@ public class BarrelRolling extends Barrel {
     }
 
     /**
-     * @brief Sequence of sprites when the barrel is rolling to the right
+     *  Sequence of sprites when the barrel is rolling to the right
      */
     private void updateSpriteRight(){
         if (type.BARREL_ROLLING1 == this.current_type)
@@ -124,7 +124,7 @@ public class BarrelRolling extends Barrel {
     }
 
     /**
-     * @brief Sequence of sprites when the barrel is rolling to the left
+     *  Sequence of sprites when the barrel is rolling to the left
      */
     private void updateSpriteLeft(){
         if ( !this.fire ){
@@ -143,7 +143,7 @@ public class BarrelRolling extends Barrel {
     }
 
     /**
-     * @brief Checks if there is any ladder for the Barrel to fall through
+     *  Checks if there is any ladder for the Barrel to fall through
      * @param map Current game map
      * @return This object if there is no ladder to fall, BarrelFall object otherwise
      */

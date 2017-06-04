@@ -1,18 +1,19 @@
 package Controller;
 
 public abstract class MoveStrategy {
-    private final int CLIMB_RATE = 1;
+    protected final int CLIMB_RATE = 1;
     protected final int UP = 1;
     protected final int DOWN = -1;
     protected final int RIGHT = 1;
     protected final int LEFT = -1;
+
     protected boolean in_ladder = false;
     protected int tick = 0;
     protected int x_speed;
     protected int y_speed;
     protected Pair<Integer,Integer> rep_size;
 
-    public abstract Pair<Integer,Integer> move(Map map, Pair<Integer,Integer> mario_pos, Pair<Integer,Integer> curr_pos);
+    public abstract void move(Map map, Pair<Integer,Integer> mario_pos, Pair<Integer,Integer> curr_pos);
 
     public void setRep(Pair<Integer,Integer> rep){
         this.rep_size = rep;
@@ -92,7 +93,7 @@ public abstract class MoveStrategy {
     }
 
     /**
-     * @brief Checks if position of Fire is near ladder
+     *  Checks if position of Fire is near ladder
      * @param map Current map of the game
      * @return Whether Fire is near a ladder or not
      */
@@ -104,7 +105,7 @@ public abstract class MoveStrategy {
     }
 
     /**
-     * @brief Checks if there is a ladder below Fire
+     *  Checks if there is a ladder below Fire
      * @param map Current map of the game
      * @return Whether Fire has a ladder below or not
      */

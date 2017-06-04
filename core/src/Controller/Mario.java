@@ -17,7 +17,7 @@ public abstract class Mario extends Entity {
     protected int tick;
 
     /**
-     * @brief Mario constructor
+     *  Mario constructor
      * @param x X coordinate to position Mario
      * @param y Y coordinate to position Mario
      */
@@ -27,7 +27,7 @@ public abstract class Mario extends Entity {
     }
 
     /**
-     * @brief Used to create the default Mario (MarioRun), on given position
+     *  Used to create the default Mario (MarioRun), on given position
      * @param x X coordinate to position Mario
      * @param y Y coordinate to position Mario
      * @return MarioRun object
@@ -63,7 +63,7 @@ public abstract class Mario extends Entity {
     }
 
     /**
-     * @brief Represents the passing of time in the game, each time character moves this should be called
+     *  Represents the passing of time in the game, each time character moves this should be called
      */
     protected abstract void tickTock();
 }

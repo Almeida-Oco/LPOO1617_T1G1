@@ -7,7 +7,7 @@ public abstract class Barrel extends Entity {
     protected int n_times_inverted;
 
     /**
-     * @brief Default constructor for a barrel
+     *  Default constructor for a barrel
      * @param x X coordinate to create barrel
      * @param y Y coordinate to create barrel
      * @param x_dir Direction in which barrel is supposed to move
@@ -21,7 +21,7 @@ public abstract class Barrel extends Entity {
     }
 
     /**
-     * @brief Creates a new barrel and returns it
+     *  Creates a new barrel and returns it
      * @param x X coordinate to create barrel
      * @param y Y coordinate to create barrel
      * @param free_falling Whether the barrel is free falling or not
@@ -45,7 +45,7 @@ public abstract class Barrel extends Entity {
     }
 
     /**
-     * @brief Represents the passing of time in the game, each time character moves this should be called
+     *  Represents the passing of time in the game, each time character moves this should be called
      */
     protected abstract void tickTock();
 
@@ -64,7 +64,7 @@ public abstract class Barrel extends Entity {
     public abstract boolean toRemove(Map map);
 
     /**
-     * @brief Inverts the direction of the movement
+     *  Inverts the direction of the movement
      */
     public abstract void invertDirection();
 

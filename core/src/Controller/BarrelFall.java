@@ -8,7 +8,7 @@ class BarrelFall extends Barrel {
     private boolean fire;
 
     /**
-     * @brief Constructor for Barrel Fall
+     *  Constructor for Barrel Fall
      * @param x X coordinate to create barrel
      * @param y Y coordinate to create barrel
      * @param x_dir Previous direction where the barrel was rolling
@@ -35,7 +35,7 @@ class BarrelFall extends Barrel {
     }
 
     /**
-     * @brief Updates the position of the barrel based in collisions
+     *  Updates the position of the barrel based in collisions
      * @param map Current game map
      * @return This object if there should be no change in the Barrel state, BarrelRolling object otherwise
      */
@@ -82,7 +82,7 @@ class BarrelFall extends Barrel {
     }
 
     /**
-     * @brief Handles moving a Free Falling barrel
+     *  Handles moving a Free Falling barrel
      * @param map Current game map
      * @return This object if there is no change in state, BarrelRolling otherwise
      */
@@ -106,7 +106,7 @@ class BarrelFall extends Barrel {
     }
 
     /**
-     * @brief Handles moving a barrel which is either going down stairs or falling to next cranes
+     *  Handles moving a barrel which is either going down stairs or falling to next cranes
      * @param map Current game map
      * @return This object if there is no change in state, BarrelRolling otherwise
      */

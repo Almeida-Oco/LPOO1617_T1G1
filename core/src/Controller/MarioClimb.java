@@ -18,17 +18,21 @@ public class MarioClimb extends Mario {
 
     @Override
     public Entity moveEntity(Map map, int irrelevant, int y_move) {
-        Mario ret_val = this;
-        Pair<Integer,Integer> new_pos = this.getPos();
-        if ( GO_UP == y_move )
-            new_pos = this.climbUp( map );
-        else if (GO_DOWN == y_move )
-            new_pos = this.climbDown( map );
+        if (current_type == type.MARIO_DYING_UP)
+            return new MarioDie(irrelevant, y_move);
+        else {
+            Mario ret_val = this;
+            Pair<Integer, Integer> new_pos = this.getPos();
+            if (GO_UP == y_move)
+                new_pos = this.climbUp(map);
+            else if (GO_DOWN == y_move)
+                new_pos = this.climbDown(map);
 
-        if( STAY_STILL != y_move )
-            ret_val = processResults(map,new_pos);
-        this.setPos(new_pos);
-        return ret_val;
+            if (STAY_STILL != y_move)
+                ret_val = processResults(map, new_pos);
+            this.setPos(new_pos);
+            return ret_val;
+        }
     }
 
     @Override

@@ -30,6 +30,10 @@ public class MarioView extends ElementView {
         this.image_names.put(Entity.type.MARIO_RUN_LEFT,    "mario/run_left.png");
         this.image_names.put(Entity.type.MARIO_RUN_RIGHT,   "mario/run_right.png");
         this.image_names.put(Entity.type.MARIO_DYING_UP,    "mario/dying_up.png");
+        this.image_names.put(Entity.type.MARIO_DYING_DOWN,    "mario/dying_down.png");
+        this.image_names.put(Entity.type.MARIO_DYING_LEFT,    "mario/dying_left.png");
+        this.image_names.put(Entity.type.MARIO_DYING_RIGHT,    "mario/dying_right.png");
+        this.image_names.put(Entity.type.MARIO_DIED,    "mario/died.png");
         this.image_names.put(Entity.type.MARIO_CLIMB_OVER,  "mario/climb_over.png");
     }
 

@@ -77,6 +77,7 @@ public class GameLogic {
         for (int i = 2 ; i < this.chars.size() ; i++) {
             if ( this.chars.get(i).collidesWith(this.chars.get(0).getPos(), this.chars.get(0).getRepSize()) || this.chars.get(i).toRemove(this.map)){
                 this.chars.remove(i);
+                this.chars.get(0).setType(Entity.type.MARIO_DYING_UP);
                 this.first_barrel_falled = true;
             }else
                 this.chars.set(i,this.chars.get(i).moveEntity(map,0,0)); //numbers are irrelevant

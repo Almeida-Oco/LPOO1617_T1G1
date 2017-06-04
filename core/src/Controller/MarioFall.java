@@ -17,9 +17,13 @@ public class MarioFall extends Mario {
 
     @Override
     public Entity moveEntity(Map map, int x_move, int y_move) {
-        Mario ret_val = updatePosition(map);
+        if (current_type == type.MARIO_DYING_UP)
+            return new MarioDie(x_move, y_move);
+        else {
+            Mario ret_val = updatePosition(map);
 
-        return ret_val;
+            return ret_val;
+        }
     }
 
     @Override

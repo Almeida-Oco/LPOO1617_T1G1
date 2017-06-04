@@ -34,6 +34,11 @@ public class ViewFactory {
         cache.put(Entity.type.MARIO_CLIMB_RIGHT,ent_view);
         cache.put(Entity.type.MARIO_CLIMB_LEFT,ent_view);
         cache.put(Entity.type.MARIO_CLIMB_OVER,ent_view);
+        cache.put(Entity.type.MARIO_DIED,ent_view);
+        cache.put(Entity.type.MARIO_DYING_DOWN,ent_view);
+        cache.put(Entity.type.MARIO_DYING_LEFT,ent_view);
+        cache.put(Entity.type.MARIO_DYING_UP,ent_view);
+        cache.put(Entity.type.MARIO_DYING_RIGHT,ent_view);
     }
 
     private static void insertAllBarrel(AssetManager assets, float screen_scale ){

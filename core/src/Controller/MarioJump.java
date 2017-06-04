@@ -21,14 +21,18 @@ public class MarioJump extends Mario {
 
     @Override
     public Entity moveEntity(Map map, int x_move, int irrelevant) {
-        Mario ret_val;
-        if (this.direction == -10)
-            this.direction = x_move;
+        if (current_type == type.MARIO_DYING_UP)
+            return new MarioDie(x_move, irrelevant);
+        else {
+            Mario ret_val;
+            if (this.direction == -10)
+                this.direction = x_move;
 
-        ret_val = this.updatePosition(map);
-        ret_val.setType(this.current_type);
-        this.tickTock();
-        return ret_val;
+            ret_val = this.updatePosition(map);
+            ret_val.setType(this.current_type);
+            this.tickTock();
+            return ret_val;
+        }
     }
 
     @Override

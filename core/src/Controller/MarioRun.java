@@ -18,14 +18,18 @@ public class MarioRun extends Mario {
 
     @Override
     public Entity moveEntity(Map map, int x_move, int y_move) {
-        if ( JUMP == y_move )
-            return this.prepareJump(x_move);
-        else if ( (GO_DOWN == y_move && checkLowerLadder(map)) || (GO_UP == y_move && checkUpperLadder(map)) )
-            return new MarioClimb(this.position.getFirst(), this.position.getSecond() );
+        if (current_type == type.MARIO_DYING_UP)
+            return new MarioDie(x_move, y_move);
+        else {
+            if (JUMP == y_move)
+                return this.prepareJump(x_move);
+            else if ((GO_DOWN == y_move && checkLowerLadder(map)) || (GO_UP == y_move && checkUpperLadder(map)))
+                return new MarioClimb(this.position.getFirst(), this.position.getSecond());
 
-        this.updateSprite(x_move);
-        this.tickTock();
-        return this.updatePosition(map,x_move);
+            this.updateSprite(x_move);
+            this.tickTock();
+            return this.updatePosition(map, x_move);
+        }
     }
 
     @Override

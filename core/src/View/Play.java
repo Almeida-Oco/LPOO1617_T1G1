@@ -220,6 +220,11 @@ public class Play extends PlayScreen {
         this.assets.load("mario/climb_left.png",Texture.class);
         this.assets.load("mario/climb_right.png",Texture.class);
         this.assets.load("mario/climb_over.png",Texture.class);
+        this.assets.load("mario/dying_up.png",Texture.class);
+        this.assets.load("mario/dying_down.png",Texture.class);
+        this.assets.load("mario/dying_left.png",Texture.class);
+        this.assets.load("mario/dying_right.png",Texture.class);
+        this.assets.load("mario/died.png",Texture.class);
     }
 
     private void loadBarrelsAssets(){

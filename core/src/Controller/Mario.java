@@ -13,6 +13,7 @@ public abstract class Mario extends Entity {
     protected final int STAY_STILL = 0;
     protected int ladder_x_offset = 10;
     protected float JUMP_VELOCITY = 13f;
+    protected boolean died;
 
     protected int tick;
 
@@ -24,6 +25,7 @@ public abstract class Mario extends Entity {
     protected Mario(int x , int y){
         super(x,y);
         this.tick = 0;
+        this.died=false;
     }
 
     /**
@@ -67,4 +69,8 @@ public abstract class Mario extends Entity {
      * @brief Represents the passing of time in the game, each time character moves this should be called
      */
     protected abstract void tickTock();
+
+    public void kill(){
+        this.died=true;
+    }
 }

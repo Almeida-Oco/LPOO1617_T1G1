@@ -36,6 +36,8 @@ public class MarioDie extends Mario {
             Pair<Integer,Integer> mario_pos = new Pair<Integer, Integer>(4,8);
            ret_val= Mario.createMario(mario_pos.getFirst(), mario_pos.getSecond());
         }
+        this.updateSprite();
+        this.tickTock();
         return ret_val;
 
     }

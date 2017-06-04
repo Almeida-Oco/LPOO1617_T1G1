@@ -44,7 +44,7 @@ public abstract class Mario extends Entity {
     public void setType(type t) {
         if (    t == type.MARIO_LEFT || t == type.MARIO_RIGHT || t == type.MARIO_CLIMB_LEFT ||
                 t == type.MARIO_CLIMB_RIGHT || t == type.MARIO_RUN_RIGHT|| t == type.MARIO_RUN_LEFT ||
-                t == type.MARIO_CLIMB_OVER)
+                t == type.MARIO_CLIMB_OVER || t==type.MARIO_DYING_UP)
             this.current_type = t;
     }
 

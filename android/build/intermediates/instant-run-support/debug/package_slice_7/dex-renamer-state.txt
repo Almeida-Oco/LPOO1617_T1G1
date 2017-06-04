@@ -1,4 +1,0 @@
-#Sun Jun 04 05:58:06 WEST 2017
-base.0=/home/oco/Documents/java/DonkeyKong/android/build/intermediates/transforms/dex/debug/folders/1000/5/slice_7
-renamed.0=classes.dex
-file.0=/home/oco/Documents/java/DonkeyKong/android/build/intermediates/transforms/dex/debug/folders/1000/5/slice_7/classes.dex

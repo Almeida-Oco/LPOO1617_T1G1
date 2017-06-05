@@ -94,16 +94,16 @@ public class GameLogic {
         }
     }
 
-    
     public void score(){
         int score=0;
         for (int i = 0 ; i < this.barrels.size() ; i++){
-            int     mario_x = mario.getX(), mario_y = mario.getY(), barrel_x = this.barrels.get(i).getPos().getSecond()+ this.barrels.get(i).getRepSize().getSecond(), barrel_y = this.barrels.get(i).getPos().getSecond()+ this.barrels.get(i).getRepSize().getSecond()*2,
+            int     mario_x = mario.getX(), mario_y = mario.getY(), barrel_x = this.barrels.get(i).getPos().getFirst(), barrel_y = this.barrels.get(i).getPos().getSecond()+ this.barrels.get(i).getRepSize().getSecond()*2,
+                    barrel_y_wwidth=this.barrels.get(i).getPos().getSecond()+ this.barrels.get(i).getRepSize().getSecond()*2,
                     b_img_w = this.barrels.get(i).getRepSize().getFirst(), score_x = barrel_x + b_img_w/2;
             float mario_x_speed = this.mario.getXSpeed();
 
             Model.Pair<Integer,Integer> delta_x = new Model.Pair<Integer, Integer>( score_x - (int)(Math.floor(mario_x_speed/2)) , score_x + (int)Math.ceil(mario_x_speed/2) ),
-                                delta_y = new Model.Pair<Integer, Integer>(barrel_y, barrel_y*2);
+                                delta_y = new Model.Pair<Integer, Integer>(barrel_y, barrel_y_wwidth);
 
             if(mario_x>=delta_x.getFirst() && mario_x<= delta_x.getSecond() && mario_y >= delta_y.getFirst() &&  mario_y<=delta_y.getSecond()  )
                 score+=100;

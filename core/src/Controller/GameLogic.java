@@ -97,7 +97,7 @@ public class GameLogic {
     public void score(){
         int score=0;
         for (int i = 0 ; i < this.barrels.size() ; i++){
-            int     mario_x = mario.getX(), mario_y = mario.getY(), barrel_x = this.barrels.get(i).getPos().getFirst(), barrel_y = this.barrels.get(i).getPos().getSecond()+ this.barrels.get(i).getRepSize().getSecond()*2,
+            int     mario_x = mario.getX(), mario_y = mario.getY(), barrel_x = this.barrels.get(i).getPos().getFirst(), barrel_y = this.barrels.get(i).getPos().getSecond()+ this.barrels.get(i).getRepSize().getSecond(),
                     barrel_y_wwidth=this.barrels.get(i).getPos().getSecond()+ this.barrels.get(i).getRepSize().getSecond()*2,
                     b_img_w = this.barrels.get(i).getRepSize().getFirst(), score_x = barrel_x + b_img_w/2;
             float mario_x_speed = this.mario.getXSpeed();

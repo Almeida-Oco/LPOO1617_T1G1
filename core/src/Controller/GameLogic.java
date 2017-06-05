@@ -64,11 +64,18 @@ public class GameLogic {
         this.score();
     }
 
+    public void moveEnemies(){
+        this.moveFires();
+        this.moveBarrels();
+    }
+
     public void moveBarrels(){
         for (int i = 0 ; i < this.barrels.size() ; i++) {
-            if ( this.barrels.get(i).collidesWith(mario.getPos(), mario.getRepSize()) || this.barrels.get(i).toRemove(this.map)){
+            boolean die =  this.barrels.get(i).collidesWith(mario.getPos(), mario.getRepSize());
+            if ( die || this.barrels.get(i).toRemove(this.map)){
                 this.barrels.remove(i);
-                mario.setType(Model.Entity.type.MARIO_DYING_UP);
+                if ( die )
+                    mario.setType(Model.Entity.type.MARIO_DYING_UP);
                 this.first_barrel_falled = true;
             }else
                 this.barrels.set(i,this.barrels.get(i).moveEntity(map,0,0)); //numbers are irrelevant
@@ -78,7 +85,7 @@ public class GameLogic {
     public void moveFires(){
         for ( int i = 0 ; i < this.fires.size() ; i++){
             if ( this.fires.get(i).collidesWith( mario.getPos(), mario.getRepSize()) )
-                this.fires.remove(i);
+                mario.setType( Entity.type.MARIO_DYING_UP );
             else
                 this.fires.get(i).moveEntity(this.map, mario.getX(), mario.getY() );
         }

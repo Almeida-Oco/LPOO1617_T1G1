@@ -34,7 +34,7 @@ public class SmartMovement extends MoveStrategy {
      */
     private void processUpperLevel(Model.Map map, Pair<Integer,Integer> mario_pos, Pair<Integer,Integer> curr_pos , int diff){
         if ( this.in_ladder )
-            this.moveVertically(map, curr_pos, UP );
+            this.moveVertically(map, curr_pos, (curr_pos.getSecond() > mario_pos.getSecond()) ? DOWN : UP );
         else{
             int ladder_x = (int)(map.closestUpperStair( curr_pos.getFirst(), curr_pos.getSecond() )*map.getMapTileWidth());
             if (UPPER_LEVEL == diff || ABOVE_2 == diff){

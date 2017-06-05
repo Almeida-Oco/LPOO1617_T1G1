@@ -11,7 +11,7 @@ public class Fire extends Entity {
         super(pos.getFirst(), pos.getSecond());
         this.prev_x = pos.getFirst();
         this.current_type = type.FIRE_RIGHT;
-        this.move_strategy = new SmartMovement();
+        this.move_strategy = new SimpleMovement();
         this.DEFAULT_MAX_X_VELOCITY = 2;
         this.tick = 0;
     }
@@ -53,7 +53,7 @@ public class Fire extends Entity {
         return false;
     }
 
-    private void tickTock(){
+    protected void tickTock(){
         if ( (type.FIRE_LEFT_IGNITE == this.current_type || type.FIRE_LEFT == this.current_type) && (prev_x-this.position.getFirst()) < 0 )
             this.changeDirection();
         else if ( (type.FIRE_RIGHT_IGNITE == this.current_type || type.FIRE_RIGHT == this.current_type) && (prev_x-this.position.getFirst()) > 0 )

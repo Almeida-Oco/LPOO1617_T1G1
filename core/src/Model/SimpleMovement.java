@@ -1,9 +1,9 @@
 package Model;
 
 public class SimpleMovement extends MoveStrategy {
-    private int CHANGE_DIR = 5;
-    private int SURE_STEP = 5;
-    private int STAY_STILL = 5;
+    private int CHANGE_DIR = 10;
+    private int SURE_STEP = 10;
+    private int STAY_STILL = 10;
 
     private final MoveStrategy smart = new SmartMovement();
 
@@ -33,10 +33,10 @@ public class SimpleMovement extends MoveStrategy {
 
     private void randomMove(Model.Map map, Pair<Integer,Integer> curr_pos){
         boolean ladder = (Math.random()*10) < 4;
-        if ( this.tick >= CHANGE_DIR && !this.in_ladder )
-            this.moveHorizontally(map,curr_pos, dir );
-        else if ( (ladder && ( (this.dir == 1 && this.checkUpperLadder(map,curr_pos)) || this.dir == -1 && this.checkLowerLadder(map,curr_pos) )) || this.in_ladder )
-            this.moveVertically(map,curr_pos, dir );
+        if ( STAY_STILL == -1 && !this.smart.inLadder() )
+            this.smart.moveHorizontally(map,curr_pos, dir );
+        else if ( (ladder && ( (this.dir == 1 && this.checkUpperLadder(map,curr_pos)) || this.dir == -1 && this.checkLowerLadder(map,curr_pos) )) || this.smart.inLadder() )
+            this.smart.moveVertically(map,curr_pos, dir );
     }
 
 
@@ -47,16 +47,17 @@ public class SimpleMovement extends MoveStrategy {
         int rand = (int)(Math.random()*10);
         if ( rand < 4 ){
             this.STAY_STILL = (int)(Math.random()*5+1);
+            this.dir = 0;
             this.SURE_STEP = -1;
             this.CHANGE_DIR = -1;
         } else if ( rand < 8 ){
             this.STAY_STILL = -1;
             this.SURE_STEP = -1;
-            this.CHANGE_DIR = (int)(Math.random()*5+1);
-            this.dir = ((Math.random()*2)<1) ? RIGHT : LEFT;
+            this.CHANGE_DIR = (int)(Math.random()*10+10);
+            this.dir = ((Math.random()*2)<=1) ? RIGHT : LEFT;
         } else{
             this.STAY_STILL = -1;
-            this.SURE_STEP = (int)(Math.random()*4+1);
+            this.SURE_STEP = (int)(Math.random()*8+5);
             this.CHANGE_DIR = -1;
         }
     }

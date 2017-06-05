@@ -34,6 +34,7 @@ public class MarioDie extends Mario {
         Mario ret_val=this;
         if(this.animation_ended) {
             Pair<Integer,Integer> mario_pos = new Pair<Integer, Integer>(4,8);
+             mario_pos = map.mapPosToPixels(mario_pos);
            ret_val= Mario.createMario(mario_pos.getFirst(), mario_pos.getSecond());
         }
         this.updateSprite();

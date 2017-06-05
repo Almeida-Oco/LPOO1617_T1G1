@@ -87,8 +87,12 @@ public class MainMenu extends PlayScreen {
     @Override
     public ScreenAdapter renderAndUpdate(float delta) {
         this.render(delta);
-        if(change)
-            return new Play();
+        if(change) {
+            if (this.prev_state==null)
+                this.prev_state=new Play();
+            change=false;
+            return prev_state;
+        }
         else
             return this;
     }

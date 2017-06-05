@@ -20,6 +20,8 @@ public class GameLogic {
     Model.Entity DK;
     private ArrayList<Model.Entity> barrels = new ArrayList<Model.Entity>();
     private ArrayList<Model.Entity> fires = new ArrayList<Model.Entity>();
+    private int lifes=1;
+    private boolean die;
 
 
     private GameLogic(){}
@@ -37,6 +39,7 @@ public class GameLogic {
         DK = init_chrs.get(1);
         this.fires.add(Entity.newFire(this.map));
     }
+
 
 
     public void updateDK( float delta ) {
@@ -61,6 +64,13 @@ public class GameLogic {
 
     public void moveMario(int x_move, int y_move){
         mario = mario.moveEntity(this.map, new Pair<Integer, Integer>(x_move,y_move)) ;
+        if(die){
+            System.out.println("morri");
+            this.barrels.clear();
+            die=false;
+           // this.fires.add(Entity.newFire(this.map));
+        }
+
         this.score();
     }
 
@@ -71,11 +81,16 @@ public class GameLogic {
 
     public void moveBarrels(){
         for (int i = 0 ; i < this.barrels.size() ; i++) {
-            boolean die =  this.barrels.get(i).collidesWith(mario.getPos(), mario.getRepSize());
-            if ( die || this.barrels.get(i).toRemove(this.map)){
+           boolean died =  this.barrels.get(i).collidesWith(mario.getPos(), mario.getRepSize());
+            if ( died || this.barrels.get(i).toRemove(this.map)){
                 this.barrels.remove(i);
-                if ( die )
+                if ( died ) {
                     mario.setType(Model.Entity.type.MARIO_DYING_UP);
+                    lifes--;
+                    ScoreTimer.decLifes();
+                    die=true;
+
+                }
                 this.first_barrel_falled = true;
             }else
                 this.barrels.set(i,this.barrels.get(i).moveEntity(map, new Pair<Integer, Integer>(0,0) )); //numbers are irrelevant
@@ -87,6 +102,9 @@ public class GameLogic {
             if ( this.fires.get(i).collidesWith( mario.getPos(), mario.getRepSize()) ){
                 mario.setType( Entity.type.MARIO_DYING_UP );
                 this.fires.remove(i);
+                lifes--;
+                ScoreTimer.decLifes();
+               die=true;
             }
 
             else
@@ -140,6 +158,13 @@ public class GameLogic {
 
     public boolean firstBarrelFalled(){
         return this.first_barrel_falled;
+    }
+
+    public boolean isDead(){
+        if(lifes==0)
+            return true;
+        else
+            return false;
     }
 
 

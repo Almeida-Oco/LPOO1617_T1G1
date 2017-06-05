@@ -19,7 +19,7 @@ public class MarioRun extends Mario {
     @Override
     public Model.Entity moveEntity(Map map, int x_move, int y_move) {
         if (current_type == type.MARIO_DYING_UP)
-            return new MarioDie(x_move, y_move);
+            return new MarioDie(position.getFirst(), position.getSecond());
         else {
             if (JUMP == y_move)
                 return this.prepareJump(x_move);

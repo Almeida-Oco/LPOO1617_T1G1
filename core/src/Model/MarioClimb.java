@@ -19,7 +19,7 @@ public class MarioClimb extends Mario {
     @Override
     public Model.Entity moveEntity(Map map, int irrelevant, int y_move) {
         if (current_type == type.MARIO_DYING_UP)
-            return new MarioDie(irrelevant, y_move);
+            return new MarioDie(position.getFirst(), position.getSecond());
         else {
             Mario ret_val = this;
             Pair<Integer, Integer> new_pos = this.getPos();

@@ -22,7 +22,7 @@ public class MarioJump extends Mario {
     @Override
     public Model.Entity moveEntity(Map map, int x_move, int irrelevant) {
         if (current_type == type.MARIO_DYING_UP)
-            return new MarioDie(x_move, irrelevant);
+            return new MarioDie(position.getFirst(), position.getSecond());
         else {
             Mario ret_val;
             if (this.direction == -10)

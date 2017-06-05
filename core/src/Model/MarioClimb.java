@@ -95,9 +95,9 @@ public class MarioClimb extends Mario {
      * @return If end of ladder reached then a MarioRun object, this otherwise
      */
     private Mario processResults (Map map, Pair<Integer,Integer> new_pos){
-        Pair<Integer,Integer> lower_pos = new Pair<Integer,Integer>(new_pos.getFirst()+this.rep_size.getFirst()/2, new_pos.getSecond() - (int)map.getMapTileHeight()); //force lower tile
+        Pair<Integer,Integer> lower_pos = new Pair<Integer,Integer>(new_pos.getFirst()+this.rep_size.getFirst()/4, new_pos.getSecond() - (int)map.getMapTileHeight()); //force lower tile
         int new_y;
-        if (this.position.equals(new_pos) && (new_y = map.collidesBottom(lower_pos, this.rep_size.getFirst())) != -1){
+        if (this.position.equals(new_pos) && (new_y = map.collidesBottom(lower_pos, this.rep_size.getFirst()/2)) != -1){
             Mario ret_val = new MarioRun( new_pos.getFirst(), new_y  );
             ret_val.setType(type.MARIO_CLIMB_OVER);
             return ret_val;

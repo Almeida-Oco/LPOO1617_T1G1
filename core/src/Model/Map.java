@@ -222,7 +222,7 @@ public class Map {
      * @return X coordinate in Tiles of closest lower ladder
      */
     public int closestLowerStair(int x, int y){
-        int map_x = this.XConverter(x), map_y = this.getEdgeHorizontalTileY(x,y-this.getMapTileHeight(),SEARCH_BOTTOM)+1, closest_x = -1;
+        int map_x = this.XConverter(x), map_y = this.getEdgeHorizontalTileY(x,y-(this.getMapTileHeight()*2),SEARCH_BOTTOM)+1, closest_x = -1;
         closest_x = this.closestLeftLadder(map_x,map_y, SEARCH_BOTTOM );
         int temp_x = this.closestRightLadder(map_x, map_y, SEARCH_BOTTOM );
         if ( Math.abs(map_x - closest_x) >= Math.abs(map_x - temp_x) )
@@ -238,7 +238,7 @@ public class Map {
      * @return X coordinate in Tiles of closest upper ladder
      */
     public int closestUpperStair(int x , int y){
-        int map_x = this.XConverter(x), map_y = this.getEdgeHorizontalTileY(x,y-this.getMapTileHeight(), SEARCH_TOP), closest_x;
+        int map_x = this.XConverter(x), map_y = this.getEdgeHorizontalTileY(x,y-(this.getMapTileHeight()*2), SEARCH_TOP), closest_x;
         closest_x = this.closestLeftLadder(map_x, map_y, SEARCH_TOP);
         int temp_x = this.closestRightLadder(map_x, map_y, SEARCH_TOP);
         if ( Math.abs(map_x - closest_x) > Math.abs(map_x - temp_x) )
@@ -292,10 +292,9 @@ public class Map {
     }
 
     /**
-     * Checks if there is a ladder below or above the given position
+     * Checks if there is a ladder in the given position
      * @param x X coordinate in tiles to search
      * @param y Y coordinate in tiles to search
-     * @param dir Direction to search, 1 up -1 down
      * @return Whether there is a ladder or not
      */
     private boolean ladderIn(int x , int y){

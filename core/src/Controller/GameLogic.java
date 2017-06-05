@@ -94,21 +94,28 @@ public class GameLogic {
         }
     }
 
-    public void score(){
-        int score=0;
-        for (int i = 0 ; i < this.barrels.size() ; i++){
-            int     mario_x = mario.getX(), mario_y = mario.getY(), barrel_x = this.barrels.get(i).getPos().getFirst(), barrel_y = this.barrels.get(i).getPos().getSecond()+ this.barrels.get(i).getRepSize().getSecond(),
-                    barrel_y_wwidth=this.barrels.get(i).getPos().getSecond()+ this.barrels.get(i).getRepSize().getSecond()*2,
-                    b_img_w = this.barrels.get(i).getRepSize().getFirst(), score_x = barrel_x + b_img_w/2;
+    private int testjumps(ArrayList<Model.Entity> entities){
+        int ret=0;
+        for (int i = 0 ; i < entities.size() ; i++){
+            int     mario_x = mario.getX(), mario_y = mario.getY(), entity_x = entities.get(i).getPos().getFirst(), entity_y = entities.get(i).getPos().getSecond()+ entities.get(i).getRepSize().getSecond(),
+                    entity_y_wwidth=entities.get(i).getPos().getSecond()+ entities.get(i).getRepSize().getSecond()*2,
+                    b_img_w = entities.get(i).getRepSize().getFirst(), score_x = entity_x + b_img_w/2;
             float mario_x_speed = this.mario.getXSpeed();
 
             Model.Pair<Integer,Integer> delta_x = new Model.Pair<Integer, Integer>( score_x - (int)(Math.floor(mario_x_speed/2)) , score_x + (int)Math.ceil(mario_x_speed/2) ),
-                                delta_y = new Model.Pair<Integer, Integer>(barrel_y, barrel_y_wwidth);
+                    delta_y = new Model.Pair<Integer, Integer>(entity_y, entity_y_wwidth);
 
             if(mario_x>=delta_x.getFirst() && mario_x<= delta_x.getSecond() && mario_y >= delta_y.getFirst() &&  mario_y<=delta_y.getSecond()  )
-                score+=100;
+                ret+=100;
 
         }
+        return ret;
+    }
+
+    public void score(){
+        int score=0;
+        score+=testjumps(this.fires);
+        score+= testjumps(this.barrels);
         ScoreTimer.addScore(score);
     }
 

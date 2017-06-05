@@ -1,9 +1,14 @@
-package Controller;
+package Model;
 
 
 import com.mygdx.game.MyGdxGame;
 
+import java.util.ArrayList;
+
 public abstract class Entity {
+    private final static Pair<Integer,Integer> mario_init_pos = new Pair<Integer, Integer>(4 ,8);
+    private final static Pair<Integer,Integer> DK_pos =         new Pair<Integer, Integer>(3 ,222);
+    private final static Pair<Integer,Integer> fire_pos =       new Pair<Integer,Integer> (15,51);
 
     public enum type {  MARIO_LEFT,MARIO_RIGHT,MARIO_CLIMB_LEFT, MARIO_CLIMB_RIGHT, MARIO_CLIMB_OVER, MARIO_RUN_LEFT,MARIO_RUN_RIGHT, MARIO_DYING_UP,MARIO_DYING_DOWN, MARIO_DYING_LEFT, MARIO_DYING_RIGHT, MARIO_DIED,
                         DK_THROW_LEFT, DK_THROW_RIGHT, DK_FRONT, DK_LEFT_BARREL, DK_RIGHT_BARREL, DK_LEFT_HAND, DK_RIGHT_HAND,
@@ -11,7 +16,6 @@ public abstract class Entity {
                         FIRE_BARREL_FALL_BACK, FIRE_BARREL_FALL_FRONT, FIRE_BARREL_ROLLING,
                         FIRE_LEFT, FIRE_LEFT_IGNITE, FIRE_RIGHT, FIRE_RIGHT_IGNITE,
                         BARREL_FIRE_MIN1, BARREL_FIRE_MIN2, BARREL_FIRE_MAX1, BARREL_FIRE_MAX2};
-    private final float DEFAULT_GRAVITY = 1f;
     private final float DEFAULT_MAX_Y_VELOCITY = 4f;
     protected float DEFAULT_MAX_X_VELOCITY = 3f;
 
@@ -60,6 +64,10 @@ public abstract class Entity {
         return (int)Math.round((double)this.velocity.getSecond().floatValue());
     }
 
+    public type getType(){
+        return this.current_type;
+    };
+
     public void setPos(Pair<Integer,Integer> pos){
         this.position = pos;
     }
@@ -70,7 +78,6 @@ public abstract class Entity {
         this.rep_size.setSecond(height);
     }
 
-    public abstract boolean collidesWith(Pair<Integer, Integer> pos, Pair<Integer, Integer> rep_size);
 
     public void setYVelocity( float vel ){
             this.velocity.setSecond(vel);
@@ -97,6 +104,7 @@ public abstract class Entity {
 
     public abstract void setType(type t);
 
+
     /**
      *  Tries to move the Entity in the given direction
      * @param map Current map of the game
@@ -113,8 +121,41 @@ public abstract class Entity {
      */
     public abstract boolean toRemove(Map map);
 
-    public type getType(){
-        return this.current_type;
-    };
+    /**
+     * Checks if this entity collides with another entity on given position
+     * @param pos Position of other entity
+     * @param rep_size Representation size of other entity
+     * @return Whether it collides or not
+     */
+    public abstract boolean collidesWith(Pair<Integer, Integer> pos, Pair<Integer, Integer> rep_size);
 
+    /**
+     * Creates the initial characters of the game
+     * @param map Current game map
+     * @return Array with initial characters of game
+     */
+    public static ArrayList<Entity> createInitialCharacters(Map map){
+        ArrayList<Entity> chrs = new ArrayList<Entity>();
+        Pair<Integer,Integer> mario_pos = map.mapPosToPixels(mario_init_pos);
+        Pair<Integer,Integer> dk_pos = map.mapPosToPixels(DK_pos);
+        Entity dk = DonkeyKong.getInstance();
+        dk.setPos( dk_pos );
+        chrs.add( Mario.createMario(mario_pos.getFirst(), mario_pos.getSecond()) );
+        chrs.add( dk );
+        return chrs;
+    }
+
+    /**
+     * Creates a new barrel with the given state
+     * @param map Current game map
+     * @param state Current state of object, First if it is a fire, second if it is free falling
+     * @return The newly created barrel
+     */
+    public static Entity newBarrel(Map map, Pair<Boolean,Boolean> state){
+        return Barrel.createBarrel(map, state );
+    }
+
+    public static Entity newFire(Map map){
+        return new Fire(map.mapPosToPixels(fire_pos), new SmartMovement() );
+    }
 }

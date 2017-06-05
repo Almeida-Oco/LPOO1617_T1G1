@@ -4,7 +4,7 @@ import com.badlogic.gdx.assets.AssetManager;
 
 import java.util.HashMap;
 
-import Controller.Entity;
+import Model.Entity;
 public class ViewFactory {
     private static HashMap<Entity.type,ElementView> cache = new HashMap<Entity.type, ElementView>();
 

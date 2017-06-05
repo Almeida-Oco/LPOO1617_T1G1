@@ -1,4 +1,4 @@
-package Controller;
+package Model;
 
 public class SimpleMovement extends MoveStrategy {
     private int CHANGE_DIR = 5;
@@ -11,7 +11,7 @@ public class SimpleMovement extends MoveStrategy {
     }
 
     @Override
-    public void move(Map map, Pair<Integer, Integer> mario_pos, Pair<Integer,Integer> curr_pos) {
+    public void move(Model.Map map, Pair<Integer, Integer> mario_pos, Pair<Integer,Integer> curr_pos) {
         this.randomMove(map,curr_pos);
 //        if ( this.tick == SURE_STEP ){
 //            this.tickTock(); //CHAMAR A FUNCAO MOVE DO SMART MOVEMENT
@@ -23,7 +23,7 @@ public class SimpleMovement extends MoveStrategy {
     }
 
 
-    private void randomMove(Map map, Pair<Integer,Integer> curr_pos){
+    private void randomMove(Model.Map map, Pair<Integer,Integer> curr_pos){
         boolean ladder = (Math.random()*10) < 1;
         if ( this.tick >= CHANGE_DIR){
             this.dir = ((Math.random()*2) < 1) ? RIGHT : LEFT;

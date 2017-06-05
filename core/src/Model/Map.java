@@ -1,10 +1,9 @@
-package Controller;
+package Model;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
-import com.sun.org.apache.bcel.internal.generic.LADD;
 
 
 public class Map {
@@ -123,7 +122,7 @@ public class Map {
      * @return Equivalent position in screen pixels
      * It always returns the correspondent bottom left corner of the tile
      */
-    public Pair<Integer,Integer> mapPosToPixels( Pair<Integer,Integer> map_pos){
+    public Pair<Integer,Integer> mapPosToPixels(Pair<Integer,Integer> map_pos){
         return new Pair<Integer, Integer>(  (int)(map_pos.getFirst() * this.getMapTileWidth()),
                                             (int)(map_pos.getSecond() * this.getMapTileHeight()) );
     }

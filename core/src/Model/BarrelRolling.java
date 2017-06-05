@@ -1,4 +1,4 @@
-package Controller;
+package Model;
 
 import com.badlogic.gdx.Gdx;
 
@@ -15,13 +15,12 @@ public class BarrelRolling extends Barrel {
 
     /**
      *  Constructor for rolling barrel
-     * @param x X coordinate to create barrel
-     * @param y Y coordinate to create barrel
+     * @param pos Position to create barrel
      * @param x_dir Direction in which barrel is supposed to move
      * @param fire Whether this barrel is of fire or nor
      */
-    public BarrelRolling(int x, int y, int x_dir, boolean fire) {
-        super(x,y,x_dir);
+    public BarrelRolling(Pair<Integer,Integer> pos, boolean fire,  int x_dir) {
+        super(pos.getFirst(), pos.getSecond() , x_dir);
         this.current_type = type.BARREL_ROLLING1;
         this.prev_tile_x = -1;
         this.fall_delta = new Pair<Integer, Integer>(-1,-1);
@@ -75,7 +74,7 @@ public class BarrelRolling extends Barrel {
             new_pos.setSecond( new_pos.getSecond() + (int)map.getMapTileHeight() );
 
         if ( map.collidesBottom(even_lower_pos, this.rep_size.getFirst()) == -1)
-            return new BarrelFall(new_pos.getFirst(),new_pos.getSecond(),this.x_direction, FREE_FALL, false);
+            return new BarrelFall(new_pos, new Pair<Boolean, Boolean>(FREE_FALL,false), this.x_direction);
 
         this.setPos(new_pos);
         return this;
@@ -136,7 +135,7 @@ public class BarrelRolling extends Barrel {
     private Barrel checkLadderFall(Map map){
         int curr_x = this.getX(), lower_y = this.getY()-(int)map.getMapTileHeight();
         if ( curr_x >= this.fall_delta.getFirst() && curr_x <= this.fall_delta.getSecond() && (Math.random()*10) > 6)
-            return new BarrelFall(curr_x, lower_y , this.x_direction, LADDER_FALL, false );
+            return new BarrelFall(new Pair<Integer,Integer>(curr_x, lower_y), new Pair<Boolean,Boolean>(LADDER_FALL, false) , this.x_direction);
         else if ( curr_x >= this.fall_delta.getFirst() && curr_x <= this.fall_delta.getSecond() ){
             this.fall_delta.setFirst(-1);
             this.fall_delta.setSecond(-1);

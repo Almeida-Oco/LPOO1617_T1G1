@@ -2,21 +2,24 @@ package Controller;
 
 import java.util.ArrayList;
 
+import Model.Entity;
+import Model.Pair;
 import View.ScoreTimer;
 
 public class GameLogic {
     private Pair<Integer,Integer> barrels_pos = new Pair<Integer, Integer>(6,222);
-    private Pair<Integer,Integer> mario_pos = new Pair<Integer, Integer>(4,8);
     private static GameLogic instance;
-    private Map map = null;
+    private Model.Map map = null;
     private float time_passed = -1;
     private int time_to_throw = 3;
     private boolean first_barrel_falled = false;
     private boolean first_barrel_thrown = false;
 
     //!Mario should always be first character!
-    private ArrayList<Entity> chars = new ArrayList<Controller.Entity>();
-    private ArrayList<Entity> fires = new ArrayList<Entity>();
+    Model.Entity mario;
+    Model.Entity DK;
+    private ArrayList<Model.Entity> barrels = new ArrayList<Model.Entity>();
+    private ArrayList<Model.Entity> fires = new ArrayList<Model.Entity>();
 
 
     private GameLogic(){}
@@ -29,15 +32,10 @@ public class GameLogic {
     }
 
     public void initializeCharacters() {
-        Pair<Integer,Integer> DK_pos = new Pair<Integer, Integer>(3,222);
-        Pair<Integer,Integer> mario_pos = this.map.mapPosToPixels(this.mario_pos);
-        Pair<Integer,Integer> fire_pos = this.map.mapPosToPixels(new Pair<Integer,Integer>(15,51));
-        DK_pos= this.map.mapPosToPixels(DK_pos);
-        this.chars.add( Mario.createMario(mario_pos.getFirst(), mario_pos.getSecond()));
-        Entity DK = DonkeyKong.getInstance();
-        this.fires.add( new Fire(fire_pos.getFirst(), fire_pos.getSecond(), new SmartMovement() ));
-        DK.setPos(DK_pos);
-        this.chars.add( DK );
+        ArrayList<Entity> init_chrs = Entity.createInitialCharacters(this.map);
+        mario = init_chrs.get(0);
+        DK = init_chrs.get(1);
+        this.fires.add(Entity.newFire(this.map));
     }
 
 
@@ -45,69 +43,58 @@ public class GameLogic {
         if ( this.time_passed < time_to_throw && delta < time_to_throw)
             this.time_passed+=delta;
 
-        if ( this.time_passed > time_to_throw) {
-            if ( this.chars.get(1).moveEntity(map, 1, (this.first_barrel_thrown) ? 0 : 1) == null ) { //second number is irrelevant
-                this.createNewBarrel((this.chars.get(1).getType() == Entity.type.DK_FRONT));
+        if ( this.time_passed > time_to_throw ) {
+            if ( DK.moveEntity( map, 1, (this.first_barrel_thrown) ? 0 : 1) == null ) { //second number is irrelevant
+                this.addNewBarrel( DK.getType() == Model.Entity.type.DK_FRONT );
                 this.time_passed = 0;
                 this.time_to_throw = (int)(Math.random()*3)+1;
             }
         }
         else
-            this.chars.get(1).moveEntity(map,0,0);
+            DK.moveEntity( map,0,0 );
     }
 
-    private void createNewBarrel( boolean free_fall ){
-        Pair<Integer,Integer> barrel_pos = (Pair<Integer,Integer>)this.barrels_pos.clone();
-        if ( free_fall ){ //free falling barrel
-            barrel_pos.setFirst(barrel_pos.getFirst() - 2);
-            barrel_pos.setSecond(barrel_pos.getSecond() - 5);
-        }
-
-        barrel_pos = this.map.mapPosToPixels(barrel_pos);
-        this.chars.add( Barrel.createBarrel(barrel_pos.getFirst(), barrel_pos.getSecond(), !this.first_barrel_thrown , free_fall) );
+    private void addNewBarrel(boolean free_fall ){
+        this.barrels.add( Model.Barrel.createBarrel(this.map, new Pair<Boolean, Boolean>(!this.first_barrel_thrown , free_fall) ) );
         this.first_barrel_thrown = true;
     }
 
     public void moveMario(int x_move, int y_move){
-        this.chars.set( 0 , this.chars.get(0).moveEntity(this.map,x_move,y_move) );
-        Score();
+        mario = mario.moveEntity(this.map, x_move, y_move) ;
+        this.score();
     }
 
     public void moveBarrels(){
-        for (int i = 2 ; i < this.chars.size() ; i++) {
-            if ( this.chars.get(i).collidesWith(this.chars.get(0).getPos(), this.chars.get(0).getRepSize()) || this.chars.get(i).toRemove(this.map)){
-                this.chars.remove(i);
-                this.chars.get(0).setType(Entity.type.MARIO_DYING_UP);
+        for (int i = 0 ; i < this.barrels.size() ; i++) {
+            if ( this.barrels.get(i).collidesWith(mario.getPos(), mario.getRepSize()) || this.barrels.get(i).toRemove(this.map)){
+                this.barrels.remove(i);
+                mario.setType(Model.Entity.type.MARIO_DYING_UP);
                 this.first_barrel_falled = true;
             }else
-                this.chars.set(i,this.chars.get(i).moveEntity(map,0,0)); //numbers are irrelevant
+                this.barrels.set(i,this.barrels.get(i).moveEntity(map,0,0)); //numbers are irrelevant
         }
     }
 
     public void moveFires(){
         for ( int i = 0 ; i < this.fires.size() ; i++){
-            if ( this.fires.get(i).collidesWith( this.chars.get(0).getPos(), this.chars.get(0).getRepSize()) )
+            if ( this.fires.get(i).collidesWith( mario.getPos(), mario.getRepSize()) )
                 this.fires.remove(i);
             else
-                this.fires.get(i).moveEntity(this.map, this.chars.get(0).getX(), this.chars.get(0).getY() );
+                this.fires.get(i).moveEntity(this.map, mario.getX(), mario.getY() );
         }
     }
 
-    public void Score(){
+    public void score(){
         int score=0;
-        for (int i = 2 ; i < this.chars.size() ; i++){
-           /* if(this.chars.get(0).getPos().getFirst()<= (this.chars.get(i).getPos().getFirst()+ this.chars.get(i).getRepSize().getFirst()) &&
-                    (this.chars.get(0).getPos().getFirst() + this.chars.get(0).getRepSize().getFirst())>= this.chars.get(i).getPos().getFirst() &&
-                    this.chars.get(0).getPos().getSecond()>= ( this.chars.get(i).getPos().getSecond() + this.chars.get(0).getRepSize().getSecond())
-                    && this.chars.get(0).getPos().getSecond()<= ( this.chars.get(i).getPos().getSecond() + (this.chars.get(0).getRepSize().getSecond()*2)))*/
-            int     mario_x = this.chars.get(0).getX(), mario_y = this.chars.get(0).getY(), barrel_x = this.chars.get(i).getX(), barrel_y = this.chars.get(i).getY(),
-                    b_img_w = this.chars.get(i).getRepSize().getFirst(), score_x = barrel_x + b_img_w/2;
-            float mario_x_speed = this.chars.get(0).getXSpeed();
+        for (int i = 0 ; i < this.barrels.size() ; i++){
+            int     mario_x = mario.getX(), mario_y = mario.getY(), barrel_x = this.barrels.get(i).getX(), barrel_y = this.barrels.get(i).getY(),
+                    b_img_w = this.barrels.get(i).getRepSize().getFirst(), score_x = barrel_x + b_img_w/2;
+            float mario_x_speed = this.mario.getXSpeed();
 
-            Pair<Integer,Integer>delta_x = new Pair<Integer, Integer>( score_x - (int)(Math.floor(mario_x_speed/2)) , score_x + (int)Math.ceil(mario_x_speed/2) ),
-                                delta_y = new Pair<Integer, Integer>(barrel_y, barrel_y*2);
+            Model.Pair<Integer,Integer> delta_x = new Model.Pair<Integer, Integer>( score_x - (int)(Math.floor(mario_x_speed/2)) , score_x + (int)Math.ceil(mario_x_speed/2) ),
+                                delta_y = new Model.Pair<Integer, Integer>(barrel_y, barrel_y*2);
 
-            if(mario_x>=delta_x.getFirst() && mario_x<= delta_x.getSecond() /* && mario_y >= delta_y.getFirst() &&  mario_y<=delta_y.getSecond() */  )
+            if(mario_x>=delta_x.getFirst() && mario_x<= delta_x.getSecond() && mario_y >= delta_y.getFirst() &&  mario_y<=delta_y.getSecond()  )
                 score+=100;
 
         }
@@ -115,21 +102,21 @@ public class GameLogic {
     }
 
 
-
-
-    public ArrayList<Entity> getCharacters(){
-        ArrayList<Entity> all_chars = new ArrayList<Entity>();
-        all_chars.addAll(this.chars);
+    public ArrayList<Model.Entity> getCharacters(){
+        ArrayList<Model.Entity> all_chars = new ArrayList<Model.Entity>();
+        all_chars.add(this.mario);
+        all_chars.add(DK);
+        all_chars.addAll(this.barrels);
         all_chars.addAll(this.fires);
         return all_chars;
     }
 
-    public Controller.Map getMap(){
+    public Model.Map getMap(){
         return this.map;
     }
 
     public void setMap(String map_name, String collision_layer){
-        this.map = new Map();
+        this.map = new Model.Map();
         this.map.loadMap(map_name, collision_layer);
     }
 

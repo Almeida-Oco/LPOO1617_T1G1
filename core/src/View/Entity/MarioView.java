@@ -5,7 +5,7 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 
-import Controller.Entity;
+import Model.Entity;
 
 public class MarioView extends ElementView {
     private static final float DEFAULT_SCALE = 4;

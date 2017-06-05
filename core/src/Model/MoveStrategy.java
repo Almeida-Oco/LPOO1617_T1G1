@@ -1,4 +1,4 @@
-package Controller;
+package Model;
 
 public abstract class MoveStrategy {
     protected final int CLIMB_RATE = 1;
@@ -15,7 +15,7 @@ public abstract class MoveStrategy {
     protected int y_speed;
     protected Pair<Integer,Integer> rep_size;
 
-    public abstract void move(Map map, Pair<Integer,Integer> mario_pos, Pair<Integer,Integer> curr_pos);
+    public abstract void move(Model.Map map, Pair<Integer,Integer> mario_pos, Pair<Integer,Integer> curr_pos);
 
     public void setRep(Pair<Integer,Integer> rep){
         this.rep_size = rep;
@@ -32,7 +32,7 @@ public abstract class MoveStrategy {
      * @param curr_pos Current position of the fire
      * @param direction Direction to go
      */
-    protected void moveHorizontally(Map map, Pair<Integer,Integer> curr_pos, int direction){
+    protected void moveHorizontally(Model.Map map, Pair<Integer,Integer> curr_pos, int direction){
         curr_pos.setFirst( map.checkOutOfScreenWidth(curr_pos.getFirst()+(direction*this.x_speed), this.rep_size.getFirst()) );
         Pair<Integer,Integer>   lower_pos = new Pair<Integer,Integer>(curr_pos.getFirst(), curr_pos.getSecond() - (int)map.getMapTileHeight());
         int new_y;
@@ -52,7 +52,7 @@ public abstract class MoveStrategy {
      * @param direction Direction to go
      * @return True if there is still ladder, false if ladder ended
      */
-    protected boolean moveVertically(Map map, Pair<Integer,Integer> curr_pos, int direction){
+    protected boolean moveVertically(Model.Map map, Pair<Integer,Integer> curr_pos, int direction){
         if ( map.collidesBottom(curr_pos, this.rep_size.getFirst()) != -1 || !this.in_ladder )
             this.first_cranes = true;
         this.previous_dir = direction;
@@ -71,7 +71,7 @@ public abstract class MoveStrategy {
      * @param map Current game map
      * @param pos New position to try to move into, if it is impossible to move there it is changed accordingly
      */
-    private void moveDown(Map map, Pair<Integer,Integer> pos){
+    private void moveDown(Model.Map map, Pair<Integer,Integer> pos){
         int img_width = this.rep_size.getFirst(), lower_x;
         Pair<Integer,Integer>   middle_pos = new Pair<Integer,Integer>( pos.getFirst()+img_width/4, pos.getSecond()),
                                 lower_pos =  new Pair<Integer,Integer>( middle_pos.getFirst() , pos.getSecond() - (int)map.getMapTileHeight() );
@@ -87,7 +87,7 @@ public abstract class MoveStrategy {
      * @param map Current game map
      * @param pos New position to try to move into, if it is impossible to move there it is changed accordingly
      */
-    private void moveUp(Map map, Pair<Integer,Integer> pos){
+    private void moveUp(Model.Map map, Pair<Integer,Integer> pos){
         int img_width = this.rep_size.getFirst(), lower_x;
         Pair<Integer,Integer>   middle_pos = new Pair<Integer,Integer>( pos.getFirst()+img_width/4, pos.getSecond()),
                                 lower_pos  = new Pair<Integer,Integer>( middle_pos.getFirst() , pos.getSecond() - (int)map.getMapTileHeight() );
@@ -99,7 +99,7 @@ public abstract class MoveStrategy {
 
     }
 
-    private boolean notInLadder(Map map, Pair<Integer,Integer> pos){
+    private boolean notInLadder(Model.Map map, Pair<Integer,Integer> pos){
         int img_width = this.rep_size.getFirst();
         Pair<Integer,Integer> middle_pos = new Pair<Integer, Integer>(pos.getFirst()+img_width/4, pos.getSecond()),
                             lower_pos = new Pair<Integer, Integer>(middle_pos.getFirst(), middle_pos.getSecond() - (int)map.getMapTileHeight() );
@@ -112,7 +112,7 @@ public abstract class MoveStrategy {
      * @param map Current map of the game
      * @return Whether Fire is near a ladder or not
      */
-    protected boolean checkUpperLadder(Map map, Pair<Integer,Integer> pos){
+    protected boolean checkUpperLadder(Model.Map map, Pair<Integer,Integer> pos){
         Pair<Integer,Integer> upper_pos = new Pair<Integer, Integer>(pos.getFirst()+this.rep_size.getFirst()/2,
                 pos.getSecond() + (Math.round(map.getMapTileHeight())) );
 
@@ -124,7 +124,7 @@ public abstract class MoveStrategy {
      * @param map Current map of the game
      * @return Whether Fire has a ladder below or not
      */
-    protected boolean checkLowerLadder(Map map, Pair<Integer,Integer> pos){
+    protected boolean checkLowerLadder(Model.Map map, Pair<Integer,Integer> pos){
         Pair<Integer,Integer> lower_pos = new Pair<Integer, Integer>(pos.getFirst()+this.rep_size.getFirst()/2,
                 pos.getSecond() - Math.round(map.getMapTileHeight()) );
 

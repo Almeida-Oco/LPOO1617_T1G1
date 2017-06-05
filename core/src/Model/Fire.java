@@ -1,4 +1,4 @@
-package Controller;
+package Model;
 
 
 public class Fire extends Entity {
@@ -7,9 +7,9 @@ public class Fire extends Entity {
     private int prev_x;
     private int tick;
 
-    public Fire(int x, int y, MoveStrategy strategy){
-        super(x,y);
-        this.prev_x = x;
+    public Fire(Pair<Integer,Integer> pos, MoveStrategy strategy){
+        super(pos.getFirst(), pos.getSecond());
+        this.prev_x = pos.getFirst();
         this.current_type = type.FIRE_RIGHT;
         this.move_strategy = new SmartMovement();
         this.DEFAULT_MAX_X_VELOCITY = 2;

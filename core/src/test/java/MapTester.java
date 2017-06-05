@@ -2,7 +2,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.junit.MockitoJUnitRunner;
 
-import Controller.Map;
+import Model.Map;
 
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.mock;

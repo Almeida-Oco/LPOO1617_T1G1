@@ -1,6 +1,7 @@
-package Controller;
+package Model;
 
 public abstract class Barrel extends Entity {
+    private final static Pair<Integer,Integer> def_pos =    new Pair<Integer, Integer>(6 ,222);
     protected int tick;
     protected int x_direction;
     protected boolean inverted;
@@ -22,19 +23,19 @@ public abstract class Barrel extends Entity {
 
     /**
      *  Creates a new barrel and returns it
-     * @param x X coordinate to create barrel
-     * @param y Y coordinate to create barrel
-     * @param free_falling Whether the barrel is free falling or not
+     * @param map Current game map
+     * @param state State of the barrel, first if it is a fire barrel, second if it is free falling
      * @return A new barrel
      */
-    public static Barrel createBarrel(int x , int y, boolean fire, boolean free_falling){
-        Barrel ret;
-        if ( free_falling )
-            ret =  new BarrelFall(x,y,1,fire,true);
-        else
-            ret = new BarrelRolling(x,y,1,false);
-
-        return ret;
+    public static Barrel createBarrel(Map map, Pair<Boolean,Boolean> state){
+        Pair<Integer,Integer> pos = (Pair<Integer,Integer>)def_pos.clone();
+        if ( state.getSecond() ){
+            pos.setFirst(pos.getFirst() - 2);
+            pos.setSecond(pos.getSecond() - 5);
+        }
+        pos = map.mapPosToPixels(pos);
+        return (state.getSecond()) ? new BarrelFall(pos,state, 0) :
+                                new BarrelRolling(pos,state.getFirst(),1);
     }
 
     @Override

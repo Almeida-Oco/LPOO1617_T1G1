@@ -8,7 +8,7 @@ import com.mygdx.game.MyGdxGame;
 
 import java.util.HashMap;
 
-import Controller.Entity;
+import Model.Entity;
 
 
 public abstract class ElementView {

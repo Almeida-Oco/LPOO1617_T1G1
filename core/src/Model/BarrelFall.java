@@ -1,4 +1,4 @@
-package Controller;
+package Model;
 
 class BarrelFall extends Barrel {
     private final int END_OF_MAP = 7;
@@ -9,17 +9,15 @@ class BarrelFall extends Barrel {
 
     /**
      *  Constructor for Barrel Fall
-     * @param x X coordinate to create barrel
-     * @param y Y coordinate to create barrel
+     * @param pos Position to create Barrel
      * @param x_dir Previous direction where the barrel was rolling
-     * @param fall_through Whether the barrel is moving to the next set of cranes or not. Also signals if barrel is of fire or not
-     * @param keep_falling Whether the barrel is supposed to keep falling until end of map
+     * @param state Current state of barrel, [M,N], M -> if it is falling, N -> if it is always falling
      * If keep_falling is true, then fall_through will tell whether it is a fire_barrel or not
      */
-    public BarrelFall(int x, int y, int x_dir, boolean fall_through, boolean keep_falling) {
-        super(x,y,x_dir);
-        this.fall_through = fall_through;
-        this.keep_falling = keep_falling;
+    public BarrelFall(Pair<Integer,Integer> pos, Pair<Boolean, Boolean> state, int x_dir) {
+        super(pos.getFirst(), pos.getSecond() ,x_dir);
+        this.fall_through = state.getFirst();
+        this.keep_falling = state.getSecond();
         this.fire = (fall_through && keep_falling);
         if ( this.fire )
             this.current_type = type.FIRE_BARREL_FALL_FRONT;
@@ -100,7 +98,7 @@ class BarrelFall extends Barrel {
         this.setPos(new_pos);
 
         if ( map.YConverter(new_pos.getSecond()) <= END_OF_MAP )
-            return new BarrelRolling(new_pos.getFirst(), new_pos.getSecond(), -1, this.fire );
+            return new BarrelRolling(new_pos, this.fire,  -1);
         else
             return this;
     }
@@ -120,8 +118,11 @@ class BarrelFall extends Barrel {
             this.setPos(new_pos);
             this.updateYVelocity();
         }
-        else
-            ret_val = new BarrelRolling( new_pos.getFirst() , new_y , -this.x_direction, false);
+        else{
+            new_pos.setSecond(new_y);
+            ret_val = new BarrelRolling( new_pos, false, -this.x_direction);
+        }
+
 
         return ret_val;
     }

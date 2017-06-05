@@ -1,4 +1,4 @@
-package Controller;
+package Model;
 
 /**
  * Class to represent a pair, used all throughout the game

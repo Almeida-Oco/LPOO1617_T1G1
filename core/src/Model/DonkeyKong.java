@@ -1,6 +1,6 @@
-package Controller;
+package Model;
 
-public class DonkeyKong extends Entity {
+public class DonkeyKong extends Model.Entity {
     private final int ANIMATION_RESET = 40;
     private final int ANIMATION_RATE = 20;
     private final int THROW = 1;
@@ -18,7 +18,7 @@ public class DonkeyKong extends Entity {
     }
 
     @Override
-    public boolean collidesWith(Pair<Integer, Integer> pos, Pair<Integer, Integer> rep_size) {
+    public boolean collidesWith(Model.Pair<Integer, Integer> pos, Model.Pair<Integer, Integer> rep_size) {
         return  (pos.getFirst() <= (this.getX()+this.rep_size.getFirst())) && (pos.getSecond() >=  this.getY()) &&
                 ((pos.getSecond()+rep_size.getSecond()) <= (this.getY()+this.rep_size.getSecond()) );
     }
@@ -39,7 +39,7 @@ public class DonkeyKong extends Entity {
      * @return null if DK is about to throw a barrel, this object otherwise
      */
     @Override
-    public Entity moveEntity(Map map, int throw_or_hand, int first_barrel) {
+    public Model.Entity moveEntity(Model.Map map, int throw_or_hand, int first_barrel) {
         if (this.curr_animation == -1){
             this.free_barrel = ((Math.random()*10) > 7) || first_barrel == THROW;
             this.curr_animation = throw_or_hand;
@@ -98,7 +98,7 @@ public class DonkeyKong extends Entity {
     }
 
     @Override
-    public boolean toRemove(Map map) {
+    public boolean toRemove(Model.Map map) {
         return false;
     }
 }

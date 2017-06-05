@@ -1,4 +1,4 @@
-package Controller;
+package Model;
 
 /**
  * Created by oco on 5/30/17.
@@ -16,7 +16,7 @@ public class MarioFall extends Mario {
     }
 
     @Override
-    public Entity moveEntity(Map map, int x_move, int y_move) {
+    public Model.Entity moveEntity(Map map, int x_move, int y_move) {
         if (current_type == type.MARIO_DYING_UP)
             return new MarioDie(x_move, y_move);
         else {

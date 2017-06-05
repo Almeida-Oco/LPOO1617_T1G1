@@ -1,4 +1,4 @@
-package Controller;
+package Model;
 
 
 public class MarioClimb extends Mario {
@@ -17,7 +17,7 @@ public class MarioClimb extends Mario {
     }
 
     @Override
-    public Entity moveEntity(Map map, int irrelevant, int y_move) {
+    public Model.Entity moveEntity(Map map, int irrelevant, int y_move) {
         if (current_type == type.MARIO_DYING_UP)
             return new MarioDie(irrelevant, y_move);
         else {

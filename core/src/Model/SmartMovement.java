@@ -1,4 +1,4 @@
-package Controller;
+package Model;
 
 public class SmartMovement extends MoveStrategy {
     private final int SAME_LEVEL = 0;
@@ -15,7 +15,7 @@ public class SmartMovement extends MoveStrategy {
 
     //TODO if fire is in ladder the check if mario is in next level is different
     @Override
-    public void move(Map map, Pair<Integer, Integer> mario_pos, Pair<Integer,Integer> curr_pos) {
+    public void move(Model.Map map, Pair<Integer, Integer> mario_pos, Pair<Integer,Integer> curr_pos) {
         int action = map.checkLevelDifference(curr_pos, mario_pos);
         System.out.println("    ACTION = "+action+", FIRE POS = "+curr_pos.toString()+", MARIO POS = "+mario_pos.toString());
         if ( SAME_LEVEL == action )
@@ -34,7 +34,7 @@ public class SmartMovement extends MoveStrategy {
      * @param diff Difference of positions, can be UPPER_LADDER, UPPER_LEVEL or ABOVE_2
      * //TODO perhaps too many if else
      */
-    private void processUpperLevel(Map map, Pair<Integer,Integer> mario_pos, Pair<Integer,Integer> curr_pos , int diff){
+    private void processUpperLevel(Model.Map map, Pair<Integer,Integer> mario_pos, Pair<Integer,Integer> curr_pos , int diff){
         if ( this.in_ladder )
             this.moveVertically(map, curr_pos, UP );
         else{
@@ -61,7 +61,7 @@ public class SmartMovement extends MoveStrategy {
      * @param curr_pos Fire position
      * @param diff Difference of positions, can be LOWER_LADDER, LOWER_LEVEL or BELOW_2
      */
-    private void processLowerLevel(Map map, Pair<Integer,Integer> mario_pos, Pair<Integer,Integer> curr_pos, int diff){
+    private void processLowerLevel(Model.Map map, Pair<Integer,Integer> mario_pos, Pair<Integer,Integer> curr_pos, int diff){
         if ( this.in_ladder )
             this.moveVertically( map,curr_pos, (this.previous_dir == UP && diff != LOWER_LEVEL) ? UP : DOWN );
         else{
@@ -81,7 +81,7 @@ public class SmartMovement extends MoveStrategy {
     }
 
 
-    private void processSameLevel( Map map, Pair<Integer,Integer> mario_pos, Pair<Integer,Integer> curr_pos ){
+    private void processSameLevel(Model.Map map, Pair<Integer,Integer> mario_pos, Pair<Integer,Integer> curr_pos ){
         if ( !this.in_ladder )
             this.moveHorizontally(map,curr_pos, (mario_pos.getFirst() > curr_pos.getFirst()) ? RIGHT : LEFT );
         else

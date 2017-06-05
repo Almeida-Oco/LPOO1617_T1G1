@@ -1,6 +1,5 @@
 package View;
 
-import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.assets.AssetManager;
@@ -15,8 +14,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 
 import Controller.GameLogic;
-import Controller.Entity;
-import Controller.Pair;
+import Model.Entity;
+import Model.Pair;
 import View.Entity.ElementView;
 import View.Entity.ViewFactory;
 

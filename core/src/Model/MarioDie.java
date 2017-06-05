@@ -1,5 +1,4 @@
-package Controller;
-
+package Model;
 
 
 public class MarioDie extends Mario {
@@ -30,7 +29,7 @@ public class MarioDie extends Mario {
     }
 
     @Override
-    public Entity moveEntity(Map map, int x_move, int y_move) {
+    public Model.Entity moveEntity(Map map, int x_move, int y_move) {
         Mario ret_val=this;
         if(this.animation_ended) {
             Pair<Integer,Integer> mario_pos = new Pair<Integer, Integer>(4,8);

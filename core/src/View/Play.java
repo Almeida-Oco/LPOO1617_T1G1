@@ -10,7 +10,6 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 
 import Controller.GameLogic;
@@ -24,12 +23,11 @@ public class Play extends PlayScreen {
     private TiledMap map;
     private OrthogonalTiledMapRenderer renderer;
     private OrthographicCamera camera;
-    private AssetManager assets;
+    private AssetManager assets = null;
     private float scale;
     private Entity.type barrel_fire = Entity.type.BARREL_FIRE_MIN1;
     private int tick = 0;
     protected SpriteBatch batch;
-    protected Skin skin;
     protected TextField name;
 
     private final int JUMP = 2;
@@ -44,6 +42,10 @@ public class Play extends PlayScreen {
 
 
     private long diff, start = System.currentTimeMillis();
+
+    public Play(ScreenAdapter next_screen) {
+        super(next_screen);
+    }
 
 
     public void sleep(int fps) {
@@ -61,7 +63,6 @@ public class Play extends PlayScreen {
     }
 
     public void show() {
-
         this.change = false;
         this.batch = new SpriteBatch();
         this.score = new ScoreTimer(batch);
@@ -74,10 +75,10 @@ public class Play extends PlayScreen {
         this.camera = new OrthographicCamera();
         this.camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         this.renderer.setView(this.camera);
-        this.assets = new AssetManager();
-
-        if (assets.getLoadedAssets() == 0)
+        if (assets == null){
+            this.assets = new AssetManager();
             this.loadAssets();
+        }
 
     }
 
@@ -101,12 +102,12 @@ public class Play extends PlayScreen {
         this.animateBackground();
 
         this.handleInput(delta);
-        this.sleep(FPS);
+
         batch.setProjectionMatrix(score.stage.getCamera().combined);
         score.stage.draw();
         if (GameLogic.getInstance().isDead())
             change = true;
-
+        this.sleep(FPS);
     }
 
     private void drawEntities() {
@@ -212,7 +213,6 @@ public class Play extends PlayScreen {
         this.map.dispose();
         this.renderer.dispose();
         this.batch.dispose();
-        this.assets.dispose();
         this.score.dispose();
     }
 
@@ -273,16 +273,10 @@ public class Play extends PlayScreen {
     @Override
     public ScreenAdapter renderAndUpdate(float delta) {
         this.render(delta);
-        if (change) {
-            if (this.prev_state == null) {
-                this.prev_state = new MainMenu();
-                change = false;
-                return prev_state;
-            }
+        if ( this.change ) {
+            this.change = false;
+            return this.next_screen;
         }
-        else
-            return this;
-
 
         return this;
     }

@@ -1,6 +1,7 @@
 package View;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -12,8 +13,6 @@ import com.badlogic.gdx.ScreenAdapter;
 
 
 public class MainMenu extends PlayScreen {
-
-
         private Texture background;
 
         private Button startButton;
@@ -24,7 +23,9 @@ public class MainMenu extends PlayScreen {
         private SpriteBatch batch;
         private Stage stage;
 
-
+    public MainMenu(ScreenAdapter next_screen) {
+        super(next_screen);
+    }
 
 
     public void show() {
@@ -51,8 +52,6 @@ public class MainMenu extends PlayScreen {
         stage.addActor(exitButton);
     }
         public void handleInput( float delta ) {
-       //     System.out.println("adeus");
-
             if(startButton.isPressed())
                 this.change=true;
 
@@ -87,14 +86,12 @@ public class MainMenu extends PlayScreen {
     @Override
     public ScreenAdapter renderAndUpdate(float delta) {
         this.render(delta);
-        if(change) {
-            if (this.prev_state==null)
-                this.prev_state=new Play();
-            change=false;
-            return prev_state;
+        if(change){
+            this.change = false;
+            return this.next_screen;
         }
-        else
-            return this;
+
+        return this;
     }
 }
 

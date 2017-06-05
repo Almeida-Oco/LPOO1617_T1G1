@@ -15,7 +15,8 @@ public abstract class Entity {
                         BARREL_FALL_BACK, BARREL_FALL_FRONT, BARREL_ROLLING1, BARREL_ROLLING2, BARREL_ROLLING3, BARREL_ROLLING4,
                         FIRE_BARREL_FALL_BACK, FIRE_BARREL_FALL_FRONT, FIRE_BARREL_ROLLING,
                         FIRE_LEFT, FIRE_LEFT_IGNITE, FIRE_RIGHT, FIRE_RIGHT_IGNITE,
-                        BARREL_FIRE_MIN1, BARREL_FIRE_MIN2, BARREL_FIRE_MAX1, BARREL_FIRE_MAX2};
+                        BARREL_FIRE_MIN1, BARREL_FIRE_MIN2, BARREL_FIRE_MAX1, BARREL_FIRE_MAX2}
+
     private final float DEFAULT_MAX_Y_VELOCITY = 4f;
     protected float DEFAULT_MAX_X_VELOCITY = 3f;
 
@@ -66,7 +67,7 @@ public abstract class Entity {
 
     public type getType(){
         return this.current_type;
-    };
+    }
 
     public void setPos(Pair<Integer,Integer> pos){
         this.position = pos;

@@ -7,24 +7,30 @@ import Model.Pair;
 import View.ScoreTimer;
 
 public class GameLogic {
-    private Pair<Integer,Integer> barrels_pos = new Pair<Integer, Integer>(6,222);
+    private final int N_LIVES = 1;
+
     private static GameLogic instance;
     private Model.Map map = null;
     private float time_passed = -1;
     private int time_to_throw = 3;
-    private boolean first_barrel_falled = false;
-    private boolean first_barrel_thrown = false;
+    private boolean first_barrel_falled;
+    private boolean first_barrel_thrown;
 
     //!Mario should always be first character!
     Model.Entity mario;
     Model.Entity DK;
     private ArrayList<Model.Entity> barrels = new ArrayList<Model.Entity>();
     private ArrayList<Model.Entity> fires = new ArrayList<Model.Entity>();
-    private int lifes=1;
+    private int lives;
     private boolean die;
 
 
-    private GameLogic(){}
+    private GameLogic(){
+        this.lives = N_LIVES;
+        this.die = false;
+        this.first_barrel_falled = false;
+        this.first_barrel_thrown = false;
+    }
 
     public static GameLogic getInstance(){
         if (instance == null)
@@ -86,7 +92,7 @@ public class GameLogic {
                 this.barrels.remove(i);
                 if ( died ) {
                     mario.setType(Model.Entity.type.MARIO_DYING_UP);
-                    lifes--;
+                    lives--;
                     ScoreTimer.decLifes();
                     die=true;
 
@@ -102,7 +108,7 @@ public class GameLogic {
             if ( this.fires.get(i).collidesWith( mario.getPos(), mario.getRepSize()) ){
                 mario.setType( Entity.type.MARIO_DYING_UP );
                 this.fires.remove(i);
-                lifes--;
+                lives--;
                 ScoreTimer.decLifes();
                die=true;
             }
@@ -161,8 +167,10 @@ public class GameLogic {
     }
 
     public boolean isDead(){
-        if(lifes==0)
+        if( this.lives == 0 ){
+            this.lives = N_LIVES;
             return true;
+        }
         else
             return false;
     }

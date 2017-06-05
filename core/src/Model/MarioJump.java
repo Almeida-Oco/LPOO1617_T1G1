@@ -54,7 +54,7 @@ public class MarioJump extends Mario {
     private Mario updatePosition(Map map){
         Mario ret_val = this;
         Pair<Integer,Integer> new_pos = new Pair<Integer, Integer>( this.position.getFirst()+ (int)this.jump_x_vel*this.direction,
-                                                                    this.position.getSecond()+(int)this.getYSpeed() );
+                                                                    this.position.getSecond()+ this.getYSpeed());
         int new_y, new_x;
         if ( (new_y = map.collidesBottom(new_pos,this.rep_size.getFirst())) != -1){
             this.setYVelocity(0f);

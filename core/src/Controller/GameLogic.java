@@ -44,14 +44,14 @@ public class GameLogic {
             this.time_passed+=delta;
 
         if ( this.time_passed > time_to_throw ) {
-            if ( DK.moveEntity( map, 1, (this.first_barrel_thrown) ? 0 : 1) == null ) { //second number is irrelevant
+            if ( DK.moveEntity( map, new Pair<Integer, Integer>(1, (this.first_barrel_thrown) ? 0 : 1)) == null ) { //second number is irrelevant
                 this.addNewBarrel( DK.getType() == Model.Entity.type.DK_FRONT );
                 this.time_passed = 0;
                 this.time_to_throw = (int)(Math.random()*3)+1;
             }
         }
         else
-            DK.moveEntity( map,0,0 );
+            DK.moveEntity( map,new Pair<Integer, Integer>(0,0) );
     }
 
     private void addNewBarrel(boolean free_fall ){
@@ -60,7 +60,7 @@ public class GameLogic {
     }
 
     public void moveMario(int x_move, int y_move){
-        mario = mario.moveEntity(this.map, x_move, y_move) ;
+        mario = mario.moveEntity(this.map, new Pair<Integer, Integer>(x_move,y_move)) ;
         this.score();
     }
 
@@ -78,16 +78,19 @@ public class GameLogic {
                     mario.setType(Model.Entity.type.MARIO_DYING_UP);
                 this.first_barrel_falled = true;
             }else
-                this.barrels.set(i,this.barrels.get(i).moveEntity(map,0,0)); //numbers are irrelevant
+                this.barrels.set(i,this.barrels.get(i).moveEntity(map, new Pair<Integer, Integer>(0,0) )); //numbers are irrelevant
         }
     }
 
     public void moveFires(){
         for ( int i = 0 ; i < this.fires.size() ; i++){
-            if ( this.fires.get(i).collidesWith( mario.getPos(), mario.getRepSize()) )
+            if ( this.fires.get(i).collidesWith( mario.getPos(), mario.getRepSize()) ){
                 mario.setType( Entity.type.MARIO_DYING_UP );
+                this.fires.remove(i);
+            }
+
             else
-                this.fires.get(i).moveEntity(this.map, mario.getX(), mario.getY() );
+                this.fires.get(i).moveEntity(this.map, mario.getPos() );
         }
     }
 

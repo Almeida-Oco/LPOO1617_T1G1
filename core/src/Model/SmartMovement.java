@@ -11,9 +11,7 @@ public class SmartMovement extends MoveStrategy {
     private final int NEXT_CRANES = 15;
     private final int X_TOLERANCE = 3;
 
-    private int last_action = -10;
 
-    //TODO if fire is in ladder the check if mario is in next level is different
     @Override
     public void move(Model.Map map, Pair<Integer, Integer> mario_pos, Pair<Integer,Integer> curr_pos) {
         int action = map.checkLevelDifference(curr_pos, mario_pos);
@@ -27,7 +25,7 @@ public class SmartMovement extends MoveStrategy {
     }
 
     /**
-     * Processes current difference of positions between Fire and Mario
+     * Process what should happen when mario is on an upper level
      * @param map Current game map
      * @param mario_pos Mario position
      * @param curr_pos Fire position
@@ -55,7 +53,7 @@ public class SmartMovement extends MoveStrategy {
     }
 
     /**
-     * Processes current difference of positions between Fire and Mario
+     * Process what should happen when mario is on a lower level
      * @param map Current game map
      * @param mario_pos Mario position
      * @param curr_pos Fire position
@@ -80,7 +78,12 @@ public class SmartMovement extends MoveStrategy {
         }
     }
 
-
+    /**
+     * Process what should happen when Mario is on the same level as the Fire
+     * @param map Current game map
+     * @param mario_pos Mario position
+     * @param curr_pos Fire position
+     */
     private void processSameLevel(Model.Map map, Pair<Integer,Integer> mario_pos, Pair<Integer,Integer> curr_pos ){
         if ( !this.in_ladder )
             this.moveHorizontally(map,curr_pos, (mario_pos.getFirst() > curr_pos.getFirst()) ? RIGHT : LEFT );
@@ -90,27 +93,6 @@ public class SmartMovement extends MoveStrategy {
             else
                 this.moveVertically(map, curr_pos, DOWN );
 
-    }
-
-    /**
-     * Aims fire horizontal direction based
-     * @param curr_pos Current position
-     * @param ladder_x If Fire is supposed to go to a ladder this will contain the ladder X, -1 otherwise
-     * @param curr_dir Current fire direction
-     * @return  Direction fire is supposed to go
-     */
-    private int aimFire(Pair<Integer, Integer> curr_pos, int ladder_x, int curr_dir) {
-        int dir = curr_dir;
-        if ( ladder_x != -1) {
-            if (ladder_x < curr_pos.getFirst())
-                dir = LEFT;
-            else if (ladder_x > curr_pos.getFirst())
-                dir = RIGHT;
-            else
-                dir = 0;
-        }
-
-        return dir;
     }
 
 }

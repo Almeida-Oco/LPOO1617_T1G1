@@ -108,11 +108,10 @@ public abstract class Entity {
     /**
      *  Tries to move the Entity in the given direction
      * @param map Current map of the game
-     * @param x_move Movement in the X direction {-1,0,1}
-     * @param y_move Movement in the Y direction {-1,0,1,2}
+     * @param move Contains the movement in X coordinate and Y coordinate
      * @return Either this object if state has not changed, or a different object if state has changed
      */
-    public abstract Entity moveEntity(Map map, int x_move, int y_move);
+    public abstract Entity moveEntity(Map map, Pair<Integer,Integer> move);
 
     /**
      *  Whether this entity should be removed or not

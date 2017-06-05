@@ -15,9 +15,15 @@ public class MarioRun extends Mario {
         this.setYVelocity(0f);
     }
 
-
+    /**
+     * Moves mario
+     * @param map Current map of the game
+     * @param move Contains the movement in X coordinate and Y coordinate
+     * @return
+     */
     @Override
-    public Model.Entity moveEntity(Map map, int x_move, int y_move) {
+    public Model.Entity moveEntity(Map map, Pair<Integer,Integer> move) {
+        int x_move = move.getFirst(), y_move = move.getSecond();
         if (current_type == type.MARIO_DYING_UP)
             return new MarioDie(position.getFirst(), position.getSecond());
         else {

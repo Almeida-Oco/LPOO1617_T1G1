@@ -16,7 +16,7 @@ public class MarioFall extends Mario {
     }
 
     @Override
-    public Model.Entity moveEntity(Map map, int x_move, int y_move) {
+    public Model.Entity moveEntity(Map map, Pair<Integer,Integer> irrelevant) {
         if (current_type == type.MARIO_DYING_UP)
             return new MarioDie(position.getFirst(), position.getSecond());
         else {

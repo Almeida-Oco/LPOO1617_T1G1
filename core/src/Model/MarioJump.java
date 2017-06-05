@@ -19,14 +19,20 @@ public class MarioJump extends Mario {
         this.jump_x_vel = this.getXSpeed()*1.5f;
     }
 
+    /**
+     * Moves jumping mario
+     * @param map Current map of the game
+     * @param move First contains x direction to go, second is irrelevant
+     * @return
+     */
     @Override
-    public Model.Entity moveEntity(Map map, int x_move, int irrelevant) {
+    public Model.Entity moveEntity(Map map, Pair<Integer,Integer> move) {
         if (current_type == type.MARIO_DYING_UP)
             return new MarioDie(position.getFirst(), position.getSecond());
         else {
             Mario ret_val;
             if (this.direction == -10)
-                this.direction = x_move;
+                this.direction = move.getFirst();
 
             ret_val = this.updatePosition(map);
             ret_val.setType(this.current_type);

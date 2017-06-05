@@ -16,8 +16,15 @@ public class MarioClimb extends Mario {
         this.current_type = type.MARIO_CLIMB_LEFT;
     }
 
+    /**
+     * Moves climbing mario
+     * @param map Current map of the game
+     * @param move First is irrelevant, second contains direction to climb
+     * @return
+     */
     @Override
-    public Model.Entity moveEntity(Map map, int irrelevant, int y_move) {
+    public Model.Entity moveEntity(Map map, Pair<Integer,Integer> move) {
+        int y_move = move.getSecond();
         if (current_type == type.MARIO_DYING_UP)
             return new MarioDie(position.getFirst(), position.getSecond());
         else {
@@ -85,7 +92,6 @@ public class MarioClimb extends Mario {
      *  Used to process results of the climbing actions
      * @param map Current map of the game
      * @param new_pos New position returned by either climbUp() or climbDown()
-     * @param y_move Direction Mario is trying to go
      * @return If end of ladder reached then a MarioRun object, this otherwise
      */
     private Mario processResults (Map map, Pair<Integer,Integer> new_pos){

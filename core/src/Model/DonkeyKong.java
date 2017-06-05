@@ -34,15 +34,14 @@ public class DonkeyKong extends Model.Entity {
     /**
      *  Since DK does not move, this is used to know which sprite to represent it
      * @param map Current map of the game
-     * @param throw_or_hand If 1 then do barrel throw animation, if 0 do hand motion
-     * @param first_barrel If 1 then it is the first barrel thrown so it forces the free_fall animation, 0 otherwise
+     * @param state State of DK, first if it is a falling barrel or rolling to throw, second if it is the first barrel
      * @return null if DK is about to throw a barrel, this object otherwise
      */
     @Override
-    public Model.Entity moveEntity(Model.Map map, int throw_or_hand, int first_barrel) {
+    public Model.Entity moveEntity(Model.Map map, Pair<Integer,Integer> state) {
         if (this.curr_animation == -1){
-            this.free_barrel = ((Math.random()*10) > 7) || first_barrel == THROW;
-            this.curr_animation = throw_or_hand;
+            this.free_barrel = ((Math.random()*10) > 7) || state.getSecond() == THROW;
+            this.curr_animation = state.getFirst();
             this.tick = 0;
         }
         this.tickTock();

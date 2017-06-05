@@ -41,9 +41,9 @@ public class Fire extends Entity {
      * It will slowly move towards Mario
      */
     @Override
-    public Entity moveEntity(Map map, int mario_x, int mario_y) {
+    public Entity moveEntity(Map map, Pair<Integer,Integer> mario_pos) {
         this.move_strategy.setSpeed(this.velocity);
-        this.move_strategy.move(map, new Pair<Integer, Integer>( mario_x,mario_y ), this.position );
+        this.move_strategy.move(map, mario_pos, this.position );
         this.tickTock();
         return this;
     }

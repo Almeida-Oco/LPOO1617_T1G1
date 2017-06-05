@@ -28,7 +28,7 @@ public class BarrelRolling extends Barrel {
     }
 
     @Override
-    public Entity moveEntity(Map map, int irrelevant1, int irrelevant2) {
+    public Entity moveEntity(Map map, Pair<Integer,Integer> irrelevant) {
         this.checkNewDelta(map);
         Barrel ret_val = this.checkLadderFall(map);
         if (ret_val != this)

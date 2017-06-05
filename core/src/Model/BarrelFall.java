@@ -26,7 +26,7 @@ class BarrelFall extends Barrel {
     }
 
     @Override
-    public Barrel moveEntity(Map map, int irrelevant1, int irrelevant2) {
+    public Barrel moveEntity(Map map, Pair<Integer,Integer> irrelevant) {
         Barrel ret_val = updatePosition(map);
         this.tickTock();
         return ret_val;

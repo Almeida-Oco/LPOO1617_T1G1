@@ -26,6 +26,10 @@ public abstract class MoveStrategy {
         this.y_speed = (int)speed.getSecond().floatValue();
     }
 
+    public boolean inLadder(){
+        return this.in_ladder;
+    }
+
     /**
      * Moves the fire horizontally
      * @param map Current game map

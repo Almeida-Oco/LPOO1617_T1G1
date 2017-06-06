@@ -98,8 +98,8 @@ public class ScoreTimer implements Disposable{
         }
     }
 
-    public static void decLifes(){
-        life_number--;
+    public static void setLifes(int lifes){
+        life_number=lifes;
         lifesLabel.setText(String.format("%d", life_number));
     }
 

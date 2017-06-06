@@ -20,8 +20,21 @@ public class ViewFactory {
                 insertAllBarrelFire(assets,screen_scale);
             else if ( isFire(type) )
                 insertAllFire(assets,screen_scale);
+            else if(isPrincess(type))
+                insertAllPrincess(assets,screen_scale);
 
         return cache.get(type);
+    }
+
+    private static void insertAllPrincess(AssetManager assets, float screen_scale) {
+        ElementView ent_view = new PrincessView(assets, screen_scale);
+
+        cache.put(Entity.type.PRINCESS_1,ent_view);
+        cache.put(Entity.type.PRINCESS_2,ent_view);
+    }
+
+    private static boolean isPrincess(Entity.type type) {
+        return ( type == Entity.type.PRINCESS_1|| type == Entity.type.PRINCESS_2);
     }
 
 

@@ -7,7 +7,7 @@ import Model.Pair;
 import View.ScoreTimer;
 
 public class GameLogic {
-    private final int N_LIVES = 1;
+    private final int N_LIVES = 3;
 
     private static GameLogic instance;
     private Model.Map map = null;
@@ -43,7 +43,9 @@ public class GameLogic {
         ArrayList<Entity> init_chrs = Entity.createInitialCharacters(this.map);
         mario = init_chrs.get(0);
         DK = init_chrs.get(1);
+        this.fires.clear();
         this.fires.add(Entity.newFire(this.map));
+        ScoreTimer.setLifes(lives);
     }
 
 
@@ -71,13 +73,19 @@ public class GameLogic {
     public void moveMario(int x_move, int y_move){
         mario = mario.moveEntity(this.map, new Pair<Integer, Integer>(x_move,y_move)) ;
         if(die){
-            System.out.println("morri");
             this.barrels.clear();
             die=false;
            // this.fires.add(Entity.newFire(this.map));
         }
 
         this.score();
+    }
+
+    public boolean gameWon(){
+        if(mario.getPos().getFirst()>=532 && mario.getPos().getFirst()<=812 && mario.getPos().getSecond()>=1632)
+            return true;
+        else
+            return false;
     }
 
     public void moveEnemies(){
@@ -93,7 +101,7 @@ public class GameLogic {
                 if ( died ) {
                     mario.setType(Model.Entity.type.MARIO_DYING_UP);
                     lives--;
-                    ScoreTimer.decLifes();
+                    ScoreTimer.setLifes(lives);
                     die=true;
 
                 }
@@ -106,11 +114,13 @@ public class GameLogic {
     public void moveFires(){
         for ( int i = 0 ; i < this.fires.size() ; i++){
             if ( this.fires.get(i).collidesWith( mario.getPos(), mario.getRepSize()) ){
+
                 mario.setType( Entity.type.MARIO_DYING_UP );
                 this.fires.remove(i);
                 lives--;
-                ScoreTimer.decLifes();
+                ScoreTimer.setLifes(lives);
                die=true;
+
             }
 
             else

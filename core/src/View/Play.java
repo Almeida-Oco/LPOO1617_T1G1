@@ -26,6 +26,7 @@ public class Play extends PlayScreen {
     private AssetManager assets = null;
     private float scale;
     private Entity.type barrel_fire = Entity.type.BARREL_FIRE_MIN1;
+    private Entity.type princess = Entity.type.PRINCESS_2;
     private int tick = 0;
     protected SpriteBatch batch;
     protected TextField name;
@@ -105,7 +106,7 @@ public class Play extends PlayScreen {
 
         batch.setProjectionMatrix(score.stage.getCamera().combined);
         score.stage.draw();
-        if (GameLogic.getInstance().isDead())
+        if (GameLogic.getInstance().isDead()|| GameLogic.getInstance().gameWon())
             change = true;
         this.sleep(FPS);
     }
@@ -158,6 +159,8 @@ public class Play extends PlayScreen {
         if (GameLogic.getInstance().firstBarrelFalled())
             this.drawBarrelFire();
 
+       this.drawPrincess();
+
         this.tick++;
     }
 
@@ -171,6 +174,27 @@ public class Play extends PlayScreen {
         this.batch.begin();
         el_view.draw(this.batch);
         this.batch.end();
+    }
+
+    private void drawPrincess(){
+        this.updatePrincessState();
+        ElementView el_view = ViewFactory.makeView(this.assets, this.princess, 2);
+        el_view.changeSprite(this.princess);
+        Pair<Integer, Integer> map_pos = new Pair<Integer, Integer>(13, 255);
+        map_pos = GameLogic.getInstance().getMap().mapPosToPixels(map_pos);
+        el_view.updatePos(map_pos.getFirst(), map_pos.getSecond());
+        this.batch.begin();
+        el_view.draw(this.batch);
+        this.batch.end();
+
+    }
+    private void updatePrincessState(){
+        if (this.tick == 0) {
+            if(Entity.type.PRINCESS_1 == this.princess)
+                this.princess=Entity.type.PRINCESS_2;
+            else if (Entity.type.PRINCESS_2 == this.princess)
+                this.princess=Entity.type.PRINCESS_1;
+        }
     }
 
     private void updateBarrelFireState() {
@@ -261,6 +285,8 @@ public class Play extends PlayScreen {
         this.assets.load("dk/right_barrel.png", Texture.class);
         this.assets.load("dk/right_hand.png", Texture.class);
         this.assets.load("dk/left_hand.png", Texture.class);
+        this.assets.load("princess/princess_1.png", Texture.class);
+        this.assets.load("princess/princess_2.png", Texture.class);
     }
 
     private void loadFireAssets() {

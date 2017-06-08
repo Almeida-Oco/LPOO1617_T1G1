@@ -32,13 +32,8 @@ public abstract class Entity {
     protected float scale;
 
 
-    public Entity(){
-        this.position = new Pair<Integer, Integer>(0,0);
-    }
-
     public Entity(int x , int y){
         this.position = new Pair<Integer,Integer>(x,y);
-        System.out.println(position.getFirst()+ "  " + position.getSecond());
     }
 
     public int getX(){

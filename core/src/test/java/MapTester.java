@@ -14,10 +14,9 @@ public class MapTester extends GameTest{
 
     @Test
     public void createMap() {
-        this.map = mock(Map.class);
+        this.map = new Map();
+        this.map.setMap(this.mock_map, this.mock_stairs);
         assertNotNull( this.map.getMap() );
         assertNotNull( this.map.getCollisionLayer() );
-        assertEquals(2, this.map.getMapTileHeight());
-        assertEquals(16, this.map.getMapTileWidth());
     }
 }

@@ -46,8 +46,6 @@ public class GameLogic {
         this.fires.add(Entity.newFire(this.map));
     }
 
-
-
     public void updateDK( float delta ) {
         if ( this.time_passed < time_to_throw && delta < time_to_throw)
             this.time_passed+=delta;
@@ -80,9 +78,10 @@ public class GameLogic {
         this.score();
     }
 
-    public void moveEnemies(){
+    public void moveEnemies(float delta){
         this.moveFires();
         this.moveBarrels();
+        this.updateDK(delta);
     }
 
     public void moveBarrels(){
@@ -162,7 +161,7 @@ public class GameLogic {
         this.map.loadMap(map_name, collision_layer);
     }
 
-    public boolean firstBarrelFalled(){
+    public boolean firstBarrelFalled() {
         return this.first_barrel_falled;
     }
 

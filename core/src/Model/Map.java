@@ -116,6 +116,11 @@ public class Map {
         this.collision_layer = (TiledMapTileLayer)this.map.getLayers().get(collision_name);
     }
 
+    public void setMap( TiledMap map, TiledMapTileLayer collision_layer ){
+        this.map = map;
+        this.collision_layer = collision_layer;
+    }
+
     /**
      *  Converts from TiledMap tile position to respective pixel position
      * @param map_pos Position of the Tile of the Map

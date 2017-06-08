@@ -139,9 +139,7 @@ public class Play extends PlayScreen {
 
 
         game.moveMario(x_move, y_move);
-        game.moveBarrels();
-        game.updateDK(delta);
-        game.moveFires();
+        game.moveEnemies(delta);
         score.update(delta);
     }
 

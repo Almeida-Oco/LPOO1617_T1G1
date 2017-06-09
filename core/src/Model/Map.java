@@ -144,7 +144,7 @@ public class Map {
 
         for( float step = this.getMapTileWidth() ; x < x_limit ;  x += step )
             if( isCellBlocked(x,y) ){
-                int temp_y = (int)( this.getEdgeHorizontalTileY(x,y,SEARCH_TOP) * this.getMapTileHeight() - 0.005f );
+                int temp_y = (int)( this.getEdgeHorizontalTileY(x,y,SEARCH_TOP) * this.getMapTileHeight() /*- 0.005f+*/ );
                 if (temp_y > max_y)
                     max_y = temp_y;
             }
@@ -163,7 +163,7 @@ public class Map {
         float x = pos.getFirst(), y_limit = pos.getSecond()+this.getMapTileHeight()*2,  y = pos.getSecond()+img_height;
         int max_x = -1;
 
-        for (float step = this.getMapTileHeight() ; y > y_limit ; y-=step ){
+        for (float step = this.getMapTileHeight()/2 ; y > y_limit ; y-=step ){
             if ( isCellBlocked(x,y) ){
                 int temp_x = (int)(this.getEdgeVerticalTileX(x,y,SEARCH_RIGHT) * this.getMapTileWidth()) + 1;
                 if (temp_x > max_x)

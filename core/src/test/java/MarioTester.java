@@ -2,6 +2,7 @@ package test.java;
 
 import com.mygdx.game.MyGdxGame;
 
+import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
@@ -10,7 +11,14 @@ import Model.Mario;
 import Model.Pair;
 
 public class MarioTester extends GameTest {
+    private final int LEFT = -1, RIGHT = 1, DOWN = -1, UP = 1;
+    private Entity mario;
 
+    @Before
+    public void initMario(){
+        this.mario = Mario.createMario(0,0);
+        mario.setRepSize(4,6, MyGdxGame.DEFAULT_SCALE ); //Needs to be smaller than usual because of collisions with higher floors!
+    }
 
     @Test
     public void testCreationAndEntity(){
@@ -45,4 +53,37 @@ public class MarioTester extends GameTest {
         assertEquals( Entity.type.MARIO_CLIMB_OVER, mario.getType() );
     }
 
+
+    @Test
+    public void testXMovement(){
+        Pair<Integer,Integer> map_pos = new Pair<Integer,Integer>(0,6),
+                        pixel_pos = this.map.mapPosToPixels(map_pos);
+        this.mario.setPos( pixel_pos );
+        assertEquals( pixel_pos, mario.getPos() );
+        mario = mario.moveEntity(this.map, new Pair<Integer,Integer>(LEFT,DOWN));
+        assertEquals( pixel_pos, mario.getPos() );
+        mario = mario.moveEntity(this.map , new Pair<Integer, Integer>(RIGHT, UP) );
+        pixel_pos.setFirst( pixel_pos.getFirst() + mario.getXSpeed() );
+        assertEquals( pixel_pos, mario.getPos() );
+        pixel_pos.setFirst( pixel_pos.getFirst() - mario.getXSpeed() );
+        mario = mario.moveEntity(this.map, new Pair<Integer, Integer>(LEFT,0) );
+        mario = mario.moveEntity(this.map, new Pair<Integer, Integer>(0,0) );
+        assertEquals( pixel_pos, mario.getPos() ); //pixel pos [0,18]
+        for (int i = 0 ; (i*mario.getXSpeed()) < (3*this.map.getMapTileWidth()) ; i++ ) //move mario to first stair
+            mario.moveEntity(this.map, new Pair<Integer, Integer>(RIGHT,0) );
+
+        //mario walks 3 pixels per run, so we need to do an interval of X where he could be
+        Pair<Integer,Integer> delta_x = new Pair<Integer, Integer>( (int)(3*this.map.getMapTileWidth()) , (int)(3*this.map.getMapTileWidth()) + Math.abs(mario.getXSpeed()) );
+        assertTrue( mario.getPos().getFirst() >= delta_x.getFirst() && mario.getPos().getFirst() <= delta_x.getSecond() );
+        assertEquals( mario.getPos().getSecond().intValue() , (int)(7*this.map.getMapTileHeight()) );
+
+        int offset = mario.getX();
+        for (int i = 0 ; (i*mario.getXSpeed() + offset) < (9*this.map.getMapTileWidth()) ; i++ ) //move mario to last right tile
+            mario.moveEntity(this.map, new Pair<Integer, Integer>(RIGHT,0) );
+
+        delta_x.setFirst( (int)(9*this.map.getMapTileWidth()) );
+        delta_x.setSecond( (int)(9*this.map.getMapTileWidth()) + Math.abs(mario.getXSpeed()) );
+        assertTrue( mario.getPos().getFirst() >= delta_x.getFirst() && mario.getPos().getFirst() <= delta_x.getSecond() );
+        assertEquals( mario.getY(), (int)(5*this.map.getMapTileHeight()) );
+    }
 }

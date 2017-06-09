@@ -3,6 +3,7 @@ package test.java;
 import com.badlogic.gdx.Application;
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Graphics;
 import com.badlogic.gdx.backends.headless.HeadlessApplication;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.maps.MapLayers;
@@ -41,6 +42,10 @@ public class GameTest {
         // Use Mockito to mock the OpenGL methods since we are running headlessly
         Gdx.gl20 = mock(GL20.class);
         Gdx.gl = Gdx.gl20;
+        Graphics graph = mock(Graphics.class);
+        Gdx.graphics = graph;
+        when( Gdx.graphics.getHeight() ).thenReturn( 1920 );
+        when( Gdx.graphics.getWidth() ).thenReturn( 1080 );
 
         MapLayers mock_layers = mock(MapLayers.class);
         TiledMapTile mock_tile = mock( TiledMapTile.class );
@@ -49,6 +54,7 @@ public class GameTest {
         when( mock_map.getLayers() ).thenReturn( mock_layers );
         when( mock_layers.get("Stairs") ).thenReturn( mock_stairs );
         when( mock_layers.get("Floor") ).thenReturn( mock_collision );
+
 
         map = new Map();
         initiateFloor();
@@ -67,7 +73,7 @@ public class GameTest {
 
     private static void initiateFloor(){
         when( mock_collision.getTileWidth() ).thenReturn(16f);
-        when( mock_collision.getTileHeight() ).thenReturn(2f);
+        when( mock_collision.getTileHeight() ).thenReturn(3f);
         when( mock_collision.getWidth() ).thenReturn(10);
         when( mock_collision.getHeight() ).thenReturn(18);
 
@@ -273,7 +279,7 @@ public class GameTest {
 
     private static void initiateStairs(){
         when( mock_stairs.getTileWidth() ).thenReturn(16f);
-        when( mock_stairs.getTileHeight() ).thenReturn(2f);
+        when( mock_stairs.getTileHeight() ).thenReturn(3f);
         when( mock_stairs.getWidth() ).thenReturn(10);
         when( mock_stairs.getHeight() ).thenReturn(17);
 

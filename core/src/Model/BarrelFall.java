@@ -97,8 +97,12 @@ class BarrelFall extends Barrel {
         }
         this.setPos(new_pos);
 
-        if ( map.YConverter(new_pos.getSecond()) <= END_OF_MAP )
-            return new BarrelRolling(new_pos, this.fire,  -1);
+        if ( map.YConverter(new_pos.getSecond()) <= END_OF_MAP ){
+            Barrel b = new BarrelRolling(new_pos, this.fire,  -1);
+            b.setRepSize( this.rep_size.getFirst(), this.rep_size.getSecond(), this.scale );
+            return b;
+        }
+
         else
             return this;
     }
@@ -121,6 +125,7 @@ class BarrelFall extends Barrel {
         else{
             new_pos.setSecond(new_y);
             ret_val = new BarrelRolling( new_pos, false, -this.x_direction);
+            ret_val.setRepSize( this.rep_size.getFirst(), this.rep_size.getSecond(), this.scale );
         }
 
 

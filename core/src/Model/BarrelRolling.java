@@ -73,8 +73,11 @@ public class BarrelRolling extends Barrel {
         else if ( map.collidesBottom(new_pos, this.rep_size.getFirst()) != -1)
             new_pos.setSecond( new_pos.getSecond() + (int)map.getMapTileHeight() );
 
-        if ( map.collidesBottom(even_lower_pos, this.rep_size.getFirst()) == -1)
-            return new BarrelFall(new_pos, new Pair<Boolean, Boolean>(FREE_FALL,false), this.x_direction);
+        if ( map.collidesBottom(even_lower_pos, this.rep_size.getFirst()) == -1){
+            Barrel ret = new BarrelFall(new_pos, new Pair<Boolean, Boolean>(FREE_FALL,false), this.x_direction);
+            ret.setRepSize( this.rep_size.getFirst(), this.rep_size.getSecond(), this.scale );
+            return ret;
+        }
 
         this.setPos(new_pos);
         return this;
@@ -134,8 +137,11 @@ public class BarrelRolling extends Barrel {
      */
     private Barrel checkLadderFall(Map map){
         int curr_x = this.getX(), lower_y = this.getY()-(int)map.getMapTileHeight();
-        if ( curr_x >= this.fall_delta.getFirst() && curr_x <= this.fall_delta.getSecond() && (Math.random()*10) > 6)
-            return new BarrelFall(new Pair<Integer,Integer>(curr_x, lower_y), new Pair<Boolean,Boolean>(LADDER_FALL, false) , this.x_direction);
+        if ( curr_x >= this.fall_delta.getFirst() && curr_x <= this.fall_delta.getSecond() && (Math.random()*10) > 6){
+            Barrel ret = new BarrelFall(new Pair<Integer,Integer>(curr_x, lower_y), new Pair<Boolean,Boolean>(LADDER_FALL, false) , this.x_direction);
+            ret.setRepSize( this.rep_size.getFirst(), this.rep_size.getSecond(), this.scale );
+            return ret;
+        }
         else if ( curr_x >= this.fall_delta.getFirst() && curr_x <= this.fall_delta.getSecond() ){
             this.fall_delta.setFirst(-1);
             this.fall_delta.setSecond(-1);

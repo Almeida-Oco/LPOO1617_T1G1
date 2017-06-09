@@ -11,6 +11,7 @@ import Model.Pair;
 
 public class MarioTester extends GameTest {
 
+
     @Test
     public void testCreationAndEntity(){
         Mario mario = Mario.createMario(25,25);
@@ -43,4 +44,5 @@ public class MarioTester extends GameTest {
         mario.setType( Entity.type.MARIO_CLIMB_OVER );
         assertEquals( Entity.type.MARIO_CLIMB_OVER, mario.getType() );
     }
+
 }

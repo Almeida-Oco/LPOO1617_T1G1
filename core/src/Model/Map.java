@@ -11,7 +11,6 @@ public class Map {
     private final int SEARCH_TOP = 1;
     private final int SEARCH_RIGHT = 1;
     private final int CRANE_HORIZONTAL_TILES = 8;
-    private final int LADDER_PIXELS = 17;
 
     private TiledMap map;
     private TiledMapTileLayer collision_layer;
@@ -262,12 +261,7 @@ public class Map {
     private int closestLeftLadder(int x , int y , int dir){
         int closest_x = -1, map_x = x;
         for ( ; x >= 0 ; x--){ //search left
-            if ( x%2 != 0 ){
-                if ( this.collision_layer.getCell(x,y) != null )
-                    y+= dir;
-                else
-                    y-= dir;
-            }
+            y=this.getEdgeHorizontalTileY(x*this.getMapTileWidth(),y*this.getMapTileHeight(),dir);
             if ( this.ladderIn(x, y+(2*dir)) && Math.abs(map_x - closest_x) > Math.abs(map_x - x) )
                 closest_x = x;
         }
@@ -284,12 +278,7 @@ public class Map {
     private int closestRightLadder(int x, int y, int dir){
         int closest_x = -1, map_x = x;
         for ( ; x <= this.collision_layer.getWidth() ; x++ ){
-            if ( x%2 == 0){
-                if ( this.collision_layer.getCell(x,y) != null )
-                    y+= dir;
-                else
-                    y-= dir;
-            }
+            y=this.getEdgeHorizontalTileY(x*this.getMapTileWidth(),y*this.getMapTileHeight(),dir);
             if ( this.ladderIn(x,y+(2*dir)) && Math.abs(map_x - closest_x) > Math.abs(map_x - x) )
                 closest_x = x;
         }
@@ -546,7 +535,7 @@ public class Map {
      * @param x X coordinate in which to search
      * @param y Y coordinate in which to start the search
      * @param inc Used to determine whether to search for lower edge (-1), or top edge (1)
-     * @return The Y coordinate of the desired edge
+     * @return The Y coordinate of the edge immediately above/below the desired edge
      */
     private int getEdgeHorizontalTileY(float x , float y, int inc){
         int map_x = this.XConverter(x), map_y = this.YConverter(y);

@@ -4,6 +4,7 @@ package Model;
 public class MarioClimb extends Mario {
     private final int ANIMATION_RATE = 10;
     private final int CLIMB_RATE = 1;
+    private int ladder_x_offset = 0;
 
     /**
      *  Constructor for MarioClimb
@@ -35,7 +36,7 @@ public class MarioClimb extends Mario {
             else if (GO_DOWN == y_move)
                 new_pos = this.climbDown(map);
 
-            if (STAY_STILL != y_move)
+            if (y_move == GO_DOWN || y_move == GO_UP) //if stay still no need to process
                 ret_val = processResults(map, new_pos);
             this.setPos(new_pos);
             return ret_val;
@@ -59,15 +60,12 @@ public class MarioClimb extends Mario {
      */
     private Pair<Integer,Integer> climbUp( Map map ) {
         Pair<Integer, Integer> new_pos = new Pair<Integer, Integer>(this.position.getFirst(), this.position.getSecond() + CLIMB_RATE);
-        Pair<Integer, Integer> upper_pos = new Pair<Integer, Integer>(new_pos.getFirst()+(int)(map.getMapTileWidth()/2), new_pos.getSecond() + (int)map.getMapTileHeight());
-        int new_x;
+        Pair<Integer, Integer> upper_pos = new Pair<Integer, Integer>(new_pos.getFirst()+this.rep_size.getFirst()/4, new_pos.getSecond() + (int)map.getMapTileHeight());
 
-        if ( (new_x = map.nearLadder(upper_pos.getFirst(), upper_pos.getSecond())) != -1 && map.canUseLadder(upper_pos.getFirst(), upper_pos.getSecond()) ){
-            new_pos.setFirst(new_x-this.ladder_x_offset);
+        if ( map.nearLadder(upper_pos.getFirst(), upper_pos.getSecond()) != -1 && map.canUseLadder(upper_pos.getFirst(), upper_pos.getSecond()) )
             return new_pos;
-        }
-        else
-            return this.position;
+
+        return this.position;
     }
 
     /**
@@ -77,15 +75,13 @@ public class MarioClimb extends Mario {
      */
     private Pair<Integer,Integer> climbDown( Map map ){
         Pair<Integer,Integer> new_pos = new Pair<Integer,Integer>( this.position.getFirst() , this.position.getSecond() - CLIMB_RATE ),
-                            lower_pos = new Pair<Integer, Integer>( new_pos.getFirst() + (int)(map.getMapTileWidth()/2) , new_pos.getSecond() - (int)map.getMapTileHeight() );
-        int new_x;
-        if ( ((new_x = map.nearLadder(lower_pos.getFirst(), this.getY())) != -1 || (new_x = map.nearLadder(lower_pos.getFirst(),lower_pos.getSecond())) != -1)
-                    && (map.canUseLadder(new_pos.getFirst()+(int)(map.getMapTileWidth()/2), new_pos.getSecond()) || map.canUseLadder(lower_pos.getFirst(), lower_pos.getSecond())) ){
-            new_pos.setFirst(new_x-this.ladder_x_offset);
+                            lower_pos = new Pair<Integer, Integer>( new_pos.getFirst() + this.rep_size.getFirst()/4 , new_pos.getSecond() - (int)map.getMapTileHeight() );
+
+        if ( (map.nearLadder(lower_pos.getFirst(), this.getY()) != -1 || map.nearLadder(lower_pos.getFirst(),lower_pos.getSecond()) != -1)
+                    && (map.canUseLadder(lower_pos.getFirst(), new_pos.getSecond()) || map.canUseLadder(lower_pos.getFirst(), lower_pos.getSecond())) )
             return new_pos;
-        }
-        else
-            return this.position;
+
+        return this.position;
     }
 
     /**
@@ -97,14 +93,14 @@ public class MarioClimb extends Mario {
     private Mario processResults (Map map, Pair<Integer,Integer> new_pos){
         Pair<Integer,Integer> lower_pos = new Pair<Integer,Integer>(new_pos.getFirst()+this.rep_size.getFirst()/4, new_pos.getSecond() - (int)map.getMapTileHeight()); //force lower tile
         int new_y;
-        if (this.position.equals(new_pos) && (new_y = map.collidesBottom(lower_pos, this.rep_size.getFirst()/2)) != -1){
-            Mario ret_val = new MarioRun( new_pos.getFirst(), new_y  );
+        if (this.position.equals(new_pos) /*&& (new_y = map.collidesBottom(lower_pos, this.rep_size.getFirst()/2)) != -1 */ ){
+            Mario ret_val = new MarioRun( new_pos.getFirst(), this.getY()  );
             ret_val.setType(type.MARIO_CLIMB_OVER);
+            ret_val.setRepSize(this.rep_size.getFirst(), this.rep_size.getSecond(), this.scale);
             return ret_val;
         }
 
         this.tickTock();
-
         return this;
     }
 

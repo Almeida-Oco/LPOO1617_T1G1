@@ -45,7 +45,7 @@ public class GameLogic {
         DK = init_chrs.get(1);
         this.fires.clear();
         this.fires.add(Entity.newFire(this.map));
-        ScoreTimer.setLifes(lives);
+        ScoreTimer.setLives(lives);
     }
 
     public void updateDK( float delta ) {
@@ -100,7 +100,7 @@ public class GameLogic {
                 if ( died ) {
                     mario.setType(Model.Entity.type.MARIO_DYING_UP);
                     lives--;
-                    ScoreTimer.setLifes(lives);
+                    ScoreTimer.setLives(lives);
                     die=true;
 
                 }
@@ -117,7 +117,7 @@ public class GameLogic {
                 mario.setType( Entity.type.MARIO_DYING_UP );
                 this.fires.remove(i);
                 lives--;
-                ScoreTimer.setLifes(lives);
+                ScoreTimer.setLives(lives);
                die=true;
 
             }

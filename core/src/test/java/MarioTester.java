@@ -11,7 +11,7 @@ import Model.Mario;
 import Model.Pair;
 
 public class MarioTester extends GameTest {
-    private final int LEFT = -1, RIGHT = 1, DOWN = -1, UP = 1;
+    private final int LEFT = -1, RIGHT = 1, DOWN = -1, UP = 1, JUMP = 2, MARIO_CLIMB_RATE = 1;
     private Entity mario;
 
     @Before
@@ -85,5 +85,43 @@ public class MarioTester extends GameTest {
         delta_x.setSecond( (int)(9*this.map.getMapTileWidth()) + Math.abs(mario.getXSpeed()) );
         assertTrue( mario.getPos().getFirst() >= delta_x.getFirst() && mario.getPos().getFirst() <= delta_x.getSecond() );
         assertEquals( mario.getY(), (int)(5*this.map.getMapTileHeight()) );
+    }
+
+    @Test
+    public void testClimbing(){
+        Pair<Integer,Integer> map_pos = new Pair<Integer,Integer>(2,6),
+                pixel_pos = this.map.mapPosToPixels(map_pos);
+        this.mario.setPos(pixel_pos);
+
+        mario = mario.moveEntity(this.map, new Pair<Integer, Integer>(0,UP) );
+        assertEquals( Entity.type.MARIO_CLIMB_LEFT , mario.getType() );
+        pixel_pos.setFirst( pixel_pos.getFirst() + (int)(this.map.getMapTileWidth()-4)/2 );
+        assertEquals( pixel_pos, mario.getPos());
+        mario = mario.moveEntity(this.map, new Pair<Integer, Integer>(RIGHT,UP) );
+        pixel_pos.setSecond( pixel_pos.getSecond() + MARIO_CLIMB_RATE );
+        assertEquals( pixel_pos, mario.getPos());
+        int i;
+        for ( i = 0 ; i < 5 ; i++ ) // GO UP
+            mario = mario.moveEntity(this.map, new Pair<Integer, Integer>(LEFT, UP) );
+
+        pixel_pos.setSecond( pixel_pos.getSecond() + MARIO_CLIMB_RATE*i );
+        assertEquals(pixel_pos, mario.getPos());
+
+        for ( i = 0 ; i < 5 ; i++ ) // GO DOWN
+            mario = mario.moveEntity(this.map, new Pair<Integer, Integer>(RIGHT, DOWN) );
+
+        pixel_pos.setSecond( pixel_pos.getSecond() - MARIO_CLIMB_RATE*i );
+        assertEquals(pixel_pos, mario.getPos());
+        mario = mario.moveEntity(this.map, new Pair<Integer, Integer>(LEFT, JUMP) ); //should be ignored
+        mario = mario.moveEntity(this.map, new Pair<Integer, Integer>(LEFT, DOWN) );
+        mario = mario.moveEntity(this.map, new Pair<Integer, Integer>(LEFT, DOWN) );
+        assertEquals( Entity.type.MARIO_CLIMB_OVER, mario.getType() );
+        assertEquals( "Model.MarioRun", mario.getClass().getName() );
+
+        for ( i = 0 ; i < (this.map.getMapTileHeight()*9) ; i++ )
+            mario = mario.moveEntity(this.map, new Pair<Integer, Integer>(LEFT,UP) );
+
+        pixel_pos.setSecond( (int)(this.map.getMapTileHeight()*13) );
+        assertEquals(pixel_pos, mario.getPos() );
     }
 }

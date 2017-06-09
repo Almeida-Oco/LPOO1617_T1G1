@@ -23,14 +23,14 @@ public class MarioRun extends Mario {
      */
     @Override
     public Model.Entity moveEntity(Map map, Pair<Integer,Integer> move) {
-        int x_move = move.getFirst(), y_move = move.getSecond();
+        int x_move = move.getFirst(), y_move = move.getSecond(), new_x;
         if (current_type == type.MARIO_DYING_UP)
             return new MarioDie(position.getFirst(), position.getSecond());
         else {
             if (JUMP == y_move)
                 return this.prepareJump(x_move);
-            else if ((GO_DOWN == y_move && checkLowerLadder(map)) || (GO_UP == y_move && checkUpperLadder(map)))
-                return new MarioClimb(this.position.getFirst(), this.position.getSecond());
+            else if ( (GO_DOWN == y_move && ((new_x =checkLowerLadder(map)) != -1)) || (GO_UP == y_move && ((new_x=checkUpperLadder(map))) != -1 ) )
+                return this.prepareClimb(map.getMapTileWidth(), new_x);
 
             this.updateSprite(x_move);
             this.tickTock();
@@ -144,37 +144,52 @@ public class MarioRun extends Mario {
      * @param x_move Direction where to jump
      * @return The newly created MarioJump object with correct velocities
      */
-    private Mario prepareJump(int x_move){
-        MarioJump ret = new MarioJump(this.position.getFirst() , this.position.getSecond() );
+    private Model.Entity prepareJump(int x_move){
+        Entity ret = new MarioJump(this.position.getFirst() , this.position.getSecond() );
         if (x_move != 0)
             ret.setXVelocity( ret.getXSpeed()*x_move );
         else
             ret.setXVelocity(0);
 
         ret.setType(this.current_type);
+        ret.setRepSize( this.rep_size.getFirst(), this.rep_size.getSecond(), this.scale );
+        return ret;
+    }
+
+    /**
+     * Prepares mario for climbing
+     * @param tile_width Width of tiled map tiles
+     * @param ladder_x X position of ladder mario is near
+     * @return A newly create MarioClimb object with centered X coordinate
+     */
+    private Model.Entity prepareClimb(float tile_width, int ladder_x){
+        ladder_x += (int)((tile_width - this.rep_size.getFirst())/2);
+        Entity ret = new MarioClimb(ladder_x, this.getY() );
+        ret.setRepSize( this.rep_size.getFirst(), this.rep_size.getSecond(), this.scale );
         return ret;
     }
 
     /**
      *  Checks if position of Mario is near ladder
      * @param map Current map of the game
-     * @return Whether Mario is near a ladder or not
+     * @return -1 if Mario is not on ladder, X position of ladder otherwise
      */
-    private boolean checkUpperLadder(Map map){
-        Pair<Integer,Integer> upper_pos = new Pair<Integer, Integer>(this.position.getFirst()+(int)(map.getMapTileWidth()/2),
+    private int checkUpperLadder(Map map){
+        Pair<Integer,Integer> upper_pos = new Pair<Integer, Integer>(this.position.getFirst()+this.rep_size.getFirst()/2 ,
                 this.position.getSecond() + (Math.round(map.getMapTileHeight())) );
 
-        return  map.nearLadder(upper_pos.getFirst(), upper_pos.getSecond()) != -1;
+        return  map.nearLadder(upper_pos.getFirst(), upper_pos.getSecond());
     }
 
     /**
      *  Checks if there is a ladder below Mario
      * @param map Current map of the game
-     * @return Whether Mario has a ladder below or not
+     * @return -1 if Mario is not on ladder, X position of ladder otherwise
      */
-    private boolean checkLowerLadder(Map map){
-        Pair<Integer,Integer> lower_pos = new Pair<Integer, Integer>(this.position.getFirst()+(int)(map.getMapTileWidth()/2), this.position.getSecond() - (int)(map.getMapTileHeight()*2) );
+    private int checkLowerLadder(Map map){
+        Pair<Integer,Integer> lower_pos = new Pair<Integer, Integer>(this.position.getFirst()+this.rep_size.getFirst()/2 ,
+                this.position.getSecond() - (int)(map.getMapTileHeight()*2) );
 
-        return map.nearLadder(lower_pos.getFirst(), lower_pos.getSecond()) != -1;
+        return map.nearLadder(lower_pos.getFirst(), lower_pos.getSecond());
     }
 }

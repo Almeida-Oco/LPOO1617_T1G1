@@ -581,7 +581,7 @@ public class Map {
      * @return X coordinate in tiles
      */
     public int XConverter( float x ){
-        return Math.round(x/this.getMapTileWidth());
+        return (int)(x/this.getMapTileWidth());
     }
 
     /**
@@ -590,6 +590,6 @@ public class Map {
      * @return Y coordinate in tiles
      */
     public int YConverter( float y ){
-        return Math.round(y/this.getMapTileHeight());
+        return (int)(y/this.getMapTileHeight());
     }
 }

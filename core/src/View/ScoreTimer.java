@@ -38,7 +38,7 @@ public class ScoreTimer implements Disposable{
     private Label timeLabel;
     private Label marioLabel;
     private Label life;
-    private static Label lifesLabel;
+    private static Label livesLabel;
 
 
     public ScoreTimer(SpriteBatch sb){
@@ -60,7 +60,7 @@ public class ScoreTimer implements Disposable{
         //add a second row to our table
         table.row();
         table.add(scoreLabel).expandX();
-        table.add(lifesLabel).expandX();
+        table.add(livesLabel).expandX();
         table.add(countdownLabel).expandX();
         //add our table to the stage
         stage.addActor(table);
@@ -73,16 +73,16 @@ public class ScoreTimer implements Disposable{
         //define our labels using the String, and a Label style consisting of a font and color
         countdownLabel = new Label(String.format("%03d", worldTimer), new Label.LabelStyle(new BitmapFont(), Color.WHITE));
         scoreLabel =new Label(String.format("%06d", score), new Label.LabelStyle(new BitmapFont(), Color.WHITE));
-        lifesLabel =new Label(String.format("%d",life_number),new Label.LabelStyle(new BitmapFont(), Color.WHITE));
+        livesLabel =new Label(String.format("%d",life_number),new Label.LabelStyle(new BitmapFont(), Color.WHITE));
         timeLabel = new Label("TIME", new Label.LabelStyle(new BitmapFont(), Color.WHITE));
         marioLabel = new Label("MARIO", new Label.LabelStyle(new BitmapFont(), Color.WHITE));
-        life= new Label("LIFES",new Label.LabelStyle(new BitmapFont(),Color.WHITE));
+        life= new Label("LIVES",new Label.LabelStyle(new BitmapFont(),Color.WHITE));
         marioLabel.setFontScale(4);
         timeLabel.setFontScale(4);
         scoreLabel.setFontScale(4);
         countdownLabel.setFontScale(4);
         life.setFontScale(4);
-        lifesLabel.setFontScale(4);
+        livesLabel.setFontScale(4);
     }
 
     public void update(float dt){
@@ -98,9 +98,9 @@ public class ScoreTimer implements Disposable{
         }
     }
 
-    public static void setLifes(int lifes){
-        life_number=lifes;
-        lifesLabel.setText(String.format("%d", life_number));
+    public static void setLives(int lives){
+        life_number=lives;
+        livesLabel.setText(String.format("%d", life_number));
     }
 
     public static void addScore(int value){

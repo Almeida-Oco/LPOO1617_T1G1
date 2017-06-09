@@ -11,7 +11,6 @@ public abstract class Mario extends Model.Entity {
     protected final int GO_LEFT = -1;
     protected final int GO_RIGHT = 1;
     protected final int STAY_STILL = 0;
-    protected int ladder_x_offset = 10;
     protected float JUMP_VELOCITY = 13f;
     protected boolean died;
 

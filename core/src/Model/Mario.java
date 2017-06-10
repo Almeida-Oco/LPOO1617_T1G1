@@ -4,7 +4,7 @@ package Model;
 import com.mygdx.game.MyGdxGame;
 
 public abstract class Mario extends Model.Entity {
-    private final float DEFAULT_JUMP_VELOCITY = 12f;
+    private final float DEFAULT_JUMP_VELOCITY = 13f;
     protected final int JUMP = 2;
     protected final int GO_UP = 1;
     protected final int GO_DOWN = -1;

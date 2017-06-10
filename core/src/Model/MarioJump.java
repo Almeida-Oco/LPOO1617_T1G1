@@ -1,9 +1,5 @@
 package Model;
 
-/**
- * Created by oco on 5/30/17.
- */
-
 public class MarioJump extends Mario {
     private int direction = -10;
     private float jump_x_vel;
@@ -28,7 +24,7 @@ public class MarioJump extends Mario {
     @Override
     public Model.Entity moveEntity(Map map, Pair<Integer,Integer> move) {
         if (current_type == type.MARIO_DYING_UP)
-            return new MarioDie(position.getFirst(), position.getSecond());
+            return new MarioDie( position.getFirst(), position.getSecond() );
         else {
             Mario ret_val;
             if (this.direction == -10)
@@ -54,7 +50,7 @@ public class MarioJump extends Mario {
     private Mario updatePosition(Map map){
         Mario ret_val = this;
         Pair<Integer,Integer> new_pos = new Pair<Integer, Integer>( this.position.getFirst()+ (int)this.jump_x_vel*this.direction,
-                                                                    this.position.getSecond()+ this.getYSpeed());
+                                                                    this.position.getSecond() + this.getYSpeed() );
         int new_y, new_x;
         if ( (new_y = map.collidesBottom(new_pos,this.rep_size.getFirst())) != -1){
             this.setYVelocity(0f);

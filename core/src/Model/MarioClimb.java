@@ -59,8 +59,8 @@ public class MarioClimb extends Mario {
      * @return Position after the climbing, if it has reached the end of stairs it returns the current position
      */
     private Pair<Integer,Integer> climbUp( Map map ) {
-        Pair<Integer, Integer> new_pos = new Pair<Integer, Integer>(this.position.getFirst(), this.position.getSecond() + CLIMB_RATE);
-        Pair<Integer, Integer> upper_pos = new Pair<Integer, Integer>(new_pos.getFirst()+this.rep_size.getFirst()/4, new_pos.getSecond() + (int)map.getMapTileHeight());
+        Pair<Integer, Integer> new_pos = new Pair<Integer, Integer>(this.getX(), this.getY() + CLIMB_RATE);
+        Pair<Integer, Integer> upper_pos = new Pair<Integer, Integer>(new_pos.getFirst()+this.rep_size.getFirst()/4, this.getY() + (int)map.getMapTileHeight());
 
         if ( map.nearLadder(upper_pos.getFirst(), upper_pos.getSecond()) != -1 && map.canUseLadder(upper_pos.getFirst(), upper_pos.getSecond()) )
             return new_pos;
@@ -92,9 +92,9 @@ public class MarioClimb extends Mario {
      */
     private Mario processResults (Map map, Pair<Integer,Integer> new_pos){
         Pair<Integer,Integer> lower_pos = new Pair<Integer,Integer>(new_pos.getFirst()+this.rep_size.getFirst()/4, new_pos.getSecond() - (int)map.getMapTileHeight()); //force lower tile
-        int new_y;
-        if (this.position.equals(new_pos) /*&& (new_y = map.collidesBottom(lower_pos, this.rep_size.getFirst()/2)) != -1 */ ){
-            Mario ret_val = new MarioRun( new_pos.getFirst(), this.getY()  );
+        //collision because of incomplete ladders
+        if (this.position.equals(new_pos) && map.collidesBottom(lower_pos, this.rep_size.getFirst()/2) != -1 ){
+            Mario ret_val = new MarioRun( this.getX(), this.getY()  );
             ret_val.setType(type.MARIO_CLIMB_OVER);
             ret_val.setRepSize(this.rep_size.getFirst(), this.rep_size.getSecond(), this.scale);
             return ret_val;

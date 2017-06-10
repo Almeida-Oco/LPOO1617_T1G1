@@ -87,8 +87,8 @@ public class MarioTester extends GameTest {
         assertEquals( mario.getY(), (int)(5*this.map.getMapTileHeight()) );
     }
 
-    @Test
-    public void testClimbing(){
+    @Test //Testing ladder on the left of map
+    public void testClimbingLadder1(){
         Pair<Integer,Integer> map_pos = new Pair<Integer,Integer>(2,6),
                 pixel_pos = this.map.mapPosToPixels(map_pos);
         this.mario.setPos(pixel_pos);
@@ -118,10 +118,87 @@ public class MarioTester extends GameTest {
         assertEquals( Entity.type.MARIO_CLIMB_OVER, mario.getType() );
         assertEquals( "Model.MarioRun", mario.getClass().getName() );
 
-        for ( i = 0 ; i < (this.map.getMapTileHeight()*9) ; i++ )
-            mario = mario.moveEntity(this.map, new Pair<Integer, Integer>(LEFT,UP) );
+        //Go all up the ladder
+        for ( i = 0 ; i < (this.map.getMapTileHeight()*8) ; i++ )
+            mario = mario.moveEntity(this.map, new Pair<Integer, Integer>(0,UP) );
 
-        pixel_pos.setSecond( (int)(this.map.getMapTileHeight()*13) );
+        pixel_pos.setSecond( (int)(this.map.getMapTileHeight()*14) );
         assertEquals(pixel_pos, mario.getPos() );
+        assertEquals( "Model.MarioRun" , mario.getClass().getName() );
+        //MARIO IS NOW RUNNING
+        mario = mario.moveEntity(this.map, new Pair<Integer, Integer>(RIGHT, DOWN) );
+        assertEquals( "Model.MarioClimb" , mario.getClass().getName());
+        assertEquals( pixel_pos, mario.getPos() );
+
+        //Go all down the ladder
+        for ( i = 0 ; i < (this.map.getMapTileHeight()*8 + 1) ; i++ )
+            mario = mario.moveEntity(this.map, new Pair<Integer, Integer>(0,DOWN) );
+
+        pixel_pos.setSecond( (int)(this.map.getMapTileHeight()*6) );
+        assertEquals(pixel_pos, mario.getPos() );
+        assertEquals( "Model.MarioRun" , mario.getClass().getName() );
+    }
+
+    @Test //Testing ladder on the right of map
+    public void testClimbingLadder2(){
+        Pair<Integer,Integer> map_pos = new Pair<Integer,Integer>(8,6),
+                pixel_pos = this.map.mapPosToPixels(map_pos);
+        this.mario.setPos(pixel_pos);
+        assertEquals( pixel_pos, mario.getPos() );
+
+        for (int i = 0 ; i < (this.map.getMapTileHeight()*8) ; i++ )
+            mario = mario.moveEntity(this.map, new Pair<Integer, Integer>(0,UP) );
+
+        pixel_pos.setFirst( pixel_pos.getFirst() + (int)(this.map.getMapTileWidth()-4)/2 );
+        pixel_pos.setSecond( (int)(14*this.map.getMapTileHeight()) );
+        assertEquals(pixel_pos, mario.getPos());
+        assertEquals( "Model.MarioRun", mario.getClass().getName() );
+
+        for (int i = 0 ; i < (this.map.getMapTileHeight()*9) ; i++ )
+            mario = mario.moveEntity(this.map, new Pair<Integer, Integer>(0,DOWN) );
+
+        pixel_pos.setSecond( (int)(6*this.map.getMapTileHeight()) );
+        assertEquals(pixel_pos, mario.getPos());
+        assertEquals( "Model.MarioRun", mario.getClass().getName() );
+    }
+
+    @Test
+    public void testUnclimbableLadder(){
+        Pair<Integer,Integer> map_pos = new Pair<Integer,Integer>(5,8),
+                pixel_pos = this.map.mapPosToPixels(map_pos);
+        this.mario.setPos(pixel_pos);
+        assertEquals( pixel_pos, mario.getPos() );
+
+        for (int i = 0 ; i < (this.map.getMapTileHeight()*3) ; i++ )
+            mario = mario.moveEntity(this.map, new Pair<Integer, Integer>(0,UP) );
+
+        pixel_pos.setFirst( pixel_pos.getFirst() + (int)(this.map.getMapTileWidth()-4)/2 );
+        pixel_pos.setSecond( (int)(10*this.map.getMapTileHeight()) );
+        assertEquals(pixel_pos, mario.getPos());
+        assertEquals( "Model.MarioClimb", mario.getClass().getName() );
+
+        for (int i = 0 ; i < (this.map.getMapTileHeight()*4) ; i++ )
+            mario = mario.moveEntity(this.map, new Pair<Integer, Integer>(0,DOWN) );
+
+        pixel_pos.setSecond( (int)(8*this.map.getMapTileHeight()) );
+        assertEquals(pixel_pos, mario.getPos());
+        assertEquals( "Model.MarioRun", mario.getClass().getName() );
+    }
+
+    @Test
+    public void testJump(){
+        Pair<Integer,Integer> map_pos = new Pair<Integer,Integer>(1,15),
+                pixel_pos = this.map.mapPosToPixels(map_pos);
+        this.mario.setPos(pixel_pos);
+        assertEquals( pixel_pos, mario.getPos() );
+        assertEquals( "Model.MarioRun", mario.getClass().getName() );
+
+        for ( int i = 0 ; i < 26 ; i++ ){ //need the delta allowed because of approximations
+            mario = mario.moveEntity(this.map, new Pair<Integer, Integer>(RIGHT, JUMP) );
+            assertEquals( (int)(pixel_pos.getFirst() + (int)(3*1.5)*i) , mario.getX(), 1);
+            assertEquals( (int)(pixel_pos.getSecond() + 13*i - 0.5*Math.pow(i,2)) , mario.getY(), 1);
+            assertEquals( "Model.MarioJump", mario.getClass().getName() );
+        }
+
     }
 }

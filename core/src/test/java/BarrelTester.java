@@ -58,7 +58,7 @@ public class BarrelTester extends GameTest {
 
 
     @Test
-    public void moveFallingBarrel(){
+    public void moveFreeFallingBarrel(){
         barrel= Barrel.createBarrel(this.map, new Pair<Boolean, Boolean>(false,true));
         Pair<Integer,Integer> map_pos = new Pair<Integer,Integer>(1,15),
                 pixel_pos = this.map.mapPosToPixels(map_pos);
@@ -111,7 +111,7 @@ public class BarrelTester extends GameTest {
                 pixel_pos = this.map.mapPosToPixels(map_pos);
         barrel.setPos(pixel_pos);
         barrel.setRepSize(4, 4, MyGdxGame.DEFAULT_SCALE);
-        while(barrel.getType()!=Entity.type.BARREL_ROLLING1) {
+        while(barrel.getType()!=Entity.type.BARREL_ROLLING2) {
             barrel = barrel.moveEntity(this.map, new Pair<Integer, Integer>(0, 0));
         }
         pixel_pos=barrel.getPos();
@@ -122,7 +122,7 @@ public class BarrelTester extends GameTest {
     }
 
     @Test
-    public void colidesWMap(){
+    public void colidesWithMap(){
         barrel= Barrel.createBarrel(this.map, new Pair<Boolean, Boolean>(false,false));
         Pair<Integer,Integer> map_pos = new Pair<Integer,Integer>(4,15), //initialize barrel on the floor
                 pixel_pos = this.map.mapPosToPixels(map_pos);
@@ -134,7 +134,7 @@ public class BarrelTester extends GameTest {
     }
 
 
-    @Test
+    @Test(timeout = 1000)
     public void ClimbDownStairs(){
         barrel= Barrel.createBarrel(this.map, new Pair<Boolean, Boolean>(false,false));
         Pair<Integer,Integer> map_pos = new Pair<Integer,Integer>(1,15), //initialize barrel on the floor
@@ -145,7 +145,6 @@ public class BarrelTester extends GameTest {
             barrel.setPos(pixel_pos);
             for(int i=0; i<10 ;i ++) {
                 barrel = barrel.moveEntity(this.map, new Pair<Integer, Integer>(0, 0));
-                System.out.println(barrel.getType());
             }
 
         }

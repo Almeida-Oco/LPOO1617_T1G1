@@ -90,7 +90,8 @@ public class BarrelTester extends GameTest {
         barrel= barrel.moveEntity(this.map,new Pair<Integer, Integer>(0,0));
         pixel_pos.setFirst(pixel_pos.getFirst()+15);
         assertEquals(Entity.type.BARREL_FALL_FRONT,barrel.getType());
-          assertEquals(pixel_pos,barrel.getPos());
+
+        assertEquals(pixel_pos,barrel.getPos());
         barrel= barrel.moveEntity(this.map,new Pair<Integer, Integer>(0,0));
         pixel_pos=barrel.getPos();
         assertEquals(Entity.type.BARREL_FALL_FRONT,barrel.getType());

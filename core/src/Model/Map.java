@@ -510,19 +510,19 @@ public class Map {
      *  Checks if there is a ladder below the given crane
      * @param pos Position in which to check for ladder
      * @param img_width Width of the image of the object querying about the ladder
-     * @param delta Size of the interval of X coordinates to return, corresponds to the object X velocity
+     * @param x_speed Size of the interval of X coordinates to return, corresponds to the object X velocity
      * @return An interval of X coordinates where object should be in order to go down ladder, [-1,-1] if there is no ladder
      */
-    public Pair<Integer,Integer> ladderInPosition(Pair<Integer,Integer> pos, int img_width, int delta){
-        int x = this.XConverter(pos.getFirst()), y = this.YConverter(pos.getSecond()) - (CRANE_HORIZONTAL_TILES + 2);
+    public Pair<Integer,Integer> ladderInPosition(Pair<Integer,Integer> pos, int img_width, int x_speed){
+        int x = this.XConverter(pos.getFirst()), y = this.getEdgeHorizontalTileY(pos.getFirst(), pos.getSecond() - (int)this.getMapTileHeight(), SEARCH_BOTTOM );
         TiledMapTileLayer.Cell cell = ((TiledMapTileLayer)this.map.getLayers().get("Stairs")).getCell(x,y);
         if ( cell != null && cell.getTile() != null){
             int ret_x = (int)(x*this.getMapTileWidth()) + ((int)this.getMapTileWidth() - img_width);
             Pair<Integer,Integer> ret;
-            if (delta % 2 == 0)
-                ret = new Pair<Integer, Integer>(ret_x-delta/2, ret_x+delta/2);
+            if (x_speed % 2 == 0)
+                ret = new Pair<Integer, Integer>(ret_x-x_speed/2, ret_x+x_speed/2);
             else
-                ret = new Pair<Integer,Integer>(ret_x - (int)Math.floor(delta/2), ret_x + (int)Math.ceil(delta/2));
+                ret = new Pair<Integer,Integer>(ret_x - (int)Math.floor(x_speed/2), ret_x + (int)Math.ceil(x_speed/2));
 
             return ret;
         }
@@ -532,8 +532,8 @@ public class Map {
 
     /**
      *  Gets the Y coordinate of the tile  which represents the edge/limit of this set of tiles
-     * @param x X coordinate in which to search
-     * @param y Y coordinate in which to start the search
+     * @param x X pixel coordinate in which to search
+     * @param y Y pixel coordinate in which to start the search
      * @param inc Used to determine whether to search for lower edge (-1), or top edge (1)
      * @return The Y coordinate of the edge immediately above/below the desired edge
      */

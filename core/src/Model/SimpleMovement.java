@@ -9,10 +9,6 @@ public class SimpleMovement extends MoveStrategy {
 
     private int dir = 0;
 
-    public SimpleMovement() {
-        this.tick = 0;
-    }
-
     @Override
     public void setRep(Pair<Integer,Integer> rep){
         this.smart.setRep(rep);
@@ -30,6 +26,11 @@ public class SimpleMovement extends MoveStrategy {
         this.tickTock();
     }
 
+    @Override
+    public MoveStrategy improveStrategy() {
+        return this.smart;
+    }
+
 
     private void randomMove(Model.Map map, Pair<Integer,Integer> curr_pos){
         boolean ladder = (Math.random()*10) < 4;
@@ -38,7 +39,6 @@ public class SimpleMovement extends MoveStrategy {
         else if ( (ladder && ( (this.dir == 1 && this.checkUpperLadder(map,curr_pos)) || this.dir == -1 && this.checkLowerLadder(map,curr_pos) )) || this.smart.inLadder() )
             this.smart.moveVertically(map,curr_pos, dir );
     }
-
 
     /**
      * To be called every time tick equals any of the states

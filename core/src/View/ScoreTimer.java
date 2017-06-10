@@ -1,8 +1,5 @@
 package View;
 
-/**
- * Created by asus on 03/06/2017.
- */
 
 
         import com.badlogic.gdx.Gdx;

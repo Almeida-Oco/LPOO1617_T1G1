@@ -124,6 +124,8 @@ public abstract class Entity {
      */
     public abstract boolean collidesWith(Pair<Integer, Integer> pos, Pair<Integer, Integer> rep_size);
 
+    public abstract void upgrade();
+
     /**
      * Creates the initial characters of the game
      * @param map Current game map

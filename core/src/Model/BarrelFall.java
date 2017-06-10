@@ -72,6 +72,9 @@ public class BarrelFall extends Barrel {
     }
 
     @Override
+    public void upgrade() {}
+
+    @Override
     public void invertDirection() {}
 
     @Override

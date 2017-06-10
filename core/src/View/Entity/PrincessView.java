@@ -6,9 +6,6 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 
 import Model.Entity;
 
-/**
- * Created by asus on 05/06/2017.
- */
 
 public class PrincessView extends ElementView {
 

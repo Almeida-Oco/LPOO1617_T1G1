@@ -17,6 +17,8 @@ public abstract class MoveStrategy {
 
     public abstract void move(Model.Map map, Pair<Integer,Integer> mario_pos, Pair<Integer,Integer> curr_pos);
 
+    public abstract MoveStrategy improveStrategy();
+
     public void setRep(Pair<Integer,Integer> rep){
         this.rep_size = rep;
     }

@@ -197,4 +197,9 @@ public class BarrelRolling extends Barrel {
         else
             return (map_x <= 1 && map_y <= 25);
     }
+
+    @Override
+    public void upgrade() {
+        this.invertDirection();
+    }
 }

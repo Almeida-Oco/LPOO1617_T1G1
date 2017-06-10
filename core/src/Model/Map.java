@@ -69,13 +69,6 @@ public class Map {
     }
 
     /**
-     * Disposes the map
-     */
-    public void dispose(){
-        this.map.dispose();
-    }
-
-    /**
      *  Checks if given number is out of screen height bounds
      * @param y Number to check, represents Y coordinate of object
      * @param img_height Height of the image representing the object
@@ -165,7 +158,7 @@ public class Map {
 
         for (float step = this.getMapTileHeight()/2 ; y > y_limit ; y-=step ){
             if ( isCellBlocked(x,y) ){
-                int temp_x = (int)(this.getEdgeVerticalTileX(x,y,SEARCH_RIGHT) * this.getMapTileWidth()) + 1;
+                int temp_x = (int)(this.getEdgeVerticalTileX(x,y,SEARCH_RIGHT) * this.getMapTileWidth());
                 if (temp_x > max_x)
                     max_x = temp_x;
             }
@@ -176,9 +169,9 @@ public class Map {
 
     /**
      *  Checks if there is a ladder in the given position
-     * @param x X coordinte of the object
+     * @param x X coordinate of the object
      * @param y Y coordinate of the object
-     * @return X coordinate where the player should "teleport" to start climbing ladder, it is the middle of the ladder. -1 if no ladder is near
+     * @return X coordinate where the player should will go to start climbing ladder, it is the middle of the ladder. -1 if no ladder is near
      */
     public int nearLadder(int x , int y){
         int     map_x = this.XConverter(x),
@@ -357,20 +350,36 @@ public class Map {
      * @return 2 If it is in a top level, -2 if it is on a bottom level, 0 otherwise
      */
     private int searchTopAndBottomLevel( Pair<Integer,Integer> origin, Pair<Integer,Integer> dest ){
-        int top_origin_y = this.closestCrane(origin.getFirst(), origin.getSecond() + 1, SEARCH_TOP) + CRANE_HORIZONTAL_TILES-1,
-                lower_origin_y=this.closestCrane(origin.getFirst(), origin.getSecond() - CRANE_HORIZONTAL_TILES - 1, SEARCH_BOTTOM)+1;
+        int top_origin_y = this.getNearLevelY(origin, SEARCH_TOP), lower_origin_y = this.getNearLevelY(origin, SEARCH_BOTTOM),
+                x = origin.getFirst();
 
-        if ( top_origin_y != this.collision_layer.getHeight() ){   //found a top crane
-            Pair<Integer,Integer>  temp_orig_top   = new Pair<Integer, Integer>( origin.getFirst(), top_origin_y );
+        if ( top_origin_y < this.collision_layer.getHeight() ){   //found a top crane
+            Pair<Integer,Integer>  temp_orig_top   = new Pair<Integer, Integer>( x, top_origin_y );
             if ( this.onTheLeft(temp_orig_top, dest) || this.onTheRight(temp_orig_top,dest) )
                 return 2;
         }
-        if ( lower_origin_y != 0){ //found a bottom crane
-            Pair<Integer,Integer> temp_orig_bottom= new Pair<Integer, Integer>( origin.getFirst(), lower_origin_y );
+        if ( lower_origin_y > 0){ //found a bottom crane
+            Pair<Integer,Integer> temp_orig_bottom= new Pair<Integer, Integer>( x, lower_origin_y );
             if ( this.onTheLeft(temp_orig_bottom, dest) || this.onTheRight(temp_orig_bottom,dest) )
                 return -2;
         }
         return 0;
+    }
+
+    /**
+     * Gets the next crane level Y coordinate
+     * @param origin Position to start the search, must be the tile immediately above the crane of the current level
+     * @param dir Search for upper level (1) , lower level (-1)
+     * @return Y coordinate of the crane immediately up or down the crane specified by origin
+     */
+    private int getNearLevelY( Pair<Integer,Integer> origin, int dir ){
+        int x = origin.getFirst(), y = origin.getSecond();
+        if ( dir == SEARCH_TOP )
+            return this.getEdgeHorizontalTileY((int)(x*getMapTileWidth()), (int)(this.closestCrane(x, y, SEARCH_TOP)*getMapTileHeight()) ,SEARCH_TOP);
+        else if ( dir == SEARCH_BOTTOM )
+            return this.closestCrane(x , this.getEdgeHorizontalTileY((int)(x*getMapTileWidth()),(int)((y-2)*getMapTileHeight()),SEARCH_BOTTOM)-1, SEARCH_BOTTOM );
+        else
+            return -1;
     }
 
     /**
@@ -379,19 +388,18 @@ public class Map {
      * @param dest Destination position
      * @return 1 if on ladder connected to origin on bottom, -1 if on ladder connected to origin on top, 0 otherwise
      */
-
     private int ladderToOrigin( Pair<Integer,Integer> origin, Pair<Integer,Integer> dest ){
-        int top_dest_y = this.closestCrane( dest.getFirst(), dest.getSecond(), SEARCH_TOP)  + CRANE_HORIZONTAL_TILES,
-                lower_dest_y = this.closestCrane( dest.getFirst(), dest.getSecond(), SEARCH_BOTTOM ) + 1;
+        int dest_x = dest.getFirst(), dest_y = dest.getSecond();
+        int top_dest_y = this.getNearLevelY(dest, SEARCH_TOP), lower_dest_y = this.getNearLevelY(dest, SEARCH_BOTTOM);
         // Ladder goes up to origin level
-        if ( top_dest_y != this.collision_layer.getHeight() && ((TiledMapTileLayer)this.map.getLayers().get("Stairs")).getCell(dest.getFirst(), dest.getSecond()) != null ){
-            Pair<Integer,Integer>  temp_dest_top   = new Pair<Integer, Integer>( dest.getFirst(), top_dest_y );
+        if ( top_dest_y != this.collision_layer.getHeight() && ((TiledMapTileLayer)this.map.getLayers().get("Stairs")).getCell(dest_x, dest_y) != null ){
+            Pair<Integer,Integer>  temp_dest_top   = new Pair<Integer, Integer>( dest_x, top_dest_y );
             if ( this.onTheLeft(origin, temp_dest_top) || this.onTheRight(origin, temp_dest_top) )
                 return -1;
         }
         //Ladder goes down to origin level
-        if ( lower_dest_y != 0 && ((TiledMapTileLayer)this.map.getLayers().get("Stairs")).getCell(dest.getFirst(), dest.getSecond()) != null){
-            Pair<Integer,Integer> temp_dest_bottom = new Pair<Integer, Integer>( dest.getFirst(), lower_dest_y );
+        if ( lower_dest_y != 0 && ((TiledMapTileLayer)this.map.getLayers().get("Stairs")).getCell(dest_x, dest_y) != null){
+            Pair<Integer,Integer> temp_dest_bottom = new Pair<Integer, Integer>( dest_x, lower_dest_y );
             if ( this.onTheLeft(origin, temp_dest_bottom) || this.onTheRight(origin, temp_dest_bottom) )
                 return 1;
         }
@@ -405,7 +413,7 @@ public class Map {
      * @return True if on same level and at the left, false otherwise
      */
     private boolean onTheLeft( Pair<Integer,Integer> origin, Pair<Integer,Integer> destination){
-        int x = origin.getFirst(), y = origin.getSecond();
+        int x = origin.getFirst(), y = origin.getSecond(), dest_x = destination.getFirst(), dest_y = destination.getSecond();
         for ( ; x >= 0 ; x--){ //search left
             if ( x%2 != 0 ){
                 if ( this.collision_layer.getCell(x,y) != null && this.collision_layer.getCell(x,y+1) != null)
@@ -413,7 +421,7 @@ public class Map {
                 else if ( this.collision_layer.getCell(x,y) == null )
                     y--;
             }
-            if ( x == destination.getFirst() && (y+2) >= destination.getSecond() && (y+1-CRANE_HORIZONTAL_TILES) <= destination.getSecond() )
+            if ( x == dest_x && (y+2) >= dest_y && (y - this.craneThickness(new Pair<Integer, Integer>(x,y-1),SEARCH_BOTTOM)+1 ) <= dest_y )
                return true;
         }
         return false;
@@ -426,7 +434,7 @@ public class Map {
      * @return True if on same level and at the right, false otherwise
      */
     private boolean onTheRight( Pair<Integer,Integer> origin, Pair<Integer,Integer> destination){
-        int x = origin.getFirst(), y = origin.getSecond();
+        int x = origin.getFirst(), y = origin.getSecond(), dest_x = destination.getFirst(), dest_y = destination.getSecond();
         for ( ; x <= this.collision_layer.getWidth() ; x++ ){
             if ( x%2 == 0 ){
                 if ( this.collision_layer.getCell(x,y) != null && this.collision_layer.getCell(x,y+1) != null)
@@ -434,10 +442,24 @@ public class Map {
                 else if ( this.collision_layer.getCell(x,y) == null )
                     y--;
             }
-            if ( x == destination.getFirst() && (y+2) >= destination.getSecond() && (y+1-CRANE_HORIZONTAL_TILES) <= destination.getSecond() )
+            if ( x == dest_x && (y+2) >= dest_y && (y - this.craneThickness(new Pair<Integer, Integer>(x,y-1),SEARCH_BOTTOM)+1 ) <= dest_y )
                 return true;
         }
         return false;
+    }
+
+    /**
+     * Calculates the thickness of the crane
+     * @param origin Initial top position of the crane to start the calculation
+     * @param dir Direction to search, 1 = top, -1 = bottom
+     * @return The thickness of the specified crane
+     */
+    private int craneThickness( Pair<Integer,Integer> origin, int dir ){
+        int x = origin.getFirst(), y = origin.getSecond(), init_y = y;
+        while ( this.collision_layer.getCell(x,y) != null && y >= 0 && y <= this.collision_layer.getHeight() )
+            y+=dir;
+
+        return Math.abs(y-init_y);
     }
 
     /**
@@ -446,63 +468,6 @@ public class Map {
      */
     public void setScale( float scale ){
         this.scale = scale;
-    }
-
-    //TODO put this in the test files, although it cannot be tested through JUnit
-    public void testCheckLevelDifference(){
-        //SAME LEVEL
-        Pair<Integer,Integer> orig1 = new Pair<Integer,Integer>(Math.round(8 * this.getMapTileWidth()),Math.round(8*this.getMapTileHeight()));
-        Pair<Integer,Integer> dest1 = new Pair<Integer,Integer>(Math.round(25 * this.getMapTileWidth()),Math.round(14*this.getMapTileHeight()));
-        System.out.println( " RESULT1 = "+this.checkLevelDifference(orig1,dest1)+" EXPECTED 0");
-        System.out.println( " RESULT2 = "+this.checkLevelDifference(dest1,orig1)+" EXPECTED 0");
-
-        Pair<Integer,Integer> orig2 = new Pair<Integer,Integer>(Math.round(8 * this.getMapTileWidth()),Math.round(54*this.getMapTileHeight()));
-        Pair<Integer,Integer> dest2 = new Pair<Integer,Integer>(Math.round(25 * this.getMapTileWidth()),Math.round(46*this.getMapTileHeight()));
-        System.out.println( " RESULT3 = "+this.checkLevelDifference(orig2,dest2)+" EXPECTED 0");
-        System.out.println( " RESULT4 = "+this.checkLevelDifference(dest2,orig2)+" EXPECTED 0");
-
-        Pair<Integer,Integer> orig3 = new Pair<Integer,Integer>(Math.round(10 * this.getMapTileWidth()),Math.round(93*this.getMapTileHeight()));
-        Pair<Integer,Integer> dest3 = new Pair<Integer,Integer>(Math.round(18 * this.getMapTileWidth()),Math.round(97*this.getMapTileHeight()));
-        System.out.println( " RESULT5 = "+this.checkLevelDifference(orig3,dest3)+" EXPECTED 0");
-        System.out.println( " RESULT6 = "+this.checkLevelDifference(dest3,orig3)+" EXPECTED 0");
-
-        //UPPER/LOWER LEVEL
-        Pair<Integer,Integer> orig4 = new Pair<Integer,Integer>(Math.round(7 * this.getMapTileWidth()),Math.round(8*this.getMapTileHeight()));
-        Pair<Integer,Integer> dest4 = new Pair<Integer,Integer>(Math.round(14 * this.getMapTileWidth()),Math.round(51*this.getMapTileHeight()));
-        System.out.println( " RESULT7 = "+this.checkLevelDifference(orig4,dest4)+" EXPECTED 2");
-        System.out.println( " RESULT8 = "+this.checkLevelDifference(dest4,orig4)+" EXPECTED -2");
-
-        Pair<Integer,Integer> orig5 = new Pair<Integer,Integer>(Math.round(14 * this.getMapTileWidth()),Math.round(51*this.getMapTileHeight()));
-        Pair<Integer,Integer> dest5 = new Pair<Integer,Integer>(Math.round(10 * this.getMapTileWidth()),Math.round(93*this.getMapTileHeight()));
-        System.out.println( " RESULT9 = "+ this.checkLevelDifference(orig5,dest5)+" EXPECTED 2");
-        System.out.println( " RESULT10 = "+this.checkLevelDifference(dest5,orig5)+" EXPECTED -2");
-
-        //STAIRS
-        Pair<Integer,Integer> orig6 = new Pair<Integer,Integer>(Math.round(18 * this.getMapTileWidth()),Math.round((279-230)*this.getMapTileHeight()));
-        Pair<Integer,Integer> dest6 = new Pair<Integer,Integer>(Math.round(12 * this.getMapTileWidth()),Math.round((279-209)*this.getMapTileHeight()));
-        System.out.println( " RESULT11 = "+this.checkLevelDifference(orig6,dest6)+" EXPECTED 1");
-
-        Pair<Integer,Integer> orig7 = new Pair<Integer,Integer>(Math.round(18 * this.getMapTileWidth()),Math.round((279-230)*this.getMapTileHeight()));
-        Pair<Integer,Integer> dest7 = new Pair<Integer,Integer>(Math.round(23 * this.getMapTileWidth()),Math.round((279-250)*this.getMapTileHeight()));
-        System.out.println( " RESULT12 = "+ this.checkLevelDifference(orig7,dest7)+" EXPECTED -1");
-
-        //AT LEAST 2 LEVELS
-        Pair<Integer,Integer> orig8 = new Pair<Integer,Integer>(Math.round(18 * this.getMapTileWidth()),Math.round((279-230)*this.getMapTileHeight()));
-        Pair<Integer,Integer> dest8 = new Pair<Integer,Integer>(Math.round(7 * this.getMapTileWidth()),Math.round((279-102)*this.getMapTileHeight()));
-        System.out.println( " RESULT13 = "+this.checkLevelDifference(orig8,dest8)+" EXPECTED 3");
-        System.out.println( " RESULT14 = "+this.checkLevelDifference(dest8,orig8)+" EXPECTED -3");
-
-        //DEST MID-AIR
-        Pair<Integer,Integer> orig9 = new Pair<Integer,Integer>(Math.round(18 * this.getMapTileWidth()),Math.round((279-230)*this.getMapTileHeight()));
-        Pair<Integer,Integer> dest9 = new Pair<Integer,Integer>(Math.round(8 * this.getMapTileWidth()),Math.round((279-212)*this.getMapTileHeight()));
-        System.out.println( " RESULT15 = "+this.checkLevelDifference(orig9,dest9)+" EXPECTED 0");
-
-        //ORIGIN MID-AIR
-        Pair<Integer,Integer> orig10 = new Pair<Integer,Integer>(Math.round(4 * this.getMapTileWidth()),Math.round((279-208)*this.getMapTileHeight()));
-        Pair<Integer,Integer> dest10 = new Pair<Integer,Integer>(Math.round(10 * this.getMapTileWidth()),Math.round((279-226)*this.getMapTileHeight()));
-        Pair<Integer,Integer> dest11 = new Pair<Integer,Integer>(Math.round(12 * this.getMapTileWidth()),Math.round((279-185)*this.getMapTileHeight()));
-        System.out.println( " RESULT16 = "+this.checkLevelDifference(orig10,dest10)+" EXPECTED 0");
-        System.out.println( " RESULT17 = "+this.checkLevelDifference(orig10,dest11)+" EXPECTED 2");
     }
 
 

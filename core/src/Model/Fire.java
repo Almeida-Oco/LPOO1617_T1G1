@@ -27,6 +27,11 @@ public class Fire extends Entity {
     }
 
     @Override
+    public void upgrade() {
+        this.move_strategy = this.move_strategy.improveStrategy();
+    }
+
+    @Override
     public void setType(type t) {
         if ( t == type.FIRE_LEFT || t == type.FIRE_LEFT_IGNITE || t == type.FIRE_RIGHT || t == type.FIRE_RIGHT_IGNITE )
             this.current_type = t;
@@ -35,8 +40,7 @@ public class Fire extends Entity {
     /**
      *  Used to move fire
      * @param map Current map of the game
-     * @param mario_x X coordinate of Mario
-     * @param mario_y Y coordinate of Mario
+     * @param mario_pos Position of mario
      * @return Always this object
      * It will slowly move towards Mario
      */

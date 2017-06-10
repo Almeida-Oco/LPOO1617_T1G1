@@ -24,6 +24,11 @@ public class SmartMovement extends MoveStrategy {
             this.processLowerLevel(map, mario_pos, curr_pos, action);
     }
 
+    @Override
+    public MoveStrategy improveStrategy() {
+        return this;
+    }
+
     /**
      * Process what should happen when mario is on an upper level
      * @param map Current game map

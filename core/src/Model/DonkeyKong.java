@@ -23,6 +23,9 @@ public class DonkeyKong extends Model.Entity {
                 ((pos.getSecond()+rep_size.getSecond()) <= (this.getY()+this.rep_size.getSecond()) );
     }
 
+    @Override
+    public void upgrade() {}
+
 
     @Override
     public void setType(type t) {

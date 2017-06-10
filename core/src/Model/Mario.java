@@ -63,6 +63,9 @@ public abstract class Mario extends Model.Entity {
         this.JUMP_VELOCITY = DEFAULT_JUMP_VELOCITY*scale/ MyGdxGame.DEFAULT_SCALE;
     }
 
+    @Override
+    public void upgrade(){}
+
     /**
      *  Represents the passing of time in the game, each time character moves this should be called
      */

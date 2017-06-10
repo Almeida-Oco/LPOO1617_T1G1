@@ -379,4 +379,17 @@ public class MarioTester extends GameTest {
         assertEquals( "Model.MarioRun", mario.getClass().getName() );
         assertEquals(die_pos, mario.getPos() );
     }
+
+    @Test
+    public void testLeftCollision(){
+        Pair<Integer,Integer> map_pos = new Pair<Integer,Integer>(3,7),
+                pixel_pos = map.mapPosToPixels(map_pos);
+        this.mario.setPos(pixel_pos);
+        this.mario.setRepSize(4,20,MyGdxGame.DEFAULT_SCALE );
+
+        assertEquals(pixel_pos, mario.getPos() );
+        mario = mario.moveEntity(map, new Pair<Integer, Integer>(LEFT,0) );
+        assertEquals(pixel_pos, mario.getPos());
+
+    }
 }

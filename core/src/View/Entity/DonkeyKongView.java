@@ -6,9 +6,6 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 
 import Model.Entity;
 
-/**
- * Created by oco on 5/27/17.
- */
 
 public class DonkeyKongView extends ElementView {
     private static final float DEFAULT_SCALE = 3;

@@ -25,7 +25,7 @@ public abstract class Entity {
     protected Pair<Float,Float> velocity = new Pair<Float,Float>(DEFAULT_MAX_X_VELOCITY,-2f);
 
     private float gravity = 1f;
-    private float max_y_velocity = 0;
+    private float max_y_velocity = 3;
     private float max_x_velocity = 3.0f;
 
     protected type current_type;

@@ -194,12 +194,44 @@ public class MarioTester extends GameTest {
         assertEquals( "Model.MarioRun", mario.getClass().getName() );
 
         int prev_y = pixel_pos.getSecond();
-        for ( int i = 0 ; i < 38 ; i++ ){
+        for ( int i = 0 ; i < 40 ; i++ ){
             mario = mario.moveEntity(this.map, new Pair<Integer, Integer>(0, JUMP));
             int expected_delta = ((i <= 13) ? ((i == 0) ? 0 : (13 - (i-1)) ) : ( (i > 17) ? -4 : (13-i+1) )); //Mario has terminal velocity going down
-            assertEquals( prev_y + expected_delta , mario.getY() , 1);
+            assertEquals( (i == 39) ? pixel_pos.getSecond() : prev_y + expected_delta , mario.getY() , 1);
             prev_y = mario.getY();
         }
-    
+
+        assertEquals(pixel_pos, mario.getPos());
+        assertEquals( "Model.MarioRun", mario.getClass().getName() );
+    }
+
+    @Test
+    public void testFall(){
+        Pair<Integer,Integer> map_pos = new Pair<Integer,Integer>(2,14),
+                pixel_pos = this.map.mapPosToPixels(map_pos);
+        this.mario.setPos(pixel_pos);
+
+        for (int i = 0 ; i < 6 ; i++ ){
+            assertEquals( "Model.MarioRun", mario.getClass().getName() );
+            mario = mario.moveEntity(this.map, new Pair<Integer, Integer>(RIGHT,0) );
+        }
+        assertEquals( "Model.MarioFall", mario.getClass().getName() );
+        pixel_pos.setFirst( pixel_pos.getFirst() + 6*3 );
+        pixel_pos.setSecond( pixel_pos.getSecond() - 3);
+        assertEquals( pixel_pos, mario.getPos() );
+
+        int prev_y = pixel_pos.getSecond(), curr_x = pixel_pos.getFirst();
+        for (int i = 0 ; i < 6 ; i++){
+            mario = mario.moveEntity(this.map, new Pair<Integer, Integer>( (i < 3) ? RIGHT : LEFT ,(i < 3) ? UP : DOWN ) );
+            int expected_delta = (i > 2) ? -4 : -(i+2) ; //Mario has terminal velocity going down
+            assertEquals( (i != 5) ? (prev_y + expected_delta) : 7*3 , mario.getY() );
+            assertEquals( curr_x, mario.getX() );
+            prev_y = mario.getY();
+        }
+
+        assertEquals( "Model.MarioRun", mario.getClass().getName() );
+        pixel_pos = this.map.mapPosToPixels(new Pair<Integer, Integer>(3,7));
+        pixel_pos.setFirst( pixel_pos.getFirst() + 2);
+        assertEquals( pixel_pos, mario.getPos() );
     }
 }

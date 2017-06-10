@@ -514,7 +514,7 @@ public class Map {
      * @return An interval of X coordinates where object should be in order to go down ladder, [-1,-1] if there is no ladder
      */
     public Pair<Integer,Integer> ladderInPosition(Pair<Integer,Integer> pos, int img_width, int x_speed){
-        int x = this.XConverter(pos.getFirst()), y = this.getEdgeHorizontalTileY(pos.getFirst(), pos.getSecond() - (int)this.getMapTileHeight(), SEARCH_BOTTOM );
+        int x = this.XConverter(pos.getFirst()), y = this.getEdgeHorizontalTileY(pos.getFirst(), pos.getSecond() - (int)this.getMapTileHeight()*2, SEARCH_BOTTOM );
         TiledMapTileLayer.Cell cell = ((TiledMapTileLayer)this.map.getLayers().get("Stairs")).getCell(x,y);
         if ( cell != null && cell.getTile() != null){
             int ret_x = (int)(x*this.getMapTileWidth()) + ((int)this.getMapTileWidth() - img_width);

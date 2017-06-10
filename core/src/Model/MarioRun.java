@@ -82,6 +82,7 @@ public class MarioRun extends Mario {
 
         if ( map.collidesBottom(even_lower_pos, this.rep_size.getFirst()) == -1){
             ret_val = new MarioFall(new_pos.getFirst(), new_pos.getSecond());
+            ret_val.setRepSize( this.rep_size.getFirst(), this.rep_size.getSecond(), this.scale);
             ret_val.setType(this.current_type);
         }
 

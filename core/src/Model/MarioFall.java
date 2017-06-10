@@ -1,8 +1,5 @@
 package Model;
 
-/**
- * Created by oco on 5/30/17.
- */
 
 public class MarioFall extends Mario {
 
@@ -42,8 +39,10 @@ public class MarioFall extends Mario {
             this.setPos(new_pos);
             this.updateYVelocity();
         }
-        else
+        else{
             ret_val = new MarioRun(new_pos.getFirst() , new_y );
+            ret_val.setRepSize(this.rep_size.getFirst(), this.rep_size.getSecond(), this.scale);
+        }
 
         ret_val.setType(this.current_type);
         return ret_val;

@@ -326,7 +326,7 @@ public class Map {
 
     private int floorOrCeilOrigin(int x, int y){
         if ( this.collision_layer.getCell(x,y) != null )
-            return this.closestCrane(x,y,SEARCH_TOP);
+            return this.getEdgeHorizontalTileY(x*getMapTileWidth(), y*getMapTileHeight(),SEARCH_TOP);
         else
             return this.closestCrane(x,y,SEARCH_BOTTOM)+1;
     }
@@ -386,10 +386,8 @@ public class Map {
         int x = origin.getFirst(), y = origin.getSecond();
         if ( dir == SEARCH_TOP )
             return this.getEdgeHorizontalTileY((int)(x*getMapTileWidth()), (int)(this.closestCrane(x, y, SEARCH_TOP)*getMapTileHeight()) ,SEARCH_TOP);
-        else if ( dir == SEARCH_BOTTOM )
-            return this.closestCrane(x , this.getEdgeHorizontalTileY((int)(x*getMapTileWidth()),(int)((y-2)*getMapTileHeight()),SEARCH_BOTTOM)-1, SEARCH_BOTTOM );
         else
-            return -1;
+            return this.closestCrane(x , this.getEdgeHorizontalTileY((int)(x*getMapTileWidth()),(int)((y-2)*getMapTileHeight()),SEARCH_BOTTOM)-1, SEARCH_BOTTOM );
     }
 
     /**

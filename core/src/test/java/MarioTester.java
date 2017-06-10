@@ -187,18 +187,19 @@ public class MarioTester extends GameTest {
 
     @Test
     public void testJump(){
-        Pair<Integer,Integer> map_pos = new Pair<Integer,Integer>(1,15),
+        Pair<Integer,Integer> map_pos = new Pair<Integer,Integer>(3,7),
                 pixel_pos = this.map.mapPosToPixels(map_pos);
         this.mario.setPos(pixel_pos);
         assertEquals( pixel_pos, mario.getPos() );
         assertEquals( "Model.MarioRun", mario.getClass().getName() );
 
-        for ( int i = 0 ; i < 26 ; i++ ){ //need the delta allowed because of approximations
-            mario = mario.moveEntity(this.map, new Pair<Integer, Integer>(RIGHT, JUMP) );
-            assertEquals( (int)(pixel_pos.getFirst() + (int)(3*1.5)*i) , mario.getX(), 1);
-            assertEquals( (int)(pixel_pos.getSecond() + 13*i - 0.5*Math.pow(i,2)) , mario.getY(), 1);
-            assertEquals( "Model.MarioJump", mario.getClass().getName() );
+        int prev_y = pixel_pos.getSecond();
+        for ( int i = 0 ; i < 38 ; i++ ){
+            mario = mario.moveEntity(this.map, new Pair<Integer, Integer>(0, JUMP));
+            int expected_delta = ((i <= 13) ? ((i == 0) ? 0 : (13 - (i-1)) ) : ( (i > 17) ? -4 : (13-i+1) )); //Mario has terminal velocity going down
+            assertEquals( prev_y + expected_delta , mario.getY() , 1);
+            prev_y = mario.getY();
         }
-
+    
     }
 }

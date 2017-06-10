@@ -51,6 +51,8 @@ public class GameLogic {
     public void updateDK( float delta ) {
         if ( this.time_passed < time_to_throw && delta < time_to_throw)
             this.time_passed+=delta;
+        if(DK.collidesWith( mario.getPos(), mario.getRepSize()) )
+            killMario();
 
         if ( this.time_passed > time_to_throw ) {
             if ( DK.moveEntity( map, new Pair<Integer, Integer>(1, (this.first_barrel_thrown) ? 0 : 1)) == null ) { //second number is irrelevant

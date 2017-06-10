@@ -20,7 +20,7 @@ public class BarrelTester extends GameTest {
 
     @Test
     public void testCreateBarrel() {
-        this.barrel = Barrel.createBarrel(this.map, new Pair<Boolean, Boolean>(false, false));
+        this.barrel = Entity.newBarrel(this.map, new Pair<Boolean, Boolean>(false, false));
         Pair<Integer, Integer> map_pos = new Pair<Integer, Integer>(0, 6),
                 pixel_pos = this.map.mapPosToPixels(map_pos);
         barrel.setPos(pixel_pos);
@@ -38,7 +38,7 @@ public class BarrelTester extends GameTest {
 
     @Test
     public void moveRollingBarrel() {
-        barrel = Barrel.createBarrel(this.map, new Pair<Boolean, Boolean>(false, false));
+        this.barrel = Entity.newBarrel(this.map, new Pair<Boolean, Boolean>(false, false));
         Pair<Integer, Integer> map_pos = new Pair<Integer, Integer>(1, 15),
                 pixel_pos = this.map.mapPosToPixels(map_pos);
         barrel.setPos(pixel_pos);
@@ -59,7 +59,7 @@ public class BarrelTester extends GameTest {
 
     @Test
     public void moveFreeFallingBarrel() {
-        barrel = Barrel.createBarrel(this.map, new Pair<Boolean, Boolean>(false, true));
+        this.barrel = Entity.newBarrel(this.map, new Pair<Boolean, Boolean>(false, true));
         Pair<Integer, Integer> map_pos = new Pair<Integer, Integer>(1, 15),
                 pixel_pos = this.map.mapPosToPixels(map_pos);
         barrel.setPos(pixel_pos);
@@ -83,7 +83,7 @@ public class BarrelTester extends GameTest {
 
     @Test
     public void startFalling() {
-        barrel = Barrel.createBarrel(this.map, new Pair<Boolean, Boolean>(false, false));
+        this.barrel = Entity.newBarrel(this.map, new Pair<Boolean, Boolean>(false, false));
         Pair<Integer, Integer> map_pos = new Pair<Integer, Integer>(6, 16),
                 pixel_pos = this.map.mapPosToPixels(map_pos);
         barrel.setPos(pixel_pos);
@@ -111,7 +111,7 @@ public class BarrelTester extends GameTest {
 
     @Test(timeout = 1000)
     public void startRolling() {
-        barrel = Barrel.createBarrel(this.map, new Pair<Boolean, Boolean>(false, false));
+        this.barrel = Entity.newBarrel(this.map, new Pair<Boolean, Boolean>(false, false));
         Pair<Integer, Integer> map_pos = new Pair<Integer, Integer>(3, 8),
                 pixel_pos = this.map.mapPosToPixels(map_pos);
         barrel.setPos(pixel_pos);
@@ -127,8 +127,8 @@ public class BarrelTester extends GameTest {
     }
 
     @Test
-    public void colidesWithMap() {
-        barrel = Barrel.createBarrel(this.map, new Pair<Boolean, Boolean>(false, false));
+    public void collidesWithMap() {
+        this.barrel = Entity.newBarrel(this.map, new Pair<Boolean, Boolean>(false, false));
         Pair<Integer, Integer> map_pos = new Pair<Integer, Integer>(4, 15), //initialize barrel on the floor
                 pixel_pos = this.map.mapPosToPixels(map_pos);
         barrel.setPos(pixel_pos);
@@ -140,10 +140,9 @@ public class BarrelTester extends GameTest {
 
     }
 
-
     @Test(timeout = 1000)
     public void ClimbDownStairs() {
-        barrel = Barrel.createBarrel(this.map, new Pair<Boolean, Boolean>(false, false));
+        this.barrel = Entity.newBarrel(this.map, new Pair<Boolean, Boolean>(false, false));
         Pair<Integer, Integer> map_pos = new Pair<Integer, Integer>(1, 15), //initialize barrel on the floor
                 pixel_pos = this.map.mapPosToPixels(map_pos);
         barrel.setRepSize(4, 4, MyGdxGame.DEFAULT_SCALE);
@@ -160,7 +159,7 @@ public class BarrelTester extends GameTest {
 
     @Test(timeout = 1000)
     public void createNMoveFireBarrel() {
-        barrel = Barrel.createBarrel(this.map, new Pair<Boolean, Boolean>(true, true));
+        this.barrel = Entity.newBarrel(this.map, new Pair<Boolean, Boolean>(true, true));
         Pair<Integer, Integer> map_pos = new Pair<Integer, Integer>(1, 15),
                 pixel_pos = this.map.mapPosToPixels(map_pos);
         barrel.setPos(pixel_pos);
@@ -177,7 +176,7 @@ public class BarrelTester extends GameTest {
 
     @Test(timeout = 2000)
     public void invertBarrelRolling(){
-        barrel = Barrel.createBarrel(this.map, new Pair<Boolean, Boolean>(false, false));
+        this.barrel = Entity.newBarrel(this.map, new Pair<Boolean, Boolean>(false, false));
         Pair<Integer, Integer> map_pos = new Pair<Integer, Integer>(1, 6),
                 pixel_pos = this.map.mapPosToPixels(map_pos);
         barrel.setPos(pixel_pos);
@@ -194,15 +193,5 @@ public class BarrelTester extends GameTest {
         }
 
        assertTrue(pixel_pos.getFirst()>barrel.getPos().getFirst());
-
-
-
-
-
-
     }
-
-
-
-
 }

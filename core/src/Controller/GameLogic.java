@@ -97,31 +97,27 @@ public class GameLogic {
            boolean died =  this.barrels.get(i).collidesWith(mario.getPos(), mario.getRepSize());
             if ( died || this.barrels.get(i).toRemove(this.map)){
                 this.barrels.remove(i);
-                if ( died ) {
-                    mario.setType(Model.Entity.type.MARIO_DYING_UP);
-                    lives--;
-                    ScoreTimer.setLives(lives);
-                    die=true;
-
-                }
+                if ( died )
+                    killMario();
                 this.first_barrel_falled = true;
             }else
                 this.barrels.set(i,this.barrels.get(i).moveEntity(map, new Pair<Integer, Integer>(0,0) )); //numbers are irrelevant
         }
     }
 
+    private void killMario() {
+        mario.setType(Entity.type.MARIO_DYING_UP);
+        lives--;
+        ScoreTimer.setLives(lives);
+        die=true;
+    }
+
     public void moveFires(){
         for ( int i = 0 ; i < this.fires.size() ; i++){
             if ( this.fires.get(i).collidesWith( mario.getPos(), mario.getRepSize()) ){
-
-                mario.setType( Entity.type.MARIO_DYING_UP );
+                killMario();
                 this.fires.remove(i);
-                lives--;
-                ScoreTimer.setLives(lives);
-               die=true;
-
             }
-
             else
                 this.fires.get(i).moveEntity(this.map, mario.getPos() );
         }
@@ -183,6 +179,5 @@ public class GameLogic {
         else
             return false;
     }
-
 
 }

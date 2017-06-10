@@ -2,10 +2,8 @@ package Model;
 
 
 public class MarioDie extends Mario {
-
     private final int ANIMATION_RATE = 10;
-    private final int ANIMATION_RESET=60;
-    private boolean animation_ended;
+    private final int ANIMATION_END =60;
 
 
     /**
@@ -16,25 +14,20 @@ public class MarioDie extends Mario {
     protected MarioDie(int x, int y) {
         super(x, y);
         this.current_type=type.MARIO_DYING_UP;
-        this.animation_ended=false;
     }
 
     @Override
     protected void tickTock() {
         this.tick++;
-        if ( ANIMATION_RESET == this.tick ){
-            this.tick = 0;
-            this.animation_ended=true;
-        }
     }
 
     @Override
     public Model.Entity moveEntity(Map map, Pair<Integer,Integer> irrelevant) {
         Mario ret_val=this;
-        if(this.animation_ended) {
+        if( ANIMATION_END == this.tick ) {
             Pair<Integer,Integer> mario_pos = new Pair<Integer, Integer>(4,8);
-             mario_pos = map.mapPosToPixels(mario_pos);
-           ret_val= Mario.createMario(mario_pos.getFirst(), mario_pos.getSecond());
+            mario_pos = map.mapPosToPixels(mario_pos);
+            ret_val= Mario.createMario(mario_pos.getFirst(), mario_pos.getSecond());
         }
         this.updateSprite();
         this.tickTock();
@@ -43,13 +36,13 @@ public class MarioDie extends Mario {
     }
 
     private void updateSprite(){
-        if(this.tick>ANIMATION_RATE && this.tick<ANIMATION_RATE *2)
+        if(this.tick>ANIMATION_RATE && this.tick < (ANIMATION_RATE*2) )
             this.current_type=type.MARIO_DYING_LEFT;
-       else if(this.tick>ANIMATION_RATE*2 && this.tick<ANIMATION_RATE *3)
+        else if(this.tick>ANIMATION_RATE*2 && this.tick < (ANIMATION_RATE*3) )
             this.current_type=type.MARIO_DYING_DOWN;
-        else if(this.tick>ANIMATION_RATE*3 && this.tick<ANIMATION_RATE *4)
+        else if(this.tick>ANIMATION_RATE*3 && this.tick < (ANIMATION_RATE*4) )
             this.current_type=type.MARIO_DYING_RIGHT;
-        else if(this.tick>ANIMATION_RATE*5 && this.tick<ANIMATION_RATE *6)
+        else if(this.tick>ANIMATION_RATE*5 && this.tick < (ANIMATION_RATE*6) )
             this.current_type=type.MARIO_DIED;
 
 

@@ -112,7 +112,7 @@ public class MarioClimb extends Mario {
             this.current_type = type.MARIO_CLIMB_RIGHT;
         else if ( type.MARIO_CLIMB_RIGHT == this.current_type )
             this.current_type = type.MARIO_CLIMB_LEFT;
-        else
-            this.current_type = type.MARIO_CLIMB_LEFT;
+//        else
+//            this.current_type = type.MARIO_CLIMB_LEFT;
     }
 }

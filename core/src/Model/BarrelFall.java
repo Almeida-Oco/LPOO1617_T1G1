@@ -1,6 +1,6 @@
 package Model;
 
-class BarrelFall extends Barrel {
+public class BarrelFall extends Barrel {
     private final int END_OF_MAP = 7;
     private final int ANIMATION_RATE = 5;
     private boolean fall_through;

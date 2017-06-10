@@ -111,7 +111,7 @@ public class BarrelTester extends GameTest {
                 pixel_pos = this.map.mapPosToPixels(map_pos);
         barrel.setPos(pixel_pos);
         barrel.setRepSize(4, 4, MyGdxGame.DEFAULT_SCALE);
-        while(barrel.getType()!=Entity.type.BARREL_ROLLING1) {
+        while(barrel.getType()!=Entity.type.BARREL_ROLLING2) {
             barrel = barrel.moveEntity(this.map, new Pair<Integer, Integer>(0, 0));
         }
         pixel_pos=barrel.getPos();

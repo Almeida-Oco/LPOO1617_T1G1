@@ -7,7 +7,6 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 import Model.Entity;
-import Model.Fire;
 import Model.Mario;
 import Model.Pair;
 
@@ -15,7 +14,7 @@ public class FireTester extends GameTest {
     Entity fire;
 
     @Before
-    public void initMario(){
+    public void initFire(){
         this.fire = Entity.newFire(map);
         this.fire.setRepSize( 4,5, MyGdxGame.DEFAULT_SCALE );
     }
@@ -30,6 +29,7 @@ public class FireTester extends GameTest {
         assertEquals( Entity.type.FIRE_LEFT_IGNITE , fire.getType() );
         this.fire.setType( Entity.type.FIRE_LEFT );
         assertEquals( Entity.type.FIRE_LEFT , fire.getType() );
+        assertFalse( this.fire.toRemove(map) );
     }
 
     @Test ( timeout = 1000 )
@@ -52,7 +52,7 @@ public class FireTester extends GameTest {
 
     }
 
-    @Test (timeout = 1000)
+    @Test (timeout = 5000)
     public void testAISameLevel(){
         Pair<Integer,Integer> map_pos = new Pair<Integer,Integer>(4,7), mario_pos = new Pair<Integer, Integer>(0,6),
                 pixel_pos = map.mapPosToPixels(map_pos), mario_pixels = map.mapPosToPixels(mario_pos);
@@ -92,13 +92,13 @@ public class FireTester extends GameTest {
 
     }
 
-    @Test
-    public void testAIMarioClimbing(){
+    @Test (timeout = 5000)
+    public void testAIMarioClimbingLeft(){
         Pair<Integer,Integer> map_pos = new Pair<Integer,Integer>(4,7), mario_pos = new Pair<Integer, Integer>(2,9),
                 pixel_pos = map.mapPosToPixels(map_pos), mario_pixels = map.mapPosToPixels(mario_pos);
         this.fire.setPos((Pair<Integer,Integer>)pixel_pos.clone());
         this.fire.upgrade();
-        //MARIO ON LEFT STAIR
+
         int x = fire.getX(), y = fire.getY();
         while ( !(this.fire.getX() >= 32 && this.fire.getX() <= 34) ){
             assertEquals( x , fire.getX() );
@@ -117,15 +117,19 @@ public class FireTester extends GameTest {
             y+=1;
             this.fire.moveEntity(map,mario_pixels);
         }
-        //END MARIO ON LEFT STAIR
 
-        //MARIO ON RIGHT STAIR
-        this.fire.setPos(pixel_pos);
-        mario_pos = new Pair<Integer, Integer>(8,9);
-        mario_pixels = map.mapPosToPixels( mario_pos );
+        assertTrue( fire.collidesWith(mario_pixels, new Pair<Integer, Integer>(4,6) ));
+    }
 
-        x = fire.getX(); y = fire.getY();
-        while ( !(this.fire.getX() >= 133 && this.fire.getX() <= 135) ){
+    @Test (timeout = 5000)
+    public void testAIMarioClimbingRight(){
+        Pair<Integer,Integer> map_pos = new Pair<Integer,Integer>(4,7), mario_pos = new Pair<Integer, Integer>(8,9),
+                pixel_pos = map.mapPosToPixels(map_pos), mario_pixels = map.mapPosToPixels(mario_pos);
+        this.fire.setPos((Pair<Integer,Integer>)pixel_pos.clone());
+        this.fire.upgrade();
+
+        int x = fire.getX(), y = fire.getY();
+        while ( !(this.fire.getX() >= 78 && this.fire.getX() <= 82) ){
             assertEquals( x , fire.getX() );
             x+=2;
             assertEquals( y , fire.getY() );
@@ -135,5 +139,57 @@ public class FireTester extends GameTest {
                 y-= 3;
             this.fire.moveEntity(map, mario_pixels);
         }
+
+        //it should now start climbing
+        x = fire.getX(); y = fire.getY();
+        while ( !(this.fire.getY() >= 27 && this.fire.getY() <= 29) ){
+            assertEquals(x, fire.getX());
+            assertEquals(y, fire.getY());
+            y+=1;
+            this.fire.moveEntity(map,mario_pixels);
+        }
+
     }
+
+    @Test (timeout = 5000)
+    public void testAIMarioUpperLevel(){
+        Pair<Integer,Integer> map_pos = new Pair<Integer,Integer>(4,7), mario_pos = new Pair<Integer, Integer>(6,16),
+                pixel_pos = map.mapPosToPixels(map_pos), mario_pixels = map.mapPosToPixels(mario_pos);
+        this.fire.setPos((Pair<Integer,Integer>)pixel_pos.clone());
+        this.fire.upgrade();
+
+        int x = fire.getX(), y = fire.getY();
+        while ( !(this.fire.getX() >= 78 && this.fire.getX() <= 82) ){
+            System.out.println("X ="+fire.getX()+", Y = "+fire.getY() );
+            assertEquals( x , fire.getX() );
+            x+=2;
+            assertEquals( y , fire.getY() );
+            if ( fire.getX() == 78 )
+                y+= 3;
+            else if ( fire.getX() == 110 || fire.getX() == 126 || fire.getX() == 142)
+                y-= 3;
+            this.fire.moveEntity(map, mario_pixels);
+        }
+
+        //it should now start climbing
+        x = fire.getX(); y = fire.getY();
+        while ( this.fire.getY() < 48 ){
+            assertEquals(x, fire.getX());
+            assertEquals(y, fire.getY());
+            y+=1;
+            this.fire.moveEntity(map,mario_pixels);
+        }
+
+        //go after mario
+        x = fire.getX(); y = fire.getY();
+        while ( !( this.fire.getX() >= mario_pixels.getFirst() ) ){
+            assertEquals(x, fire.getX());
+            assertEquals(y, fire.getY());
+            x+=2;
+            this.fire.moveEntity(map,mario_pixels);
+        }
+
+        assertTrue( this.fire.collidesWith(mario_pixels, new Pair<Integer, Integer>(4,6)) );
+    }
+
 }

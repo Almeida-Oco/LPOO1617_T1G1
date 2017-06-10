@@ -38,22 +38,22 @@ public class SmartMovement extends MoveStrategy {
      * //TODO perhaps too many if else
      */
     private void processUpperLevel(Model.Map map, Pair<Integer,Integer> mario_pos, Pair<Integer,Integer> curr_pos , int diff){
+        int x = curr_pos.getFirst(), y = curr_pos.getSecond(), mario_x = mario_pos.getFirst(), mario_y = mario_pos.getSecond();
         if ( this.in_ladder )
-            this.moveVertically(map, curr_pos, (curr_pos.getSecond() > mario_pos.getSecond()) ? DOWN : UP );
+            this.moveVertically(map, curr_pos, (y > mario_y) ? DOWN : UP );
         else{
-            int ladder_x = (int)(map.closestUpperStair( curr_pos.getFirst(), curr_pos.getSecond() )*map.getMapTileWidth());
+            int ladder_x = (int)(map.closestUpperStair( x, y )*map.getMapTileWidth());
             if (UPPER_LEVEL == diff || ABOVE_2 == diff){
-                if ( Math.abs(ladder_x - curr_pos.getFirst()) > X_TOLERANCE )
-                    this.moveHorizontally(map, curr_pos, (ladder_x > curr_pos.getFirst()) ? RIGHT : LEFT );
+                if ( ladder_x - x > X_TOLERANCE )
+                    this.moveHorizontally(map, curr_pos, (ladder_x > x) ? RIGHT : LEFT );
                 else
                     this.moveVertically(map,curr_pos, UP);
             }
-
-            else if ( Math.abs(ladder_x - curr_pos.getFirst()) <= X_TOLERANCE || Math.abs(mario_pos.getFirst() - curr_pos.getFirst()) <= X_TOLERANCE )
+            else if ( Math.abs(ladder_x - x) <= X_TOLERANCE  || Math.abs(mario_x - x) <= X_TOLERANCE )
                 this.moveVertically(map, curr_pos, UP );
 
-            else if ( Math.abs(mario_pos.getFirst() - curr_pos.getFirst()) > X_TOLERANCE)
-                this.moveHorizontally(map, curr_pos, (mario_pos.getFirst() > curr_pos.getFirst()) ? RIGHT : LEFT);
+            else if ( Math.abs(mario_x - x) > X_TOLERANCE)
+                this.moveHorizontally(map, curr_pos, (mario_x > x) ? RIGHT : LEFT);
         }
     }
 
@@ -65,21 +65,22 @@ public class SmartMovement extends MoveStrategy {
      * @param diff Difference of positions, can be LOWER_LADDER, LOWER_LEVEL or BELOW_2
      */
     private void processLowerLevel(Model.Map map, Pair<Integer,Integer> mario_pos, Pair<Integer,Integer> curr_pos, int diff){
+        int x = curr_pos.getFirst(), y = curr_pos.getSecond(), mario_x = mario_pos.getFirst();
         if ( this.in_ladder )
             this.moveVertically( map,curr_pos, (this.previous_dir == UP && diff != LOWER_LEVEL) ? UP : DOWN );
         else{
-            int ladder_x = (int)(map.closestLowerStair( curr_pos.getFirst() , curr_pos.getSecond() )*map.getMapTileWidth());
+            int ladder_x = (int)(map.closestLowerStair( x , y )*map.getMapTileWidth());
             if (LOWER_LEVEL == diff || BELOW_2 == diff){
-                if ( Math.abs(ladder_x - curr_pos.getFirst()) > X_TOLERANCE )
-                    this.moveHorizontally(map, curr_pos, (ladder_x > curr_pos.getFirst()) ? RIGHT : LEFT );
+                if ( Math.abs(ladder_x - x) > X_TOLERANCE )
+                    this.moveHorizontally(map, curr_pos, (ladder_x > x) ? RIGHT : LEFT );
                 else
                     this.moveVertically(map,curr_pos, DOWN);
             }
-            else if ( Math.abs(mario_pos.getFirst() - curr_pos.getFirst()) <= X_TOLERANCE )
+            else if ( Math.abs(mario_x - x) <= X_TOLERANCE )
                 this.moveVertically(map, curr_pos, DOWN);
 
-            else if ( Math.abs(mario_pos.getFirst() - curr_pos.getFirst()) > X_TOLERANCE)
-                this.moveHorizontally(map, curr_pos, (mario_pos.getFirst() > curr_pos.getFirst()) ? RIGHT : LEFT);
+            else if ( Math.abs(mario_x - x) > X_TOLERANCE)
+                this.moveHorizontally(map, curr_pos, (mario_x > x) ? RIGHT : LEFT);
         }
     }
 

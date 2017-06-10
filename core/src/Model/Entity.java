@@ -153,6 +153,6 @@ public abstract class Entity {
     }
 
     public static Entity newFire(Map map){
-        return new Fire(map.mapPosToPixels(fire_pos), new SmartMovement() );
+        return new Fire(map.mapPosToPixels(fire_pos), new SimpleMovement() );
     }
 }

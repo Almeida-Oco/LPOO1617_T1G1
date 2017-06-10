@@ -64,7 +64,7 @@ public class Fire extends Entity {
             this.changeDirection();
 
         this.prev_x = this.getX();
-
+        this.tick++;
         if ( this.tick == ANIMATION_RATE ){
             this.updateType();
             this.tick = 0;

@@ -66,7 +66,7 @@ public class GameLogic {
     }
 
     private void addNewBarrel(boolean free_fall ){
-        this.barrels.add( Model.Barrel.createBarrel(this.map, new Pair<Boolean, Boolean>(!this.first_barrel_thrown , free_fall) ) );
+        this.barrels.add( Model.Entity.newBarrel(this.map, new Pair<Boolean, Boolean>(!this.first_barrel_thrown , free_fall) ) );
         this.first_barrel_thrown = true;
     }
 
@@ -75,7 +75,6 @@ public class GameLogic {
         if(die){
             this.barrels.clear();
             die=false;
-           // this.fires.add(Entity.newFire(this.map));
         }
 
         this.score();

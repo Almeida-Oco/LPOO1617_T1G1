@@ -33,12 +33,13 @@ public class DKTester extends GameTest {
 
     @Test(timeout = 1000)
     public void animateDK(){
+        DK.upgrade();
         assertFalse( DK.toRemove(this.map) );
-       assertEquals(Entity.type.DK_THROW_LEFT,DK.getType());
+        assertEquals(Entity.type.DK_THROW_LEFT,DK.getType());
         boolean throw_left=false, throw_front=false, right_barrel=false,left_hand=false, right_hand=false;
 
         while( !throw_left || !throw_front || !right_barrel && !left_hand && !right_hand){
-                DK.moveEntity(this.map,new Pair<Integer, Integer>((Math.random()<0.5)?0:1,0));
+            DK.moveEntity(this.map,new Pair<Integer, Integer>((Math.random()<0.5)?0:1,0));
             switch (DK.getType().ordinal()) {
                 case 12:
                     throw_left=true;
@@ -73,7 +74,5 @@ public class DKTester extends GameTest {
         pixel_pos.setFirst(pixel_pos.getFirst()+2);
         mario.setPos(pixel_pos);
         assertTrue(DK.collidesWith(mario.getPos(), mario.getRepSize()));
-
-
     }
 }

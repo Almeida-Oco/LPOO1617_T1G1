@@ -172,4 +172,13 @@ public class GameLogic {
     public boolean firstBarrelFalled() {
         return this.first_barrel_falled;
     }
+
+    public boolean isDead(){
+        if( this.lives == 0 ){
+            this.lives = N_LIVES;
+            return true;
+        }
+        else
+            return false;
+    }
 }

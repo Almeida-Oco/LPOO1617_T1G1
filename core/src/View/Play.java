@@ -106,8 +106,8 @@ public class Play extends PlayScreen {
 
         batch.setProjectionMatrix(score.stage.getCamera().combined);
         score.stage.draw();
-//        if (GameLogic.getInstance().isDead()|| GameLogic.getInstance().gameWon())
-//            change = true;
+        if (GameLogic.getInstance().isDead() || GameLogic.getInstance().gameWon())
+            change = true;
         this.sleep(FPS);
     }
 

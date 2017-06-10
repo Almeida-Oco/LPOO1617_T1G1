@@ -39,14 +39,64 @@ public class BarrelTester extends GameTest {
         Pair<Integer,Integer> map_pos = new Pair<Integer,Integer>(1,15),
                 pixel_pos = this.map.mapPosToPixels(map_pos);
         barrel.setPos(pixel_pos);
+        barrel.setRepSize(4, 4, MyGdxGame.DEFAULT_SCALE);
         barrel= barrel.moveEntity(this.map,new Pair<Integer, Integer>(0,0));
         pixel_pos.setFirst(pixel_pos.getFirst() +3);
-        pixel_pos.setSecond(pixel_pos.getSecond()-3);
         assertEquals(pixel_pos,barrel.getPos());
         barrel= barrel.moveEntity(this.map,new Pair<Integer, Integer>(0,0));
-        assertEquals(Entity.type.BARREL_FALL_BACK,barrel.getType());
         pixel_pos.setFirst(pixel_pos.getFirst() +3);
         assertEquals(pixel_pos,barrel.getPos());
+        ((Barrel)barrel).invertDirection();
+        barrel= barrel.moveEntity(this.map,new Pair<Integer, Integer>(0,0));
+        pixel_pos.setFirst(pixel_pos.getFirst() -3);
+        assertEquals(pixel_pos,barrel.getPos());
+
+    }
+
+
+    @Test
+    public void moveFallingBarrel(){
+        barrel= Barrel.createBarrel(this.map, new Pair<Boolean, Boolean>(false,true));
+        Pair<Integer,Integer> map_pos = new Pair<Integer,Integer>(1,15),
+                pixel_pos = this.map.mapPosToPixels(map_pos);
+        barrel.setPos(pixel_pos);
+        barrel.setRepSize(4, 4, MyGdxGame.DEFAULT_SCALE);
+
+
+        assertEquals(Entity.type.BARREL_FALL_FRONT,barrel.getType());
+        barrel= barrel.moveEntity(this.map,new Pair<Integer, Integer>(0,0));
+        pixel_pos.setSecond(pixel_pos.getSecond() -2);
+        assertEquals(pixel_pos,barrel.getPos());
+        barrel= barrel.moveEntity(this.map,new Pair<Integer, Integer>(0,0));
+        pixel_pos.setSecond(pixel_pos.getSecond() -2);
+        assertEquals(pixel_pos,barrel.getPos());
+
+    }
+
+    @Test
+    public void startFalling(){
+        barrel= Barrel.createBarrel(this.map, new Pair<Boolean, Boolean>(false,false));
+        Pair<Integer,Integer> map_pos = new Pair<Integer,Integer>(6,15),
+                pixel_pos = this.map.mapPosToPixels(map_pos);
+        barrel.setPos(pixel_pos);
+        barrel.setRepSize(4, 4, MyGdxGame.DEFAULT_SCALE);
+
+        assertEquals(Entity.type.BARREL_ROLLING1,barrel.getType());
+        assertEquals(pixel_pos,barrel.getPos());
+        barrel= barrel.moveEntity(this.map,new Pair<Integer, Integer>(0,0));
+        barrel= barrel.moveEntity(this.map,new Pair<Integer, Integer>(0,0));
+        barrel= barrel.moveEntity(this.map,new Pair<Integer, Integer>(0,0));
+        barrel= barrel.moveEntity(this.map,new Pair<Integer, Integer>(0,0));
+        barrel= barrel.moveEntity(this.map,new Pair<Integer, Integer>(0,0));
+        pixel_pos.setFirst(pixel_pos.getFirst()+15);
+        assertEquals(Entity.type.BARREL_FALL_FRONT,barrel.getType());
+          assertEquals(pixel_pos,barrel.getPos());
+        barrel= barrel.moveEntity(this.map,new Pair<Integer, Integer>(0,0));
+        pixel_pos=barrel.getPos();
+        assertEquals(Entity.type.BARREL_FALL_FRONT,barrel.getType());
+        barrel= barrel.moveEntity(this.map,new Pair<Integer, Integer>(0,0));
+        barrel= barrel.moveEntity(this.map,new Pair<Integer, Integer>(0,0));
+
 
     }
 }

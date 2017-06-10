@@ -11,7 +11,7 @@ public class Fire extends Entity {
         super(pos.getFirst(), pos.getSecond());
         this.prev_x = pos.getFirst();
         this.current_type = type.FIRE_RIGHT;
-        this.move_strategy = new SmartMovement();
+        this.move_strategy = strategy;
         this.DEFAULT_MAX_X_VELOCITY = 2;
         this.tick = 0;
     }

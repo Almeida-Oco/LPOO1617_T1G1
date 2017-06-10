@@ -7,7 +7,6 @@ import View.MainMenu;
 import View.Play;
 import View.PlayScreen;
 
-//TODO check if there is a way to save DEFAULT_SCALE differently
 public class MyGdxGame extends Game {
 	public static final float DEFAULT_SCALE = 2.4107144f;
     private ScreenAdapter curr_state;

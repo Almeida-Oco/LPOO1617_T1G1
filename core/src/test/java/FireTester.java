@@ -291,4 +291,28 @@ public class FireTester extends GameTest {
         assertTrue( this.fire.collidesWith(mario_pixels, new Pair<Integer, Integer>(4,6)) );
 
     }
+
+    @Test
+    public void testSimpleMovement(){
+        Pair<Integer,Integer> map_pos = new Pair<Integer,Integer>(5,8), pixel_pos = map.mapPosToPixels(map_pos),
+                mario_pos = new Pair<Integer, Integer>(4,16), mario_pixel = map.mapPosToPixels(mario_pos);
+        map_pos.setFirst( map_pos.getFirst() + 10 );
+        this.fire.setPos( (Pair<Integer,Integer>)pixel_pos.clone() );
+        int stay = 0, left = 0, right = 0, up = 0, down = 0, N = 25;
+
+        while ( stay < N && left < N && right < N && up < N && down < N ){
+            fire.moveEntity(map, mario_pixel);
+            int x = fire.getX(), y = fire.getY();
+            if ( pixel_pos.getFirst() < x )
+                right++;
+            else if ( pixel_pos.getFirst() > x )
+                left++;
+            else if ( pixel_pos.getSecond() < y)
+                up++;
+            else if ( pixel_pos.getSecond() > y)
+                down++;
+            else
+                stay++;
+        }
+    }
 }

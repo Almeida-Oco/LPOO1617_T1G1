@@ -81,7 +81,9 @@ public class GameLogic {
     }
 
     public boolean gameWon(){
-        if(mario.getPos().getFirst()>=532 && mario.getPos().getFirst()<=812 && mario.getPos().getSecond()>=1632)
+        Pair<Integer,Integer> win_pos = new Pair<Integer,Integer>(16,254),
+                mario_pos = new Pair<Integer, Integer>(this.map.XConverter(mario.getX()), this.map.YConverter(mario.getY()));
+        if( win_pos.equals(mario_pos) )
             return true;
         else
             return false;
@@ -124,16 +126,16 @@ public class GameLogic {
         }
     }
 
-    private int testjumps(ArrayList<Model.Entity> entities){
+    private int testJumps(ArrayList<Model.Entity> entities){
         int ret=0;
         for (int i = 0 ; i < entities.size() ; i++){
             int     mario_x = mario.getX(), mario_y = mario.getY(), entity_x = entities.get(i).getPos().getFirst(), entity_y = entities.get(i).getPos().getSecond()+ entities.get(i).getRepSize().getSecond(),
-                    entity_y_wwidth=entities.get(i).getPos().getSecond()+ entities.get(i).getRepSize().getSecond()*2,
+                    entity_y_width=entities.get(i).getPos().getSecond()+ entities.get(i).getRepSize().getSecond()*2,
                     b_img_w = entities.get(i).getRepSize().getFirst(), score_x = entity_x + b_img_w/2;
             float mario_x_speed = this.mario.getXSpeed();
 
             Model.Pair<Integer,Integer> delta_x = new Model.Pair<Integer, Integer>( score_x - (int)(Math.floor(mario_x_speed/2)) , score_x + (int)Math.ceil(mario_x_speed/2) ),
-                    delta_y = new Model.Pair<Integer, Integer>(entity_y, entity_y_wwidth);
+                    delta_y = new Model.Pair<Integer, Integer>(entity_y, entity_y_width);
 
             if(mario_x>=delta_x.getFirst() && mario_x<= delta_x.getSecond() && mario_y >= delta_y.getFirst() &&  mario_y<=delta_y.getSecond()  )
                 ret+=100;
@@ -143,9 +145,8 @@ public class GameLogic {
     }
 
     public void score(){
-        int score=0;
-        score+=testjumps(this.fires);
-        score+= testjumps(this.barrels);
+        int score=testJumps(this.fires);
+        score+= testJumps(this.barrels);
         ScoreTimer.addScore(score);
     }
 
@@ -171,14 +172,4 @@ public class GameLogic {
     public boolean firstBarrelFalled() {
         return this.first_barrel_falled;
     }
-
-    public boolean isDead(){
-        if( this.lives == 0 ){
-            this.lives = N_LIVES;
-            return true;
-        }
-        else
-            return false;
-    }
-
 }

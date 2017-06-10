@@ -8,7 +8,6 @@ public class SmartMovement extends MoveStrategy {
     private final int LOWER_LADDER = -1;
     private final int LOWER_LEVEL = -2;
     private final int BELOW_2  = -3;
-    private final int NEXT_CRANES = 15;
     private final int X_TOLERANCE = 3;
 
 
@@ -35,7 +34,6 @@ public class SmartMovement extends MoveStrategy {
      * @param mario_pos Mario position
      * @param curr_pos Fire position
      * @param diff Difference of positions, can be UPPER_LADDER, UPPER_LEVEL or ABOVE_2
-     * //TODO perhaps too many if else
      */
     private void processUpperLevel(Model.Map map, Pair<Integer,Integer> mario_pos, Pair<Integer,Integer> curr_pos , int diff){
         int x = curr_pos.getFirst(), y = curr_pos.getSecond(), mario_x = mario_pos.getFirst(), mario_y = mario_pos.getSecond();

@@ -46,7 +46,6 @@ public class BarrelFall extends Barrel {
 
     }
 
-    //TODO maybe too many branches, separate into functions
     @Override
     protected void tickTock() {
         if (ANIMATION_RATE == this.tick){

@@ -4,6 +4,9 @@ import com.mygdx.game.MyGdxGame;
 
 import org.junit.Before;
 import org.junit.Test;
+
+import java.util.ArrayList;
+
 import static org.junit.Assert.*;
 
 import Model.Entity;
@@ -51,6 +54,12 @@ public class MarioTester extends GameTest {
         assertEquals(new_pos, mario.getPos());
         mario.setType( Entity.type.MARIO_CLIMB_OVER );
         assertEquals( Entity.type.MARIO_CLIMB_OVER, mario.getType() );
+
+        ArrayList<Entity> inits = Entity.createInitialCharacters( this.map );
+        assertEquals( 2, inits.size() );
+        assertEquals( "Model.MarioRun", inits.get(0).getClass().getName() );
+        assertEquals( "Model.DonkeyKong", inits.get(1).getClass().getName() );
+
     }
 
 
@@ -233,5 +242,10 @@ public class MarioTester extends GameTest {
         pixel_pos = this.map.mapPosToPixels(new Pair<Integer, Integer>(3,7));
         pixel_pos.setFirst( pixel_pos.getFirst() + 2);
         assertEquals( pixel_pos, mario.getPos() );
+    }
+
+    @Test
+    public void testDying(){
+
     }
 }

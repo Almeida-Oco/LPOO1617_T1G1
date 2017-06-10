@@ -151,9 +151,6 @@ public class BarrelTester extends GameTest {
         barrel.setRepSize(4, 4, MyGdxGame.DEFAULT_SCALE);
         barrel = barrel.moveEntity(map, new Pair<Integer, Integer>(0, 0));
         assertTrue(barrel.getY() > pixel_pos.getSecond());
-        ((Barrel)barrel).invertDirection();
-
-
     }
 
     @Test(timeout = 1000)

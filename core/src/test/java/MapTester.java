@@ -22,7 +22,7 @@ public class MapTester extends test.java.GameTest {
         assertEquals(3f, map.getMapTileHeight() , 0.01);
         Pair<Integer,Integer> test1 = new Pair<Integer,Integer>(1,3);
         Pair<Integer,Integer> res1 = new Pair<Integer,Integer>(16,9);
-        map.setScale(2);
+        map.setScale(1);
         assertEquals( res1, map.mapPosToPixels( test1 ) );
     }
 

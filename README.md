@@ -1,4 +1,4 @@
-
+﻿
 # FINAL PROJECT DELIVERY
 
 ## Architecture Design
@@ -116,5 +116,19 @@
    The work distribution is the same between group member, which means :
    
    João Francisco Barreiros de Almeida (up201505866) 50%
-   Zé Pedro Machado (up CENAS) 50%
+   Zé Pedro Machado (up201504779) 50%
+
+
+
+## USER MANUAL
+
+* Menu: very simple with only two buttons, the play button to start playing and the exit button to exit the game
+
+![alt text](https://github.com/Almeida-Oco/LPOO1617_T1G1/blob/master/images/menu.png)
+
+* PlayScreen
+   Tilt the phone to move Mario, tilt left to move Mario to the left, tilt right to move Mario to the right
+   and if Mario is aligned with the stairs tilting up the phone will allow Mario to climb the stairs.
+   Only completes stairs allows Mario to go next floor but the breaked ones can be used to avoid barrels.
+
 

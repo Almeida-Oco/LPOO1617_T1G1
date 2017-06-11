@@ -135,5 +135,9 @@
 
 ![alt text](https://github.com/Almeida-Oco/LPOO1617_T1G1/blob/master/images/play2.png)
 
+
+
    Moving the phone up quickly(acelarometer) and Mario jumps, jump over the mario adds 100 points to your score and jump over fire gives you 500 points.
+
+
 ![alt text](https://github.com/Almeida-Oco/LPOO1617_T1G1/blob/master/images/play3.png)

@@ -8,7 +8,7 @@ import View.ScoreTimer;
 
 public class GameLogic {
     private final int N_LIVES = 3;
-    private final int TIME_LIMIT = 450;
+    private final int TIME_LIMIT = 480;
 
     private static GameLogic instance;
     private Model.Map map = null;
@@ -90,7 +90,7 @@ public class GameLogic {
     }
 
     public void moveEnemies(float delta){
-        if( ScoreTimer.getTime() <= TIME_LIMIT )
+        if( ScoreTimer.getTime() == TIME_LIMIT )
             this.fires.get(0).upgrade();
 
         this.moveFires();

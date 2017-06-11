@@ -2,17 +2,17 @@ package View;
 
 
 
-        import com.badlogic.gdx.Gdx;
-        import com.badlogic.gdx.graphics.Color;
-        import com.badlogic.gdx.graphics.OrthographicCamera;
-        import com.badlogic.gdx.graphics.g2d.BitmapFont;
-        import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-        import com.badlogic.gdx.scenes.scene2d.Stage;
-        import com.badlogic.gdx.scenes.scene2d.ui.Label;
-        import com.badlogic.gdx.scenes.scene2d.ui.Table;
-        import com.badlogic.gdx.utils.Disposable;
-        import com.badlogic.gdx.utils.viewport.FitViewport;
-        import com.badlogic.gdx.utils.viewport.Viewport;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.utils.Disposable;
+import com.badlogic.gdx.utils.viewport.FitViewport;
+import com.badlogic.gdx.utils.viewport.Viewport;
 
 
 
@@ -37,7 +37,10 @@ public class ScoreTimer implements Disposable{
     private Label life;
     private static Label livesLabel;
 
-
+    /**
+     * Constructor for ScoreTimer
+     * @param sb Batch to use to draw
+     */
     public ScoreTimer(SpriteBatch sb){
         //define our tracking variables
         worldTimer = 500;
@@ -65,7 +68,9 @@ public class ScoreTimer implements Disposable{
 
     }
 
-
+    /**
+     * Initializes labels of ScoreTimer
+     */
     private void initLabels(){
         //define our labels using the String, and a Label style consisting of a font and color
         countdownLabel = new Label(String.format("%03d", worldTimer), new Label.LabelStyle(new BitmapFont(), Color.WHITE));
@@ -82,6 +87,10 @@ public class ScoreTimer implements Disposable{
         livesLabel.setFontScale(4);
     }
 
+    /**
+     * Updates time shown on screen
+     * @param dt How much time has passed since this functions was last called
+     */
     public void update(float dt){
         timeCount += dt;
         if(timeCount >= 1){
@@ -94,14 +103,28 @@ public class ScoreTimer implements Disposable{
             timeCount = 0;
         }
     }
+
+    /**
+     * Gets the current game time
+     * @return Current game time
+     */
     public static Integer getTime(){
         return worldTimer;
     }
+
+    /**
+     * Sets the number of lives shown on screen
+     * @param lives Number of lives
+     */
     public static void setLives(int lives){
         life_number=lives;
         livesLabel.setText(String.format("%d", life_number));
     }
 
+    /**
+     * Adds the given score to current score
+     * @param value How many points to add
+     */
     public static void addScore(int value){
         score += value;
         scoreLabel.setText(String.format("%06d", score));

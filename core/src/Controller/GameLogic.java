@@ -120,7 +120,7 @@ public class GameLogic {
      * @param delta How much time has passed since last call to this function
      */
     public void moveEnemies(float delta){
-        if( ScoreTimer.getTime() == TIME_LIMIT )
+        if( ScoreTimer.getTime() < TIME_LIMIT )
             this.fires.get(0).upgrade();
 
         this.moveFires();

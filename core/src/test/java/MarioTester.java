@@ -389,6 +389,7 @@ public class MarioTester extends GameTest {
 
         assertEquals(pixel_pos, mario.getPos() );
         mario = mario.moveEntity(map, new Pair<Integer, Integer>(LEFT,0) );
+        pixel_pos.setFirst( pixel_pos.getFirst() + 1);
         assertEquals(pixel_pos, mario.getPos());
 
     }

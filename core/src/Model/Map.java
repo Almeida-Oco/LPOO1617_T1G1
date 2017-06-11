@@ -433,7 +433,7 @@ public class Map {
             if ( this.collision_layer.getCell(x,y-1) == null )
                 y--;
             else if ( this.collision_layer.getCell(x,y) != null )
-                y = this.getEdgeHorizontalTileY(x,y,SEARCH_TOP);
+                y = this.getEdgeHorizontalTileY(x*getMapTileWidth(),y*getMapTileHeight(),SEARCH_TOP);
 
             if ( this.collision_layer.getCell(x,y-1) == null ) //no more crane
                 return false;

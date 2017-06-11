@@ -69,7 +69,7 @@ public abstract class MoveStrategy {
             curr_pos.setFirst(new_x+1);
 
         if ( (new_y = map.collidesBottom(curr_pos,rep_size.getFirst())) != -1 )
-            curr_pos.setSecond(new_y);
+            curr_pos.setSecond(new_y+1);
         else if ( map.collidesBottom(lower_pos, rep_size.getFirst()) == -1)
             curr_pos.setSecond( curr_pos.getSecond() - (int)map.getMapTileHeight());
 

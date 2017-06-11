@@ -13,22 +13,26 @@ import com.badlogic.gdx.ScreenAdapter;
 
 
 public class MainMenu extends PlayScreen {
-        private Texture background;
+    private Texture background;
 
-        private Button startButton;
-        private Button exitButton;
+    private Button startButton;
+    private Button exitButton;
 
-        private Sprite startSprite;
-        private Sprite exitSprite;
-        private SpriteBatch batch;
-        private Stage stage;
+    private Sprite startSprite;
+    private Sprite exitSprite;
+    private SpriteBatch batch;
+    private Stage stage;
 
-        public MainMenu(ScreenAdapter next_screen) {
+    /**
+     * Constructor for MainMenu
+     * @param next_screen Screen that comes after this one
+     */
+    public MainMenu(ScreenAdapter next_screen) {
         super(next_screen);
     }
 
-        @Override
-        public void show() {
+    @Override
+    public void show() {
 
         stage = new Stage();
         this.change=false;
@@ -52,34 +56,35 @@ public class MainMenu extends PlayScreen {
         stage.addActor(exitButton);
     }
 
-        public void handleInput( float delta ) {
-            if(startButton.isPressed())
-                this.change=true;
+    /**
+     * Handles input from the user
+     * @param delta How much time has passed since last time this function was called
+     */
+    public void handleInput( float delta ) {
+        if(startButton.isPressed())
+            this.change=true;
 
-            if(exitButton.isPressed())
-                Gdx.app.exit();
+        if(exitButton.isPressed())
+            Gdx.app.exit();
+    }
 
+    @Override
+    public void render(float delta) {
+        this.batch.begin();
+        this.batch.draw(background, 0, 0, Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
+        exitButton.draw(this.batch, 1);
+        startButton.draw(this.batch, 1);
+        //  name.draw(this.batch,1);
+        this.batch.end();
+        handleInput(delta);
+    }
 
-
-        }
-
-        @Override
-        public void render(float delta) {
-            this.batch.begin();
-            this.batch.draw(background, 0, 0, Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
-            exitButton.draw(this.batch, 1);
-            startButton.draw(this.batch, 1);
-            //  name.draw(this.batch,1);
-            this.batch.end();
-            handleInput(delta);
-        }
-
-        @Override
-        public void dispose() {
-            background.dispose();
-            startSprite.getTexture().dispose();
-            exitSprite.getTexture().dispose();
-        }
+    @Override
+    public void dispose() {
+        background.dispose();
+        startSprite.getTexture().dispose();
+        exitSprite.getTexture().dispose();
+    }
 
     @Override
     public ScreenAdapter renderAndUpdate(float delta) {

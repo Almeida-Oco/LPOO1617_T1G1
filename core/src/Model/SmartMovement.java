@@ -42,7 +42,7 @@ public class SmartMovement extends MoveStrategy {
         else{
             int ladder_x = (int)(map.closestUpperStair( x, y )*map.getMapTileWidth());
             if (UPPER_LEVEL == diff || ABOVE_2 == diff){
-                if ( ladder_x - x > X_TOLERANCE )
+                if ( Math.abs(ladder_x - x) > X_TOLERANCE )
                     this.moveHorizontally(map, curr_pos, (ladder_x > x) ? RIGHT : LEFT );
                 else
                     this.moveVertically(map,curr_pos, UP);

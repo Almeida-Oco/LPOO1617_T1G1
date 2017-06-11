@@ -144,7 +144,7 @@
 
 
 
-You lose the game if any barrel or fire collides with Mario and you win if you rich to the platform where the princess is.
+  You die if any barrel or fire collides with Mario and you win if you rich to the platform where the princess is, Mario has 3 lifes, when ir reaches the 0 files the game ends.
 
 
 ![alt text](https://github.com/Almeida-Oco/LPOO1617_T1G1/blob/master/images/play4.png)

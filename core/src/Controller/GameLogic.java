@@ -8,6 +8,7 @@ import View.ScoreTimer;
 
 public class GameLogic {
     private final int N_LIVES = 3;
+    private final Integer MANY_TIME=450;
 
     private static GameLogic instance;
     private Model.Map map = null;
@@ -15,6 +16,7 @@ public class GameLogic {
     private int time_to_throw = 3;
     private boolean first_barrel_falled;
     private boolean first_barrel_thrown;
+    private boolean fire_upgraded=false;
 
     //!Mario should always be first character!
     Model.Entity mario;
@@ -90,6 +92,11 @@ public class GameLogic {
     }
 
     public void moveEnemies(float delta){
+        if(!fire_upgraded && ScoreTimer.getTime()<=MANY_TIME) {
+            this.fires.get(0).upgrade();
+            fire_upgraded=true;
+        }
+
         this.moveFires();
         this.moveBarrels();
         this.updateDK(delta);
@@ -120,6 +127,9 @@ public class GameLogic {
             if ( this.fires.get(i).collidesWith( mario.getPos(), mario.getRepSize()) ){
                 killMario();
                 this.fires.remove(i);
+                first_barrel_thrown = false;
+                first_barrel_falled = false;
+                fire_upgraded=false;
             }
             else
                 this.fires.get(i).moveEntity(this.map, mario.getPos() );

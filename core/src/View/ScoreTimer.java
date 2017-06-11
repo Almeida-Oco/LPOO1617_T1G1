@@ -23,7 +23,7 @@ public class ScoreTimer implements Disposable{
     private Viewport viewport;
 
     //Mario score/time Tracking Variables
-    private Integer worldTimer;
+    private static Integer worldTimer;
     private boolean timeUp; // true when the world timer reaches 0
     private float timeCount;
     private static Integer score;
@@ -94,7 +94,9 @@ public class ScoreTimer implements Disposable{
             timeCount = 0;
         }
     }
-
+    public static Integer getTime(){
+        return worldTimer;
+    }
     public static void setLives(int lives){
         life_number=lives;
         livesLabel.setText(String.format("%d", life_number));
@@ -108,5 +110,4 @@ public class ScoreTimer implements Disposable{
     @Override
     public void dispose() { stage.dispose(); }
 
-    public boolean isTimeUp() { return timeUp; }
 }

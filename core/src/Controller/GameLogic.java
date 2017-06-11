@@ -8,7 +8,7 @@ import View.ScoreTimer;
 
 public class GameLogic {
     private final int N_LIVES = 3;
-    private final int TIME_LIMIT = 480;
+    private final int TIME_LIMIT = 450;
 
     private static GameLogic instance;
     private Model.Map map = null;

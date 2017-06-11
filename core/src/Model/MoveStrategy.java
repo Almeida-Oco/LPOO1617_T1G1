@@ -41,12 +41,15 @@ public abstract class MoveStrategy {
     protected void moveHorizontally(Model.Map map, Pair<Integer,Integer> curr_pos, int direction){
         curr_pos.setFirst( map.checkOutOfScreenWidth(curr_pos.getFirst()+(direction*this.x_speed), this.rep_size.getFirst()) );
         Pair<Integer,Integer>   lower_pos = new Pair<Integer,Integer>(curr_pos.getFirst(), curr_pos.getSecond() - (int)map.getMapTileHeight());
-        int new_y;
+        int new_y, new_x;
 
         if ( (new_y = map.collidesBottom(curr_pos,rep_size.getFirst())) != -1 )
             curr_pos.setSecond(new_y);
         else if ( map.collidesBottom(lower_pos, rep_size.getFirst()) == -1)
             curr_pos.setSecond( curr_pos.getSecond() - (int)map.getMapTileHeight());
+
+        if ( (new_x = map.collidesLeft(curr_pos,this.rep_size.getSecond())) != -1 )
+            curr_pos.setFirst(new_x);
         this.first_cranes = true;
         this.previous_dir = direction;
     }

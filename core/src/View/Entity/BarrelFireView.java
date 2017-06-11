@@ -10,6 +10,11 @@ import Model.Entity;
 public class BarrelFireView extends ElementView {
     private static final float DEFAULT_SCALE = 5.5f;
 
+    /**
+     * Constructor for BarrelFireView
+     * @param assets Assets of game
+     * @param screen_scale Scale of game
+     */
     protected BarrelFireView(AssetManager assets, float screen_scale) {
         super(DEFAULT_SCALE, screen_scale);
         this.loadImageNames();

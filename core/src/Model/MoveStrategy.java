@@ -15,20 +15,42 @@ public abstract class MoveStrategy {
     protected int y_speed;
     protected Pair<Integer,Integer> rep_size;
 
+    /**
+     * Moves the fire
+     * @param map Current game map
+     * @param mario_pos Position in pixels of mario
+     * @param curr_pos Position in pixels of fire
+     */
     public abstract void move(Model.Map map, Pair<Integer,Integer> mario_pos, Pair<Integer,Integer> curr_pos);
 
+    /**
+     * Used to improve strategy
+     * @return An instance of the improved strategy
+     */
     public abstract MoveStrategy improveStrategy();
 
+    /**
+     * Sets current representation size
+     * @param rep Size of representation
+     */
     public void setRep(Pair<Integer,Integer> rep){
         this.rep_size = rep;
     }
 
+    /**
+     * Sets current speed
+     * @param speed Speed to be set
+     */
     public void setSpeed(Pair<Float,Float> speed){
         this.x_speed = (int)speed.getFirst().floatValue();
         this.y_speed = (int)speed.getSecond().floatValue();
     }
 
-    public boolean inLadder(){
+    /**
+     * Gets if fire is in ladder or not
+     * @return Whether it is in ladder or not
+     */
+    public boolean isInLadder(){
         return this.in_ladder;
     }
 
@@ -109,6 +131,12 @@ public abstract class MoveStrategy {
 
     }
 
+    /**
+     * Checks if fire is currently on ladder or not
+     * @param map Current game map
+     * @param pos Position in pixels of fire
+     * @return True if fire not in ladder, false otherwise
+     */
     private boolean notInLadder(Model.Map map, Pair<Integer,Integer> pos){
         int img_width = this.rep_size.getFirst();
         Pair<Integer,Integer> middle_pos = new Pair<Integer, Integer>(pos.getFirst()+img_width/4, pos.getSecond()),

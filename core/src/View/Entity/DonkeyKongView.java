@@ -10,6 +10,11 @@ import Model.Entity;
 public class DonkeyKongView extends ElementView {
     private static final float DEFAULT_SCALE = 3;
 
+    /**
+     * Constructor for DonkeyKongView
+     * @param assets Assets of game
+     * @param screen_scale Scale of game
+     */
     public DonkeyKongView(AssetManager assets, float screen_scale){
         super(DEFAULT_SCALE,screen_scale);
         this.loadImageNames();

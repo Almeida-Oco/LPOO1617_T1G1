@@ -10,6 +10,11 @@ import Model.Entity;
 public class FireView extends ElementView {
     private static final float DEFAULT_SCALE = 4.5f;
 
+    /**
+     * Constructor for FireView
+     * @param assets Assets of game
+     * @param screen_scale Scale of game
+     */
     public FireView(AssetManager assets, float screen_scale){
         super( DEFAULT_SCALE , screen_scale );
         this.loadImageNames();

@@ -10,7 +10,11 @@ import Model.Entity;
 public class MarioView extends ElementView {
     private static final float DEFAULT_SCALE = 4;
 
-
+    /**
+     * Constructor for MarioView
+     * @param assets Assets of game
+     * @param screen_scale Scale of game
+     */
     public MarioView(AssetManager assets, float screen_scale){
         super(DEFAULT_SCALE,screen_scale);
         this.loadImageNames();

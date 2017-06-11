@@ -169,9 +169,9 @@ public class Map {
 
     /**
      *  Checks if there is a ladder in the given position
-     * @param x X coordinate of the object
-     * @param y Y coordinate of the object
-     * @return X coordinate where the player should will go to start climbing ladder, it is the middle of the ladder. -1 if no ladder is near
+     * @param x X pixel coordinate of the object
+     * @param y Y pixel coordinate of the object
+     * @return X pixel coordinate where the player should will go to start climbing ladder, it is the middle of the ladder. -1 if no ladder is near
      */
     public int nearLadder(int x , int y){
         int     map_x = this.XConverter(x),
@@ -201,8 +201,8 @@ public class Map {
 
     /**
      *  Checks if the ladder in the given position is usable
-     * @param x X coordinate of the object
-     * @param y Y coordinate of the object
+     * @param x X pixel coordinate of the object
+     * @param y Y pixel coordinate of the object
      * @return Whether the object can use the ladder or not
      */
     public boolean canUseLadder(int x , int y){
@@ -214,8 +214,8 @@ public class Map {
 
     /**
      * Searches for the closest lower stair from the given start position
-     * @param x X coordinate in pixels of object
-     * @param y Y coordinate in pixels of object
+     * @param x X pixel coordinate in pixels of object
+     * @param y Y pixel coordinate in pixels of object
      * @return X coordinate in Tiles of closest lower ladder
      */
     public int closestLowerStair(int x, int y){
@@ -230,8 +230,8 @@ public class Map {
 
     /**
      * Searches for the closest upper stair from the given start position
-     * @param x X coordinate in pixels of object
-     * @param y Y coordinate in pixels of object
+     * @param x X pixel coordinate in pixels of object
+     * @param y Y pixel coordinate in pixels of object
      * @return X coordinate in Tiles of closest upper ladder
      */
     public int closestUpperStair(int x , int y){
@@ -246,8 +246,8 @@ public class Map {
 
     /**
      * Searches for a ladder on the left side of object
-     * @param x X Tiled coordinate to start search
-     * @param y Y Tiled coordinate to start search
+     * @param x X tile coordinate to start search
+     * @param y Y tile coordinate to start search
      * @param dir 1 If searching for top ladder, -1 if searching for lower ladder
      * @return X coordinate of closest ladder found
      */
@@ -268,8 +268,8 @@ public class Map {
 
     /**
      * Searches for a ladder on the right side of the object
-     * @param x X coordinate to start search
-     * @param y Y coordinate to start search
+     * @param x X tile coordinate to start search
+     * @param y Y tile coordinate to start search
      * @param dir 1 if searching for top ladder, -1 if searching for lower ladder
      * @return X coordinate of closest ladder found
      */
@@ -290,8 +290,8 @@ public class Map {
 
     /**
      * Checks if there is a ladder in the given position
-     * @param x X coordinate in tiles to search
-     * @param y Y coordinate in tiles to search
+     * @param x X tile coordinate in tiles to search
+     * @param y Y tile coordinate in tiles to search
      * @return Whether there is a ladder or not
      */
     private boolean ladderIn(int x , int y){
@@ -301,8 +301,8 @@ public class Map {
 
     /**
      * Compares given positions and returns a number that represents where the destination position is
-     * @param origin The position to start looking
-     * @param dest The position to try to reach
+     * @param origin The position to start looking in pixels
+     * @param dest The position to try to reach in pixels
      * @return 0 -> same level, 1 upper ladder connected to level, 2 upper level, 3 at least 2 upper levels, -1 lower ladder connected to level, -2 lower level, -3 at least 2 bottom levels
      */
     public int checkLevelDifference(Pair<Integer,Integer> origin, Pair<Integer,Integer> dest){
@@ -324,6 +324,12 @@ public class Map {
             return 3;
     }
 
+    /**
+     * Floors or ceils the given position, which means making it on the immediately above tile of the crane to which to floor or ceil
+     * @param x X tile coordinate
+     * @param y Y tile coordinate
+     * @return Y tiled coordinate of newly floored or ceilled position
+     */
     private int floorOrCeilOrigin(int x, int y){
         if ( this.collision_layer.getCell(x,y) != null )
             return this.getEdgeHorizontalTileY(x*getMapTileWidth(), y*getMapTileHeight(),SEARCH_TOP);
@@ -333,8 +339,8 @@ public class Map {
 
     /**
      * Checks if destination and origin are on the same level, taking into consideration that dest might be in mid-air
-     * @param origin Origin position
-     * @param dest Destination position
+     * @param origin Origin position in tiles
+     * @param dest Destination position in tiles
      * @return Whether the given positions are in the same level or not
      */
     private boolean sameLevel( Pair<Integer,Integer> origin, Pair<Integer,Integer> dest){
@@ -355,8 +361,8 @@ public class Map {
 
     /**
      * Searches if destination position is on a top or bottom level
-     * @param origin Origin position
-     * @param dest Destination
+     * @param origin Origin position in tiles
+     * @param dest Destination position in tiles
      * @return 2 If it is in a top level, -2 if it is on a bottom level, 0 otherwise
      */
     private int searchTopAndBottomLevel( Pair<Integer,Integer> origin, Pair<Integer,Integer> dest ){
@@ -378,9 +384,9 @@ public class Map {
 
     /**
      * Gets the next crane level Y coordinate
-     * @param origin Position to start the search, must be the tile immediately above the crane of the current level
+     * @param origin Position to start the search, must be the tile immediately above the crane of the current level in tiles
      * @param dir Search for upper level (1) , lower level (-1)
-     * @return Y coordinate of the crane immediately up or down the crane specified by origin
+     * @return Y tile coordinate of the crane immediately up or down the crane specified by origin
      */
     private int getNearLevelY( Pair<Integer,Integer> origin, int dir ){
         int x = origin.getFirst(), y = origin.getSecond();
@@ -392,8 +398,8 @@ public class Map {
 
     /**
      * Checks if destination is in a ladder and if that ladder goes into origin level
-     * @param origin Origin position
-     * @param dest Destination position
+     * @param origin Origin position in tiles
+     * @param dest Destination position in tiles
      * @return 1 if on ladder connected to origin on bottom, -1 if on ladder connected to origin on top, 0 otherwise
      */
     private int ladderToOrigin( Pair<Integer,Integer> origin, Pair<Integer,Integer> dest ){
@@ -416,8 +422,8 @@ public class Map {
 
     /**
      * Searches for dest in the given direction, following current crane
-     * @param origin Position to start looking
-     * @param dest Position to look for
+     * @param origin Position to start looking in tiles
+     * @param dest Position to look for in tiles
      * @param dir Direction to search, 1 right, -1 left
      * @return True if dest was found, false otherwise
      */
@@ -439,7 +445,7 @@ public class Map {
 
     /**
      * Calculates the thickness of the crane
-     * @param origin Initial top position of the crane to start the calculation
+     * @param origin Initial top position of the crane to start the calculation in tiles
      * @param dir Direction to search, 1 = top, -1 = bottom
      * @return The thickness of the specified crane
      */
@@ -462,7 +468,7 @@ public class Map {
 
     /**
      *  Checks if there is a ladder below the given crane
-     * @param pos Position in which to check for ladder
+     * @param pos Position in which to check for ladder, in pixels
      * @param img_width Width of the image of the object querying about the ladder
      * @param x_speed Size of the interval of X coordinates to return, corresponds to the object X velocity
      * @return An interval of X coordinates where object should be in order to go down ladder, [-1,-1] if there is no ladder
@@ -501,8 +507,8 @@ public class Map {
 
     /**
      *  Gets the X coordinate of the tile which represents the edge/limit of this set of tiles
-     * @param x X coordinate in which to start the search
-     * @param y Y coordinate in which to search
+     * @param x X pixel coordinate in which to start the search
+     * @param y Y pixel coordinate in which to search
      * @param inc Used to determine whether to search for leftmost edge (-1), or rightmost edge (1)
      * @return The X coordinate of the desired edge
      */

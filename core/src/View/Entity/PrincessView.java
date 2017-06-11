@@ -8,9 +8,13 @@ import Model.Entity;
 
 
 public class PrincessView extends ElementView {
-
     private static final float DEFAULT_SCALE = 3.5f;
 
+    /**
+     * Constructor for PrincessView
+     * @param assets Assets of game
+     * @param screen_scale Scale of game
+     */
     PrincessView(AssetManager assets, float screen_scale) {
         super(DEFAULT_SCALE, screen_scale);
         this.loadImageNames();

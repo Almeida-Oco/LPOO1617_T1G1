@@ -150,7 +150,11 @@ public class BarrelRolling extends Barrel {
         return this;
     }
 
-
+    /**
+     * Checks if barrel reached end of screen, in which case he must invert direction
+     * @param map Current game map
+     * @return Whether he should be inverted or not
+     */
     private boolean shouldInvertDirection(Map map){
         if ( (this.getX() == 0 || this.getX() == (Gdx.graphics.getWidth()-this.rep_size.getFirst()) ||
                 map.collidesLeft(this.position, this.rep_size.getSecond()) != -1) && this.inverted) {

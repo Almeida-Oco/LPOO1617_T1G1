@@ -14,7 +14,6 @@ public class SmartMovement extends MoveStrategy {
     @Override
     public void move(Model.Map map, Pair<Integer, Integer> mario_pos, Pair<Integer,Integer> curr_pos) {
         int action = map.checkLevelDifference(curr_pos, mario_pos);
-        System.out.println("    ACTION = "+action+", FIRE POS = "+curr_pos.toString()+", MARIO POS = "+mario_pos.toString());
         if ( SAME_LEVEL == action )
             this.processSameLevel(map, mario_pos, curr_pos);
         else if ( action >= UPPER_LADDER )

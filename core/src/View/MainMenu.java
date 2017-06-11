@@ -23,12 +23,12 @@ public class MainMenu extends PlayScreen {
         private SpriteBatch batch;
         private Stage stage;
 
-    public MainMenu(ScreenAdapter next_screen) {
+        public MainMenu(ScreenAdapter next_screen) {
         super(next_screen);
     }
 
-
-    public void show() {
+        @Override
+        public void show() {
 
         stage = new Stage();
         this.change=false;
@@ -51,6 +51,7 @@ public class MainMenu extends PlayScreen {
         stage.addActor(startButton);
         stage.addActor(exitButton);
     }
+
         public void handleInput( float delta ) {
             if(startButton.isPressed())
                 this.change=true;
@@ -61,9 +62,6 @@ public class MainMenu extends PlayScreen {
 
 
         }
-
-
-
 
         @Override
         public void render(float delta) {

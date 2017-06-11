@@ -11,6 +11,11 @@ public class BarrelView extends ElementView {
     private static final float DEFAULT_SCALE = 4;
     private int rotation = 0;
 
+    /**
+     * Constructor for BarrelView
+     * @param assets Assets of game
+     * @param screen_scale Scale of game
+     */
     public BarrelView(AssetManager assets, float screen_scale){
         super(DEFAULT_SCALE,screen_scale);
         this.loadImageNames();

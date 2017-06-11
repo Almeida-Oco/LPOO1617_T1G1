@@ -48,7 +48,10 @@ public class Play extends PlayScreen {
         super(next_screen);
     }
 
-
+    /**
+     * Used to limit FPS
+     * @param fps How many FPS
+     */
     public void sleep(int fps) {
         if (fps > 0) {
             diff = System.currentTimeMillis() - start;
@@ -63,6 +66,7 @@ public class Play extends PlayScreen {
         }
     }
 
+    @Override
     public void show() {
         this.change = false;
         this.batch = new SpriteBatch();
@@ -83,6 +87,9 @@ public class Play extends PlayScreen {
 
     }
 
+    /**
+     * Loads game assets
+     */
     private void loadAssets() {
         this.loadMarioAsssets();
         this.loadBarrelsAssets();
@@ -110,6 +117,9 @@ public class Play extends PlayScreen {
         this.sleep(FPS);
     }
 
+    /**
+     * Draws all Entities
+     */
     private void drawEntities() {
         for (Entity ent : GameLogic.getInstance().getCharacters()) {
             ElementView ent_view = ViewFactory.makeView(this.assets, ent.getType(), this.scale);
@@ -122,7 +132,11 @@ public class Play extends PlayScreen {
         }
     }
 
-    protected void handleInput(float delta) {
+    /**
+     * Handles input from Android
+     * @param delta How much time has passed since last call to this function
+     */
+    private void handleInput(float delta) {
         GameLogic game = GameLogic.getInstance();
         int x_move = 0, y_move = 0;
         float acc_x = -Gdx.input.getAccelerometerX(), acc_y = -Gdx.input.getAccelerometerY();
@@ -143,12 +157,18 @@ public class Play extends PlayScreen {
         score.update(delta);
     }
 
+    /**
+     * Checks if current accelerometer levels are enough to make Mario jump
+     * @return Whether mario should jump or not
+     */
     private boolean enoughToJump() {
         float x = Gdx.input.getAccelerometerX(), y = Gdx.input.getAccelerometerY(), z = Gdx.input.getAccelerometerZ();
         return (Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2) + Math.pow(z, 2)) <= JUMP_MIN_VAL && x < REAL_GRAVITY && y < REAL_GRAVITY && z < REAL_GRAVITY);
     }
 
-
+    /**
+     * Animates the game background
+     */
     private void animateBackground() {
         if (this.tick == ANIMATION_RATE)
             this.tick = 0;
@@ -161,6 +181,9 @@ public class Play extends PlayScreen {
         this.tick++;
     }
 
+    /**
+     * Draws the barrel of fire of the background
+     */
     private void drawBarrelFire() {
         this.updateBarrelFireState();
         ElementView el_view = ViewFactory.makeView(this.assets, this.barrel_fire, this.scale);
@@ -173,6 +196,9 @@ public class Play extends PlayScreen {
         this.batch.end();
     }
 
+    /**
+     * Draws the princess of the background
+     */
     private void drawPrincess(){
         this.updatePrincessState();
         ElementView el_view = ViewFactory.makeView(this.assets, this.princess, 2);
@@ -185,6 +211,10 @@ public class Play extends PlayScreen {
         this.batch.end();
 
     }
+
+    /**
+     * Updates princess state
+     */
     private void updatePrincessState(){
         if (this.tick == 0) {
             if(Entity.type.PRINCESS_1 == this.princess)
@@ -194,6 +224,9 @@ public class Play extends PlayScreen {
         }
     }
 
+    /**
+     * Updates fire from fire barrel state
+     */
     private void updateBarrelFireState() {
         if (this.tick == 0) {
             if (Entity.type.BARREL_FIRE_MIN1 == this.barrel_fire)
@@ -237,11 +270,17 @@ public class Play extends PlayScreen {
         this.score.dispose();
     }
 
+    /**
+     * Computes scaling of map
+     * @return How much to scale map
+     */
     private float mapScaling() {
         return Gdx.graphics.getWidth() / (((TiledMapTileLayer) this.map.getLayers().get("Floor")).getWidth() * ((TiledMapTileLayer) this.map.getLayers().get("Floor")).getTileWidth());
     }
 
-
+    /**
+     * Load mario assets
+     */
     private void loadMarioAsssets() {
         this.assets.load("mario/left.png", Texture.class);
         this.assets.load("mario/right.png", Texture.class);
@@ -257,6 +296,9 @@ public class Play extends PlayScreen {
         this.assets.load("mario/died.png", Texture.class);
     }
 
+    /**
+     * Loads barrel assets
+     */
     private void loadBarrelsAssets() {
         this.assets.load("barrels/rolling1.png", Texture.class);
         this.assets.load("barrels/rolling2.png", Texture.class);
@@ -273,6 +315,9 @@ public class Play extends PlayScreen {
         this.assets.load("fire_barrel/max2.png", Texture.class);
     }
 
+    /**
+     * Loads DonkeyKong assets
+     */
     private void loadDKAssets() {
         this.assets.load("dk/front.png", Texture.class);
         this.assets.load("dk/left_barrel.png", Texture.class);
@@ -286,6 +331,9 @@ public class Play extends PlayScreen {
         this.assets.load("princess/princess_2.png", Texture.class);
     }
 
+    /**
+     * Load Fire assets
+     */
     private void loadFireAssets() {
         this.assets.load("fire/left.png", Texture.class);
         this.assets.load("fire/right.png", Texture.class);

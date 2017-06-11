@@ -11,6 +11,11 @@ public class DonkeyKong extends Model.Entity {
     private static DonkeyKong instance = null;
     private boolean free_barrel = false;
 
+    /**
+     * Constructor of DonkeyKong
+     * @param x X pixel coordinate to create DonkeyKong
+     * @param y Y pixel coordinate to create DonkeyKong
+     */
     private DonkeyKong(int x, int y){
         super(x,y);
         this.tick = 0;
@@ -91,6 +96,10 @@ public class DonkeyKong extends Model.Entity {
         }
     }
 
+    /**
+     * Gets an instance of DonkeyKong
+     * @return The single instance of DonkeyKong that will exists throughout the program
+     */
     public static DonkeyKong getInstance(){
         if (instance == null) {
             return (instance = new DonkeyKong(0,0));

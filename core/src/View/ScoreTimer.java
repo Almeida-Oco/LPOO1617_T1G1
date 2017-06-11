@@ -22,7 +22,7 @@ public class ScoreTimer implements Disposable{
     public Stage stage;
     private Viewport viewport;
 
-    //Mario score/time Tracking Variables
+    //Mario updateScore/time Tracking Variables
     private static Integer worldTimer;
     private boolean timeUp; // true when the world timer reaches 0
     private float timeCount;

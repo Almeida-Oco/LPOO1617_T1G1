@@ -69,5 +69,9 @@ public abstract class Barrel extends Entity {
      */
     public abstract void invertDirection();
 
+    /**
+     * Checks if barrel can be inverted
+     * @return Whether the barrel can be inverted or not
+     */
     public abstract boolean canInvert();
 }

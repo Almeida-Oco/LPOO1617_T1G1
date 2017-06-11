@@ -35,6 +35,9 @@ public class MarioDie extends Mario {
 
     }
 
+    /**
+     * Updates current mario type
+     */
     private void updateSprite(){
         if(this.tick>ANIMATION_RATE && this.tick < (ANIMATION_RATE*2) )
             this.current_type=type.MARIO_DYING_LEFT;

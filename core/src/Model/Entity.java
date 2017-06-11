@@ -31,58 +31,110 @@ public abstract class Entity {
     protected type current_type;
     protected float scale;
 
-
+    /**
+     * Constructor for an Entity
+     * @param x X pixel coordinate to create Entity
+     * @param y Y pixel coordinate to create Entity
+     */
     public Entity(int x , int y){
         this.position = new Pair<Integer,Integer>(x,y);
     }
 
+    /**
+     * Gets current X pixel coordinate of Entity
+     * @return X pixel coordinate
+     */
     public int getX(){
         return this.position.getFirst();
     }
 
+    /**
+     * Gets current Y pixel coordinate of Entity
+     * @return Y pixel coordinate
+     */
     public int getY(){
         return this.position.getSecond();
     }
 
+    /**
+     * Gets the current pixel position of Entity
+     * @return Pixel position of Entity
+     */
     public Pair<Integer,Integer> getPos(){
         return (Pair<Integer,Integer>)this.position.clone();
     }
 
+    /**
+     * Gets the size of the sprite representing the Entity
+     * @return Size of sprite representing Entity
+     */
     public Pair<Integer,Integer> getRepSize(){
         return this.rep_size;
     }
 
+    /**
+     * Gets velocity in the X axis
+     * @return Current X velocity in pixels
+     */
     public int getXSpeed(){
         return (int)Math.round((double)this.velocity.getFirst().floatValue());
     }
 
+    /**
+     * Gets velocity in the Y axis
+     * @return Current Y velocity in pixels
+     */
     public int getYSpeed(){
         return (int)Math.round((double)this.velocity.getSecond().floatValue());
     }
 
+    /**
+     * Gets the current type of Entity
+     * @return Current Entity type
+     */
     public type getType(){
         return this.current_type;
     }
 
+    /**
+     * Sets the Entity position
+     * @param pos Position to set Entity
+     */
     public void setPos(Pair<Integer,Integer> pos){
         this.position = pos;
     }
 
+    /**
+     * Sets the entity sprite representation size
+     * @param width Width of the sprite
+     * @param height Height of the sprite
+     * @param scale Scale of the sprite
+     */
     public void setRepSize(int width, int height, float scale){
         this.setScale(scale);
         this.rep_size.setFirst(width);
         this.rep_size.setSecond(height);
     }
 
-
+    /**
+     * Sets the Y velocity
+     * @param vel Y velocity in pixels
+     */
     public void setYVelocity( float vel ){
             this.velocity.setSecond(vel);
     }
 
+    /**
+     * Sets the X velocity
+     * @param vel X velocity in pixels
+     */
     public void setXVelocity( int vel ){
         this.velocity.setFirst((float)vel);
     }
 
+    /**
+     * Updates Y velocity based on gravity
+     */
     public void updateYVelocity(){
         if (this.velocity.getSecond() - this.gravity > -this.max_y_velocity)
             this.velocity.setSecond(this.velocity.getSecond() - this.gravity );
@@ -91,6 +143,10 @@ public abstract class Entity {
 
     }
 
+    /**
+     * Sets the scale of this Entity
+     * @param scale Scale to be set
+     */
     public void setScale (float scale){
         this.max_x_velocity = this.DEFAULT_MAX_X_VELOCITY*scale/MyGdxGame.DEFAULT_SCALE;
         this.velocity.setFirst(this.max_x_velocity);
@@ -98,6 +154,10 @@ public abstract class Entity {
         this.scale = scale;
     }
 
+    /**
+     * Sets the type of this Entity
+     * @param t Type of Entity
+     */
     public abstract void setType(type t);
 
 
@@ -124,6 +184,9 @@ public abstract class Entity {
      */
     public abstract boolean collidesWith(Pair<Integer, Integer> pos, Pair<Integer, Integer> rep_size);
 
+    /**
+     * Upgrades this Entity, if available
+     */
     public abstract void upgrade();
 
     /**
@@ -152,6 +215,11 @@ public abstract class Entity {
         return Barrel.createBarrel(map, state );
     }
 
+    /**
+     * Creates a new Fire
+     * @param map Current game map
+     * @return The newly created Fire
+     */
     public static Entity newFire(Map map){
         return new Fire(map.mapPosToPixels(fire_pos), new SimpleMovement() );
     }

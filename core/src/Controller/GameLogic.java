@@ -24,7 +24,9 @@ public class GameLogic {
     private int lives;
     private boolean die;
 
-
+    /**
+     * Default GameLogic constructo
+     */
     private GameLogic(){
         this.lives = N_LIVES;
         this.die = false;
@@ -32,6 +34,10 @@ public class GameLogic {
         this.first_barrel_thrown = false;
     }
 
+    /**
+     * Gets an instance of GameLogic
+     * @return The single instance of GameLogic present throughout the whole program
+     */
     public static GameLogic getInstance(){
         if (instance == null)
             return (instance = new GameLogic());
@@ -39,6 +45,9 @@ public class GameLogic {
             return instance;
     }
 
+    /**
+     * Initializes the game characters
+     */
     public void initializeCharacters() {
         ArrayList<Entity> init_chrs = Entity.createInitialCharacters(this.map);
         mario = init_chrs.get(0);
@@ -47,6 +56,10 @@ public class GameLogic {
         ScoreTimer.setLives(lives);
     }
 
+    /**
+     * Updates DonkeyKong sprites
+     * @param delta How much time has passed since last call to this function
+     */
     public void updateDK( float delta ) {
         if ( this.time_passed < time_to_throw && delta < time_to_throw)
             this.time_passed+=delta;
@@ -64,11 +77,20 @@ public class GameLogic {
             DK.moveEntity( map,new Pair<Integer, Integer>(0,0) );
     }
 
+    /**
+     * Adds a new barrel to the barrel array
+     * @param free_fall Whether the barrel is supposed to free fall or not
+     */
     private void addNewBarrel(boolean free_fall ){
         this.barrels.add( Model.Entity.newBarrel(this.map, new Pair<Boolean, Boolean>(!this.first_barrel_thrown , free_fall) ) );
         this.first_barrel_thrown = true;
     }
 
+    /**
+     * Moves Mario according to given directions
+     * @param x_move X movement, 1 -> RIGHT, 0 Stay still, -1 -> LEFT
+     * @param y_move Y movement, -1 -> DOWN, 0 Stay still, 1 -> UP, 2 -> JUMP
+     */
     public void moveMario(int x_move, int y_move){
         mario = mario.moveEntity(this.map, new Pair<Integer, Integer>(x_move,y_move)) ;
         if(die){
@@ -77,9 +99,13 @@ public class GameLogic {
         }
         this.checkOnTopOfFire( mario.getX(), mario.getY() );
 
-        this.score();
+        this.updateScore();
     }
 
+    /**
+     * Checks if the game was won
+     * @return Whether the game was won or not
+     */
     public boolean gameWon(){
         Pair<Integer,Integer> win_pos = new Pair<Integer,Integer>(16,254),
                 mario_pos = new Pair<Integer, Integer>(this.map.XConverter(mario.getX()), this.map.YConverter(mario.getY()));
@@ -89,6 +115,10 @@ public class GameLogic {
             return false;
     }
 
+    /**
+     * Moves all enemies
+     * @param delta How much time has passed since last call to this function
+     */
     public void moveEnemies(float delta){
         if( ScoreTimer.getTime() == TIME_LIMIT )
             this.fires.get(0).upgrade();
@@ -98,6 +128,9 @@ public class GameLogic {
         this.updateDK(delta);
     }
 
+    /**
+     * Moves the barrels
+     */
     public void moveBarrels(){
         for (int i = 0 ; i < this.barrels.size() ; i++) {
            boolean died =  this.barrels.get(i).collidesWith(mario.getPos(), mario.getRepSize());
@@ -111,6 +144,9 @@ public class GameLogic {
         }
     }
 
+    /**
+     * Kills mario
+     */
     private void killMario() {
         mario.setType(Entity.type.MARIO_DYING_UP);
         lives--;
@@ -120,6 +156,9 @@ public class GameLogic {
         die=true;
     }
 
+    /**
+     * Moves the fires
+     */
     public void moveFires(){
         for ( int i = 0 ; i < this.fires.size() ; i++){
             if ( this.fires.get(i).collidesWith( mario.getPos(), mario.getRepSize()) ){
@@ -131,6 +170,11 @@ public class GameLogic {
         }
     }
 
+    /**
+     * Checks if Mario jumped across an enemy, in which case he gains points
+     * @param entities Enemies to check if mario jumped on top of
+     * @return How many points mario made
+     */
     private int testJumps(ArrayList<Model.Entity> entities){
         int ret=0;
         for (int i = 0 ; i < entities.size() ; i++){
@@ -149,18 +193,30 @@ public class GameLogic {
         return ret;
     }
 
+    /**
+     * Checks if mario is on top of Fire Barrel
+     * @param x X pixel coordinate of mario
+     * @param y Y pixel coordinate of mario
+     */
     private void checkOnTopOfFire(int x , int y){
         x = this.map.XConverter(x); y = this.map.YConverter(y);
         if ( x >= 1 && x <= 2 && y >= 24 && y <= 34 && !this.marioDying() )
             this.killMario();
     }
 
-    public void score(){
+    /**
+     * Updates game score
+     */
+    public void updateScore(){
         int score=testJumps(this.fires);
         score+= testJumps(this.barrels);
         ScoreTimer.addScore(score);
     }
 
+    /**
+     * Gets all characters of the game
+     * @return Array with all game characters
+     */
     public ArrayList<Model.Entity> getCharacters(){
         ArrayList<Model.Entity> all_chars = new ArrayList<Model.Entity>();
         all_chars.add(this.mario);
@@ -170,15 +226,28 @@ public class GameLogic {
         return all_chars;
     }
 
+    /**
+     * Gets current game map
+     * @return Current game map
+     */
     public Model.Map getMap(){
         return this.map;
     }
 
+    /**
+     * Sets the current game map
+     * @param map_name The name of the map to be loaded
+     * @param collision_layer The name of the collision layer of this map
+     */
     public void setMap(String map_name, String collision_layer){
         this.map = new Model.Map();
         this.map.loadMap(map_name, collision_layer);
     }
 
+    /**
+     * Checks if the first barrel has fallen
+     * @return Whether the first barrel has fallen or not
+     */
     public boolean firstBarrelFalled() {
         if ( this.first_barrel_falled && this.fires.size() == 0 )
             fires.add( Entity.newFire( this.map ));
@@ -186,6 +255,10 @@ public class GameLogic {
         return this.first_barrel_falled;
     }
 
+    /**
+     * Checks if mario ran out of lives
+     * @return Whether mario ran out of lives or not
+     */
     public boolean isDead(){
         if( this.lives == 0 ){
             this.lives = N_LIVES;
@@ -195,6 +268,10 @@ public class GameLogic {
             return false;
     }
 
+    /**
+     * Checks if mario is currently in the dying animation
+     * @return Whether mario is in the dying animation or not
+     */
     private boolean marioDying(){
         Entity.type t = mario.getType();
         return (Entity.type.MARIO_DIED == t || Entity.type.MARIO_DYING_DOWN == t || Entity.type.MARIO_DYING_LEFT == t ||

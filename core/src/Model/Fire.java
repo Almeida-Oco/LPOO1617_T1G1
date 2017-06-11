@@ -57,6 +57,9 @@ public class Fire extends Entity {
         return false;
     }
 
+    /**
+     * Used to represent the passing of time, to know when to change sprites
+     */
     protected void tickTock(){
         if ( (type.FIRE_LEFT_IGNITE == this.current_type || type.FIRE_LEFT == this.current_type) && (prev_x-this.position.getFirst()) < 0 )
             this.changeDirection();
@@ -71,6 +74,9 @@ public class Fire extends Entity {
         }
     }
 
+    /**
+     * Updates current type of entity
+     */
     private void updateType(){
         if ( type.FIRE_LEFT == this.current_type )
             this.current_type = type.FIRE_LEFT_IGNITE;
@@ -82,6 +88,9 @@ public class Fire extends Entity {
             this.current_type = type.FIRE_RIGHT;
     }
 
+    /**
+     * Updates current type of Entity when direction is changed
+     */
     private void changeDirection(){
         if ( type.FIRE_LEFT == this.current_type )
             this.current_type = type.FIRE_RIGHT;

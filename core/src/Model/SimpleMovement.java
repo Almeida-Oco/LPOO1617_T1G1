@@ -32,12 +32,16 @@ public class SimpleMovement extends MoveStrategy {
         return this.smart;
     }
 
-
+    /**
+     * Moves the fire in a random direction
+     * @param map Current game map
+     * @param curr_pos Current position in pixels
+     */
     private void randomMove(Model.Map map, Pair<Integer,Integer> curr_pos){
         boolean ladder = (Math.random()*10) < 4;
-        if ( STAY_STILL == -1 && !this.smart.inLadder() )
+        if ( STAY_STILL == -1 && !this.smart.isInLadder() )
             this.smart.moveHorizontally(map,curr_pos, dir );
-        else if ( (ladder && ( (this.dir == 1 && this.checkUpperLadder(map,curr_pos)) || this.dir == -1 && this.checkLowerLadder(map,curr_pos) )) || this.smart.inLadder() )
+        else if ( (ladder && ( (this.dir == 1 && this.checkUpperLadder(map,curr_pos)) || this.dir == -1 && this.checkLowerLadder(map,curr_pos) )) || this.smart.isInLadder() )
             this.smart.moveVertically(map,curr_pos, dir );
     }
 

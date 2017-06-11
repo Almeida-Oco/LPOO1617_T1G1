@@ -61,12 +61,12 @@
       <dd>The other possible game screen, represents the actual game screen</dd>
    <dt>ScoreTimer</dt>
       <dd>Class which holds labels to show current score, how many lives Mario has left and how much time has passed</dd>
-   
+
    #### Entity
    <dl>
       <dt>ElementView</dt>
           <dd>Abstract class which represents what a view of an object should have, implements methods such as draw, set position and update sprite</dd>
-   
+
 </dl>
 
 ### **Design Patterns**
@@ -96,8 +96,8 @@ The GUI will be very simple with the Main Menu and Multiplayer Menu:
 ### Main Menu
 -  **Single Player**
    Allows the player to start a single player game much alike the arcade one.
-   
-- **Exit** 
+
+- **Exit**
 Simply exit the game.
 
 ----
@@ -114,7 +114,7 @@ Simply exit the game.
 * Update score
 * PowerUp effects
 
-### Entities 
+### Entities
 * Moves entity correctly
 
 ### Map
@@ -123,3 +123,10 @@ Simply exit the game.
 ### NetworkIO
 * Packets sent correctly
 
+
+# FINAL DELIVERY
+
+## USER MANUAL
+
+* Menu: very simple with only two buttons, the play button to start playing and the exit button to exit the game
+[Main Menu]("https://github.com/Almeida-Oco/LPOO1617_T1G1/blob/master/images/menu.png")

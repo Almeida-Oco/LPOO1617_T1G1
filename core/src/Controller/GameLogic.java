@@ -8,7 +8,7 @@ import View.ScoreTimer;
 
 public class GameLogic {
     private final int N_LIVES = 3;
-    private final Integer MANY_TIME=450;
+    private final int TIME_LIMIT = 450;
 
     private static GameLogic instance;
     private Model.Map map = null;
@@ -16,9 +16,7 @@ public class GameLogic {
     private int time_to_throw = 3;
     private boolean first_barrel_falled;
     private boolean first_barrel_thrown;
-    private boolean fire_upgraded=false;
 
-    //!Mario should always be first character!
     Model.Entity mario;
     Model.Entity DK;
     private ArrayList<Model.Entity> barrels = new ArrayList<Model.Entity>();
@@ -92,10 +90,8 @@ public class GameLogic {
     }
 
     public void moveEnemies(float delta){
-        if(!fire_upgraded && ScoreTimer.getTime()<=MANY_TIME) {
+        if( ScoreTimer.getTime() <= TIME_LIMIT )
             this.fires.get(0).upgrade();
-            fire_upgraded=true;
-        }
 
         this.moveFires();
         this.moveBarrels();
@@ -107,9 +103,9 @@ public class GameLogic {
            boolean died =  this.barrels.get(i).collidesWith(mario.getPos(), mario.getRepSize());
             if ( died || this.barrels.get(i).toRemove(this.map)){
                 this.barrels.remove(i);
+                this.first_barrel_falled = true;
                 if ( died )
                     killMario();
-                this.first_barrel_falled = true;
             }else
                 this.barrels.set(i,this.barrels.get(i).moveEntity(map, new Pair<Integer, Integer>(0,0) )); //numbers are irrelevant
         }
@@ -119,6 +115,8 @@ public class GameLogic {
         mario.setType(Entity.type.MARIO_DYING_UP);
         lives--;
         ScoreTimer.setLives(lives);
+        this.first_barrel_falled = false;
+        this.first_barrel_thrown = false;
         die=true;
     }
 
@@ -127,9 +125,6 @@ public class GameLogic {
             if ( this.fires.get(i).collidesWith( mario.getPos(), mario.getRepSize()) ){
                 killMario();
                 this.fires.remove(i);
-                first_barrel_thrown = false;
-                first_barrel_falled = false;
-                fire_upgraded=false;
             }
             else
                 this.fires.get(i).moveEntity(this.map, mario.getPos() );

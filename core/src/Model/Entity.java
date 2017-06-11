@@ -8,7 +8,7 @@ import java.util.ArrayList;
 public abstract class Entity {
     private final static Pair<Integer,Integer> mario_init_pos = new Pair<Integer, Integer>(4 ,8);
     private final static Pair<Integer,Integer> DK_pos =         new Pair<Integer, Integer>(3 ,222);
-    private final static Pair<Integer,Integer> fire_pos =       new Pair<Integer,Integer> (15,51);
+    private final static Pair<Integer,Integer> fire_pos =       new Pair<Integer,Integer> (4,8);
 
     public enum type {  MARIO_LEFT,MARIO_RIGHT,MARIO_CLIMB_LEFT, MARIO_CLIMB_RIGHT, MARIO_CLIMB_OVER, MARIO_RUN_LEFT,MARIO_RUN_RIGHT, MARIO_DYING_UP,MARIO_DYING_DOWN, MARIO_DYING_LEFT, MARIO_DYING_RIGHT, MARIO_DIED,
                         DK_THROW_LEFT, DK_THROW_RIGHT, DK_FRONT, DK_LEFT_BARREL, DK_RIGHT_BARREL, DK_LEFT_HAND, DK_RIGHT_HAND,

@@ -217,7 +217,7 @@ public class BarrelTester extends GameTest {
             barrel = barrel.moveEntity(map, new Pair<Integer, Integer>(0, 0));
         }
         assertTrue(pixel_pos.getFirst()<barrel.getPos().getFirst());//moving right
-        ((Barrel)barrel).invertDirection();
+        barrel.upgrade();
         barrel.setPos(pixel_pos);
         barrel.setType(Entity.type.BARREL_ROLLING1);
         while(barrel.getType()!=Entity.type.BARREL_ROLLING2) {

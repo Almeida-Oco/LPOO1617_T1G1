@@ -116,6 +116,7 @@
    The work distribution is the same between group member, which means :
    
    João Francisco Barreiros de Almeida (up201505866) 50%
+
    José Pedro Dias de Almeida Machado (up201504779) 50%
 
 
@@ -148,5 +149,19 @@
 
 
 ![alt text](https://github.com/Almeida-Oco/LPOO1617_T1G1/blob/master/images/play4.png)
+
+
+
+
+
+
+## SETUP/INSTALATION PROCEDURE
+
+* Installation: download the game from this repositorie (DonkeyKong.apk), go to your mobile device settings and allow installations from unknown sources and
+click on the file and then click on install.
+
+* Setup to open the project : Donwload Android Studio from [here](https://developer.android.com/studio/index.html) and then download the project from here,
+open Android Studio and click on Open Existing Project and select the file with this project
+
 
  

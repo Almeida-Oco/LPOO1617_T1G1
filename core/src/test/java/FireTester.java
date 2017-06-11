@@ -79,6 +79,7 @@ public class FireTester extends GameTest {
         //mario on right
         x = fire.getX(); y = fire.getY();
         while ( !( fire.getX() >= 149 && fire.getX() <= 153 ) ){
+            System.out.println("EX = "+x+", X = "+fire.getX()+", Y="+fire.getY());
             assertEquals(x, fire.getX());
             assertEquals(y, fire.getY());
             x+=2;

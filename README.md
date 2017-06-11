@@ -1,18 +1,25 @@
 
-# INTERMEDIATE CHECK-POINT
+# FINAL PROJECT DELIVERY
 
----
 ## Architecture Design
 <br />
 
 ### **Packages**
+<br />
+
+
 ### Controller
+---
 <dl>
    <dt>GameLogic</dt>
       <dd>Translates input from Android to commands to be given to model</dd>
 </dl>
 
+<br />
+
+
 ### Model
+---
 <dl>
    <dt>Entity</dt>
      <dd>An abstract class which represents a single entity of the game, has what an Entity should implement and common methods between them</dd>
@@ -51,7 +58,10 @@
    <dt>Pair</dt>
       <dd>Represents pair of values, mostly used for coordinate storing</dd>
 </dl>
+<br />
+
 ### View
+---
 <dl>
    <dt>PlayScreen</dt>
       <dd>Abstract class which represents a game screen</dd>
@@ -61,73 +71,50 @@
       <dd>The other possible game screen, represents the actual game screen</dd>
    <dt>ScoreTimer</dt>
       <dd>Class which holds labels to show current score, how many lives Mario has left and how much time has passed</dd>
-
+   
    #### Entity
    <dl>
       <dt>ElementView</dt>
           <dd>Abstract class which represents what a view of an object should have, implements methods such as draw, set position and update sprite</dd>
-
+      <dt>ViewFactory</dt>
+          <dd>Used to hold the various possible views and its sprite. When correctly used guarantees no more than 1 object of each view is created</dd>
+      <dt>MarioView</dt>
+          <dd>Holds the sprites to be drawn for mario, as well as their position and scale</dd>
+      <dt>BarrelView</dt>
+          <dd>Holds the sprites to be drawn for a barrel, as well as their position and scale</dd>
+      <dt>FireView</dt>
+          <dd>Holds the sprites to be drawn for a fire, as well as their position and scale</dd>
+      <dt>DonkeyKongView</dt>
+          <dd>Holds the sprites to be drawn for the DonkeyKong, as well as their position and scale</dd>
+      <dt>BarrelFireView</dt>
+          <dd>Holds the sprites to be drawn for the flaming barrel, as well as their position and scale</dd>
+      <dt>PrincessView</dt>
+          <dd>Holds the sprites to be drawn for the princess, as well as their position and scale</dd>
+   </dl>
 </dl>
 
 ### **Design Patterns**
 <dl>
    <dt>FLYWEIGHT</dt>
-      <dd>Barrels share the same sprites between them</dd>
+      <dd>Sprites are only loaded once so every time we need to use that sprite we simply go get it. Implemented thanks to LibGdx AssetManaget</dd>
    <dt>SINGLETON</dt>
-      <dd>There can only exist one Mario, one Donkey Kong and one GameLogic</dd>
+      <dd>There can only be a single GameLogic and a single DonkeyKong</dd>
    <dt>STRATEGY</dt>
-      <dd>Both the Barrels and the Fires have different behaviours throughout the game</dd>
+      <dd>Fires can change their strategy mid-game, meaning they can either get smarter or dumber based on current strategy</dd>
    <dt>STATE</dt>
-      <dd>Mario PowerUps are a State themselves</dd>
+      <dd>Mario has a number of states that transition between themselves as well as Barrel</dd>
 </dl>
 
+### **Design Decisions**
+   For this project we decided to use the Model View Controller architectural pattern to help maintain the loose coupling between packages as well as providing an easy to comprehend and high mutability of the Project.
+   
+### **Conclusions**
+   Looking back there are some aspects of the project that we perhaps would change. First and foremost we would definitely not use physics in our game since arcade games have such an unique physics which is hard to mimic using actual correct physics. Due to this divergence between game physics and real physics we had some difficulties implementing both the collisions and a portable multi-device way to represent everything that involves gravity, such as jumps or falls.
+   Other aspect we would reconsider is the use of a ViewPort in the game. When we first started implementing the game we were aware that we had ViewPorts available to us. However these would either not fill the whole screen as we wanted or would deform the game map in a way that did not seem pleasant to the eye. Therefore we decided not to use one. This made us have to worry what would happen in case screens of different size were used to play the game, so we added a scaling functionability, however it is not working properly. With a ViewPort all of this could be avoided and we could have honed the project even further.
+   
+   In regards to how much time was spent on the project, we counted approximately 180 hours of work. This counting started when we finally managed to work properly with Android Studio, which by itself took a while.
+   The work distribution is the same between group member, which means :
+   
+   João Francisco Barreiros de Almeida (up201505866) 50%
+   Zé Pedro Machado (up CENAS) 50%
 
-<br />
-
-----
-## GUI Design
-
-The GUI will be very simple with the Main Menu and Multiplayer Menu:
-
-[Model UML Diagram](https://github.com/Almeida-Oco/LPOO1617_T1G1/blob/master/UML/Model.png "Model UML Diagram")
-
-[View UML Diagram](https://github.com/Almeida-Oco/LPOO1617_T1G1/blob/master/UML/View.png "View UML Diagram")
-
-### Main Menu
--  **Single Player**
-   Allows the player to start a single player game much alike the arcade one.
-
-- **Exit**
-Simply exit the game.
-
-----
-## Test Design
-### Logic
-* Win and lose scenarios
-* Colisions with floor/ceiling
-* Mario gets Power Ups
-* Mario goes up ladder or fails to do so
-* Barrels fall in all possible places
-* Fires are able to move up and down stairs
-* All types of barrels created and thrown
-* Fire follows Mario
-* Update score
-* PowerUp effects
-
-### Entities
-* Moves entity correctly
-
-### Map
-* Map loads correctly
-
-### NetworkIO
-* Packets sent correctly
-
-
-# FINAL DELIVERY
-
-## USER MANUAL
-
-* Menu: very simple with only two buttons, the play button to start playing and the exit button to exit the game
-
-![alt text](https://github.com/Almeida-Oco/LPOO1617_T1G1/blob/master/images/menu.png)

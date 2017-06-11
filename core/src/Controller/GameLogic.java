@@ -44,7 +44,6 @@ public class GameLogic {
         mario = init_chrs.get(0);
         DK = init_chrs.get(1);
         this.fires.clear();
-        this.fires.add(Entity.newFire(this.map));
         ScoreTimer.setLives(lives);
     }
 
@@ -150,7 +149,6 @@ public class GameLogic {
         ScoreTimer.addScore(score);
     }
 
-
     public ArrayList<Model.Entity> getCharacters(){
         ArrayList<Model.Entity> all_chars = new ArrayList<Model.Entity>();
         all_chars.add(this.mario);
@@ -170,6 +168,9 @@ public class GameLogic {
     }
 
     public boolean firstBarrelFalled() {
+        if ( this.first_barrel_falled && this.fires.size() == 0 )
+            fires.add( Entity.newFire( this.map ));
+
         return this.first_barrel_falled;
     }
 

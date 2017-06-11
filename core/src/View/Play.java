@@ -100,10 +100,9 @@ public class Play extends PlayScreen {
         this.renderer.render();
 
         this.drawEntities();
-        this.animateBackground();
-
         this.handleInput(delta);
-
+        this.animateBackground();
+        
         batch.setProjectionMatrix(score.stage.getCamera().combined);
         score.stage.draw();
         if (GameLogic.getInstance().isDead() || GameLogic.getInstance().gameWon())

@@ -9,7 +9,7 @@ import Model.Entity;
 
 public class PrincessView extends ElementView {
 
-    private static final float DEFAULT_SCALE = 5.5f;
+    private static final float DEFAULT_SCALE = 3.5f;
 
     PrincessView(AssetManager assets, float screen_scale) {
         super(DEFAULT_SCALE, screen_scale);

@@ -18,6 +18,7 @@ public class SimpleMovement extends MoveStrategy {
     @Override
     public void move(Model.Map map, Pair<Integer, Integer> mario_pos, Pair<Integer,Integer> curr_pos) {
         this.smart.setSpeed( new Pair<Float, Float>((float)this.x_speed, (float)this.y_speed));
+        this.smart.setRep( this.rep_size );
         if ( SURE_STEP != -1)
             smart.move(map,mario_pos,curr_pos);
         else if ( CHANGE_DIR != -1 )

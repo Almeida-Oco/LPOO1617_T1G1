@@ -116,7 +116,7 @@
    The work distribution is the same between group member, which means :
    
    João Francisco Barreiros de Almeida (up201505866) 50%
-   Zé Pedro Machado (up201504779) 50%
+   José Pedro Dias de Almeida Machado (up201504779) 50%
 
 
 
@@ -135,5 +135,5 @@
 
 ![alt text](https://github.com/Almeida-Oco/LPOO1617_T1G1/blob/master/images/play2.png)
 
-
-
+   Moving the phone up quickly(acelarometer) and Mario jumps, jump over the mario adds 100 points to your score and jump over fire gives you 500 points.
+![alt text](https://github.com/Almeida-Oco/LPOO1617_T1G1/blob/master/images/play3.png)

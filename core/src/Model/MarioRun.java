@@ -58,7 +58,7 @@ public class MarioRun extends Mario {
 
         int new_x;
         if ( (new_x = map.collidesLeft(new_pos,this.rep_size.getSecond())) != -1 )
-            new_pos.setFirst(new_x);
+            new_pos.setFirst(new_x+1);
 
         Mario ret_val = this.processY(map,new_pos);
         ret_val.setPos(new_pos);

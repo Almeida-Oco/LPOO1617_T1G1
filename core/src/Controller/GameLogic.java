@@ -151,6 +151,8 @@ public class GameLogic {
         mario.setType(Entity.type.MARIO_DYING_UP);
         lives--;
         ScoreTimer.setLives(lives);
+        this.fires.clear();
+        this.barrels.clear();
         this.first_barrel_falled = false;
         this.first_barrel_thrown = false;
         die=true;
@@ -161,10 +163,8 @@ public class GameLogic {
      */
     public void moveFires(){
         for ( int i = 0 ; i < this.fires.size() ; i++){
-            if ( this.fires.get(i).collidesWith( mario.getPos(), mario.getRepSize()) ){
+            if ( this.fires.get(i).collidesWith( mario.getPos(), mario.getRepSize()) )
                 killMario();
-                this.fires.remove(i);
-            }
             else
                 this.fires.get(i).moveEntity(this.map, mario.getPos() );
         }

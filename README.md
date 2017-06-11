@@ -128,6 +128,6 @@ Simply exit the game.
 
 ## USER MANUAL
 
-* Menu: very simple with only two buttons, the play button to start playing and the exit button to exit the game [MainMenu]
+* Menu: very simple with only two buttons, the play button to start playing and the exit button to exit the game
 
-[Main Menu]:https://github.com/Almeida-Oco/LPOO1617_T1G1/blob/master/images/menu.png "Main Menu"
+(https://github.com/Almeida-Oco/LPOO1617_T1G1/blob/master/images/menu.png)

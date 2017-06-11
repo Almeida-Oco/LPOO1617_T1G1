@@ -121,7 +121,8 @@ public class GameLogic {
      */
     public void moveEnemies(float delta){
         if( ScoreTimer.getTime() < TIME_LIMIT )
-            this.fires.get(0).upgrade();
+            for  ( Entity fire : this.fires )
+                fire.upgrade();
 
         this.moveFires();
         this.moveBarrels();

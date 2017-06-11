@@ -146,7 +146,7 @@ public class GameLogic {
 
     private void checkOnTopOfFire(int x , int y){
         x = this.map.XConverter(x); y = this.map.YConverter(y);
-        if ( x >= 1 && x <= 2 && y >= 24 && y <= 34 )
+        if ( x >= 1 && x <= 2 && y >= 24 && y <= 34 && !this.marioDying() )
             this.killMario();
     }
 
@@ -188,5 +188,11 @@ public class GameLogic {
         }
         else
             return false;
+    }
+
+    private boolean marioDying(){
+        Entity.type t = mario.getType();
+        return (Entity.type.MARIO_DIED == t || Entity.type.MARIO_DYING_DOWN == t || Entity.type.MARIO_DYING_LEFT == t ||
+                Entity.type.MARIO_DYING_RIGHT == t || Entity.type.MARIO_DYING_UP == t );
     }
 }

@@ -156,7 +156,7 @@ public class Map {
         float x = pos.getFirst(), y_limit = pos.getSecond()+this.getMapTileHeight()*2,  y = pos.getSecond()+img_height;
         int max_x = -1;
 
-        for (float step = this.getMapTileHeight()/2 ; y > y_limit ; y-=step ){
+        for (float step = this.getMapTileHeight() ; y > y_limit ; y-=step ){
             if ( isCellBlocked(x,y) ){
                 int temp_x = (int)(this.getEdgeVerticalTileX(x,y,SEARCH_RIGHT) * this.getMapTileWidth());
                 if (temp_x > max_x)

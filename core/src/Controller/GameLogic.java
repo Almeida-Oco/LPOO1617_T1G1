@@ -75,6 +75,7 @@ public class GameLogic {
             this.barrels.clear();
             die=false;
         }
+        this.checkOnTopOfFire( mario.getX(), mario.getY() );
 
         this.score();
     }
@@ -141,6 +142,12 @@ public class GameLogic {
 
         }
         return ret;
+    }
+
+    private void checkOnTopOfFire(int x , int y){
+        x = this.map.XConverter(x); y = this.map.YConverter(y);
+        if ( x >= 1 && x <= 2 && y >= 24 && y <= 34 )
+            this.killMario();
     }
 
     public void score(){

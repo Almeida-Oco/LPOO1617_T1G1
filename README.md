@@ -1,5 +1,5 @@
-
-# FINAL PROJECT DELIVERY
+﻿# FINAL PROJECT DELIVERY
+[![BCH compliance](https://bettercodehub.com/edge/badge/Almeida-Oco/LPOO1617_T1G1?branch=master&token=ac8550e89e54eae83a62611da2d10f2c7cff659a)](https://bettercodehub.com/)
 
 ## Architecture Design
 <br />
@@ -116,5 +116,24 @@
    The work distribution is the same between group member, which means :
    
    João Francisco Barreiros de Almeida (up201505866) 50%
-   Zé Pedro Machado (up CENAS) 50%
+   José Pedro Dias de Almeida Machado (up201504779) 50%
 
+
+
+## USER MANUAL
+
+* Menu: very simple with only two buttons, the play button to start playing and the exit button to exit the game
+
+![alt text](https://github.com/Almeida-Oco/LPOO1617_T1G1/blob/master/images/menu.png)
+
+* PlayScreen
+   Tilt the phone to move Mario, tilt left to move Mario to the left, tilt right to move Mario to the right
+   and if Mario is aligned with the stairs tilting up the phone will allow Mario to climb the stairs.
+   Only completes stairs allows Mario to go next floor but the breaked ones can be used to avoid barrels.
+
+![alt text](https://github.com/Almeida-Oco/LPOO1617_T1G1/blob/master/images/play1.png)
+
+![alt text](https://github.com/Almeida-Oco/LPOO1617_T1G1/blob/master/images/play2.png)
+
+   Moving the phone up quickly(acelarometer) and Mario jumps, jump over the mario adds 100 points to your score and jump over fire gives you 500 points.
+![alt text](https://github.com/Almeida-Oco/LPOO1617_T1G1/blob/master/images/play3.png)

@@ -1,5 +1,5 @@
-﻿
-# FINAL PROJECT DELIVERY
+﻿# FINAL PROJECT DELIVERY
+[![BCH compliance](https://bettercodehub.com/edge/badge/Almeida-Oco/LPOO1617_T1G1?branch=master&token=ac8550e89e54eae83a62611da2d10f2c7cff659a)](https://bettercodehub.com/)
 
 ## Architecture Design
 <br />
@@ -130,5 +130,10 @@
    Tilt the phone to move Mario, tilt left to move Mario to the left, tilt right to move Mario to the right
    and if Mario is aligned with the stairs tilting up the phone will allow Mario to climb the stairs.
    Only completes stairs allows Mario to go next floor but the breaked ones can be used to avoid barrels.
+
+![alt text](https://github.com/Almeida-Oco/LPOO1617_T1G1/blob/master/images/play1.png)
+
+![alt text](https://github.com/Almeida-Oco/LPOO1617_T1G1/blob/master/images/play2.png)
+
 
 

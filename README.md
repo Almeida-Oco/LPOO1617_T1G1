@@ -20,6 +20,7 @@
 
 ### Model
 ---
+![Model UML](https://github.com/Almeida-Oco/LPOO1617_T1G1/blob/master/UML/Model.png)
 <dl>
    <dt>Entity</dt>
      <dd>An abstract class which represents a single entity of the game, has what an Entity should implement and common methods between them</dd>
@@ -62,6 +63,7 @@
 
 ### View
 ---
+![View UML](https://github.com/Almeida-Oco/LPOO1617_T1G1/blob/master/UML/View.png)
 <dl>
    <dt>PlayScreen</dt>
       <dd>Abstract class which represents a game screen</dd>
@@ -125,30 +127,30 @@
 
 * Menu: very simple with only two buttons, the play button to start playing and the exit button to exit the game
 
-![alt text](https://github.com/Almeida-Oco/LPOO1617_T1G1/blob/master/images/menu.png)
+![Menu](https://github.com/Almeida-Oco/LPOO1617_T1G1/blob/master/images/menu.png)
 
 * PlayScreen
    Tilt the phone to move Mario, tilt left to move Mario to the left, tilt right to move Mario to the right
    and if Mario is aligned with the stairs tilting up the phone will allow Mario to climb the stairs.
    Only completes stairs allows Mario to go next floor but the breaked ones can be used to avoid barrels.
 
-![alt text](https://github.com/Almeida-Oco/LPOO1617_T1G1/blob/master/images/play1.png)
+![Exemplo 1](https://github.com/Almeida-Oco/LPOO1617_T1G1/blob/master/images/play1.png)
 
-![alt text](https://github.com/Almeida-Oco/LPOO1617_T1G1/blob/master/images/play2.png)
+![Exemplo 2](https://github.com/Almeida-Oco/LPOO1617_T1G1/blob/master/images/play2.png)
 
 
 
    Move the phone up quickly(acelarometer) and Mario jumps, jump over the mario adds 100 points to your score and jump over fire gives you 500 points.
 
 
-![alt text](https://github.com/Almeida-Oco/LPOO1617_T1G1/blob/master/images/play3.png)
+![Exemplo 3](https://github.com/Almeida-Oco/LPOO1617_T1G1/blob/master/images/play3.png)
 
 
 
   You die if any barrel or fire collides with Mario and you win if you rich to the platform where the princess is, Mario has 3 lifes, when ir reaches the 0 files the game ends.
 
 
-![alt text](https://github.com/Almeida-Oco/LPOO1617_T1G1/blob/master/images/play4.png)
+![Exemplo 4](https://github.com/Almeida-Oco/LPOO1617_T1G1/blob/master/images/play4.png)
 
 
 
